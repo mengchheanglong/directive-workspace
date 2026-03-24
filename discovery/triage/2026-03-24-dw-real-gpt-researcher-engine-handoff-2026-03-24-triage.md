@@ -1,0 +1,24 @@
+# Discovery Triage Record: GPT Researcher Engine Handoff Pressure
+
+- Candidate id: dw-real-gpt-researcher-engine-handoff-2026-03-24
+- Candidate name: GPT Researcher Engine Handoff Pressure
+- Triage date: 2026-03-24
+- First-pass summary: Planner-research-publish workflow patterns that can improve the Directive Workspace engine's source analysis, adaptation, and reporting behavior.
+- Problem it appears to solve: Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.
+- Extractable value hypothesis: Planner-research-publish workflow patterns that can improve the Directive Workspace engine's source analysis, adaptation, and reporting behavior. | Real Mission Control submission used to verify post-Engine Architecture handoff materialization. | record_shape:queue_only
+- Routing recommendation: Engine selected architecture with usefulness level meta.
+- Proposed adoption target: engine-owned product logic
+- Stack-shape summary: github-repo source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Human review is still required before downstream execution or adoption.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan architecture_validation already defines required evidence and gates.
+- Immediate risks: adaptation_complete, engine_boundary_preserved, decision_review
+- Missing evidence: adapted mechanism described, excluded baggage described, engine or product boundary improvement explained
+- Monitor/Defer trigger conditions: If the route is rejected in human review, return the candidate to Discovery holding state.
+- Re-entry conditions: Complete the planned proof and human review before any downstream execution.
+- Next action: Materialize the adapted mechanism as engine-owned product logic before any host-specific integration work.
+- Linked intake record: discovery/intake/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-intake.md

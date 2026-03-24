@@ -1,0 +1,32 @@
+{
+  "candidateId": "dw-transform-context-pack-readiness-reuse",
+  "generatedAt": "2026-03-22",
+  "metric": "context_pack_readiness_duplicate_load_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-readiness-reuse.ts 5",
+  "baseline": {
+    "value": 540.83,
+    "source": "mission-control control-plane benchmark, duplicate readiness loads",
+    "measurementMethod": "Average wall-clock time across 5 runs timing buildWorkspaceReadiness with internal docs, quests, reports, and repo-snapshot loads after the caller already had those surfaces available"
+  },
+  "result": {
+    "value": 0.13,
+    "source": "mission-control control-plane benchmark, reused readiness surfaces",
+    "measurementMethod": "Average wall-clock time across 5 runs timing buildWorkspaceReadiness with caller-provided docs, quests, reports, and repo snapshot from the surrounding context-pack assembly path"
+  },
+  "delta": {
+    "absolute": -540.69,
+    "percent": -100.0
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "docsCount": 6,
+    "questCount": 46,
+    "reportCount": 12,
+    "parityOk": true,
+    "note": "The reused path assumes those surfaces were already loaded earlier in buildContextPack, so the benchmark isolates the duplicate-read cost removed from readiness scoring."
+  },
+  "newHelpers": [
+    "buildWorkspaceReadiness (preloaded data path)"
+  ]
+}

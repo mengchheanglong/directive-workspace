@@ -1,0 +1,39 @@
+# Desloppify Promotion Record
+
+- Candidate id: desloppify
+- Candidate name: desloppify
+- Promotion date: 2026-03-21
+- Linked Forge record: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-desloppify-forge-record.md`
+- Target host: Mission Control
+- Target runtime surface: run-scoped quality utility prototype lane
+- Integration mode: adapt
+- Source intent artifact: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-desloppify-quality-utility-followup.md`
+- Compile contract artifact: `C:\Users\User\.openclaw\workspace\mission-control\src\server\services\run-scoped-desloppify-service.ts`
+- Runtime permissions profile: run-scoped prototype execution only, with report writeback limited to Mission Control ops reports inside the active workspace run
+- Safe output scope: `C:\Users\User\.openclaw\workspace\mission-control\reports\ops\`
+- Sanitize policy: no lifecycle state mutation, no score-as-truth automation, and no unrelated project file changes are allowed by this slice
+- Proposed runtime status: callable (legacy-live-quality-utility-lane)
+- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-desloppify-runtime-slice-01-proof.md`
+- Quality gate profile: legacy_live_runtime_guard/v1
+- Promotion profile family: legacy_live_runtime
+- Proof shape: legacy_runtime_snapshot/v1
+- Primary host checker: `npm run check:directive-live-runtime-accounting`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: legacy_normalized
+- Quality gate fail reasons: none
+- Required gates:
+  - `npm run run:desloppify-prototype`
+  - `npm run check:directive-live-runtime-accounting`
+  - `npm run check:directive-source-pack-catalog`
+  - `npm run check:directive-source-pack-readiness`
+  - `npm run check:ops-stack`
+- Validation result: all required gates PASS on 2026-03-21
+- Rollback plan: restore the pack to `follow_up_only`, remove desloppify-specific Forge normalization artifacts, and keep the host prototype lane disabled until a new bounded promotion is approved.
+- Owner: operator
+- Promotion decision: approved as normalized bounded legacy live-runtime lane

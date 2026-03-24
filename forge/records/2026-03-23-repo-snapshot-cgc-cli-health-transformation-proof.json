@@ -1,0 +1,31 @@
+{
+  "candidateId": "dw-transform-repo-snapshot-cgc-cli-health",
+  "generatedAt": "2026-03-23",
+  "metric": "repo_snapshot_repeated_rebuild_wall_clock_ms_with_broken_cgc_cli",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-repo-snapshot-cgc-cli-health.ts 5",
+  "baseline": {
+    "value": 167.57,
+    "source": "mission-control control-plane benchmark, repo snapshot rebuilds with project caches and CodeGraphContext CLI health cleared before each run",
+    "measurementMethod": "Average wall-clock time across 5 runs forcing repo/project caches and the broken CodeGraphContext CLI health signal to reset before each buildRepoSnapshot(project) call"
+  },
+  "result": {
+    "value": 82.58,
+    "source": "mission-control control-plane benchmark, repo snapshot rebuilds after the broken CodeGraphContext CLI health signal has been detected once",
+    "measurementMethod": "Average wall-clock time across 5 runs clearing repo/project caches but reusing the detected broken CLI health before each buildRepoSnapshot(project) call"
+  },
+  "delta": {
+    "absolute": -84.98,
+    "percent": -50.7
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "parityOk": true,
+    "codeGraphContextStatus": "missing",
+    "codeGraphContextSource": "none",
+    "note": "This proof is environment-specific: the current host has a cgc launcher on PATH that fails with ModuleNotFoundError before CodeGraphContext can start."
+  },
+  "newHelpers": [
+    "clearCodeGraphContextCliHealthCache"
+  ]
+}

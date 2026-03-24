@@ -1,0 +1,38 @@
+# Puppeteer Promotion Record
+
+- Candidate id: puppeteer
+- Candidate name: puppeteer
+- Promotion date: 2026-03-21
+- Linked Forge record: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-puppeteer-forge-record.md`
+- Target host: Mission Control
+- Target runtime surface: bounded browser smoke lane
+- Integration mode: adapt
+- Source intent artifact: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-puppeteer-browser-runtime-followup.md`
+- Compile contract artifact: `C:\Users\User\.openclaw\workspace\mission-control\scripts\run-ui-smoke.ts`
+- Runtime permissions profile: host-local browser execution with screenshot/json artifact writeback under `reports/ui-smoke/`
+- Safe output scope: `C:\Users\User\.openclaw\workspace\mission-control\reports\ui-smoke\`
+- Sanitize policy: no destructive navigation, no external-site automation, and no source rewrite side effects are allowed by this slice
+- Proposed runtime status: callable (bounded-browser-lane)
+- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-puppeteer-runtime-slice-01-proof.md`
+- Quality gate profile: browser_smoke_guard/v1
+- Promotion profile family: bounded_browser_smoke
+- Proof shape: ui_smoke_snapshot/v1
+- Primary host checker: `npm run check:directive-puppeteer-forge`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: self_validated
+- Quality gate fail reasons: none
+- Required gates:
+  - `npm run ui:smoke`
+  - `npm run check:ui-smoke`
+  - `npm run check:directive-puppeteer-forge`
+  - `npm run check:ops-stack`
+- Validation result: all required gates PASS on 2026-03-21
+- Rollback plan: restore the pack to `follow_up_only`, remove puppeteer-specific Forge artifacts and checker wiring, and keep generic host smoke scripts only if still useful outside Forge callable status.
+- Owner: operator
+- Promotion decision: approved for bounded callable browser smoke follow-up

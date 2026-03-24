@@ -1,0 +1,183 @@
+{
+  "status": "active",
+  "updatedAt": "2026-03-24",
+  "policy": {
+    "sourceRule": "Gaps are derived from active-mission.md and from operational observations.",
+    "linkRule": "When a Discovery candidate addresses a known gap, tag the candidate with the gap_id.",
+    "reviewRule": "Review this registry whenever active-mission.md is updated."
+  },
+  "gaps": [
+    {
+      "gap_id": "gap-directive-engine-materialization",
+      "description": "Canonical Directive engine surface is only partially materialized as one reusable executable core with clear lane boundaries and host-adapter seams",
+      "priority": "high",
+      "related_mission_objective": "Directive engine materialization",
+      "current_state": "A first engine slice exists, but real source intake still falls back to host helpers, Markdown-first assets, and manual post-decision lane handoff",
+      "desired_state": "Engine owns substantially more intake, routing, adaptation/improvement, proof, decision, and handoff state while Discovery, Forge, and Architecture operate as clear Engine lanes",
+      "candidate_ids": [
+        "dw-live-gpt-researcher-engine-pressure-2026-03-24",
+        "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
+        "dw-live-scientify-engine-pressure-2026-03-24"
+      ],
+      "detected_at": "2026-03-24",
+      "resolved_at": null,
+      "resolution_notes": null
+    },
+    {
+      "gap_id": "gap-discovery-queue",
+      "description": "Discovery has no machine-readable intake queue for programmatic query or worker-pull",
+      "priority": "high",
+      "related_mission_objective": "Discovery as operational front door",
+      "current_state": "Markdown fast-path records only",
+      "desired_state": "Shadow intake queue alongside markdown with schema validation",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Shadow intake queue created at discovery/intake-queue.json"
+    },
+    {
+      "gap_id": "gap-mission-usefulness",
+      "description": "Mission-conditioned usefulness is not operationalized as a machine-readable input",
+      "priority": "high",
+      "related_mission_objective": "Mission-conditioned usefulness logic",
+      "current_state": "Usefulness evaluated by human judgment only",
+      "desired_state": "Active-mission artifact referenced in Discovery templates",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Active-mission artifact created at knowledge/active-mission.md; fast-path template updated with mission-alignment fields"
+    },
+    {
+      "gap_id": "gap-transformation-lane",
+      "description": "Behavior-preserving transformation has zero operational materialization despite being doctrine first-class",
+      "priority": "high",
+      "related_mission_objective": "Forge as behavior-preserving transformation engine",
+      "current_state": "No templates, schemas, evaluators, or promotion profiles for transformation work",
+      "desired_state": "Transformation record template, proof schema, evaluator contract, and promotion profile",
+      "candidate_ids": ["dw-transform-v0-normalizer-consolidation"],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Transformation record template, proof schema, evaluator contract, and promotion profile created"
+    },
+    {
+      "gap_id": "gap-evaluator-lane",
+      "description": "Verifier lanes are gate-shaped (binary pass/fail) but not evaluator-shaped (dimensional measurement)",
+      "priority": "medium",
+      "related_mission_objective": "Clearer verifier lanes",
+      "current_state": "npm run check:* scripts provide pass/fail only",
+      "desired_state": "Evaluator contract defining metric, baseline, measurement method, threshold, comparison mode",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Evaluator contract created at shared/contracts/evaluator-contract.md"
+    },
+    {
+      "gap_id": "gap-openclaw-discovery-contract",
+      "description": "OpenClaw-to-Discovery coordination is implicit, not contractual",
+      "priority": "medium",
+      "related_mission_objective": "OpenClaw as persistent orchestration",
+      "current_state": "OpenClaw-root helpers can append pending candidates into the primary Discovery queue through direct submission, stale verification freshness signaling, and maintenance/watchdog degraded-state signaling. The first two bounded paths are exercised; the third is implemented and checker-backed.",
+      "desired_state": "Formal contract plus exercised bounded submission paths from OpenClaw root into Discovery intake.",
+      "candidate_ids": ["dw-openclaw-discovery-submission-flow", "dw-openclaw-runtime-verification-freshness-2026-03-22", "dw-openclaw-maintenance-watchdog-signal-lane"],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Root helpers at scripts/submit-openclaw-discovery-candidate.ps1, scripts/submit-openclaw-runtime-verification-signal.ps1, and scripts/submit-openclaw-maintenance-watchdog-signal.ps1 plus their Mission Control checkers are active. Candidates dw-openclaw-discovery-submission-flow and dw-openclaw-runtime-verification-freshness-2026-03-22 exercised the first two paths; dw-openclaw-maintenance-watchdog-signal-lane materialized the third lane without fabricating a live incident."
+    },
+    {
+      "gap_id": "gap-monitor-review-enforcement",
+      "description": "Monitor/defer review cadence has no automated enforcement",
+      "priority": "medium",
+      "related_mission_objective": "Discovery as operational front door",
+      "current_state": "Monitor records have review dates but no checker flags overdue items",
+      "desired_state": "Checker script scanning monitor records and flagging overdue reviews",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Checker created at mission-control/scripts/check-discovery-monitor-review-cadence.ts"
+    },
+    {
+      "gap_id": "gap-queue-underexercised",
+      "description": "Discovery intake queue has only 1 entry vs 53 routing records; shadow mode cannot prove itself toward 10-candidate transition threshold",
+      "priority": "high",
+      "related_mission_objective": "Discovery as operational front door",
+      "current_state": "Shadow queue with 1 completed entry; transition requires 10 candidates",
+      "desired_state": "At least 10 candidates processed through both markdown and queue",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Backfilled 9 recent routing records into queue (total 10 entries, all valid). Queue has reached the 10-candidate transition threshold. Shadow-to-primary transition now eligible pending operator approval."
+    },
+    {
+      "gap_id": "gap-queue-validation-checker",
+      "description": "Discovery-intake-queue contract promises a validation checker but none exists in Mission Control scripts",
+      "priority": "high",
+      "related_mission_objective": "Discovery as operational front door",
+      "current_state": "No checker script validates queue entries against schema or checks markdown linkage",
+      "desired_state": "Checker that validates queue entries against schema, checks markdown forward/backward linkage, and reports sync gaps",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Checker created at mission-control/scripts/check-discovery-intake-queue.ts; registered as npm run check:discovery-intake-queue"
+    },
+    {
+      "gap_id": "gap-architecture-to-forge-handoff",
+      "description": "Architecture-to-Forge handoff contract has never been exercised in practice",
+      "priority": "medium",
+      "related_mission_objective": "Runtime operationalization",
+      "current_state": "Contract exists at shared/contracts/architecture-to-forge.md but no record shows it being used",
+      "desired_state": "At least one Architecture candidate handed off to Forge through the contract",
+      "candidate_ids": ["dw-handoff-autoresearch-arch-to-forge"],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Formal handoff record created at forge/handoff/2026-03-22-autoresearch-architecture-to-forge-handoff.md. Exercises all required contract fields. Real work (Architecture extraction → Forge bounded run → promotion) completed 2026-03-19–2026-03-20."
+    },
+    {
+      "gap_id": "gap-evaluator-dimensional-proof",
+      "description": "Evaluator contract exists but no candidate has used a real dimensional evaluator with numeric before/after comparison",
+      "priority": "medium",
+      "related_mission_objective": "Evaluation quality",
+      "current_state": "Pilot transformation used pass/fail checks (forge-sync, typecheck, build), not dimensional measurement",
+      "desired_state": "At least one candidate uses a dimensional evaluator (latency, cost, memory, or throughput with numeric baseline and result)",
+      "candidate_ids": ["dw-transform-backend-test-boilerplate"],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Backend test boilerplate consolidation uses dimensional evaluator with numeric before/after: 1,279→1,016 lines (-20.6%), 47,603→39,572 bytes (-16.9%). Both exceed 10% threshold. First non-vacuous dimensional evaluator proof."
+    },
+    {
+      "gap_id": "gap-discovery-front-door-coverage",
+      "description": "Discovery-first intake coverage still trails routing history; the front door needs more native upstream usage and less historical backfill",
+      "priority": "medium",
+      "related_mission_objective": "Discovery as operational front door",
+      "current_state": "Discovery queue is in primary mode with explicit intake linkage for split-case entries, and executable coverage analysis now measures routine usage from the live corpus instead of hand-counted markdown totals.",
+      "desired_state": "All new candidates enter through Discovery queue plus markdown intake; intake coverage grows over time instead of relying on backfill",
+      "candidate_ids": ["dw-discovery-gap-driven-priority-loop", "dw-openclaw-discovery-submission-flow", "dw-openclaw-runtime-verification-freshness-2026-03-22", "dw-openclaw-maintenance-watchdog-signal-lane"],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-23",
+      "resolution_notes": "Executable checker `npm run check:discovery-front-door-coverage` now measures front-door routine usage from the live corpus. Current metrics: queue in primary mode, 22 total entries, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The lone post-primary missing intake link is a backfill candidate (`al-parked-cli-anything`), so Discovery-first routine usage is confirmed for native work."
+    },
+    {
+      "gap_id": "gap-agent-lab-legacy-dependency",
+      "description": "Root-level external tool bridge behavior still preserves agent-lab-era assumptions outside the Directive Workspace ownership model",
+      "priority": "low",
+      "related_mission_objective": "Replaceable integrations and clean product ownership",
+      "current_state": "OpenClaw-owned external-tool bridge now resolves through root adapters, current Forge source packs, and Mission Control runtime dependencies where applicable",
+      "desired_state": "No live runtime path depends on workspace/agent-lab internals; remaining historical references are archival only",
+      "candidate_ids": [],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "Root runner migrated to scripts/invoke-external-tool.ps1 + scripts/external-tools/*; root writeback helper restored; live adapter paths no longer point to workspace/agent-lab/orchestration"
+    },
+    {
+      "gap_id": "gap-discovery-native-queue-usage",
+      "description": "Discovery intake queue has limited primary-mode operational history; needs 5+ native entries to confirm stability",
+      "priority": "medium",
+      "related_mission_objective": "Discovery as operational front door",
+      "current_state": "14 entries (5 native, 9 backfill); threshold reached",
+      "desired_state": "5+ candidates processed natively through primary-mode queue",
+      "candidate_ids": ["dw-transform-remaining-backend-test-boilerplate"],
+      "detected_at": "2026-03-22",
+      "resolved_at": "2026-03-22",
+      "resolution_notes": "5 native primary-mode queue entries achieved. Three BPT candidates processed end-to-end through native queue."
+    }
+  ]
+}

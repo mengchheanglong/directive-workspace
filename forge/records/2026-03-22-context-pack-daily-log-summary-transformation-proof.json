@@ -1,0 +1,32 @@
+{
+  "candidateId": "dw-transform-context-pack-daily-log-summary",
+  "generatedAt": "2026-03-22",
+  "metric": "context_pack_daily_log_load_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-daily-log-materialization.ts 5",
+  "baseline": {
+    "value": 155.23,
+    "source": "mission-control control-plane benchmark, full daily-log materialization path",
+    "measurementMethod": "Average wall-clock time across 5 runs using the legacy daily-log path that builds full per-day markdown content and keeps file materialization enabled"
+  },
+  "result": {
+    "value": 57.03,
+    "source": "mission-control control-plane benchmark, read-only context-pack daily-log summary path",
+    "measurementMethod": "Average wall-clock time across 5 runs using the summary-only daily-log path with file materialization disabled and lightweight first-entry previews for the memory layer"
+  },
+  "delta": {
+    "absolute": -98.2,
+    "percent": -63.3
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "dailyLogCount": 15,
+    "latestDayKey": "2026-03-22",
+    "parityOk": true,
+    "note": "A follow-up phase benchmark showed the full context-pack load-data phase dropping to about 70.16ms on average after the read-only daily-log summary path replaced the legacy materialized path."
+  },
+  "newHelpers": [
+    "listDailyReportLogs (includeContent/materializeFiles options)",
+    "buildDailyReportPreview"
+  ]
+}

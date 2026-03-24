@@ -1,0 +1,417 @@
+{
+  "status": "active",
+  "updatedAt": "2026-03-24",
+  "decision": {
+    "productOwner": "directive-workspace",
+    "productOwnerReason": "Directive Workspace is the standalone product and canonical owner of doctrine, contracts, shared operating assets, and source-adaptation logic.",
+    "packageImportCutover": "defer_direct_import",
+    "packageImportReason": "Next.js 16 Turbopack production builds did not consume the standalone Forge package reliably, so Mission Control keeps host-local mirrors until direct package consumption is stable.",
+    "hostIntegrationModel": "adapter_host",
+    "hostIntegrationModelReason": "Mission Control is the current integration host and command surface, but product-owned Directive Workspace assets remain canonical and host-first redefinition is disallowed.",
+    "runtimeHost": "mission-control",
+    "runtimeHostReason": "Forge runtime behavior remains host-owned while product-owned Forge core and shared helpers stay canonical in Directive Workspace."
+  },
+  "packageSurface": {
+    "activeExportKeys": [
+      ".",
+      "./core/v0",
+      "./core/v0.js"
+    ],
+    "deferredExportKeys": [
+      "./core/decision-policy",
+      "./core/decision-contract",
+      "./core/workflow-contract",
+      "./core/presentation-contract",
+      "./core/proof-contract",
+      "./core/capability-patch-contract"
+    ]
+  },
+  "mirrorEntries": [
+    {
+      "id": "forge-core-v0",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/v0.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/v0.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "forge-core-decision-policy",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/decision-policy.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/decision-policy.ts",
+      "compareBodyOnly": true,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "forge-core-decision-contract",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/decision-contract.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/decision-contract.ts",
+      "compareBodyOnly": true,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "forge-core-workflow-contract",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/workflow-contract.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/workflow-contract.ts",
+      "compareBodyOnly": true,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "forge-core-presentation-contract",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/presentation-contract.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/presentation-contract.ts",
+      "compareBodyOnly": true,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "forge-core-proof-contract",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/proof-contract.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/proof-contract.ts",
+      "compareBodyOnly": true,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "forge-core-capability-patch-contract",
+      "group": "forge_core",
+      "canonicalPath": "forge/core/capability-patch-contract.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/capability-patch-contract.ts",
+      "compareBodyOnly": true,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-structured-output-fallback",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/structured-output-fallback.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/structured-output-fallback.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-lifecycle-artifacts",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/lifecycle-artifacts.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/lifecycle-artifacts.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-integration-artifact-generator",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/integration-artifact-generator.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/integration-artifact-generator.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-gap-priority",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-gap-priority.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-gap-priority.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-gap-worklist-generator",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-gap-worklist-generator.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-gap-worklist-generator.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-intake-queue-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-intake-queue-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-intake-queue-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-intake-queue-transition",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-intake-queue-transition.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-intake-queue-transition.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-intake-lifecycle-sync",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-intake-lifecycle-sync.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-intake-lifecycle-sync.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-front-door-coverage",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-front-door-coverage.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-front-door-coverage.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-routing-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-routing-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-routing-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-completion-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-completion-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-completion-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-case-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-case-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-case-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-fast-path-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-fast-path-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-fast-path-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-submission-router",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-submission-router.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-submission-router.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-follow-up-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-follow-up-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-follow-up-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-proof-bundle-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-proof-bundle-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-proof-bundle-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-transformation-proof-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-transformation-proof-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-transformation-proof-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-transformation-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-transformation-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-transformation-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-promotion-record-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-promotion-record-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-promotion-record-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-forge-registry-entry-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/forge-registry-entry-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/forge-registry-entry-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-discovery-mission-routing",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/discovery-mission-routing.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/discovery-mission-routing.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-literature-monitoring-artifacts",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/literature-monitoring-artifacts.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/literature-monitoring-artifacts.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-lifecycle-review-feedback",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/lifecycle-review-feedback.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/lifecycle-review-feedback.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-review-resolution",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-review-resolution.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-review-resolution.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-adoption-resolution",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-adoption-resolution.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-adoption-resolution.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-adoption-artifacts",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-adoption-artifacts.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-adoption-artifacts.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-cycle-decision-summary",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-cycle-decision-summary.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-cycle-decision-summary.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-adoption-decision-envelope",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-adoption-decision-envelope.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-adoption-decision-envelope.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-adoption-decision-store",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-adoption-decision-store.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-adoption-decision-store.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-closeout",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-closeout.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-closeout.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-cycle-decision-loader",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-cycle-decision-loader.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-cycle-decision-loader.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-adoption-decision-writer",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-adoption-decision-writer.ts",
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-adoption-decision-writer.ts",
+      "compareBodyOnly": false,
+      "cutoverDecision": "keep_mirror"
+    },
+    {
+      "id": "shared-lib-architecture-handoff-start",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/architecture-handoff-start.ts",
+      "hostMirrorPath": null,
+      "compareBodyOnly": false,
+      "cutoverDecision": "direct_host_service_import"
+    },
+    {
+      "id": "shared-lib-engine-run-artifacts",
+      "group": "shared_lib",
+      "canonicalPath": "shared/lib/engine-run-artifacts.ts",
+      "hostMirrorPath": null,
+      "compareBodyOnly": false,
+      "cutoverDecision": "direct_host_service_import"
+    }
+  ],
+  "hostOnlyEntries": [
+    {
+      "id": "host-path-directive-source-packs",
+      "path": "src/server/paths/directive-source-packs.ts",
+      "kind": "host_runtime_path",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-service-directive-workspace",
+      "path": "src/server/services/directive-workspace-service.ts",
+      "kind": "host_runtime_service",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-service-directive-workspace-read",
+      "path": "src/server/services/directive-workspace-read-service.ts",
+      "kind": "host_runtime_service",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-repository-directive-workspace",
+      "path": "src/server/repositories/directive-workspace-repo.ts",
+      "kind": "host_repository",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-api-directive-workspace",
+      "path": "src/app/api/directive-workspace",
+      "kind": "host_api_surface",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-ui-directive-workspace",
+      "path": "src/app/dashboard/directive-workspace",
+      "kind": "host_ui_surface",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-check-forge-sync",
+      "path": "scripts/check-directive-forge-sync.ts",
+      "kind": "host_enforcement",
+      "decision": "keep_host_only"
+    },
+    {
+      "id": "host-check-shared-lib-sync",
+      "path": "scripts/check-directive-shared-lib-sync.ts",
+      "kind": "host_enforcement",
+      "decision": "keep_host_only"
+    }
+  ]
+}

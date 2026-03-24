@@ -1,0 +1,19 @@
+{
+  "tool": "puppeteer",
+  "mode": "browser_task",
+  "project": "mission-control",
+  "source": "openclaw",
+  "task": {
+    "task": "capture_page",
+    "url": "http://localhost:3000/dashboard",
+    "waitFor": {
+      "selector": "body",
+      "timeoutMs": 10000
+    },
+    "actions": [],
+    "output": {
+      "screenshotPath": "C:/Users/User/.openclaw/workspace/logs/mission-control-dashboard.png",
+      "jsonPath": "C:/Users/User/.openclaw/workspace/logs/mission-control-dashboard.json"
+    }
+  }
+}

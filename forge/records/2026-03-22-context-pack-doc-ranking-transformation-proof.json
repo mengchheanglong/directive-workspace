@@ -1,0 +1,36 @@
+{
+  "candidateId": "dw-transform-context-pack-doc-ranking",
+  "generatedAt": "2026-03-22",
+  "metric": "context_pack_doc_ranking_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-doc-ranking.ts 5",
+  "baseline": {
+    "value": 0.78,
+    "source": "mission-control control-plane benchmark, legacy full-sort doc ranking",
+    "measurementMethod": "Average wall-clock time across 5 runs using the legacy document scorer and full sort across 12 real quest/doc queries and 6 visible docs"
+  },
+  "result": {
+    "value": 0.28,
+    "source": "mission-control control-plane benchmark, indexed top-N doc ranking",
+    "measurementMethod": "Average wall-clock time across 5 runs using preindexed search surfaces plus bounded top-N maintenance across the same 12 real quest/doc queries and 6 visible docs"
+  },
+  "delta": {
+    "absolute": -0.5,
+    "percent": -63.8
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "docsCount": 6,
+    "questCount": 16,
+    "queryCount": 12,
+    "parityOk": true,
+    "note": "Indexed ranking was benchmarked with index-build cost included, and it matched the legacy ranking output exactly for the sampled control-plane query set."
+  },
+  "newHelpers": [
+    "buildDocSearchIndex",
+    "scoreIndexedDocumentAgainstTokens",
+    "compareRankedDocEntries",
+    "insertRankedDocResult",
+    "rankRelatedDocs"
+  ]
+}

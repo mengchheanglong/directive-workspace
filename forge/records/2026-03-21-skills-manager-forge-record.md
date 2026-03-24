@@ -1,0 +1,24 @@
+# Forge Record: skills-manager
+
+- Candidate id: skills-manager
+- Candidate name: skills-manager
+- Forge record date: 2026-03-21
+- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-skills-manager-lifecycle-cutover.md`
+- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-skills-manager-lifecycle-cutover.md`
+- Runtime objective: import one bounded `Skills Lifecycle Operator` agent through the Mission Control `agents/import-packs` route and prove that Forge can promote a skill-lifecycle governance lane without adopting the upstream desktop app runtime.
+- Proposed host: Mission Control
+- Proposed runtime surface: bounded skill lifecycle import lane
+- Execution slice: one isolated import-pack smoke run against a temporary SQLite catalog plus one sync-existing rerun to prove deterministic update behavior.
+- Required proof: evidence artifact showing import smoke report path, imported agent metadata, pack asset labels, import/sync counts, guard result, and rollback.
+- Required gates:
+  - `npm run forge:skills-manager:smoke`
+  - `npm run check:directive-skills-manager-forge`
+  - `npm run check:agents-import-packs-api-backend`
+  - `npm run check:ops-stack`
+- Risks:
+  - lane depends on the existing backend import-pack route and seed definitions remaining aligned with the Forge-owned pack
+  - lane is intentionally bounded to agent import/guidance behavior, not direct management of global skill stores or the upstream desktop runtime
+  - asset drift inside the cutover pack could silently weaken the operator prompt if not guarded
+- Rollback: remove skills-manager-specific Forge record/proof/promotion/registry artifacts, restore source-pack classification to `follow_up_only`, and remove the slice-specific Forge checker wiring; keep the generic import-packs backend surfaces only if they remain independently useful.
+- Current status: runtime slice executed; promotion record created (`2026-03-21`)
+- Next decision point: keep bounded callable skill-lifecycle status active only while the import smoke artifact and host checker continue to pass with deterministic imported metadata.

@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OpenClawMaintenanceWatchdogSignal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id",
+    "candidate_name",
+    "source_type",
+    "source_reference",
+    "mission_alignment",
+    "capability_gap_id",
+    "notes"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_name": {
+      "type": "string",
+      "const": "OpenClaw Maintenance Watchdog Signal"
+    },
+    "source_type": {
+      "type": "string",
+      "const": "internal-signal"
+    },
+    "source_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_alignment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_gap_id": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

@@ -1,0 +1,26 @@
+# Skills-Manager Runtime Slice 01 Proof
+
+- Candidate id: skills-manager
+- Candidate name: skills-manager
+- Proof date: 2026-03-21
+- Linked Forge record: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-skills-manager-forge-record.md`
+- Quality gate profile: skill_lifecycle_guard/v1
+- Promotion profile family: bounded_skill_lifecycle
+- Proof shape: agent_pack_import_snapshot/v1
+- Primary host checker: `npm run check:directive-skills-manager-forge`
+- Import smoke report path: `C:\Users\User\.openclaw\workspace\mission-control\reports\agent-pack-imports\skills-manager-latest.json`
+- Import smoke archive path: `C:\Users\User\.openclaw\workspace\mission-control\reports\agent-pack-imports\skills-manager-2026-03-21T14-08-57-242Z.json`
+- Imported agent count: `1`
+- Sync-existing updated count: `1`
+- Imported agent name: `Skills Lifecycle Operator`
+- Imported agent source pack: `skills-manager`
+- Imported agent source ref: `skills-manager/lifecycle-operator`
+- Imported workflow mode: `execution`
+- Imported pack asset labels: `README.md`, `scripts`, `src`, `assets`
+- Supporting gate outcomes:
+  - `npm run forge:skills-manager:smoke` -> PASS
+  - `npm run check:directive-skills-manager-forge` -> PASS
+  - `npm run check:agents-import-packs-api-backend` -> PASS
+  - `npm run check:ops-stack` -> PASS
+- Result: pass
+- Rollback note: if import-pack behavior drifts, demote the pack to `follow_up_only`, remove skills-manager-specific Forge artifacts/checker wiring, and keep generic import-pack infrastructure only if still justified independently.

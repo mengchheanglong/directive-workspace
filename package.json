@@ -1,0 +1,37 @@
+{
+  "name": "@directive-workspace/product",
+  "private": true,
+  "version": "0.0.0-private",
+  "type": "module",
+  "scripts": {
+    "dev": "node --experimental-strip-types ./scripts/run-frontend-dev.ts",
+    "build": "npm run frontend:build",
+    "check": "npm run check:frontend-host",
+    "frontend:build": "npm --prefix ./frontend run build",
+    "check:frontend-host": "node --experimental-strip-types ./scripts/check-frontend-host.ts",
+    "start": "npm run build && node --experimental-strip-types ./scripts/start-frontend.ts"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./engine": "./engine/index.ts",
+    "./integration-kit": "./hosts/integration-kit/index.ts",
+    "./integration-kit/cli": "./hosts/integration-kit/cli/host-integration-kit-cli.ts",
+    "./integration-kit/starter": "./hosts/integration-kit/starter/index.ts",
+    "./standalone-host": "./hosts/standalone-host/index.ts",
+    "./standalone-host/bootstrap": "./hosts/standalone-host/bootstrap.ts",
+    "./standalone-host/cli": "./hosts/standalone-host/cli.ts",
+    "./standalone-host/config": "./hosts/standalone-host/config.ts",
+    "./standalone-host/forge": "./hosts/standalone-host/forge.ts",
+    "./standalone-host/persistence": "./hosts/standalone-host/persistence.ts",
+    "./standalone-host/server": "./hosts/standalone-host/server.ts",
+    "./frontend": "./hosts/web-host/index.ts",
+    "./frontend/cli": "./hosts/web-host/cli.ts",
+    "./frontend/server": "./hosts/web-host/server.ts",
+    "./forge/core/v0": "./forge/core/v0.ts",
+    "./shared/discovery": "./shared/lib/discovery/index.ts",
+    "./shared/architecture": "./shared/lib/architecture/index.ts"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.40.0"
+  }
+}

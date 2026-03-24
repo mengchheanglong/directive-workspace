@@ -1,0 +1,38 @@
+{
+  "candidateId": "dw-transform-repo-snapshot-internal-cache",
+  "generatedAt": "2026-03-23",
+  "metric": "repo_snapshot_outer_miss_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-repo-snapshot-internal-caches.ts 5",
+  "baseline": {
+    "value": 108.93,
+    "source": "mission-control control-plane benchmark, outer snapshot cache miss with inner caches cleared",
+    "measurementMethod": "Average wall-clock time across 5 runs after clearing repo snapshot, git snapshot, and static-surface caches before each run"
+  },
+  "result": {
+    "value": 0.35,
+    "source": "mission-control control-plane benchmark, outer snapshot cache miss with inner caches warmed",
+    "measurementMethod": "Average wall-clock time across 5 runs after clearing only the outer repo-snapshot cache while preserving warmed git/static inner caches"
+  },
+  "delta": {
+    "absolute": -108.58,
+    "percent": -99.7
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "parityOk": true,
+    "summary": {
+      "summary": "Next.js, React, TypeScript, Drizzle ORM, SQLite, Markdown Knowledge Base - 5 verification commands - 1 language target ready for semantic navigation and diagnostics. - Branch main - 732 changed files - ahead 17 / behind 0",
+      "routeCount": 62,
+      "keyFileCount": 5,
+      "gitSummary": "Branch main - 732 changed files - ahead 17 / behind 0",
+      "codeIntelTools": 1
+    },
+    "note": "This proof measures outer repo-snapshot cache misses with the new inner git/static caches warmed. It does not claim that a fully cold repo scan was reduced to the same number."
+  },
+  "newHelpers": [
+    "clearGitSnapshotCache",
+    "clearRepoStaticSurfacesCache",
+    "collectRepoStaticSurfaces"
+  ]
+}

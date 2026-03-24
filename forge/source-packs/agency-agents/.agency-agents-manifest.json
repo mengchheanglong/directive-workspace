@@ -1,0 +1,389 @@
+{
+  "version": 1,
+  "generatedAt": "2026-03-19T16:11:53.208Z",
+  "rootPath": "C:\\Users\\User\\.openclaw\\workspace\\logs\\skills\\agency-agents-curated",
+  "profile": "engineering",
+  "selectedDirectories": [
+    "engineering",
+    "examples",
+    "integrations",
+    "specialized"
+  ],
+  "fileCount": 74,
+  "markdownFiles": 70,
+  "topLevelDirectories": 4,
+  "totalBytes": 806578,
+  "hash": "935a782c4e0a2833d6f0798b490a4bf04d13ec31571af5908950989e7df4acc0",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 126,
+      "hash": "714c089db4247920e9ea41e0a36107abbee449e9d80c08e071dfe2d682376ec3"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 1238,
+      "hash": "40fb6bae7b81864d86582bdeb44a1e440760573edbe165927596c136075761a6"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 14228,
+      "hash": "2bad12c4b189dd8319f146b150a3f65ff28f5cecb7423a9f780e8d51838d7369"
+    },
+    {
+      "path": "engineering/engineering-ai-data-remediation-engineer.md",
+      "bytes": 10691,
+      "hash": "5aa193052f15283493eeb9749bc346d09c02407f26760fe0d08f8bd9242ede79"
+    },
+    {
+      "path": "engineering/engineering-ai-engineer.md",
+      "bytes": 7383,
+      "hash": "f25a69aad25acd35dd1d62e33d5a814f4a26b075d90f968b4d778452e53924d8"
+    },
+    {
+      "path": "engineering/engineering-autonomous-optimization-architect.md",
+      "bytes": 7953,
+      "hash": "6904f627eff4a2035ecc245b3ee65f326b484083a08c3e284ad4106bdc57d2d8"
+    },
+    {
+      "path": "engineering/engineering-backend-architect.md",
+      "bytes": 9542,
+      "hash": "15f9e1361f63a5551eb690bd31d82b5ba18c5797d8d038e66aebd87d6cce17e5"
+    },
+    {
+      "path": "engineering/engineering-code-reviewer.md",
+      "bytes": 3076,
+      "hash": "7509fcc3ea1dda46511b2801996305bf3d4a125576f9655ff0b63df25602f446"
+    },
+    {
+      "path": "engineering/engineering-data-engineer.md",
+      "bytes": 14687,
+      "hash": "d46e5ebdb81f5f3e7e0296fa8355583f13693e47cce0e1c8e834c6ff956e861a"
+    },
+    {
+      "path": "engineering/engineering-database-optimizer.md",
+      "bytes": 5533,
+      "hash": "a58860b44590ed643ca02b6faf738b889c99bd889df78c695f519b5288ea018d"
+    },
+    {
+      "path": "engineering/engineering-devops-automator.md",
+      "bytes": 12879,
+      "hash": "5d3c3d12c605a8c07fadfd109697249f98bc8e3d1901247c390641ef9fb013e8"
+    },
+    {
+      "path": "engineering/engineering-embedded-firmware-engineer.md",
+      "bytes": 6562,
+      "hash": "8453982bc1ae4b5c43244fd1b702279b5a7a00ecf6d471b9a75a7a01433e5327"
+    },
+    {
+      "path": "engineering/engineering-feishu-integration-developer.md",
+      "bytes": 21127,
+      "hash": "836667ab301da70a2da5d6241c44f2134fe059f839b4efeac7f6ceece632b76a"
+    },
+    {
+      "path": "engineering/engineering-frontend-developer.md",
+      "bytes": 9283,
+      "hash": "35961da50f408e00eb6189c87825ac5e62e6b1bf9de3dee198a95536c6d2619e"
+    },
+    {
+      "path": "engineering/engineering-git-workflow-master.md",
+      "bytes": 3342,
+      "hash": "b2ab151fa5dc31035ba5f40f9b104f61cc8ef45dab8a8249ad15675141550d77"
+    },
+    {
+      "path": "engineering/engineering-incident-response-commander.md",
+      "bytes": 21121,
+      "hash": "1df5c8f558f99a8d3e6455cf6a6badbd1e0c2b2cccb02682843ee7ca11a13929"
+    },
+    {
+      "path": "engineering/engineering-mobile-app-builder.md",
+      "bytes": 17034,
+      "hash": "5b6d3d6ba2db86095abb00f6e8a4961c776b88784effbf74e1a1b1ee52f1d7e9"
+    },
+    {
+      "path": "engineering/engineering-rapid-prototyper.md",
+      "bytes": 15476,
+      "hash": "a9e860e095d228eb184a2293c3d2e9c646a8aabd6afe7a6a8eb55dfafea66d9f"
+    },
+    {
+      "path": "engineering/engineering-security-engineer.md",
+      "bytes": 11840,
+      "hash": "4119efde27686c254f873a906d9769333ba07b8350cc9c126a5a40556bf39352"
+    },
+    {
+      "path": "engineering/engineering-senior-developer.md",
+      "bytes": 6252,
+      "hash": "63b8da6c12b95f54bbdbcd0666abeb9519a98b35395233e1b1d8e5c102c82599"
+    },
+    {
+      "path": "engineering/engineering-software-architect.md",
+      "bytes": 3719,
+      "hash": "08239f789f83fbd9b117fe78a34af1ad640af2851685caa9d40e00f9cbf31586"
+    },
+    {
+      "path": "engineering/engineering-solidity-smart-contract-engineer.md",
+      "bytes": 21714,
+      "hash": "1f68b7857b83c613324dd9685a7692b4427330f5680675b8781d8f66f088dc9b"
+    },
+    {
+      "path": "engineering/engineering-sre.md",
+      "bytes": 3882,
+      "hash": "85b305e495506913f50c7cb28de42444a85fbc4898cd3ad4e1dc9b358b4ab5e8"
+    },
+    {
+      "path": "engineering/engineering-technical-writer.md",
+      "bytes": 14210,
+      "hash": "70c8a29cddf7de486b41185693b4961af3fcccbc632b8df13ec43572859edc43"
+    },
+    {
+      "path": "engineering/engineering-threat-detection-engineer.md",
+      "bytes": 24873,
+      "hash": "83bfaabe485d51965ba6474de3eb6e00f67fd7f76e5b34ca1d3fb385a8fa3d97"
+    },
+    {
+      "path": "engineering/engineering-wechat-mini-program-developer.md",
+      "bytes": 15566,
+      "hash": "dcda22b2d93c1bbfb5d29a78bba031ad40552af54713d89c49ece2d70d08a02c"
+    },
+    {
+      "path": "examples/nexus-spatial-discovery.md",
+      "bytes": 40664,
+      "hash": "828bd93b1fbb2218e5eee049c618448be2e081cd46983e928dbecd7afcbcc2df"
+    },
+    {
+      "path": "examples/README.md",
+      "bytes": 2402,
+      "hash": "4337886744e068c62fe24795c60aed43e82f13c56526646445c48e02b3cab3f9"
+    },
+    {
+      "path": "examples/workflow-book-chapter.md",
+      "bytes": 2101,
+      "hash": "a0382f06c7536579be480c737d56257c3247b55fbacfc6fdc219f870053a8f3f"
+    },
+    {
+      "path": "examples/workflow-landing-page.md",
+      "bytes": 3389,
+      "hash": "05942259ec3fa56d32dc882e27646c75d69bdd8cb8333212ac9589eaba729bac"
+    },
+    {
+      "path": "examples/workflow-startup-mvp.md",
+      "bytes": 4594,
+      "hash": "e540cc1c11e16ea5726dbfe2122e8832e020b865f957fdeb44a2216ab5873308"
+    },
+    {
+      "path": "examples/workflow-with-memory.md",
+      "bytes": 9090,
+      "hash": "12d75f810271871ea4aec14feb3705ea51fb0bb2519ef1e651c68777475c2453"
+    },
+    {
+      "path": "integrations/aider/README.md",
+      "bytes": 690,
+      "hash": "3e3f31ba521db394d350453bb6765f562c375db66d92220e77b13c92e72ac06f"
+    },
+    {
+      "path": "integrations/antigravity/README.md",
+      "bytes": 1007,
+      "hash": "806941ccd528a978504f07603b51018394d680403658be6d31e81e7eadebe111"
+    },
+    {
+      "path": "integrations/claude-code/README.md",
+      "bytes": 713,
+      "hash": "ba0d40b544f661a88cc74eb2a5e6f9d03142b37da24f5dd83e8324f3404577b1"
+    },
+    {
+      "path": "integrations/cursor/README.md",
+      "bytes": 727,
+      "hash": "8eeab520b7d7da3f78a84fcb24cf15eaecfb18b4aff41ee755b0bee46efacef9"
+    },
+    {
+      "path": "integrations/gemini-cli/README.md",
+      "bytes": 734,
+      "hash": "9f54cd4d8b4ef54a552bbd7ab06f79f1f9b3fd92aeb5ae8c47c720829af1b9ac"
+    },
+    {
+      "path": "integrations/github-copilot/README.md",
+      "bytes": 759,
+      "hash": "81c59088b32258ba22ae553997f7b9e9c2d33268871ab914747ce5d1015ec7f4"
+    },
+    {
+      "path": "integrations/mcp-memory/backend-architect-with-memory.md",
+      "bytes": 10940,
+      "hash": "961975de8bff54a089ddc9b86dd86e8f3ac1a9c37aff9c68aed0afd45bfb5eab"
+    },
+    {
+      "path": "integrations/mcp-memory/README.md",
+      "bytes": 3760,
+      "hash": "e3252682132b4aa6f95f17fb4888cf8722b8bd9c747af403e3d6651b1dd57cf4"
+    },
+    {
+      "path": "integrations/mcp-memory/setup.sh",
+      "bytes": 2227,
+      "hash": "7fd9166f7410f3708486b26301166728befacde39fc561a492f3ce6e7c529928"
+    },
+    {
+      "path": "integrations/openclaw/README.md",
+      "bytes": 697,
+      "hash": "4a2a0d6fb6d2ec7a360d3e023ab5e333c3508e4a6d4312120e28eba1aef6d00a"
+    },
+    {
+      "path": "integrations/opencode/README.md",
+      "bytes": 1470,
+      "hash": "4db4e70ae72fd43f5f5779bb9070bc12dc6b6167fb8b716f78d29fef5eb1ff13"
+    },
+    {
+      "path": "integrations/README.md",
+      "bytes": 4282,
+      "hash": "497acb01b68469fa182d2f56e105b5f3bc4ba9e0e633b9013b3eea4a927c0df6"
+    },
+    {
+      "path": "integrations/windsurf/README.md",
+      "bytes": 509,
+      "hash": "93b3c1dc2ac3c884f32f0469ada9f268a399bc7f423402b29ea4dc84482fb19a"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1100,
+      "hash": "45c861c1178a99178033b61302af7610e870082e874981b57519c2a1369299c0"
+    },
+    {
+      "path": "README.md",
+      "bytes": 51365,
+      "hash": "e2b5bd5605fc66f106af8b9f99742a65a9c868149fa934ec51a51879f0d3dd09"
+    },
+    {
+      "path": "specialized/accounts-payable-agent.md",
+      "bytes": 6795,
+      "hash": "3b943d48884c7ef13cdd6a354714be1a22bc2aae0b17ccbe6daffeb3744a90d2"
+    },
+    {
+      "path": "specialized/agentic-identity-trust.md",
+      "bytes": 18398,
+      "hash": "55de131a5c790dfb84edd9855d8fd2911d4d676d07f7f6c8e90d36705e73427b"
+    },
+    {
+      "path": "specialized/agents-orchestrator.md",
+      "bytes": 15725,
+      "hash": "3f900ee286eba5a809388ecc22ad860c4a3ef9ed7ff25488e80eac18f3a0f317"
+    },
+    {
+      "path": "specialized/automation-governance-architect.md",
+      "bytes": 5831,
+      "hash": "8aab89104fec352f1f601ec5e6db11c9628d0b2072e6324484fd7e4c8462f55e"
+    },
+    {
+      "path": "specialized/blockchain-security-auditor.md",
+      "bytes": 21130,
+      "hash": "b35bcd083889ccea487535e30c66bde83f0d06527ae4dd12acec32b285c5ec66"
+    },
+    {
+      "path": "specialized/compliance-auditor.md",
+      "bytes": 7213,
+      "hash": "ebb550ceef8011be23fe5a6fab0a7b3f77c2433f4d6aa22617a7eb87db97274f"
+    },
+    {
+      "path": "specialized/corporate-training-designer.md",
+      "bytes": 15673,
+      "hash": "e70733229e87dde01bd404f502d2f5b491821f681d7230b314b18d98111b898c"
+    },
+    {
+      "path": "specialized/data-consolidation-agent.md",
+      "bytes": 2393,
+      "hash": "7e7de097ff27e3aa2732a9f1ab0bd7acaaef73dabf53fc7be6c90c8ab6afab11"
+    },
+    {
+      "path": "specialized/government-digital-presales-consultant.md",
+      "bytes": 22759,
+      "hash": "0676fd83a462828901c64df516034b0912468c85abb751d3e484038d3288b848"
+    },
+    {
+      "path": "specialized/healthcare-marketing-compliance.md",
+      "bytes": 35322,
+      "hash": "942cc3b43da5f0e6103b7e5087941df4247c602228b2c4b0c6487140e89b176e"
+    },
+    {
+      "path": "specialized/identity-graph-operator.md",
+      "bytes": 14122,
+      "hash": "f37b705283147e3b92b76d61a3a60bdfe67bad9d6e364d11565329b8a107b3b4"
+    },
+    {
+      "path": "specialized/lsp-index-engineer.md",
+      "bytes": 11197,
+      "hash": "3f720a81cdcdaa63136b6fd7817f198d95a517ca1dfcfaa9ec81a5469a1cff95"
+    },
+    {
+      "path": "specialized/recruitment-specialist.md",
+      "bytes": 29401,
+      "hash": "fa1349988c278d0ecf652d7e286b3cac6acd388e10ba2e7d92c59d448303ccf8"
+    },
+    {
+      "path": "specialized/report-distribution-agent.md",
+      "bytes": 2653,
+      "hash": "f5796b3cb693123e6c59f7058c100fe817b744f819d3e281442964714f72bac5"
+    },
+    {
+      "path": "specialized/sales-data-extraction-agent.md",
+      "bytes": 2697,
+      "hash": "202a6f04df452385fd1185a6bb23a0c9a47e624088eac14179bed4975f0b268a"
+    },
+    {
+      "path": "specialized/specialized-cultural-intelligence-strategist.md",
+      "bytes": 6643,
+      "hash": "91f1d2ef19bcf05f8d3b2758049d2dee909939a18ec2d086f192358179455abc"
+    },
+    {
+      "path": "specialized/specialized-developer-advocate.md",
+      "bytes": 14829,
+      "hash": "92617477989c99f57cda5d6d91ac5fea3a56db422a3f3825c4a438ad244079d3"
+    },
+    {
+      "path": "specialized/specialized-document-generator.md",
+      "bytes": 2437,
+      "hash": "cd2ca961e0f7baa18942aaaa315e333ea4315604bbb6a182d7daa31b76dfc3a3"
+    },
+    {
+      "path": "specialized/specialized-french-consulting-market.md",
+      "bytes": 11156,
+      "hash": "4ce5acf38babd2b02bb8172732aaff26f35cbc9167f9c087aaef8bae7db18709"
+    },
+    {
+      "path": "specialized/specialized-korean-business-navigator.md",
+      "bytes": 14071,
+      "hash": "71eb41ef3705fe155eee87d99e0ec7a52a237af442dd66e3421e225b76580f21"
+    },
+    {
+      "path": "specialized/specialized-mcp-builder.md",
+      "bytes": 2770,
+      "hash": "692925ec0def944857411a3d272ecccbc83bd8915718544d53e11154f91063e1"
+    },
+    {
+      "path": "specialized/specialized-model-qa.md",
+      "bytes": 20143,
+      "hash": "835a26b93003cfb8819201001dad37267971f5702320abcf1720f697e00cf4bd"
+    },
+    {
+      "path": "specialized/specialized-salesforce-architect.md",
+      "bytes": 9904,
+      "hash": "0c53f86382134c21d6dec8a9344b5b94cdefc62c87e07cb4bb13e293fc436a83"
+    },
+    {
+      "path": "specialized/specialized-workflow-architect.md",
+      "bytes": 26488,
+      "hash": "ab907eef380fdba85a5c352afc7f233dbd10ef9007253c34c61801b5183a36c5"
+    },
+    {
+      "path": "specialized/study-abroad-advisor.md",
+      "bytes": 16984,
+      "hash": "afd4b1033e76671b4d7a17a74329d7d81f491351004c77876a2615137140b84f"
+    },
+    {
+      "path": "specialized/supply-chain-strategist.md",
+      "bytes": 32397,
+      "hash": "4e3c93bcfefd72b958432d8dbe562c6ca5add80d39a5eec061a83e9e0fe984c3"
+    },
+    {
+      "path": "specialized/zk-steward.md",
+      "bytes": 10890,
+      "hash": "b52f6a6129d5cfdd74395a9ad85a97d166ed476e14e4744ad3f09b166c132483"
+    }
+  ]
+}

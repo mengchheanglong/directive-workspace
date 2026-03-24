@@ -1,0 +1,21 @@
+{
+  "candidate_id": "standalone-forge-example",
+  "candidate_name": "Standalone Forge Example",
+  "registry_date": "2026-03-23",
+  "linked_promotion_record": "forge/promotion-records/2026-03-23-standalone-forge-example-promotion-record.md",
+  "host": "directive-workspace-standalone-host",
+  "runtime_surface": "bounded local forge artifact lifecycle",
+  "runtime_status": "reference_live",
+  "proof_path": "forge/records/2026-03-23-standalone-forge-example-proof-checklist.md",
+  "last_validated_by": "check:directive-standalone-forge-host",
+  "last_validation_date": "2026-03-23",
+  "active_risks": [
+    "local reference lane only",
+    "not a broad Mission Control replacement"
+  ],
+  "rollback_path": "Delete the generated registry entry and revert the local Forge lifecycle artifacts.",
+  "notes": [
+    "This example is for bounded local/shareable usage.",
+    "Generate the proof bundle before using this for real promotion history."
+  ]
+}

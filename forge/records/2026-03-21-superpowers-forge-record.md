@@ -1,0 +1,24 @@
+# Forge Record: superpowers
+
+- Candidate id: superpowers
+- Candidate name: superpowers
+- Forge record date: 2026-03-21
+- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-21-forge-wave-02-shortlist.md`
+- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-21-forge-wave-02-shortlist.md`
+- Runtime objective: import one bounded `Superpowers Workflow Operator` agent through the Mission Control `agents/import-packs` route and prove that Forge can surface workflow discipline from the cutover pack without adopting upstream plugin marketplace, hook, or overlay behavior as product truth.
+- Proposed host: Mission Control
+- Proposed runtime surface: explicit-only bounded workflow operator import lane
+- Execution slice: one isolated import-pack smoke run against a temporary SQLite catalog plus one sync-existing rerun and one default-import exclusion proof.
+- Required proof: evidence artifact showing import smoke report path, imported workflow-operator metadata, pack asset labels, import/sync counts, guard result, and rollback.
+- Required gates:
+  - `npm run forge:superpowers:smoke`
+  - `npm run check:directive-superpowers-forge`
+  - `npm run check:agents-import-packs-api-backend`
+  - `npm run check:ops-stack`
+- Risks:
+  - lane depends on the backend import-pack route and superpowers seed definition remaining aligned with the Forge-owned pack
+  - lane is intentionally bounded to one workflow operator, not upstream plugin installation, hooks, or automatic skill overlays
+  - asset drift inside the cutover pack could silently weaken workflow guidance if not guarded
+- Rollback: remove superpowers-specific Forge record/proof/promotion/registry artifacts, restore source-pack classification to `follow_up_only`, restore import-source policy requirements to follow-up/manual mode, and remove the slice-specific Forge checker wiring; keep generic import-pack infrastructure only if it remains independently useful.
+- Current status: runtime slice executed; promotion record created (`2026-03-21`)
+- Next decision point: keep bounded callable workflow-operator status active only while explicit import remains required, default import stays clean, and host checks continue to pass with deterministic imported metadata.

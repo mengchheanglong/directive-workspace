@@ -1,0 +1,31 @@
+{
+  "candidateId": "dw-transform-daily-report-log-readonly-cache",
+  "generatedAt": "2026-03-22",
+  "metric": "daily_report_readonly_repeated_call_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-daily-report-log-readonly.ts 5",
+  "baseline": {
+    "value": 43.39,
+    "source": "mission-control control-plane benchmark, legacy readonly daily-log builder",
+    "measurementMethod": "Average wall-clock time across 5 runs building the readonly daily-log output without cache reuse"
+  },
+  "result": {
+    "value": 19.53,
+    "source": "mission-control control-plane benchmark, warmed readonly daily-log cache",
+    "measurementMethod": "Average wall-clock time across 5 runs reading the readonly daily-log output after one cache-populating call, with mutation invalidation still enabled"
+  },
+  "delta": {
+    "absolute": -23.86,
+    "percent": -55.0
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "reportLogCount": 15,
+    "parityOk": true,
+    "previewLength": 1228,
+    "note": "The cache only applies to the non-materializing readonly path; report mutation and daily-log sync explicitly clear the cached surface."
+  },
+  "newHelpers": [
+    "clearDailyReportLogCache"
+  ]
+}

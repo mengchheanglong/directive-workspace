@@ -1,0 +1,24 @@
+# Accepted Implementation Bundle 46
+
+- Date: 2026-03-21
+- Track: Directive Forge
+- Candidate id: software-design-philosophy-skill
+- Bundle type: bounded runtime slice
+- Decision: accepted for implementation
+- Why:
+  - cutover-complete pack already exists under Forge ownership
+  - backend import seed already exists and is bounded to a single review operator
+  - low-risk explicit-only import lane after Wave 02 system cleanup
+- Implementation target:
+  - promote as an explicit-only bounded design-review skill import lane
+  - do not treat upstream installation flow as runtime truth
+- Required artifacts:
+  - Forge record
+  - proof artifact
+  - promotion record
+  - registry entry
+  - host smoke runner
+  - host checker
+- Rollback:
+  - restore source-pack classification and import policy to follow-up/manual mode
+  - remove slice-specific Forge artifacts and host wiring

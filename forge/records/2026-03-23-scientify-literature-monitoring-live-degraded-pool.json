@@ -1,0 +1,28 @@
+{
+  "artifact_type": "literature_monitoring_degraded_state",
+  "candidate_id": "scientify-literature-monitoring",
+  "generated_at": "2026-03-23T04:14:44.427Z",
+  "topic_input": "bounded impossible provider-check sentinel",
+  "degraded": true,
+  "degraded_reason": "provider results were empty or below bounded evidence-quality acceptance",
+  "provider_snapshot": [
+    {
+      "provider": "openalex",
+      "status": "empty",
+      "candidate_count": 0
+    },
+    {
+      "provider": "arxiv",
+      "status": "empty",
+      "candidate_count": 0
+    }
+  ],
+  "candidate_pool_count": 0,
+  "evidence_quality_result": "degraded_quality",
+  "withheld_delivery": true,
+  "next_safe_action": "keep delivery no-op and retry with a revised topic or broader bounded query",
+  "notes": [
+    "Generated from bounded live provider fetch against OpenAlex and arXiv.",
+    "This degraded artifact intentionally withholds delivery."
+  ]
+}

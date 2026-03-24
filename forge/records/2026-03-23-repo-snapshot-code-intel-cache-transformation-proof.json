@@ -1,0 +1,32 @@
+{
+  "candidateId": "dw-transform-repo-snapshot-code-intel-cache",
+  "generatedAt": "2026-03-23",
+  "metric": "repo_snapshot_repeated_rebuild_wall_clock_ms_with_code_intel_cache",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-repo-snapshot-code-intel-cache.ts 5",
+  "baseline": {
+    "value": 292.65,
+    "source": "mission-control control-plane benchmark, repo snapshot rebuilds with cold code-intel path",
+    "measurementMethod": "Average wall-clock time across 5 runs forcing repo/project caches and CodeGraphContext CLI health to reset before each buildRepoSnapshot(project) call"
+  },
+  "result": {
+    "value": 117.95,
+    "source": "mission-control control-plane benchmark, repo snapshot rebuilds with warmed code-intel snapshot",
+    "measurementMethod": "Average wall-clock time across 5 runs rebuilding repo snapshots after code-intel was primed once, while clearing repo/git/static/code-graph caches before each build"
+  },
+  "delta": {
+    "absolute": -174.69,
+    "percent": -59.7
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "parityOk": true,
+    "codeIntelToolCount": 1,
+    "codeGraphContextStatus": "missing",
+    "codeGraphContextSource": "none",
+    "note": "The current host still has a broken cgc launcher on PATH; this proof measures code-intel reuse on top of the repaired broken-CLI handling."
+  },
+  "newHelpers": [
+    "clearCodeIntelSnapshotCache"
+  ]
+}

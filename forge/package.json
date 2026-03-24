@@ -1,0 +1,22 @@
+{
+  "name": "@directive-workspace/forge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./core/v0": {
+      "types": "./core/v0.d.ts",
+      "default": "./core/v0.js"
+    },
+    "./core/v0.js": {
+      "types": "./core/v0.d.ts",
+      "default": "./core/v0.js"
+    }
+  }
+}

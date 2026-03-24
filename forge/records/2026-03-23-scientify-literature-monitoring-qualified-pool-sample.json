@@ -1,0 +1,40 @@
+{
+  "artifact_type": "literature_monitoring_digest",
+  "candidate_id": "scientify-literature-monitoring",
+  "generated_at": "2026-03-23T04:10:00.000Z",
+  "topic_input": "llm literature monitoring",
+  "degraded": false,
+  "provider_snapshot": [
+    {
+      "provider": "arXiv",
+      "status": "ok",
+      "candidate_count": 4
+    },
+    {
+      "provider": "OpenAlex",
+      "status": "ok",
+      "candidate_count": 3
+    }
+  ],
+  "accepted_candidates": [
+    {
+      "title": "Agentic Literature Monitoring for LLM Evaluation",
+      "source_ref": "https://example.org/paper/agentic-literature-monitoring",
+      "ranking_reason": "Direct match to bounded topic and evaluation workflow signal.",
+      "evidence_quality": "pass"
+    },
+    {
+      "title": "Structured Evidence Signals for Research Digests",
+      "source_ref": "https://example.org/paper/structured-evidence-signals",
+      "ranking_reason": "Supports digest-quality and degraded-state visibility requirements.",
+      "evidence_quality": "pass"
+    }
+  ],
+  "digest_summary": "Two candidates passed the bounded topic filter and are suitable for inspection-oriented digest delivery.",
+  "evidence_quality_result": "pass",
+  "delivery_target": "bounded_digest_channel",
+  "notes": [
+    "Representative product-side sample generated from canonical helper.",
+    "Not a live provider fetch proof yet."
+  ]
+}

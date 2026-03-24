@@ -1,0 +1,30 @@
+{
+  "candidate_id": "scientify-literature-monitoring",
+  "generated_at": "2026-03-23T04:14:44.427Z",
+  "workflow_surface": "bounded live provider fetch",
+  "providers": [
+    "openalex",
+    "arxiv"
+  ],
+  "delivery_target": "host-neutral-no-op",
+  "qualified_pool_case": {
+    "topic_input": "large language model literature monitoring",
+    "candidate_pool_count": 8,
+    "accepted_candidate_count": 3,
+    "digest_artifact_emitted": true,
+    "degraded_state_visible": false,
+    "ranking_rationale_present": true,
+    "evidence_quality_result": "pass",
+    "delivery_result": "delivered"
+  },
+  "degraded_quality_case": {
+    "topic_input": "bounded impossible provider-check sentinel",
+    "candidate_pool_count": 0,
+    "accepted_candidate_count": 0,
+    "digest_artifact_emitted": false,
+    "degraded_state_visible": true,
+    "ranking_rationale_present": true,
+    "evidence_quality_result": "degraded_quality",
+    "delivery_result": "degraded_only"
+  }
+}

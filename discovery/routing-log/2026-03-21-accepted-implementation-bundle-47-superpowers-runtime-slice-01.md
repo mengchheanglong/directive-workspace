@@ -1,0 +1,26 @@
+# Accepted Implementation Bundle 47
+
+- Date: 2026-03-21
+- Candidate id: superpowers
+- Track: Forge
+- Decision: accepted_for_bounded_runtime_slice
+- Target host: Mission Control
+- Runtime surface: explicit-only bounded workflow operator import lane
+- Reason:
+  - `superpowers` already had a clean Forge-owned cutover and an existing bounded import seed path
+  - the useful surviving value is workflow discipline and skill-pack guidance, not plugin marketplace or hook runtime behavior
+  - the lane can be proven safely with one import-pack smoke slice and strict default-import exclusion
+- Product artifacts:
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\workflow-operator-import-guard.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-superpowers-forge-record.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-superpowers-runtime-slice-01-proof.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-21-superpowers-promotion-record.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\registry\2026-03-21-superpowers-registry-entry.md`
+- Host artifacts:
+  - `C:\Users\User\.openclaw\workspace\mission-control\scripts\run-superpowers-import-smoke.ts`
+  - `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-directive-superpowers-forge.ts`
+- Required gates:
+  - `npm run forge:superpowers:smoke`
+  - `npm run check:directive-superpowers-forge`
+  - `npm run check:agents-import-packs-api-backend`
+  - `npm run check:ops-stack`

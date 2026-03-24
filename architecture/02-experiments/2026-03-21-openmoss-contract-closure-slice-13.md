@@ -1,0 +1,29 @@
+# OpenMOSS Contract Closure Slice 13
+
+- Candidate id: openmoss
+- Candidate name: OpenMOSS
+- Experiment date: 2026-03-21
+- Owning track: Directive Architecture
+- Experiment type: integration slice
+- Objective: materialize the adopted OpenMOSS lifecycle-transition, score-feedback, and blocked-work recovery mechanisms as Directive Workspace product-owned artifacts.
+- Bounded scope: product-owned contracts, template update, completeness checker, adopted-note closure
+- Inputs:
+  - `2026-03-19-openmoss-slice-5-execution.md`
+  - `2026-03-19-openmoss-slice-5-adopted-planned-next.md`
+- Expected output:
+  - `shared/contracts/lifecycle-transition-policy.md`
+  - `shared/contracts/experiment-score-feedback.md`
+  - `shared/templates/experiment-record.md`
+  - `architecture/05-reference-patterns/2026-03-21-openmoss-lifecycle-policy.md`
+- Validation gate(s):
+  - `npm run check:directive-openmoss-contracts`
+  - `npm run check:directive-architecture-contracts`
+  - `npm run check:ops-stack`
+- Transition policy profile: `lifecycle_transition_policy/v1`
+- Scoring policy profile: `experiment_score_feedback/v1`
+- Blocked recovery path: `detect -> reassign -> resume`
+- Failure criteria: any required contract field missing, template drift unresolved, or gates failing
+- Rollback: remove the OpenMOSS-specific contract files, reference policy note, checker wiring, and adopted-note closure
+- Result summary: complete
+- Evidence path: `architecture/05-reference-patterns/2026-03-21-openmoss-lifecycle-policy.md`
+- Next decision: complete current-cycle Architecture closure for OpenMOSS

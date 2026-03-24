@@ -1,0 +1,33 @@
+# Agent-Orchestrator CLI Runtime Slice 01 Proof
+
+- Candidate id: `agent-orchestrator`
+- Candidate name: `agent-orchestrator`
+- Proof date: 2026-03-21
+- Linked execution record: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
+- Quality gate profile: `ao_cli_runtime_guard/v1`
+- Promotion profile family: `bounded_ao_cli`
+- Proof shape: `ao_cli_status_snapshot/v1`
+- Primary host checker: `npm run check:directive-agent-orchestrator-cli-smoke`
+- Smoke report path: `C:\Users\User\.openclaw\workspace\mission-control\reports\ao-cli-smoke\agent-orchestrator-latest.json`
+- Smoke archive path: `C:\Users\User\.openclaw\workspace\mission-control\reports\ao-cli-smoke\agent-orchestrator-2026-03-21T*.json`
+- Source pack classification during proof: `follow_up_only`
+- Source pack activation mode during proof: `manual_follow_up`
+- Built packages:
+  - `@composio/ao-core`
+  - `@composio/ao-plugin-agent-claude-code`
+  - `@composio/ao-plugin-agent-codex`
+  - `@composio/ao-plugin-agent-aider`
+  - `@composio/ao-plugin-agent-opencode`
+  - `@composio/ao-plugin-scm-github`
+  - `@composio/ao-cli`
+- Status command: `ao status --json`
+- Status output kind: `json-array`
+- Status session count: `0`
+- Target project path: `C:\Users\User\.openclaw\workspace\mission-control`
+- Supporting gate outcomes:
+  - `npm run forge:agent-orchestrator:smoke` -> PASS
+  - `npm run check:directive-agent-orchestrator-cli-smoke` -> PASS
+  - `npm run check:directive-agent-orchestrator-preconditions` -> PASS
+  - `npm run check:ops-stack` -> PASS
+- Result: pass
+- Rollback note: if AO CLI smoke drifts, remove AO CLI smoke artifacts/checker wiring, keep the precondition proof only, and return the candidate to passive `follow_up_only` without promotion or registry state.

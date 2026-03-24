@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "directive-workspace/schemas/openclaw-runtime-verification-signal",
+  "title": "OpenClawRuntimeVerificationSignal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "candidate_id",
+    "signal_detected",
+    "regression_age_hours",
+    "regression_stale",
+    "soak_age_hours",
+    "soak_stale",
+    "reasons"
+  ],
+  "properties": {
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signal_detected": {
+      "type": "boolean"
+    },
+    "regression_age_hours": {
+      "type": ["number", "null"]
+    },
+    "regression_stale": {
+      "type": "boolean"
+    },
+    "soak_age_hours": {
+      "type": ["number", "null"]
+    },
+    "soak_stale": {
+      "type": "boolean"
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

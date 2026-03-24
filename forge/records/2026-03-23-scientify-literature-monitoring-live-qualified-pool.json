@@ -1,0 +1,46 @@
+{
+  "artifact_type": "literature_monitoring_digest",
+  "candidate_id": "scientify-literature-monitoring",
+  "generated_at": "2026-03-23T04:14:43.340Z",
+  "topic_input": "large language model literature monitoring",
+  "degraded": false,
+  "provider_snapshot": [
+    {
+      "provider": "openalex",
+      "status": "ok",
+      "candidate_count": 4
+    },
+    {
+      "provider": "arxiv",
+      "status": "ok",
+      "candidate_count": 4
+    }
+  ],
+  "accepted_candidates": [
+    {
+      "title": "Comprehensive Literature Review on Large Language Models and Smart Monitoring Devices for Stress Management",
+      "source_ref": "https://openalex.org/W4409814470",
+      "ranking_reason": "matched 5 topic terms; year 2025; 4 citations; provider openalex",
+      "evidence_quality": "pass"
+    },
+    {
+      "title": "Automated Literature Review Using NLP Techniques and LLM-Based Retrieval-Augmented Generation",
+      "source_ref": "http://arxiv.org/abs/2411.18583v1",
+      "ranking_reason": "matched 4 topic terms; year 2024; no citation signal; provider arxiv",
+      "evidence_quality": "pass"
+    },
+    {
+      "title": "Learning From Failure: Integrating Negative Examples when Fine-tuning Large Language Models as Agents",
+      "source_ref": "http://arxiv.org/abs/2402.11651v2",
+      "ranking_reason": "matched 3 topic terms; year 2024; no citation signal; provider arxiv",
+      "evidence_quality": "pass"
+    }
+  ],
+  "digest_summary": "Live bounded fetch accepted 3 candidates from 2 providers for large language model literature monitoring.",
+  "evidence_quality_result": "pass",
+  "delivery_target": "host-neutral-no-op",
+  "notes": [
+    "Generated from bounded live provider fetch against OpenAlex and arXiv.",
+    "Delivery remains host-neutral/no-op for this proof slice."
+  ]
+}

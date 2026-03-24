@@ -1,0 +1,28 @@
+# MetaClaw Contract Closure Slice 14
+
+- Candidate id: metaclaw
+- Candidate name: MetaClaw
+- Experiment date: 2026-03-21
+- Owning track: Directive Architecture
+- Experiment type: integration slice
+- Objective: materialize the adopted MetaClaw escalation-mode, background-window, and boundary-check mechanisms as Directive Workspace product-owned artifacts.
+- Bounded scope: product-owned contract, integration template update, completeness checker, adopted-note closure
+- Inputs:
+  - `2026-03-19-metaclaw-slice-7-execution.md`
+  - `2026-03-19-metaclaw-slice-7-adopted-planned-next.md`
+- Expected output:
+  - `shared/contracts/escalation-boundary-policy.md`
+  - `shared/templates/integration-contract-artifact.md`
+  - `architecture/05-reference-patterns/2026-03-21-metaclaw-escalation-policy.md`
+- Validation gate(s):
+  - `npm run check:directive-metaclaw-contracts`
+  - `npm run check:directive-architecture-contracts`
+  - `npm run check:ops-stack`
+- Transition policy profile: n/a
+- Scoring policy profile: n/a
+- Blocked recovery path: n/a
+- Failure criteria: missing escalation fields, missing boundary checks, or gate failures
+- Rollback: remove the MetaClaw-specific contract and policy note, revert template additions, remove checker wiring, and reopen adopted-note closure
+- Result summary: complete
+- Evidence path: `architecture/05-reference-patterns/2026-03-21-metaclaw-escalation-policy.md`
+- Next decision: complete current-cycle Architecture closure for MetaClaw

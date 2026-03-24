@@ -1,0 +1,31 @@
+{
+  "candidateId": "dw-transform-repo-snapshot-cache",
+  "generatedAt": "2026-03-23",
+  "metric": "repo_snapshot_repeated_call_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-repo-snapshot-cache.ts 5",
+  "baseline": {
+    "value": 518.68,
+    "source": "mission-control control-plane benchmark, uncached repo snapshot path",
+    "measurementMethod": "Average wall-clock time across 5 runs forcing a cold buildRepoSnapshot(project) before each measurement"
+  },
+  "result": {
+    "value": 0.01,
+    "source": "mission-control control-plane benchmark, warmed repo snapshot cache",
+    "measurementMethod": "Average wall-clock time across 5 runs calling buildRepoSnapshot(project) after one cache-populating call within the cache window"
+  },
+  "delta": {
+    "absolute": -518.67,
+    "percent": -100.0
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "parityOk": true,
+    "changedFiles": 10,
+    "codeIntelTools": 1,
+    "note": "The repo snapshot cache is bounded to a short TTL (10s) and keyed per project root."
+  },
+  "newHelpers": [
+    "clearRepoSnapshotCache"
+  ]
+}

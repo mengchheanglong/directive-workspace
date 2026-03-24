@@ -1,0 +1,32 @@
+{
+  "candidateId": "dw-transform-dashboard-context-preload",
+  "generatedAt": "2026-03-22",
+  "metric": "dashboard_context_bundle_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-dashboard-context-preload.ts 5",
+  "baseline": {
+    "value": 711.8,
+    "source": "mission-control control-plane benchmark, legacy dashboard context bundle",
+    "measurementMethod": "Average wall-clock time across 5 runs building summary, overview, full, readiness, collaboration guide, and repo snapshot through the legacy path that reloads overlapping surfaces"
+  },
+  "result": {
+    "value": 171.56,
+    "source": "mission-control control-plane benchmark, preloaded dashboard context bundle",
+    "measurementMethod": "Average wall-clock time across 5 runs building the same dashboard context bundle while reusing one shared preloaded surface set across context packs, readiness, and repo snapshot generation"
+  },
+  "delta": {
+    "absolute": -540.25,
+    "percent": -75.9
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "parityOk": true,
+    "summaryReadiness": 82,
+    "overviewReadiness": 82,
+    "fullReadiness": 82,
+    "note": "The preloaded path preserves the legacy distinction between quest scope used by context packs and quest scope used by standalone readiness scoring."
+  },
+  "newHelpers": [
+    "loadContextPackPreloadedData (writer preload reuse path)"
+  ]
+}

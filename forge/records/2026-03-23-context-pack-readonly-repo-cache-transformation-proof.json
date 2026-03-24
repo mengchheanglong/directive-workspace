@@ -1,0 +1,41 @@
+{
+  "candidateId": "dw-transform-context-pack-readonly-repo-cache",
+  "generatedAt": "2026-03-23",
+  "metric": "context_pack_readonly_repo_bundle_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-readonly-repos.ts 5",
+  "baseline": {
+    "value": 9.51,
+    "source": "mission-control control-plane benchmark, uncached readonly repo bundle",
+    "measurementMethod": "Average wall-clock time across 5 runs after clearing the doc, quest, note, and report list caches before each run"
+  },
+  "result": {
+    "value": 0.02,
+    "source": "mission-control control-plane benchmark, warmed readonly repo caches",
+    "measurementMethod": "Average wall-clock time across 5 runs after one cache-populating call, with local mutation invalidation still enabled"
+  },
+  "delta": {
+    "absolute": -9.49,
+    "percent": -99.8
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "questCount": 16,
+    "reportCount": 6,
+    "docCount": 6,
+    "noteCount": 2,
+    "parityOk": true,
+    "secondarySignal": {
+      "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-phases.ts 5",
+      "loadDataMsAverage": 25.72,
+      "warmedLoadDataMsRange": "12.14-16.88"
+    },
+    "note": "The caches are short-lived and only cover readonly repo list surfaces; local repo mutation paths clear the matching cache entries."
+  },
+  "newHelpers": [
+    "clearDocListCache",
+    "clearQuestListCache",
+    "clearNoteListCache",
+    "clearReportListCache"
+  ]
+}

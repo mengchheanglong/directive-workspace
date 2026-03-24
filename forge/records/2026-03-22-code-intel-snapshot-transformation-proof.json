@@ -1,0 +1,27 @@
+{
+  "candidateId": "dw-transform-code-intel-snapshot-consolidation",
+  "generatedAt": "2026-03-22",
+  "metric": "collectCodeIntelSnapshot_line_count",
+  "baseline": {
+    "value": 193,
+    "source": "mission-control git HEAD:src/server/services/workspace-intel-service.ts",
+    "measurementMethod": "Brace-matched span of collectCodeIntelSnapshot before language-probe helper extraction"
+  },
+  "result": {
+    "value": 51,
+    "source": "mission-control working tree:src/server/services/workspace-intel-service.ts",
+    "measurementMethod": "Brace-matched span of collectCodeIntelSnapshot after language-probe helper extraction"
+  },
+  "delta": {
+    "absolute": -142,
+    "percent": -73.6
+  },
+  "newHelpers": [
+    "buildAutoCodeIntelTool",
+    "buildTypeScriptCodeIntelProbe",
+    "readPythonDependencyText",
+    "buildPythonCodeIntelProbe",
+    "buildGoCodeIntelProbe",
+    "buildRustCodeIntelProbe"
+  ]
+}

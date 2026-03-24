@@ -1,0 +1,212 @@
+{
+  "status": "active",
+  "updatedAt": "2026-03-24",
+  "decision": {
+    "productOwner": "directive-workspace",
+    "productOwnerReason": "Directive Workspace is the standalone product and canonical owner of doctrine, contracts, shared operating assets, and mission-driven capability evolution logic.",
+    "packageName": "@directive-workspace/product",
+    "releaseMode": "reference_api_host_lane_ready_for_shareable_local_use",
+    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with an initial canonical Engine plus an Engine-owned Discovery/Forge/Architecture lane set, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local use but not yet the broader host replacement for Mission Control.",
+    "runtimeHost": "mission-control",
+    "runtimeHostReason": "Mission Control remains the current runtime host while Directive Workspace owns the package-ready product surface."
+  },
+  "packageSurface": {
+    "activeExportKeys": [
+      ".",
+      "./engine",
+      "./forge/core/v0",
+      "./integration-kit",
+      "./integration-kit/cli",
+      "./integration-kit/starter",
+      "./standalone-host",
+      "./standalone-host/bootstrap",
+      "./standalone-host/cli",
+      "./standalone-host/config",
+      "./standalone-host/forge",
+      "./standalone-host/persistence",
+      "./standalone-host/server",
+      "./frontend",
+      "./frontend/cli",
+      "./frontend/server",
+      "./shared/architecture",
+      "./shared/discovery"
+    ]
+  },
+  "entries": [
+    {
+      "id": "product-package-manifest",
+      "path": "package.json",
+      "kind": "package_manifest"
+    },
+    {
+      "id": "product-root-barrel",
+      "path": "index.ts",
+      "kind": "root_barrel"
+    },
+    {
+      "id": "product-engine-barrel",
+      "path": "engine/index.ts",
+      "kind": "engine_surface"
+    },
+    {
+      "id": "directive-engine-core",
+      "path": "engine/directive-engine.ts",
+      "kind": "engine_surface"
+    },
+    {
+      "id": "directive-engine-storage",
+      "path": "engine/storage.ts",
+      "kind": "engine_surface"
+    },
+    {
+      "id": "directive-engine-types",
+      "path": "engine/types.ts",
+      "kind": "engine_surface"
+    },
+    {
+      "id": "directive-engine-lane-contract",
+      "path": "engine/lane.ts",
+      "kind": "engine_surface"
+    },
+    {
+      "id": "directive-workspace-engine-lanes",
+      "path": "engine/directive-workspace-lanes.ts",
+      "kind": "engine_surface"
+    },
+    {
+      "id": "shared-discovery-barrel",
+      "path": "shared/lib/discovery/index.ts",
+      "kind": "shared_barrel"
+    },
+    {
+      "id": "shared-architecture-barrel",
+      "path": "shared/lib/architecture/index.ts",
+      "kind": "shared_barrel"
+    },
+    {
+      "id": "forge-core-v0-entry",
+      "path": "forge/core/v0.ts",
+      "kind": "forge_core_entry"
+    },
+    {
+      "id": "integration-kit-root",
+      "path": "hosts/integration-kit/index.ts",
+      "kind": "host_integration_surface"
+    },
+    {
+      "id": "integration-kit-cli",
+      "path": "hosts/integration-kit/cli/host-integration-kit-cli.ts",
+      "kind": "host_integration_surface"
+    },
+    {
+      "id": "integration-kit-starter",
+      "path": "hosts/integration-kit/starter/index.ts",
+      "kind": "host_integration_surface"
+    },
+    {
+      "id": "standalone-host-runtime",
+      "path": "hosts/standalone-host/runtime.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-bootstrap",
+      "path": "hosts/standalone-host/bootstrap.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-config",
+      "path": "hosts/standalone-host/config.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-forge",
+      "path": "hosts/standalone-host/forge.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-persistence",
+      "path": "hosts/standalone-host/persistence.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-index",
+      "path": "hosts/standalone-host/index.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-cli",
+      "path": "hosts/standalone-host/cli.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-server",
+      "path": "hosts/standalone-host/server.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "frontend-host-index",
+      "path": "hosts/web-host/index.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "frontend-host-cli",
+      "path": "hosts/web-host/cli.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "frontend-host-server",
+      "path": "hosts/web-host/server.ts",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "frontend-host-readme",
+      "path": "hosts/web-host/README.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "standalone-host-config-example",
+      "path": "hosts/standalone-host/standalone-host.config.example.json",
+      "kind": "reference_host_surface"
+    },
+    {
+      "id": "standalone-host-readme",
+      "path": "hosts/standalone-host/README.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "standalone-host-runtime-profile-contract",
+      "path": "shared/contracts/standalone-host-runtime-profile.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "standalone-host-api-auth-guard",
+      "path": "shared/contracts/standalone-host-api-auth-guard.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "standalone-host-sqlite-persistence-profile",
+      "path": "shared/contracts/standalone-host-sqlite-persistence-profile.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "standalone-host-config-schema",
+      "path": "shared/schemas/standalone-host-config.schema.json",
+      "kind": "product_doc"
+    },
+    {
+      "id": "product-readme",
+      "path": "README.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "engine-direction-doc",
+      "path": "knowledge/engine-direction.md",
+      "kind": "product_doc"
+    },
+    {
+      "id": "publish-readiness",
+      "path": "PUBLISH_READINESS.md",
+      "kind": "product_doc"
+    }
+  ]
+}

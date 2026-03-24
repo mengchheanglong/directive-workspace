@@ -1,0 +1,41 @@
+{
+  "candidateId": "dw-transform-context-pack-doc-derived-cache",
+  "generatedAt": "2026-03-23",
+  "metric": "context_pack_doc_derived_prep_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-doc-derived-cache.ts 5",
+  "baseline": {
+    "value": 0.3,
+    "source": "mission-control control-plane benchmark, uncached derived-doc prep",
+    "measurementMethod": "Average wall-clock time across 5 runs after clearing the derived-doc cache before each run"
+  },
+  "result": {
+    "value": 0.0,
+    "source": "mission-control control-plane benchmark, warmed derived-doc cache",
+    "measurementMethod": "Average wall-clock time across 5 runs after one cache-populating call"
+  },
+  "delta": {
+    "absolute": -0.3,
+    "percent": -99.1
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "docCount": 6,
+    "parityOk": true,
+    "counts": {
+      "docsById": 6,
+      "docSearchIndex": 6,
+      "unresolvedMaps": 6,
+      "graphNodes": 6
+    },
+    "secondarySignal": {
+      "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-phases.ts 5",
+      "graphPrepMsAverage": 0.27
+    },
+    "note": "The cache is keyed by user/project and doc signature, so repeated work reuses the same derived graph surfaces until the document set changes."
+  },
+  "newHelpers": [
+    "collectDocDerivedContext",
+    "clearDocDerivedContextCache"
+  ]
+}

@@ -1,0 +1,23 @@
+# Discovery Intake Record: GPT Researcher Engine Handoff Pressure
+
+- Candidate id: dw-real-gpt-researcher-engine-handoff-2026-03-24
+- Candidate name: GPT Researcher Engine Handoff Pressure
+- Intake date: 2026-03-24
+- Source type: github-repo
+- Source reference: https://github.com/assafelovic/gpt-researcher
+- Source location on disk: n/a
+- Submitted by: mission-control-discovery-engine
+- Why it entered the system: Engine processing produced a preliminary architecture decision and needs a bounded downstream handoff artifact.
+- Claimed value: Planner-research-publish workflow patterns that can improve the Directive Workspace engine's source analysis, adaptation, and reporting behavior.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 3e8aed50-7207-49bc-9361-e047715dcdb6 produced accept_for_architecture; human approval remains required.
+- Linked triage record: discovery/triage/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-triage.md

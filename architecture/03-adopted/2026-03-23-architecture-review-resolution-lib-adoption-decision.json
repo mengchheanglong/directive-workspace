@@ -1,0 +1,34 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-src-architecture-review-resolution-lib",
+  "adoption_date": "2026-03-23",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "shared/lib/architecture-review-resolution.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "adequate",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Architecture review outcomes will become more comparable and less prose-dependent because review scoring and next-state resolution now run through one canonical helper.",
+    "mechanism": "The review lane now resolves required checks, anti-pattern penalties, review result, and next lifecycle transition in product-owned code.",
+    "baseline_observation": "Architecture review doctrine existed, but review score and next-state resolution still depended on checklist interpretation.",
+    "expected_effect": "Future review-oriented slices can use one deterministic review path instead of re-deriving outcome logic from Markdown.",
+    "verification_method": "structural_inspection",
+    "verification_result": "confirmed",
+    "verification_date": "2026-03-23",
+    "verification_notes": "The Impeccable Architecture review check now consumes the executable review resolver."
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
+    "completion_status": "product_materialized",
+    "forge_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "artifact_type": "literature_monitoring_degraded_state",
+  "candidate_id": "scientify-literature-monitoring",
+  "generated_at": "2026-03-23T04:10:00.000Z",
+  "topic_input": "llm literature monitoring",
+  "degraded": true,
+  "degraded_reason": "Candidate pool was weak and did not satisfy evidence-quality threshold for normal digest delivery.",
+  "provider_snapshot": [
+    {
+      "provider": "arXiv",
+      "status": "weak_results",
+      "candidate_count": 1
+    },
+    {
+      "provider": "OpenAlex",
+      "status": "empty",
+      "candidate_count": 0
+    }
+  ],
+  "candidate_pool_count": 1,
+  "evidence_quality_result": "degraded_quality",
+  "withheld_delivery": true,
+  "next_safe_action": "Withhold delivery, record degraded artifact, and retry later with revised topic or source conditions.",
+  "notes": [
+    "Representative product-side degraded sample generated from canonical helper.",
+    "Not a live provider fetch proof yet."
+  ]
+}

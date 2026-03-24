@@ -1,0 +1,32 @@
+# Paper2Code Schema Closure Slice 15
+
+- Candidate id: Paper2Code
+- Candidate name: Paper2Code
+- Experiment date: 2026-03-21
+- Owning track: Directive Architecture
+- Experiment type: integration slice
+- Objective: normalize the full Paper2Code-derived stage-handoff artifact family as canonical Directive Workspace schemas.
+- Bounded scope: shared schemas, schema README update, validation checker, adopted-note closure
+- Inputs:
+  - `2026-03-19-paper2code-directive-architecture-slice.md`
+  - `2026-03-19-paper2code-directive-architecture-adopted-planned-next.md`
+  - `2026-03-20-stage-evidence-citation-handoff-contract.md`
+- Expected output:
+  - `shared/schemas/intake-normalized-artifact.schema.json`
+  - `shared/schemas/analysis-plan-artifact.schema.json`
+  - `shared/schemas/experiment-design-artifact.schema.json`
+  - `shared/schemas/integration-contract-artifact.schema.json`
+  - `shared/schemas/proof-checklist-artifact.schema.json`
+  - `architecture/05-reference-patterns/2026-03-21-paper2code-stage-schema-normalization.md`
+- Validation gate(s):
+  - `npm run check:directive-architecture-schemas`
+  - `npm run check:directive-paper2code-contracts`
+  - `npm run check:ops-stack`
+- Transition policy profile: n/a
+- Scoring policy profile: n/a
+- Blocked recovery path: n/a
+- Failure criteria: missing schema files, missing required handoff fields, or gate failures
+- Rollback: remove the stage schemas, revert schema README/checker changes, and reopen Paper2Code status
+- Result summary: complete
+- Evidence path: `architecture/05-reference-patterns/2026-03-21-paper2code-stage-schema-normalization.md`
+- Next decision: close current-cycle Architecture normalization for Paper2Code

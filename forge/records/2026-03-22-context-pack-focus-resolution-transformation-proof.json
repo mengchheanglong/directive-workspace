@@ -1,0 +1,28 @@
+{
+  "candidateId": "dw-transform-context-pack-focus-resolution",
+  "generatedAt": "2026-03-22",
+  "metric": "buildContextPack_line_count",
+  "baseline": {
+    "value": 264,
+    "source": "mission-control git HEAD:src/server/services/context-pack-service.ts",
+    "measurementMethod": "Brace-matched span of buildContextPack before helper extraction"
+  },
+  "result": {
+    "value": 130,
+    "source": "mission-control working tree:src/server/services/context-pack-service.ts",
+    "measurementMethod": "Brace-matched span of buildContextPack after helper extraction"
+  },
+  "delta": {
+    "absolute": -134,
+    "percent": -50.8
+  },
+  "newHelpers": [
+    "buildDefaultFocusResolution",
+    "buildFallbackRelevantDocs",
+    "buildActiveQuestSources",
+    "resolveQuestFocus",
+    "resolveDocFocus",
+    "resolveGraphFocus",
+    "resolveFocus"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "candidateId": "dw-transform-context-pack-async-latency",
+  "generatedAt": "2026-03-22",
+  "metric": "context_pack_async_surface_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-context-pack-async-surfaces.ts 5",
+  "baseline": {
+    "value": 0.37,
+    "source": "mission-control control-plane benchmark, sequential async surface collection",
+    "measurementMethod": "Average wall-clock time across 5 runs using collectBoundedCodegraphSummaryWithGate(project) followed by buildN8nAutomationSnapshot(project)"
+  },
+  "result": {
+    "value": 0.18,
+    "source": "mission-control control-plane benchmark, parallel async surface collection",
+    "measurementMethod": "Average wall-clock time across 5 runs using Promise.all over collectBoundedCodegraphSummaryWithGate(project) and buildN8nAutomationSnapshot(project)"
+  },
+  "delta": {
+    "absolute": -0.2,
+    "percent": -53.1
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "codegraphReason": "gate_pass",
+    "automationStatus": "missing",
+    "note": "Absolute gain is small in the current environment because n8n is not configured, but the concurrency boundary is now real and scales with slower external surfaces."
+  },
+  "newHelpers": [
+    "collectAsyncContextPackSurfaces"
+  ]
+}

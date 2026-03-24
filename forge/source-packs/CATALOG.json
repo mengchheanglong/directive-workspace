@@ -1,0 +1,128 @@
+{
+  "status": "active",
+  "updatedAt": "2026-03-21",
+  "policy": {
+    "readyMarkerMeaning": "cutover_complete",
+    "runtimeActivationRule": "A source pack is runtime-live only when it is classified as live_runtime in this catalog and contains SOURCE_PACK_READY.md.",
+    "nonLiveRule": "follow_up_only and reference_only packs may remain cutover-complete, but they must not be treated as active runtime truth."
+  },
+  "packs": [
+    {
+      "id": "agency-agents",
+      "label": "agency-agents",
+      "classification": "live_runtime",
+      "activationMode": "resolver",
+      "hostConsumers": [
+        "src/server/services/run-scoped-agency-agents-service.ts"
+      ],
+      "note": "Active run-scoped specialist pack normalized under explicit Forge live-runtime accounting."
+    },
+    {
+      "id": "agent-orchestrator",
+      "label": "agent-orchestrator",
+      "classification": "follow_up_only",
+      "activationMode": "manual_follow_up",
+      "hostConsumers": [],
+      "note": "Follow-up-only pack with Forge-owned CLI precondition and bounded `ao status --json` host proof completed; interactive AO host surfaces are blocked until one narrower adapter target is explicitly promoted."
+    },
+    {
+      "id": "arscontexta",
+      "label": "arscontexta",
+      "classification": "live_runtime",
+      "activationMode": "agent_pack_import_lane",
+      "hostConsumers": [
+        "backend/src/modules/agents-import-packs/agents-import-packs.service.ts",
+        "src/app/api/agents/import-packs/route.ts"
+      ],
+      "note": "Live explicit-only context operator import lane for arscontexta operator seeds; does not imply full methodology/plugin runtime adoption."
+    },
+    {
+      "id": "celtrix",
+      "label": "celtrix",
+      "classification": "reference_only",
+      "activationMode": "reference_only",
+      "hostConsumers": [],
+      "note": "Retained as reference/cutover sample only; not a live Forge runtime pack."
+    },
+    {
+      "id": "desloppify",
+      "label": "desloppify",
+      "classification": "live_runtime",
+      "activationMode": "resolver",
+      "hostConsumers": [
+        "src/server/services/run-scoped-desloppify-service.ts"
+      ],
+      "note": "Active run-scoped quality utility prototype normalized under explicit Forge live-runtime accounting."
+    },
+    {
+      "id": "impeccable",
+      "label": "impeccable",
+      "classification": "reference_only",
+      "activationMode": "reference_only",
+      "hostConsumers": [],
+      "note": "Retained for review/process reference only; not a live Forge runtime pack."
+    },
+    {
+      "id": "promptfoo",
+      "label": "promptfoo",
+      "classification": "live_runtime",
+      "activationMode": "bounded_eval_lane",
+      "hostConsumers": [
+        "src/server/services/agent-eval-guard-service.ts"
+      ],
+      "note": "Live bounded eval lane with callable status proven through Forge promotion."
+    },
+    {
+      "id": "puppeteer",
+      "label": "puppeteer",
+      "classification": "live_runtime",
+      "activationMode": "bounded_browser_lane",
+      "hostConsumers": [
+        "scripts/run-ui-smoke.ts",
+        "scripts/check-ui-smoke.ts"
+      ],
+      "note": "Live bounded browser smoke lane for host UI validation; does not imply generic browser automation privileges."
+    },
+    {
+      "id": "scripts",
+      "label": "scripts",
+      "classification": "reference_only",
+      "activationMode": "reference_only",
+      "hostConsumers": [],
+      "note": "Utility script pack retained for reference and maintenance only."
+    },
+    {
+      "id": "skills-manager",
+      "label": "skills-manager",
+      "classification": "live_runtime",
+      "activationMode": "agent_pack_import_lane",
+      "hostConsumers": [
+        "backend/src/modules/agents-import-packs/agents-import-packs.service.ts",
+        "src/app/api/agents/import-packs/route.ts"
+      ],
+      "note": "Live bounded skill-lifecycle import lane for the Skills Lifecycle Operator; does not imply desktop app runtime adoption."
+    },
+    {
+      "id": "software-design-philosophy-skill",
+      "label": "software-design-philosophy-skill",
+      "classification": "live_runtime",
+      "activationMode": "agent_pack_import_lane",
+      "hostConsumers": [
+        "backend/src/modules/agents-import-packs/agents-import-packs.service.ts",
+        "src/app/api/agents/import-packs/route.ts"
+      ],
+      "note": "Live explicit-only bounded design-review skill import lane; does not imply upstream installation flow or generic skill-pack runtime adoption."
+    },
+    {
+      "id": "superpowers",
+      "label": "superpowers",
+      "classification": "live_runtime",
+      "activationMode": "agent_pack_import_lane",
+      "hostConsumers": [
+        "backend/src/modules/agents-import-packs/agents-import-packs.service.ts",
+        "src/app/api/agents/import-packs/route.ts"
+      ],
+      "note": "Live explicit-only bounded workflow operator import lane; does not imply upstream plugin, hook, or overlay runtime adoption."
+    }
+  ]
+}

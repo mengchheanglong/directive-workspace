@@ -1,0 +1,64 @@
+# Product-local rebuildable dependencies and frontend build output
+/node_modules/
+/frontend/node_modules/
+/frontend/dist/
+
+# Local frontend/dev caches
+/frontend/.vite/
+**/.vite/
+*.tsbuildinfo
+
+# Local machine/editor junk inside Directive Workspace only
+**/.DS_Store
+**/Thumbs.db
+**/Desktop.ini
+**/.vscode/
+**/.idea/
+
+# Local Python caches and experiment virtualenvs
+**/__pycache__/
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/.venv-*/
+
+# Local env overrides only; examples stay trackable
+/.env
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Standalone host local SQLite ledger; product proof artifacts remain trackable
+/runtime/standalone-host/*.sqlite
+/runtime/standalone-host/*.sqlite-*
+/runtime/standalone-host/*.db
+
+# Separate cloned repos kept only as local source/reference copies
+/sources/intake/agentics/
+/sources/intake/autoresearch/
+/sources/intake/gh-aw/
+/sources/intake/gpt-researcher/
+/sources/intake/MetaClaw/
+/sources/intake/mini-swe-agent/
+/sources/intake/OpenMOSS/
+/sources/intake/Paper2Code/
+/sources/intake/scientify/
+/sources/deferred-or-rejected/AI-Scientist/
+/sources/deferred-or-rejected/autogen/
+/sources/deferred-or-rejected/AutoResearchClaw/
+/sources/deferred-or-rejected/codescientist/
+/sources/deferred-or-rejected/DeepCode/
+/sources/deferred-or-rejected/OpenHands/
+/sources/deferred-or-rejected/SWE-agent/
+/architecture/99-archive/deferred-stale/Paper2Code-20260319-171852/

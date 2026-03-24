@@ -1,0 +1,34 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-src-architecture-adoption-artifacts-lib",
+  "adoption_date": "2026-03-23",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "shared/lib/architecture-adoption-artifacts.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Architecture cycle and review lanes will compare Decide-step outcomes with less drift because adoption decisions can now be emitted in one schema-shaped form.",
+    "mechanism": "The adoption-artifact builder converts canonical Decide-step resolution into the machine-readable architecture-adoption-decision schema.",
+    "baseline_observation": "The Decide step had a schema and a resolver, but final decision artifacts still depended on prose records and checker-specific reconstruction.",
+    "expected_effect": "Later self-improvement work can compare generated adoption decisions directly instead of reinterpreting adopted prose.",
+    "verification_method": "structural_inspection",
+    "verification_result": "confirmed",
+    "verification_date": "2026-03-23",
+    "verification_notes": "The cycle-decision summary lane now consumes generated adoption artifacts instead of only synthetic resolver output."
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
+    "completion_status": "product_materialized",
+    "forge_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

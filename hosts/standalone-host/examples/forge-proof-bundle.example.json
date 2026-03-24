@@ -1,0 +1,39 @@
+{
+  "candidate_id": "standalone-forge-example",
+  "candidate_name": "Standalone Forge Example",
+  "proof_date": "2026-03-23",
+  "linked_forge_record": "forge/records/2026-03-23-standalone-forge-example-forge-record.md",
+  "required_proof_items": [
+    "Forge record exists",
+    "Gate snapshot JSON exists",
+    "Rollback verification note is captured"
+  ],
+  "validation_commands": [
+    "check:directive-standalone-forge-host",
+    "check:directive-standalone-api-host"
+  ],
+  "source_proof_artifacts": [
+    "forge/follow-up/2026-03-23-standalone-forge-example-forge-follow-up-record.md",
+    "forge/records/2026-03-23-standalone-forge-example-forge-record.md"
+  ],
+  "gate_snapshot": {
+    "overall_result": "pass",
+    "evaluated_gates": [
+      {
+        "command": "check:directive-standalone-forge-host",
+        "result": "pass"
+      },
+      {
+        "command": "check:directive-standalone-api-host",
+        "result": "pass"
+      }
+    ],
+    "evidence": [
+      "local artifact lifecycle written",
+      "Forge overview reports follow-up, record, proof, promotion, and registry state"
+    ]
+  },
+  "pass_fail_summary": "Bounded standalone Forge proof bundle generated locally with passing host and API evidence.",
+  "rollback_verification": "Delete the proof checklist, gate snapshot JSON, and linked local Forge artifacts to roll back the example cleanly.",
+  "status": "validated_locally"
+}

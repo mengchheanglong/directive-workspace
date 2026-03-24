@@ -1,0 +1,33 @@
+{
+  "candidateId": "dw-transform-repo-snapshot-git-consolidation",
+  "generatedAt": "2026-03-22",
+  "metric": "repo_snapshot_git_metadata_wall_clock_ms",
+  "benchmarkCommand": "npx tsx ./scripts/benchmark-repo-snapshot-git.ts 5",
+  "baseline": {
+    "value": 218.4,
+    "source": "mission-control control-plane benchmark, legacy multi-call git metadata collection",
+    "measurementMethod": "Average wall-clock time across 5 runs using separate git calls for branch, status, recent commits, and ahead/behind counts"
+  },
+  "result": {
+    "value": 87.87,
+    "source": "mission-control control-plane benchmark, consolidated git metadata collection",
+    "measurementMethod": "Average wall-clock time across 5 runs using one git status --porcelain=1 --branch call plus one git log call"
+  },
+  "delta": {
+    "absolute": -130.53,
+    "percent": -59.8
+  },
+  "environment": {
+    "projectId": "mission-control",
+    "iterations": 5,
+    "parityOk": true,
+    "branch": "main",
+    "changedFiles": 10,
+    "aheadCount": 17,
+    "behindCount": 0,
+    "note": "A follow-up phase benchmark showed repo-snapshot cost dropping materially inside buildContextPack after this consolidation."
+  },
+  "newHelpers": [
+    "parseGitBranchStatus"
+  ]
+}
