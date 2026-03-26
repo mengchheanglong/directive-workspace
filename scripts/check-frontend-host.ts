@@ -699,7 +699,22 @@ async function main() {
   try {
     await page.goto(`${handle.origin}/`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Directive Workspace Frontend");
-    await waitForBodyText(page, "Standalone frontend scope");
+    await waitForBodyText(page, "Directive Workspace overview");
+    await waitForBodyText(page, "Discovery lane");
+    await waitForBodyText(page, "Architecture lane");
+    await waitForBodyText(page, "Runtime lane");
+
+    await page.goto(`${handle.origin}/discovery`, { waitUntil: "networkidle0", timeout: 30000 });
+    await waitForBodyText(page, "Discovery lane");
+    await waitForBodyText(page, "Open source submission");
+
+    await page.goto(`${handle.origin}/architecture`, { waitUntil: "networkidle0", timeout: 30000 });
+    await waitForBodyText(page, "Architecture lane");
+    await waitForBodyText(page, "Recent Architecture anchors");
+
+    await page.goto(`${handle.origin}/runtime`, { waitUntil: "networkidle0", timeout: 30000 });
+    await waitForBodyText(page, "Runtime lane summary");
+    await waitForBodyText(page, "Recent Runtime anchors");
 
     await page.goto(`${handle.origin}/submit`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Source submission");

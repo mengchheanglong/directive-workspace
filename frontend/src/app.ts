@@ -19,6 +19,10 @@ type FrontendQueueEntry = {
   current_case_stage: string | null;
   current_case_next_legal_step: string | null;
   current_head: FrontendCurrentHead | null;
+  runtime_summary: {
+    proposed_host: string | null;
+    promotion_readiness_blockers: string[];
+  } | null;
 };
 
 type FrontendQueueOverview = {
@@ -147,6 +151,35 @@ type FrontendRuntimeRuntimeCapabilityBoundaryDetail = {
   promotionReadinessRelativePath?: string;
   promotionReadinessExists?: boolean;
   approvalAllowed?: boolean;
+  content?: string;
+};
+
+type FrontendRuntimePromotionReadinessDetail = {
+  ok: boolean;
+  error?: string;
+  relativePath?: string;
+  absolutePath?: string;
+  title?: string;
+  candidateId?: string;
+  candidateName?: string;
+  runtimeObjective?: string;
+  proposedHost?: string;
+  proposedRuntimeSurface?: string;
+  executionState?: string;
+  currentStatus?: string;
+  promotionReadinessDecision?: string;
+  hostFacingPromotionDecision?: string;
+  frontendCapabilityDecision?: string;
+  linkedCapabilityBoundaryPath?: string;
+  linkedRuntimeProofPath?: string;
+  linkedRuntimeRecordPath?: string;
+  linkedFollowUpPath?: string;
+  linkedRoutingPath?: string | null;
+  artifactStage?: string;
+  artifactNextLegalStep?: string;
+  currentStage?: string;
+  nextLegalStep?: string;
+  promotionReadinessBlockers?: string[];
   content?: string;
 };
 
@@ -426,9 +459,65 @@ type FrontendEngineRunDetail = {
   reportExcerpt?: string | null;
 };
 
+type FrontendLaneAnchor = {
+  label: string;
+  artifactPath: string;
+  currentStage: string;
+  nextLegalStep: string;
+  candidateId: string | null;
+  candidateName: string | null;
+};
+
+type FrontendRuntimeSummaryCase = {
+  candidate_id: string;
+  candidate_name: string;
+  current_case_stage: string | null;
+  current_case_next_legal_step: string | null;
+  current_head: FrontendCurrentHead | null;
+  runtime_summary: {
+    proposed_host: string | null;
+    promotion_readiness_blockers: string[];
+  } | null;
+};
+
+type FrontendArchitectureSummaryCase = {
+  candidate_id: string;
+  candidate_name: string;
+  current_case_stage: string | null;
+  current_case_next_legal_step: string | null;
+  current_head: FrontendCurrentHead | null;
+};
+
+type FrontendLaneCaseStripInput = {
+  tone: "runtime" | "architecture";
+  title: string;
+  summary: string;
+  tags: Array<{
+    value: string;
+    tone: "default" | "runtime" | "architecture" | "warning";
+  }>;
+  cards: Array<{
+    label: string;
+    value: unknown;
+  }>;
+  boundaryNote: unknown;
+  action?: {
+    href: string;
+    label: string;
+  } | null;
+};
+
 type FrontendSnapshot = {
   engineRuns: FrontendEngineRunsOverview;
   queue: FrontendQueueOverview;
+  runtimeSummary: {
+    activeCases: FrontendRuntimeSummaryCase[];
+    recentAnchors: FrontendLaneAnchor[];
+  };
+  architectureSummary: {
+    activeCases: FrontendArchitectureSummaryCase[];
+    recentAnchors: FrontendLaneAnchor[];
+  };
   handoffStubs: FrontendHandoffStub[];
   handoffWarnings: string[];
 };
@@ -474,6 +563,74 @@ class DirectiveFrontendApp extends LitElement {
     main { max-width:1180px; margin:0 auto; padding:20px; }
     .panel { background:#fffdf7; border:1px solid #d9d0bf; border-radius:10px; padding:16px; margin:0 0 16px; }
     .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+    .queue-summary-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin:0 0 16px; }
+    .queue-card-list { display:grid; gap:14px; }
+    .queue-card { border:1px solid #e2d9c8; border-radius:12px; padding:16px; background:linear-gradient(180deg,#fffdf9 0%,#fcf8ef 100%); }
+    .queue-card.runtime { border-color:#b8ccef; box-shadow:0 0 0 1px rgba(17,85,170,0.08) inset; }
+    .queue-card.architecture { border-color:#d6c1e8; box-shadow:0 0 0 1px rgba(94,57,145,0.06) inset; }
+    .queue-card.monitor { border-color:#d9d0bf; background:#fcfaf4; }
+    .queue-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin:0 0 12px; }
+    .queue-card-title { margin:0; font-size:24px; line-height:1.2; }
+    .queue-card-subtitle { margin:4px 0 0; font-size:12px; color:#5c5548; word-break:break-word; }
+    .queue-tag-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+    .queue-kv-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin:0 0 12px; }
+    .queue-kv { border:1px solid #e7dfd1; border-radius:10px; padding:12px; background:#fffdfa; min-width:0; }
+    .queue-kv h4 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:0.04em; color:#6a624f; }
+    .queue-kv p { margin:0; }
+    .queue-stage { font-size:14px; font-weight:700; word-break:break-word; }
+    .queue-step { font-size:14px; line-height:1.5; }
+    .queue-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding-top:12px; border-top:1px solid #ece3d2; }
+    .queue-link-list { display:flex; gap:10px; flex-wrap:wrap; }
+    .queue-highlight { border:1px solid #d5c8b1; border-radius:12px; padding:14px; background:#f9f3e7; }
+    .queue-highlight h3 { margin:0 0 8px; }
+    .queue-highlight p { margin:0; }
+    .queue-count { font-size:28px; font-weight:700; line-height:1; margin:0 0 6px; }
+    .queue-empty { text-align:center; padding:24px; border:1px dashed #d9d0bf; border-radius:12px; background:#fcfaf4; }
+    .lane-case-strip { border:1px solid #d9d0bf; border-radius:14px; padding:16px; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); overflow:hidden; min-width:0; }
+    .lane-case-strip.runtime { border-color:#b8ccef; background:linear-gradient(180deg,#f7fbff 0%,#edf4ff 100%); }
+    .lane-case-strip.architecture { border-color:#d6c1e8; background:linear-gradient(180deg,#fbf7ff 0%,#f3ecfb 100%); }
+    .lane-case-strip h3 { margin:0 0 8px; }
+    .lane-case-strip p, .lane-case-strip li { margin:0; overflow-wrap:anywhere; }
+    .lane-case-strip-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin-top:14px; }
+    .lane-case-strip-card { border:1px solid #e6dcc8; border-radius:12px; background:#fff; padding:12px; min-width:0; overflow:hidden; }
+    .lane-case-strip.runtime .lane-case-strip-card { border-color:#d5e3f7; }
+    .lane-case-strip.architecture .lane-case-strip-card { border-color:#e2d4f0; }
+    .lane-case-strip-card h4 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:0.04em; color:#5b6170; }
+    .lane-case-strip-card p, .lane-case-strip-card li { overflow-wrap:anywhere; }
+    .runtime-lane-grid { display:grid; gap:14px; grid-template-columns:1.2fr 0.8fr; align-items:start; }
+    .runtime-lane-stack { display:grid; gap:12px; }
+    .runtime-anchor-list { display:grid; gap:10px; }
+    .runtime-anchor-item { border:1px solid #d5e3f7; border-radius:12px; background:#fff; padding:12px; min-width:0; overflow:hidden; }
+    .runtime-anchor-item h4 { margin:0 0 6px; font-size:15px; }
+    .runtime-anchor-item p { margin:0; overflow-wrap:anywhere; }
+    .lane-overview-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+    .lane-overview-card { border:1px solid #d9d0bf; border-radius:14px; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); padding:16px; min-width:0; overflow:hidden; }
+    .lane-overview-card.runtime { border-color:#b8ccef; background:linear-gradient(180deg,#f7fbff 0%,#edf4ff 100%); }
+    .lane-overview-card.architecture { border-color:#d6c1e8; background:linear-gradient(180deg,#fbf7ff 0%,#f3ecfb 100%); }
+    .lane-overview-card.discovery { border-color:#d9d0bf; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); }
+    .lane-overview-card h3 { margin:0 0 8px; }
+    .lane-overview-card p { margin:0; overflow-wrap:anywhere; }
+    .lane-overview-stats { display:grid; gap:10px; grid-template-columns:repeat(2,minmax(0,1fr)); margin:14px 0; }
+    .lane-overview-stat { border:1px solid #e6dcc8; border-radius:10px; background:#fffdfa; padding:10px; min-width:0; overflow:hidden; }
+    .lane-overview-stat h4 { margin:0 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:#6a624f; }
+    .lane-overview-stat p { margin:0; }
+    .lane-page-grid { display:grid; gap:14px; grid-template-columns:1.15fr 0.85fr; align-items:start; }
+    .lane-page-stack { display:grid; gap:12px; }
+    .lane-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .lane-case-list { display:grid; gap:12px; }
+    .hero { background:linear-gradient(180deg,#fffdfa 0%,#f7f1e5 100%); border:1px solid #d7ccb6; border-radius:14px; padding:18px; }
+    .hero h2 { margin:0 0 8px; }
+    .hero p { margin:0; }
+    .hero-meta { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 0; }
+    .lane-head-strip-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+    .seam-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+    .seam-card { border:1px solid #e4dbc9; border-radius:12px; background:#fffdfa; padding:14px; min-width:0; }
+    .seam-card h3 { margin:0 0 8px; font-size:15px; }
+    .seam-card p { margin:0; }
+    .seam-card ul { margin:0; }
+    .seam-value { font-size:16px; font-weight:700; line-height:1.4; word-break:break-word; }
+    .link-stack { display:grid; gap:8px; }
+    .seam-note { border-left:4px solid #b8ccef; padding-left:12px; }
     .nav { display:inline-block; margin:6px 8px 0 0; padding:6px 10px; border:1px solid #cfc5b4; border-radius:999px; text-decoration:none; color:#1f1c16; background:#fcf9f1; }
     .nav.active { background:#1f1c16; color:#fff; border-color:#1f1c16; }
     table { width:100%; border-collapse:collapse; font-size:13px; }
@@ -495,6 +652,16 @@ class DirectiveFrontendApp extends LitElement {
     a:hover { text-decoration:underline; }
     ul { margin:0; padding-left:18px; }
     .mono { word-break:break-all; }
+    .panel, .queue-card, .queue-kv, .queue-highlight, .hero, .seam-card { overflow:hidden; }
+    .queue-card-title, .queue-card-subtitle, .queue-stage, .queue-step, .seam-value, .pill { overflow-wrap:anywhere; }
+    @media (max-width: 720px) {
+      main { padding:14px; }
+      .queue-card-header { flex-direction:column; }
+      .queue-tag-row { justify-content:flex-start; }
+      .hero-meta { flex-direction:column; align-items:flex-start; }
+      .runtime-lane-grid { grid-template-columns:1fr; }
+      .lane-page-grid { grid-template-columns:1fr; }
+    }
   `;
 
   declare route: string;
@@ -533,6 +700,12 @@ class DirectiveFrontendApp extends LitElement {
     try {
       if (url.pathname === "/") {
         this.page = { kind: "home", data: await getJson<FrontendSnapshot>("/api/snapshot") };
+      } else if (url.pathname === "/discovery") {
+        this.page = { kind: "discovery-lane", data: await getJson<FrontendSnapshot>("/api/snapshot") };
+      } else if (url.pathname === "/architecture") {
+        this.page = { kind: "architecture-lane", data: await getJson<FrontendSnapshot>("/api/snapshot") };
+      } else if (url.pathname === "/runtime") {
+        this.page = { kind: "runtime-lane", data: await getJson<FrontendSnapshot>("/api/snapshot") };
       } else if (url.pathname === "/submit") {
         this.page = { kind: "submit" };
       } else if (url.pathname === "/engine-runs") {
@@ -572,6 +745,13 @@ class DirectiveFrontendApp extends LitElement {
           kind: "runtime-runtime-capability-boundary-detail",
           data: await getJson<FrontendRuntimeRuntimeCapabilityBoundaryDetail>(
             `/api/runtime-runtime-capability-boundaries/detail?path=${encodeURIComponent(url.searchParams.get("path") || "")}`,
+          ),
+        };
+      } else if (url.pathname === "/runtime-promotion-readiness/view") {
+        this.page = {
+          kind: "runtime-promotion-readiness-detail",
+          data: await getJson<FrontendRuntimePromotionReadinessDetail>(
+            `/api/runtime-promotion-readiness/detail?path=${encodeURIComponent(url.searchParams.get("path") || "")}`,
           ),
         };
       } else if (url.pathname === "/architecture-starts/view") {
@@ -632,6 +812,384 @@ class DirectiveFrontendApp extends LitElement {
     return html`
       <div>${this.currentHeadLink(entry)}</div>
       <div class="muted">${head.artifact_stage} | ${head.artifact_lane}</div>
+    `;
+  }
+
+  private renderQueueTag(value: string, tone: "default" | "runtime" | "architecture" | "warning" = "default") {
+    const style = {
+      default: "background:#fcf7ee;",
+      runtime: "background:#edf4ff; border-color:#b8ccef;",
+      architecture: "background:#f5eefc; border-color:#d6c1e8;",
+      warning: "background:#fff3da; border-color:#e7c88d;",
+    }[tone];
+    return html`<span class="pill" style=${style}>${value}</span>`;
+  }
+
+  private renderQueueStat(label: string, value: number, description: string) {
+    return html`
+      <section class="queue-highlight">
+        <div class="queue-count">${value}</div>
+        <h3>${label}</h3>
+        <p class="muted">${description}</p>
+      </section>
+    `;
+  }
+
+  private renderLaneCaseStrip(input: FrontendLaneCaseStripInput) {
+    return html`
+      <section class=${`lane-case-strip ${input.tone}`}>
+        <h3>${input.title}</h3>
+        <p>${input.summary}</p>
+        ${input.tags.length
+          ? html`<div class="hero-meta">
+              ${input.tags.map((tag) => this.renderQueueTag(tag.value, tag.tone))}
+            </div>`
+          : nothing}
+        <div class="lane-case-strip-grid">
+          ${input.cards.map((card) => html`
+            <section class="lane-case-strip-card">
+              <h4>${card.label}</h4>
+              <div>${card.value}</div>
+            </section>
+          `)}
+        </div>
+        <p class="muted" style="margin-top:12px;">${input.boundaryNote}</p>
+        ${input.action
+          ? html`<div class="queue-link-list" style="margin-top:12px;">
+              <a href=${input.action.href} @click=${(event: Event) => { event.preventDefault(); navTo(input.action?.href || ""); }}>${input.action.label}</a>
+            </div>`
+          : nothing}
+      </section>
+    `;
+  }
+
+  private renderQueueCard(
+    entry: FrontendQueueEntry,
+    run: FrontendEngineRunRecord | undefined,
+    handoffPath: string | null,
+  ) {
+    const lane = entry.current_head?.artifact_lane ?? entry.routing_target ?? "queue";
+    const cardClass = lane === "runtime"
+      ? "queue-card runtime"
+      : lane === "architecture"
+        ? "queue-card architecture"
+        : "queue-card monitor";
+    const routingTone = entry.routing_target === "runtime"
+      ? "runtime"
+      : entry.routing_target === "architecture"
+        ? "architecture"
+        : "default";
+    const integrityTone = entry.integrity_state === "broken" ? "warning" : "default";
+    const head = entry.current_head;
+    const engineRunHref = run ? `/engine-runs/${encodeURIComponent(run.runId)}` : null;
+    const handoffHref = handoffPath ? `/handoffs/view?path=${encodeURIComponent(handoffPath)}` : null;
+    const activeHeadLabel = head?.artifact_lane === "runtime"
+      ? "Active Runtime head"
+      : head?.artifact_lane === "architecture"
+        ? "Active Architecture head"
+        : "Current live artifact";
+
+    return html`
+      <article class=${cardClass}>
+        <div class="queue-card-header">
+          <div>
+            <h3 class="queue-card-title">${entry.candidate_name}</h3>
+            <div class="queue-card-subtitle mono">${entry.candidate_id}</div>
+          </div>
+          <div class="queue-tag-row">
+            ${this.renderQueueTag(entry.status)}
+            ${entry.routing_target ? this.renderQueueTag(entry.routing_target, routingTone as any) : nothing}
+            ${this.renderQueueTag(`integrity:${entry.integrity_state ?? "n/a"}`, integrityTone)}
+          </div>
+        </div>
+
+        <div class="queue-kv-grid">
+          <section class="queue-kv">
+            <h4>${activeHeadLabel}</h4>
+            <div>${this.currentHeadLink(entry)}</div>
+            <p class="muted">${head ? `${head.artifact_stage} | ${head.artifact_lane}` : "Not resolved yet."}</p>
+          </section>
+
+          <section class="queue-kv">
+            <h4>Current case stage</h4>
+            <p class="queue-stage">${entry.current_case_stage ?? "n/a"}</p>
+          </section>
+
+          <section class="queue-kv">
+            <h4>Continue from here</h4>
+            <p class="queue-step">${entry.current_case_next_legal_step ?? "No explicit next legal step recorded yet."}</p>
+          </section>
+
+          <section class="queue-kv">
+            <h4>Downstream stub</h4>
+            <div>${handoffHref
+              ? html`<a href=${handoffHref} @click=${(event: Event) => { event.preventDefault(); navTo(handoffHref); }}>${handoffPath}</a>`
+              : html`<span class="muted">No downstream stub recorded.</span>`}</div>
+            ${entry.result_record_path && handoffPath !== entry.result_record_path
+              ? html`<p class="muted mono">${entry.result_record_path}</p>`
+              : nothing}
+          </section>
+        </div>
+
+        <div class="queue-actions">
+          <div class="queue-link-list">
+            ${engineRunHref
+              ? html`<a href=${engineRunHref} @click=${(event: Event) => { event.preventDefault(); navTo(engineRunHref); }}>Engine run</a>`
+              : html`<span class="muted">Engine run unavailable</span>`}
+            ${entry.routing_record_path
+              ? html`<a href=${`/discovery-routing-records/view?path=${encodeURIComponent(entry.routing_record_path)}`} @click=${(event: Event) => {
+                event.preventDefault();
+                navTo(`/discovery-routing-records/view?path=${encodeURIComponent(entry.routing_record_path || "")}`);
+              }}>Routing record</a>`
+              : nothing}
+            ${head
+              ? html`<a href=${head.view_path} @click=${(event: Event) => { event.preventDefault(); navTo(head.view_path); }}>Open current head</a>`
+              : nothing}
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  private renderRuntimeCaseStrip(entry: FrontendRuntimeSummaryCase | FrontendQueueEntry) {
+    const head = entry.current_head;
+    const blockers = entry.runtime_summary?.promotion_readiness_blockers ?? [];
+    const proposedHost = entry.runtime_summary?.proposed_host ?? "n/a";
+    const candidateLabel = entry.candidate_name || entry.candidate_id;
+    const stageLabel = entry.current_case_stage ?? "runtime state not resolved";
+    const seamCopy = entry.runtime_summary
+      ? `${candidateLabel} is currently the live Runtime stop for Directive Workspace at ${stageLabel}. This strip reuses the same truth-backed seam context as the detail page, but keeps home, queue, and lane views useful before drill-down.`
+      : `${candidateLabel} is currently visible in the Runtime lane for Directive Workspace at ${stageLabel}. This case has not reached promotion-readiness yet, so the lane strip stays limited to the current stage and next legal step.`;
+    return this.renderLaneCaseStrip({
+      tone: "runtime",
+      title: candidateLabel,
+      summary: seamCopy,
+      tags: [
+        { value: stageLabel, tone: "runtime" },
+        { value: proposedHost, tone: "runtime" },
+      ],
+      cards: [
+        {
+          label: "Current stage",
+          value: html`<p class="seam-value">${stageLabel}</p>`,
+        },
+        {
+          label: "Next legal step",
+          value: html`<p>${entry.current_case_next_legal_step ?? "No explicit next legal step recorded."}</p>`,
+        },
+        {
+          label: "Proposed host",
+          value: html`<p class="seam-value">${proposedHost}</p>`,
+        },
+        {
+          label: "Blockers",
+          value: blockers.length
+            ? html`<ul>${blockers.map((blocker) => html`<li><code>${blocker}</code></li>`)}</ul>`
+            : html`<p class="muted">${entry.runtime_summary ? "No blockers recorded." : "Blockers are not surfaced before promotion-readiness."}</p>`,
+        },
+      ],
+      boundaryNote: "Directive Workspace web host is the active product surface here. Runtime and Engine still own gating and progression rules, so this strip does not open promotion, implementation, integration, or execution.",
+      action: head
+        ? {
+            href: head.view_path,
+            label: "Open Runtime seam review",
+          }
+        : null,
+    });
+  }
+
+  private renderRuntimeLaneSummary(summary: FrontendSnapshot["runtimeSummary"]) {
+    return html`
+      <section class="panel">
+        <h2>Runtime lane summary</h2>
+        <p class="muted">This read-only section groups active Runtime cases and recent Runtime anchors from canonical Directive Workspace truth. It improves Runtime visibility before drill-down without opening any downstream seam.</p>
+        <div class="runtime-lane-grid" style="margin-top:14px;">
+          <section class="runtime-lane-stack">
+            <div class="queue-highlight">
+              <h3>Active Runtime cases</h3>
+              <p class="muted">Cases currently routed into the Runtime lane and visible through the product frontend.</p>
+            </div>
+            ${summary.activeCases.length
+              ? summary.activeCases.map((entry) => this.renderRuntimeCaseStrip(entry))
+              : html`<div class="queue-empty muted">No active Runtime cases found.</div>`}
+          </section>
+
+          <section class="runtime-lane-stack">
+            <div class="queue-highlight">
+              <h3>Recent Runtime anchors</h3>
+              <p class="muted">Canonical Runtime anchors from the shared state resolver. These show the current Runtime stops and linked artifact heads without inventing controls.</p>
+            </div>
+            <div class="runtime-anchor-list">
+              ${summary.recentAnchors.length
+                ? summary.recentAnchors.map((anchor) => html`
+                    <article class="runtime-anchor-item">
+                      <h4>${anchor.candidateName ?? anchor.label}</h4>
+                      <p class="muted mono" style="margin-bottom:8px;">${anchor.artifactPath}</p>
+                      <p><strong>Current stage:</strong> ${anchor.currentStage}</p>
+                      <p style="margin-top:8px;"><strong>Next legal step:</strong> ${anchor.nextLegalStep}</p>
+                    </article>
+                  `)
+                : html`<div class="queue-empty muted">No Runtime anchors available.</div>`}
+            </div>
+          </section>
+        </div>
+      </section>
+    `;
+  }
+
+  private renderLaneAnchorList(title: string, description: string, anchors: FrontendLaneAnchor[]) {
+    return html`
+      <section class="lane-page-stack">
+        <div class="queue-highlight">
+          <h3>${title}</h3>
+          <p class="muted">${description}</p>
+        </div>
+        <div class="runtime-anchor-list">
+          ${anchors.length
+            ? anchors.map((anchor) => html`
+                <article class="runtime-anchor-item">
+                  <h4>${anchor.candidateName ?? anchor.label}</h4>
+                  <p class="muted mono" style="margin-bottom:8px;">${anchor.artifactPath}</p>
+                  <p><strong>Current stage:</strong> ${anchor.currentStage}</p>
+                  <p style="margin-top:8px;"><strong>Next legal step:</strong> ${anchor.nextLegalStep}</p>
+                </article>
+              `)
+            : html`<div class="queue-empty muted">No anchors available.</div>`}
+        </div>
+      </section>
+    `;
+  }
+
+  private renderArchitectureCaseStrip(entry: FrontendArchitectureSummaryCase) {
+    const head = entry.current_head;
+    return this.renderLaneCaseStrip({
+      tone: "architecture",
+      title: entry.candidate_name,
+      summary: `${entry.candidate_name} remains visible through the Architecture lane as a truth-backed case summary. The frontend shows the current live head and next legal step, while Architecture keeps ownership of downstream legality and progression.`,
+      tags: [
+        { value: entry.current_case_stage ?? "architecture state not resolved", tone: "architecture" },
+        { value: entry.candidate_id, tone: "architecture" },
+      ],
+      cards: [
+        {
+          label: "Current stage",
+          value: html`<p class="seam-value">${entry.current_case_stage ?? "n/a"}</p>`,
+        },
+        {
+          label: "Next legal step",
+          value: html`<p>${entry.current_case_next_legal_step ?? "No explicit next legal step recorded."}</p>`,
+        },
+        {
+          label: "Current head",
+          value: head
+            ? html`
+                <div><a href=${head.view_path} @click=${(event: Event) => { event.preventDefault(); navTo(head.view_path); }}>${head.artifact_path}</a></div>
+                <div class="muted">${head.artifact_stage} | ${head.artifact_lane}</div>
+              `
+            : html`<p class="muted">Current head not resolved.</p>`,
+        },
+      ],
+      boundaryNote: "Architecture is a real lane with retained outputs and downstream chains. This strip stays read-only and truth-backed rather than reopening closed work from the frontend.",
+      action: head
+        ? {
+            href: head.view_path,
+            label: "Open current Architecture head",
+          }
+        : null,
+    });
+  }
+
+  private renderArchitectureLaneSummary(summary: FrontendSnapshot["architectureSummary"]) {
+    return html`
+      <section class="panel">
+        <h2>Architecture lane</h2>
+        <p class="muted">Architecture is already a real product lane with bounded starts, results, adoption, retention, integration, consumption, and evaluation history. The frontend now surfaces that lane directly instead of hiding it behind artifact-only drill-down.</p>
+        <div class="lane-page-grid" style="margin-top:14px;">
+          <section class="lane-page-stack">
+            <div class="queue-highlight">
+              <h3>Current Architecture cases</h3>
+              <p class="muted">Recent Architecture-routed cases from queue truth and their current live heads.</p>
+            </div>
+            <div class="lane-case-list">
+              ${summary.activeCases.length
+                ? summary.activeCases.map((entry) => this.renderArchitectureCaseStrip(entry))
+                : html`<div class="queue-empty muted">No Architecture cases found.</div>`}
+            </div>
+          </section>
+          ${this.renderLaneAnchorList(
+            "Recent Architecture anchors",
+            "Canonical Architecture anchors from the shared state resolver. These summarize retained/evaluated Architecture heads without inventing new workflow controls.",
+            summary.recentAnchors,
+          )}
+        </div>
+      </section>
+    `;
+  }
+
+  private renderDiscoveryLanePage(snapshot: FrontendSnapshot) {
+    const runtimeCount = snapshot.runtimeSummary.activeCases.length;
+    const architectureCount = snapshot.architectureSummary.activeCases.length;
+    return html`
+      <section class="panel">
+        <h2>Discovery lane</h2>
+        <p class="muted">Discovery remains the front door. It owns source submission, queue state, routing records, and explicit downstream approvals into Architecture handoffs or Runtime follow-ups.</p>
+        <div class="lane-overview-grid" style="margin-top:14px;">
+          <section class="lane-overview-card discovery">
+            <h3>Queue</h3>
+            <div class="lane-overview-stats">
+              <div class="lane-overview-stat"><h4>Total entries</h4><p class="seam-value">${snapshot.queue.totalEntries}</p></div>
+              <div class="lane-overview-stat"><h4>Handoff stubs</h4><p class="seam-value">${snapshot.handoffStubs.length}</p></div>
+            </div>
+            <p class="muted">Queue and handoff state remain the canonical Discovery operating surfaces.</p>
+            <div class="lane-actions">
+              <a href="/submit" @click=${(event: Event) => { event.preventDefault(); navTo("/submit"); }}>Open source submission</a>
+              <a href="/queue" @click=${(event: Event) => { event.preventDefault(); navTo("/queue"); }}>Open queue</a>
+              <a href="/handoffs" @click=${(event: Event) => { event.preventDefault(); navTo("/handoffs"); }}>Open handoffs</a>
+            </div>
+          </section>
+          <section class="lane-overview-card discovery">
+            <h3>Routing outcomes</h3>
+            <div class="lane-overview-stats">
+              <div class="lane-overview-stat"><h4>To Architecture</h4><p class="seam-value">${architectureCount}</p></div>
+              <div class="lane-overview-stat"><h4>To Runtime</h4><p class="seam-value">${runtimeCount}</p></div>
+            </div>
+            <p class="muted">Discovery stays explicit. It does not auto-advance downstream work; it records the route and hands off to the next bounded lane surface.</p>
+          </section>
+        </div>
+      </section>
+    `;
+  }
+
+  private renderLaneOverviewCard(input: {
+    title: string;
+    tone: "discovery" | "architecture" | "runtime";
+    description: string;
+    primaryLabel: string;
+    primaryValue: string | number;
+    secondaryLabel: string;
+    secondaryValue: string | number;
+    tertiary?: string;
+    href: string;
+  }) {
+    return html`
+      <section class=${`lane-overview-card ${input.tone}`}>
+        <h3>${input.title}</h3>
+        <p>${input.description}</p>
+        <div class="lane-overview-stats">
+          <div class="lane-overview-stat">
+            <h4>${input.primaryLabel}</h4>
+            <p class="seam-value">${input.primaryValue}</p>
+          </div>
+          <div class="lane-overview-stat">
+            <h4>${input.secondaryLabel}</h4>
+            <p class="seam-value">${input.secondaryValue}</p>
+          </div>
+        </div>
+        ${input.tertiary ? html`<p class="muted">${input.tertiary}</p>` : nothing}
+        <div class="lane-actions">
+          <a href=${input.href} @click=${(event: Event) => { event.preventDefault(); navTo(input.href); }}>Open ${input.title}</a>
+        </div>
+      </section>
     `;
   }
 
@@ -999,15 +1557,80 @@ class DirectiveFrontendApp extends LitElement {
 
     if (this.page.kind === "home") {
       const snapshot = this.page.data;
+      const runtimePrimary = snapshot.runtimeSummary.activeCases[0] ?? null;
+      const architecturePrimary = snapshot.architectureSummary.activeCases[0] ?? null;
       return html`
-        <section class="panel"><h2>Standalone frontend scope</h2><p class="muted">Use this frontend to operate the real loop directly in Directive Workspace: source submit through Discovery -> Engine-backed usefulness and routing -> inspectable Discovery intake/triage/routing outputs -> explicit route approval -> bounded downstream stub inspection. Downstream Architecture or Runtime execution still does not happen automatically.</p></section>
+        <section class="panel"><h2>Directive Workspace overview</h2><p class="muted">Directive Workspace now has real Discovery, Architecture, and Runtime lanes. This overview exposes those lanes directly, while keeping gating and legality inside Engine, Runtime, and Architecture rather than inside the frontend.</p></section>
         ${snapshot.handoffWarnings?.length ? html`<section class="panel warning"><h3>Handoff artifact warnings</h3><ul>${snapshot.handoffWarnings.map((warning: string) => html`<li>${warning}</li>`)}</ul></section>` : nothing}
+        <section class="lane-overview-grid">
+          ${this.renderLaneOverviewCard({
+            title: "Discovery lane",
+            tone: "discovery",
+            description: "Source intake, queue state, routing records, and explicit downstream approvals remain front-door Discovery work.",
+            primaryLabel: "Queue entries",
+            primaryValue: snapshot.queue.totalEntries,
+            secondaryLabel: "Handoff stubs",
+            secondaryValue: snapshot.handoffStubs.length,
+            tertiary: "Discovery is already operational and should stay explicit rather than auto-advancing downstream work.",
+            href: "/discovery",
+          })}
+          ${this.renderLaneOverviewCard({
+            title: "Architecture lane",
+            tone: "architecture",
+            description: "Architecture now has real case history, retained outputs, integration/consumption/evaluation chains, and closed main cases.",
+            primaryLabel: "Tracked cases",
+            primaryValue: snapshot.architectureSummary.activeCases.length,
+            secondaryLabel: "Recent anchors",
+            secondaryValue: snapshot.architectureSummary.recentAnchors.length,
+            tertiary: architecturePrimary
+              ? `Current head: ${architecturePrimary.current_case_stage ?? "n/a"}`
+              : "No Architecture case is currently awaiting a new automatic step.",
+            href: "/architecture",
+          })}
+          ${this.renderLaneOverviewCard({
+            title: "Runtime lane",
+            tone: "runtime",
+            description: "Runtime is a real bounded non-executing lane. OpenMOSS is still the active Runtime case at promotion-readiness.",
+            primaryLabel: "Tracked cases",
+            primaryValue: snapshot.runtimeSummary.activeCases.length,
+            secondaryLabel: "Recent anchors",
+            secondaryValue: snapshot.runtimeSummary.recentAnchors.length,
+            tertiary: runtimePrimary
+              ? `Current head: ${runtimePrimary.current_case_stage ?? "n/a"}`
+              : "No active Runtime case is currently exposed.",
+            href: "/runtime",
+          })}
+        </section>
         <section class="grid">
           <section class="panel"><h3>Engine runs</h3><div>${snapshot.engineRuns.totalRuns}</div><div class="muted">Persisted Engine-native runs.</div></section>
-          <section class="panel"><h3>Queue entries</h3><div>${snapshot.queue.totalEntries}</div><div class="muted">Discovery intake queue.</div></section>
-          <section class="panel"><h3>Handoff stubs</h3><div>${snapshot.handoffStubs.length}</div><div class="muted">Architecture handoffs and Runtime follow-ups.</div></section>
+          <section class="panel"><h3>Product shape</h3><div>3 lanes</div><div class="muted">Discovery, Architecture, and Runtime are now first-class product surfaces.</div></section>
+          <section class="panel"><h3>Current Runtime host</h3><div>Directive Workspace web host</div><div class="muted">The product frontend is the active surface for current Runtime seam review.</div></section>
         </section>
+        ${(runtimePrimary || architecturePrimary)
+          ? html`
+              <section class="panel">
+                <h2>Current lane heads</h2>
+                <p class="muted">These strips reuse the same case-summary format across home, queue, and lane pages so the current product state stays readable before drill-down.</p>
+                <div class="lane-head-strip-grid" style="margin-top:14px;">
+                  ${runtimePrimary ? this.renderRuntimeCaseStrip(runtimePrimary) : nothing}
+                  ${architecturePrimary ? this.renderArchitectureCaseStrip(architecturePrimary) : nothing}
+                </div>
+              </section>
+            `
+          : nothing}
       `;
+    }
+
+    if (this.page.kind === "discovery-lane") {
+      return this.renderDiscoveryLanePage(this.page.data as FrontendSnapshot);
+    }
+
+    if (this.page.kind === "architecture-lane") {
+      return this.renderArchitectureLaneSummary((this.page.data as FrontendSnapshot).architectureSummary);
+    }
+
+    if (this.page.kind === "runtime-lane") {
+      return this.renderRuntimeLaneSummary((this.page.data as FrontendSnapshot).runtimeSummary);
     }
 
     if (this.page.kind === "submit") {
@@ -1116,26 +1739,42 @@ class DirectiveFrontendApp extends LitElement {
       const handoffByCandidateId = new Map<string, FrontendHandoffStub>(
         (this.page.handoffs || []).map((stub: FrontendHandoffStub) => [stub.candidateId, stub]),
       );
-      return html`<section class="panel"><h2>Discovery queue</h2><table><thead><tr><th>candidate</th><th>status</th><th>routing target</th><th>Engine run</th><th>first downstream stub</th><th>current live artifact</th><th>current case stage</th><th>continue from here</th></tr></thead><tbody>
-        ${this.page.queue.entries.length ? this.page.queue.entries.map((entry: any) => {
-          const run = runByCandidateId.get(entry.candidate_id);
-          const handoff = handoffByCandidateId.get(entry.candidate_id);
-          const handoffPath = entry.result_record_path ?? handoff?.relativePath ?? null;
-          return html`<tr>
-            <td>${entry.candidate_name}</td>
-            <td>
-              <div>${entry.status}</div>
-              <div class="muted">${entry.integrity_state ?? "n/a"}</div>
-            </td>
-            <td>${entry.routing_target ?? "n/a"}</td>
-            <td>${run ? html`<a href=${`/engine-runs/${encodeURIComponent(run.runId)}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/engine-runs/${encodeURIComponent(run.runId)}`); }}>${run.runId}</a>` : html`<span class="muted">n/a</span>`}</td>
-            <td>${handoffPath ? html`<a href=${`/handoffs/view?path=${encodeURIComponent(handoffPath)}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/handoffs/view?path=${encodeURIComponent(handoffPath)}`); }}>${handoffPath}</a>` : html`<span class="muted">n/a</span>`}</td>
-            <td>${this.currentHeadSummary(entry)}</td>
-            <td>${entry.current_case_stage ?? "n/a"}</td>
-            <td>${entry.current_case_next_legal_step ?? "n/a"}</td>
-          </tr>`;
-        }) : html`<tr><td colspan="8" class="muted">No queue entries found.</td></tr>`}
-      </tbody></table></section>`;
+      const entries = this.page.queue.entries || [];
+      const runtimeEntries = entries.filter((entry: FrontendQueueEntry) => entry.current_head?.artifact_lane === "runtime" || entry.routing_target === "runtime");
+      const architectureEntries = entries.filter((entry: FrontendQueueEntry) => entry.current_head?.artifact_lane === "architecture" || entry.routing_target === "architecture");
+      const closedEntries = entries.filter((entry: FrontendQueueEntry) => (entry.current_case_stage || "").endsWith(".keep"));
+      const pendingActionEntries = entries.filter((entry: FrontendQueueEntry) => Boolean(entry.current_case_next_legal_step && !entry.current_case_next_legal_step.startsWith("No automatic")));
+      const openmossEntry = entries.find((entry: FrontendQueueEntry) => entry.candidate_name === "OpenMOSS");
+      return html`
+        <section class="panel">
+          <h2>Discovery queue</h2>
+          <p class="muted">Directive Workspace uses this queue as the live front door into Discovery, Architecture, and Runtime. The product surface now emphasizes current heads, current case stage, and the next legal step instead of treating queue state like a raw spreadsheet.</p>
+
+          <section class="queue-summary-grid">
+            ${this.renderQueueStat("Total queue entries", entries.length, "All persisted Discovery queue cases visible to the product frontend.")}
+            ${this.renderQueueStat("Runtime-tracked cases", runtimeEntries.length, "Cases whose current head or route is now in the Runtime lane.")}
+            ${this.renderQueueStat("Architecture-tracked cases", architectureEntries.length, "Cases whose current head or route is now in the Architecture lane.")}
+            ${this.renderQueueStat("Cases with live next steps", pendingActionEntries.length, "Entries that still expose an explicit continue-from-here action in current truth.")}
+          </section>
+
+          ${openmossEntry ? this.renderRuntimeCaseStrip(openmossEntry) : nothing}
+
+          ${entries.length
+            ? html`<section class="queue-card-list">
+                ${entries.map((entry: FrontendQueueEntry) => {
+                  const run = runByCandidateId.get(entry.candidate_id);
+                  const handoff = handoffByCandidateId.get(entry.candidate_id);
+                  const handoffPath = entry.result_record_path ?? handoff?.relativePath ?? null;
+                  return this.renderQueueCard(entry, run, handoffPath);
+                })}
+              </section>`
+            : html`<div class="queue-empty muted">No queue entries found.</div>`}
+
+          ${closedEntries.length
+            ? html`<p class="muted" style="margin-top:16px;">${closedEntries.length} queue case${closedEntries.length === 1 ? "" : "s"} already resolve to an explicit keep state. They remain visible here as history, but not as open work by default.</p>`
+            : nothing}
+        </section>
+      `;
     }
 
     if (this.page.kind === "discovery-routing-detail") {
@@ -1351,7 +1990,7 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>Runtime v0 record</th><td>${this.artifactLink(detail.linkedRuntimeRecordPath)}</td></tr>
           <tr><th>source Runtime follow-up</th><td>${this.artifactLink(detail.linkedFollowUpPath)}</td></tr>
           <tr><th>linked Discovery routing record</th><td>${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</td></tr>
-          <tr><th>promotion-readiness artifact</th><td>${detail.promotionReadinessExists ? html`<a href=${`/artifacts?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/artifacts?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`); }}>Open promotion-readiness artifact</a>` : html`<span class="muted">${detail.promotionReadinessRelativePath}</span>`}</td></tr>
+          <tr><th>promotion-readiness artifact</th><td>${detail.promotionReadinessExists ? html`<a href=${`/runtime-promotion-readiness/view?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-promotion-readiness/view?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`); }}>Open promotion-readiness detail</a>` : html`<span class="muted">${detail.promotionReadinessRelativePath}</span>`}</td></tr>
         </tbody></table></section>
         <section class=${detail.promotionReadinessExists ? "panel good" : detail.approvalAllowed ? "panel message" : "panel warning"}>
           <h3>Promotion-readiness boundary</h3>
@@ -1362,13 +2001,100 @@ class DirectiveFrontendApp extends LitElement {
               : "This runtime capability boundary is not in an approval state for opening the promotion-readiness artifact."}</p>
           <div class="actions">
             ${detail.promotionReadinessExists
-              ? html`<a href=${`/artifacts?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/artifacts?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`); }}>Open promotion-readiness artifact</a>`
+              ? html`<a href=${`/runtime-promotion-readiness/view?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-promotion-readiness/view?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`); }}>Open promotion-readiness detail</a>`
               : detail.approvalAllowed
                 ? html`<button @click=${() => this.approveRuntimePromotionReadiness(detail.relativePath || "")}>Approve promotion-readiness artifact</button>`
                 : nothing}
           </div>
         </section>
         <section class="panel"><h3>Raw runtime capability boundary</h3><pre>${detail.content}</pre></section>
+      `;
+    }
+
+    if (this.page.kind === "runtime-promotion-readiness-detail") {
+      const detail = this.page.data as FrontendRuntimePromotionReadinessDetail;
+      if (!detail.ok) return html`<section class="panel warning"><h2>Runtime promotion-readiness artifact not found</h2><pre>${detail.error}</pre></section>`;
+      const blockers = detail.promotionReadinessBlockers || [];
+      const closedSeams = [
+        "host-facing promotion remains unopened",
+        "callable implementation remains unopened",
+        "host integration remains unopened",
+        "runtime execution remains unopened",
+      ];
+      return html`
+        <section class="hero">
+          <h2>OpenMOSS Runtime seam review</h2>
+          <p>This is the current product-facing Runtime stop for Directive Workspace. The frontend shows the live Runtime truth, but Runtime and Engine still own blocker judgment, progression rules, and any later implementation, integration, or execution work.</p>
+          <div class="hero-meta">
+            ${this.renderQueueTag(detail.currentStage || "runtime.promotion_readiness.opened", "runtime")}
+            ${this.renderQueueTag(detail.currentStatus || "promotion_readiness_opened")}
+            ${this.renderQueueTag(detail.proposedHost || "Directive Workspace web host", "runtime")}
+          </div>
+          <div class="muted mono" style="margin-top:10px;">${detail.relativePath}</div>
+        </section>
+
+        <section class="panel">
+          <div class="seam-grid">
+            <section class="seam-card">
+              <h3>Current Runtime truth</h3>
+              <p class="seam-value">${detail.currentStage}</p>
+              <p class="muted" style="margin-top:8px;">${detail.nextLegalStep}</p>
+            </section>
+
+            <section class="seam-card">
+              <h3>Proposed host surface</h3>
+              <p class="seam-value">${detail.proposedHost}</p>
+              <p class="muted" style="margin-top:8px;">Directive Workspace web host is the active product surface for this phase. Mission Control is not the frontend target here.</p>
+            </section>
+
+            <section class="seam-card">
+              <h3>Runtime objective</h3>
+              <p class="seam-value">${detail.runtimeObjective}</p>
+              <p class="muted" style="margin-top:8px;">Proposed runtime surface: ${detail.proposedRuntimeSurface ?? "n/a"}</p>
+            </section>
+
+            <section class="seam-card">
+              <h3>Execution state</h3>
+              <p class="seam-value">${detail.executionState}</p>
+              <p class="muted" style="margin-top:8px;">Promotion-readiness decision: ${detail.promotionReadinessDecision ?? "n/a"}</p>
+            </section>
+          </div>
+        </section>
+
+        <section class="grid">
+          <section class="panel warning">
+            <h3>Blocked seams</h3>
+            ${blockers.length
+              ? html`<ul>${blockers.map((blocker) => html`<li><code>${blocker}</code></li>`)}</ul>`
+              : html`<p class="muted">No promotion-readiness blockers were recorded.</p>`}
+            <p class="seam-note muted" style="margin-top:12px;">Host-facing promotion remains a reviewed but unopened seam. This page does not imply callable implementation, host integration, or execution are available.</p>
+          </section>
+
+          <section class="panel">
+            <h3>What remains intentionally closed</h3>
+            <ul>${closedSeams.map((item) => html`<li>${item}</li>`)}</ul>
+            <p class="muted" style="margin-top:12px;">This page is for operator seam review, not for activating downstream Runtime behavior.</p>
+          </section>
+        </section>
+
+        <section class="panel">
+          <h3>Artifact chain</h3>
+          <div class="link-stack">
+            <div><strong>Runtime capability boundary:</strong> <a href=${`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.linkedCapabilityBoundaryPath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.linkedCapabilityBoundaryPath || "")}`); }}>${detail.linkedCapabilityBoundaryPath}</a></div>
+            <div><strong>Runtime proof artifact:</strong> <a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`); }}>${detail.linkedRuntimeProofPath}</a></div>
+            <div><strong>Runtime v0 record:</strong> ${this.artifactLink(detail.linkedRuntimeRecordPath)}</div>
+            <div><strong>Source Runtime follow-up:</strong> ${this.artifactLink(detail.linkedFollowUpPath)}</div>
+            <div><strong>Linked Discovery routing record:</strong> ${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</div>
+          </div>
+        </section>
+
+        <section class="panel message">
+          <h3>Directive Workspace product boundary</h3>
+          <p>The Directive Workspace frontend is the active review surface here. It exposes current stage, next legal step, proposed host, blockers, and linked artifacts, while Runtime and Engine continue to own all real gating and progression logic.</p>
+          <p class="muted">DW frontend capability: ${detail.frontendCapabilityDecision || "not explicitly recorded"} | host-facing promotion decision: ${detail.hostFacingPromotionDecision || "not explicitly recorded"}</p>
+        </section>
+
+        <section class="panel"><h3>Raw promotion-readiness artifact</h3><pre>${detail.content}</pre></section>
       `;
     }
 
@@ -1746,12 +2472,12 @@ class DirectiveFrontendApp extends LitElement {
       <main>
         <section class="panel">
           <h1>Directive Workspace Frontend</h1>
-          <div class="muted">Thin Vite + Lit standalone frontend over real Directive Workspace artifacts and workflows.</div>
+          <div class="muted">Thin Vite + Lit product frontend over real Directive Workspace lanes, artifacts, and workflows.</div>
           ${this.link("/", "Overview", current === "/")}
-          ${this.link("/submit", "Source Submission", current === "/submit")}
+          ${this.link("/discovery", "Discovery lane", current === "/discovery")}
+          ${this.link("/architecture", "Architecture lane", current === "/architecture")}
+          ${this.link("/runtime", "Runtime lane", current === "/runtime")}
           ${this.link("/engine-runs", "Engine Runs", current === "/engine-runs")}
-          ${this.link("/queue", "Queue", current === "/queue")}
-          ${this.link("/handoffs", "Handoffs", current === "/handoffs")}
         </section>
         ${this.renderContent()}
       </main>

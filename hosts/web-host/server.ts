@@ -37,6 +37,7 @@ import {
   readDirectiveFrontendRuntimeRecordDetail,
   readDirectiveFrontendRuntimeProofDetail,
   readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail,
+  readDirectiveFrontendRuntimePromotionReadinessDetail,
   readDirectiveFrontendArchitectureResultDetail,
   readDirectiveFrontendArchitectureStartDetail,
   readDirectiveFrontendArchitectureAdoptionDetail,
@@ -238,6 +239,12 @@ export function startDirectiveFrontendServer(
       }
       if (method === "GET" && pathname === "/api/runtime-runtime-capability-boundaries/detail") {
         return void writeJson(res, 200, readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/runtime-promotion-readiness/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendRuntimePromotionReadinessDetail({
           directiveRoot,
           relativePath: String(url.searchParams.get("path") || "").trim(),
         }));

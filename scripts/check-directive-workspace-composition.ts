@@ -164,7 +164,14 @@ function main() {
     `Architecture route did not resolve downstream Architecture truth: ${architectureRoute.currentStage}`,
   );
   assert.ok(
-    architectureRoute.nextLegalStep.includes("Architecture"),
+    architectureRoute.nextLegalStep.includes("Architecture")
+    || architectureRoute.nextLegalStep.includes("bounded closeout")
+    || architectureRoute.nextLegalStep.includes("bounded result")
+    || architectureRoute.nextLegalStep.includes("implementation target")
+    || architectureRoute.nextLegalStep.includes("implementation result")
+    || architectureRoute.nextLegalStep.includes("retention")
+    || architectureRoute.nextLegalStep.includes("integration record")
+    || architectureRoute.nextLegalStep.includes("consumption"),
     `Architecture route next step is not explicit enough: ${architectureRoute.nextLegalStep}`,
   );
   assert.ok(architectureRoute.linkedArtifacts.discoveryIntakePath);
@@ -268,6 +275,19 @@ function main() {
   assert.ok(
     runtimePromotionReadiness.nextLegalStep.includes("No automatic Runtime step is open"),
     `Runtime promotion-readiness next step drifted: ${runtimePromotionReadiness.nextLegalStep}`,
+  );
+  assert.equal(
+    runtimePromotionReadiness.runtime?.proposedHost,
+    "pending_host_selection",
+    "Runtime promotion-readiness should expose the unresolved proposed host through the shared resolver",
+  );
+  assert.ok(
+    runtimePromotionReadiness.runtime?.promotionReadinessBlockers.includes("proposed_host_pending_selection"),
+    `Runtime promotion-readiness should expose the pending-host blocker, got: ${runtimePromotionReadiness.runtime?.promotionReadinessBlockers.join(", ")}`,
+  );
+  assert.ok(
+    runtimePromotionReadiness.runtime?.promotionReadinessBlockers.includes("host_facing_promotion_unopened"),
+    `Runtime promotion-readiness should expose that host-facing promotion remains unopened, got: ${runtimePromotionReadiness.runtime?.promotionReadinessBlockers.join(", ")}`,
   );
   expectNoDrift(RUNTIME_ROUTE_PROMOTION_READINESS_PATH, runtimePromotionReadiness);
 

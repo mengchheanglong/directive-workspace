@@ -104,6 +104,10 @@ export type FrontendQueueEntry = StoredFrontendQueueEntry & {
   current_case_stage: string | null;
   current_case_next_legal_step: string | null;
   current_head: FrontendCurrentHead | null;
+  runtime_summary: {
+    proposed_host: string | null;
+    promotion_readiness_blockers: string[];
+  } | null;
 };
 
 export type FrontendQueueOverview = {
@@ -129,6 +133,44 @@ export type FrontendHandoffStub = {
 export type DirectiveFrontendSnapshot = {
   engineRuns: DirectiveEngineRunsOverview;
   queue: FrontendQueueOverview;
+  runtimeSummary: {
+    activeCases: Array<{
+      candidate_id: string;
+      candidate_name: string;
+      current_case_stage: string | null;
+      current_case_next_legal_step: string | null;
+      current_head: FrontendCurrentHead | null;
+      runtime_summary: {
+        proposed_host: string | null;
+        promotion_readiness_blockers: string[];
+      } | null;
+    }>;
+    recentAnchors: Array<{
+      label: string;
+      artifactPath: string;
+      currentStage: string;
+      nextLegalStep: string;
+      candidateId: string | null;
+      candidateName: string | null;
+    }>;
+  };
+  architectureSummary: {
+    activeCases: Array<{
+      candidate_id: string;
+      candidate_name: string;
+      current_case_stage: string | null;
+      current_case_next_legal_step: string | null;
+      current_head: FrontendCurrentHead | null;
+    }>;
+    recentAnchors: Array<{
+      label: string;
+      artifactPath: string;
+      currentStage: string;
+      nextLegalStep: string;
+      candidateId: string | null;
+      candidateName: string | null;
+    }>;
+  };
   architectureHandoffs: DirectiveArchitectureHandoffArtifact[];
   handoffStubs: FrontendHandoffStub[];
   handoffWarnings: string[];
@@ -301,6 +343,40 @@ export type DirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail =
       approvalAllowed: boolean;
       content: string;
       artifact: DirectiveRuntimeRuntimeCapabilityBoundaryArtifact;
+    }
+  | {
+      ok: false;
+      error: string;
+      relativePath: string;
+    };
+
+export type DirectiveFrontendRuntimePromotionReadinessDetail =
+  | {
+      ok: true;
+      relativePath: string;
+      absolutePath: string;
+      title: string;
+      candidateId: string;
+      candidateName: string;
+      runtimeObjective: string;
+      proposedHost: string;
+      proposedRuntimeSurface: string;
+      executionState: string;
+      currentStatus: string;
+      promotionReadinessDecision: string;
+      hostFacingPromotionDecision: string;
+      frontendCapabilityDecision: string;
+      linkedCapabilityBoundaryPath: string;
+      linkedRuntimeProofPath: string;
+      linkedRuntimeRecordPath: string;
+      linkedFollowUpPath: string;
+      linkedRoutingPath: string | null;
+      artifactStage: string;
+      artifactNextLegalStep: string;
+      currentStage: string;
+      nextLegalStep: string;
+      promotionReadinessBlockers: string[];
+      content: string;
     }
   | {
       ok: false;
@@ -595,6 +671,8 @@ function buildDirectiveFrontendArtifactViewPath(input: {
       return `/runtime-proofs/view?path=${encoded}`;
     case "runtime_runtime_capability_boundary":
       return `/runtime-runtime-capability-boundaries/view?path=${encoded}`;
+    case "runtime_promotion_readiness":
+      return `/runtime-promotion-readiness/view?path=${encoded}`;
     default:
       return `/artifacts?path=${encoded}`;
   }
@@ -612,6 +690,7 @@ function buildFrontendQueueEntry(input: {
       current_case_stage: null,
       current_case_next_legal_step: null,
       current_head: null,
+      runtime_summary: null,
     };
   }
 
@@ -635,10 +714,28 @@ function buildFrontendQueueEntry(input: {
           artifact_lane: input.entry.routing_target ?? "unknown",
           view_path: `/artifacts?path=${encodeURIComponent(resolutionPath)}`,
         },
+        runtime_summary: null,
       };
     }
 
     return {
+      ...(() => {
+        const runtimeSummary = focus.currentHead.lane === "runtime"
+          ? resolveDirectiveWorkspaceState({
+              directiveRoot: input.directiveRoot,
+              artifactPath: focus.currentHead.artifactPath,
+              includeAnchors: false,
+            }).focus?.runtime
+          : null;
+        return {
+          runtime_summary: runtimeSummary
+            ? {
+                proposed_host: runtimeSummary.proposedHost ?? null,
+                promotion_readiness_blockers: [...(runtimeSummary.promotionReadinessBlockers ?? [])],
+              }
+            : null,
+        };
+      })(),
       ...input.entry,
       integrity_state: focus.integrityState,
       current_case_stage: focus.currentStage,
@@ -668,6 +765,7 @@ function buildFrontendQueueEntry(input: {
         artifact_lane: input.entry.routing_target ?? "unknown",
         view_path: `/artifacts?path=${encodeURIComponent(resolutionPath)}`,
       },
+      runtime_summary: null,
     };
   }
 }
@@ -867,16 +965,92 @@ export function readDirectiveFrontendSnapshot(input: {
       maxEntries: input.maxHandoffs ?? 20,
     }),
   ].sort((left, right) => right.relativePath.localeCompare(left.relativePath));
+  const queue = readFrontendQueueOverview({
+    directiveRoot: input.directiveRoot,
+    maxEntries: input.maxQueueEntries ?? 12,
+  });
+  const runtimeAnchors = resolveDirectiveWorkspaceState({
+    directiveRoot: input.directiveRoot,
+    includeAnchors: true,
+  }).anchors
+    .filter((anchor) => anchor.lane === "runtime")
+    .sort((left, right) => right.artifactPath.localeCompare(left.artifactPath))
+    .filter((anchor, index, all) =>
+      all.findIndex((candidate) => candidate.candidateId === anchor.candidateId) === index
+    )
+    .slice(0, 4);
+  const architectureAnchors = resolveDirectiveWorkspaceState({
+    directiveRoot: input.directiveRoot,
+    includeAnchors: true,
+  }).anchors
+    .filter((anchor) => anchor.lane === "architecture")
+    .sort((left, right) => right.artifactPath.localeCompare(left.artifactPath))
+    .filter((anchor, index, all) =>
+      all.findIndex((candidate) => candidate.candidateId === anchor.candidateId) === index
+    )
+    .slice(0, 4);
+  const activeRuntimeCases = queue.entries
+    .filter((entry) => entry.current_head?.artifact_lane === "runtime" || entry.routing_target === "runtime")
+    .sort((left, right) => {
+      const rank = (stage: string | null | undefined) => {
+        if (!stage) return 0;
+        if (stage.startsWith("runtime.promotion_readiness.")) return 5;
+        if (stage.startsWith("runtime.runtime_capability_boundary.")) return 4;
+        if (stage.startsWith("runtime.proof.")) return 3;
+        if (stage.startsWith("runtime.record.")) return 2;
+        if (stage.startsWith("runtime.follow_up.")) return 1;
+        return 0;
+      };
+      return rank(right.current_case_stage) - rank(left.current_case_stage);
+    })
+    .slice(0, 4)
+    .map((entry) => ({
+      candidate_id: entry.candidate_id,
+      candidate_name: entry.candidate_name,
+      current_case_stage: entry.current_case_stage,
+      current_case_next_legal_step: entry.current_case_next_legal_step,
+      current_head: entry.current_head,
+      runtime_summary: entry.runtime_summary,
+    }));
+  const activeArchitectureCases = queue.entries
+    .filter((entry) => entry.current_head?.artifact_lane === "architecture" || entry.routing_target === "architecture")
+    .slice(0, 4)
+    .map((entry) => ({
+      candidate_id: entry.candidate_id,
+      candidate_name: entry.candidate_name,
+      current_case_stage: entry.current_case_stage,
+      current_case_next_legal_step: entry.current_case_next_legal_step,
+      current_head: entry.current_head,
+    }));
 
   return {
     engineRuns: readDirectiveEngineRunsOverview({
       directiveRoot: input.directiveRoot,
       maxRuns: input.maxRuns ?? 8,
     }),
-    queue: readFrontendQueueOverview({
-      directiveRoot: input.directiveRoot,
-      maxEntries: input.maxQueueEntries ?? 12,
-    }),
+    queue,
+    runtimeSummary: {
+      activeCases: activeRuntimeCases,
+      recentAnchors: runtimeAnchors.map((anchor) => ({
+        label: anchor.label,
+        artifactPath: anchor.artifactPath,
+        currentStage: anchor.currentStage,
+        nextLegalStep: anchor.nextLegalStep,
+        candidateId: anchor.candidateId,
+        candidateName: anchor.candidateName,
+      })),
+    },
+    architectureSummary: {
+      activeCases: activeArchitectureCases,
+      recentAnchors: architectureAnchors.map((anchor) => ({
+        label: anchor.label,
+        artifactPath: anchor.artifactPath,
+        currentStage: anchor.currentStage,
+        nextLegalStep: anchor.nextLegalStep,
+        candidateId: anchor.candidateId,
+        candidateName: anchor.candidateName,
+      })),
+    },
     architectureHandoffs: architecture.artifacts,
     handoffStubs,
     handoffWarnings: architecture.warnings,
@@ -1324,6 +1498,84 @@ export function readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail(inpu
       approvalAllowed: artifact.approvalAllowed,
       content: artifact.content,
       artifact,
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      error: String((error as Error).message || error),
+      relativePath,
+    };
+  }
+}
+
+export function readDirectiveFrontendRuntimePromotionReadinessDetail(input: {
+  directiveRoot: string;
+  relativePath: string;
+}): DirectiveFrontendRuntimePromotionReadinessDetail {
+  const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
+  if (!relativePath) {
+    return {
+      ok: false,
+      error: "missing_relative_path",
+      relativePath,
+    };
+  }
+
+  if (
+    !relativePath.startsWith("runtime/05-promotion-readiness/")
+    || !relativePath.endsWith("-promotion-readiness.md")
+  ) {
+    return {
+      ok: false,
+      error: "invalid_runtime_promotion_readiness_path",
+      relativePath,
+    };
+  }
+
+  try {
+    const artifact = readDirectiveFrontendArtifactText({
+      directiveRoot: input.directiveRoot,
+      relativePath,
+    });
+    const focus = resolveDirectiveWorkspaceState({
+      directiveRoot: input.directiveRoot,
+      artifactPath: relativePath,
+      includeAnchors: false,
+    }).focus;
+
+    if (!focus || focus.lane !== "runtime") {
+      throw new Error("runtime_promotion_readiness_focus_not_resolved");
+    }
+
+    return {
+      ok: true,
+      relativePath,
+      absolutePath: artifact.absolutePath,
+      title: extractMarkdownTitle(artifact.content),
+      candidateId: extractBulletValue(artifact.content, "Candidate id"),
+      candidateName: extractBulletValue(artifact.content, "Candidate name"),
+      runtimeObjective: extractBulletValue(artifact.content, "Runtime objective"),
+      proposedHost: extractBulletValue(artifact.content, "Proposed host"),
+      proposedRuntimeSurface: extractBulletValue(artifact.content, "Proposed runtime surface"),
+      executionState: extractBulletValue(artifact.content, "Execution state"),
+      currentStatus: extractBulletValue(artifact.content, "Current status"),
+      promotionReadinessDecision: extractBulletValue(artifact.content, "Promotion-readiness decision"),
+      hostFacingPromotionDecision: extractBulletValue(artifact.content, "Reviewed decision"),
+      frontendCapabilityDecision: extractBulletValue(artifact.content, "Frontend capability decision"),
+      linkedCapabilityBoundaryPath: extractBulletValue(artifact.content, "Runtime capability boundary path")
+        || extractBulletValue(artifact.content, "Runtime capability boundary"),
+      linkedRuntimeProofPath: extractBulletValue(artifact.content, "Source Runtime proof artifact")
+        || extractBulletValue(artifact.content, "Runtime proof artifact"),
+      linkedRuntimeRecordPath: extractBulletValue(artifact.content, "Source Runtime v0 record")
+        || extractBulletValue(artifact.content, "Runtime v0 record"),
+      linkedFollowUpPath: extractBulletValue(artifact.content, "Source Runtime follow-up record"),
+      linkedRoutingPath: extractBulletValue(artifact.content, "Linked Discovery routing record") || null,
+      artifactStage: focus.artifactStage,
+      artifactNextLegalStep: focus.artifactNextLegalStep,
+      currentStage: focus.currentStage,
+      nextLegalStep: focus.nextLegalStep,
+      promotionReadinessBlockers: [...(focus.runtime?.promotionReadinessBlockers ?? [])],
+      content: artifact.content,
     };
   } catch (error) {
     return {
@@ -2017,6 +2269,8 @@ export type DirectiveWorkbenchRuntimeRecordDetail = DirectiveFrontendRuntimeReco
 export type DirectiveWorkbenchRuntimeProofDetail = DirectiveFrontendRuntimeProofDetail;
 export type DirectiveWorkbenchRuntimeRuntimeCapabilityBoundaryDetail =
   DirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail;
+export type DirectiveWorkbenchRuntimePromotionReadinessDetail =
+  DirectiveFrontendRuntimePromotionReadinessDetail;
 export type DirectiveWorkbenchArchitectureStartDetail = DirectiveFrontendArchitectureStartDetail;
 export type DirectiveWorkbenchArchitectureResultDetail = DirectiveFrontendArchitectureResultDetail;
 export type DirectiveWorkbenchArchitectureAdoptionDetail = DirectiveFrontendArchitectureAdoptionDetail;
@@ -2045,6 +2299,8 @@ export const readDirectiveWorkbenchRuntimeRecordDetail = readDirectiveFrontendRu
 export const readDirectiveWorkbenchRuntimeProofDetail = readDirectiveFrontendRuntimeProofDetail;
 export const readDirectiveWorkbenchRuntimeRuntimeCapabilityBoundaryDetail =
   readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail;
+export const readDirectiveWorkbenchRuntimePromotionReadinessDetail =
+  readDirectiveFrontendRuntimePromotionReadinessDetail;
 export const readDirectiveWorkbenchArchitectureStartDetail =
   readDirectiveFrontendArchitectureStartDetail;
 export const readDirectiveWorkbenchArchitectureResultDetail =

@@ -1,0 +1,33 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-results-logging-contract-quality-2026-03-26",
+  "adoption_date": "2026-03-26",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/02-experiments/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "schema",
+  "artifact_path": "architecture/03-adopted/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-adopted.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can carry this bounded Architecture slice forward into direct adoption without reopening the prior Engine, handoff, and post-consumption evidence chain by hand.",
+    "mechanism": "The bounded closeout now records an adoption-ready Architecture result and paired decision artifact directly on the bounded-result record.",
+    "baseline_observation": "Before this closeout, the reopened bounded slice still depended on manual interpretation to decide whether it could move forward as retained Directive-owned Architecture output.",
+    "expected_effect": "The bounded result 'Bounded Architecture slice turned closeout result evidence from prose inference into an explicit contract field by adding primaryEvidencePath to the bounded closeout input, bounded-result artifact, and paired decision JSON, with result-evidence readers preferring that field over heuristic path scraping. Proof used node --experimental-strip-types ./scripts/check-architecture-composition.ts plus structural inspection of shared/lib/architecture-bounded-closeout.ts, shared/lib/architecture-adoption-artifacts.ts, and the results-logging source contract.' can now move directly into the normal adoption/materialization path as Architecture-owned output.",
+    "verification_method": "structural_inspection"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The bounded result is explicitly adopted as current-scope Directive-owned Architecture output.",
+    "completion_status": "product_materialized",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

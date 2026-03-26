@@ -178,6 +178,11 @@ export type DirectiveWorkspaceResolvedFocus = {
     proofKind: string | null;
     nextAction: string | null;
   };
+  runtime?: {
+    proposedHost: string | null;
+    executionState: string | null;
+    promotionReadinessBlockers: string[];
+  };
 };
 
 export type DirectiveWorkspaceAnchorSummary = {
@@ -299,6 +304,8 @@ type GenericRuntimePromotionReadinessArtifact = {
   linkedRuntimeProofPath: string | null;
   linkedRuntimeRecordPath: string | null;
   linkedCallableStubPath: string | null;
+  proposedHost: string | null;
+  executionState: string | null;
   currentStatus: string | null;
 };
 
@@ -879,8 +886,31 @@ function readGenericRuntimePromotionReadinessArtifact(input: {
     linkedRuntimeProofPath: extractBulletValue(content, "Runtime proof artifact"),
     linkedRuntimeRecordPath: extractBulletValue(content, "Runtime v0 record"),
     linkedCallableStubPath: extractBulletValue(content, "Linked callable stub"),
+    proposedHost: extractBulletValue(content, "Proposed host"),
+    executionState: extractBulletValue(content, "Execution state"),
     currentStatus: extractBulletValue(content, "Current status"),
   };
+}
+
+function buildRuntimePromotionReadinessBlockers(input: {
+  promotionReadiness: GenericRuntimePromotionReadinessArtifact | null;
+}) {
+  if (!input.promotionReadiness) {
+    return [];
+  }
+
+  const blockers: string[] = [];
+  if (input.promotionReadiness.proposedHost === "pending_host_selection") {
+    blockers.push("proposed_host_pending_selection");
+  }
+  if (input.promotionReadiness.executionState?.includes("not implemented")) {
+    blockers.push("runtime_implementation_unopened");
+  }
+  if (input.promotionReadiness.executionState?.includes("not promoted")) {
+    blockers.push("host_facing_promotion_unopened");
+  }
+
+  return blockers;
 }
 
 function inferRuntimeRuntimeCapabilityBoundaryPathFromProof(input: {
@@ -2355,6 +2385,7 @@ function resolveRuntimeFocusFromAnyPath(input: {
     runtimeRecord,
     runtimeProof,
     capabilityBoundary,
+    promotionReadiness,
     callableIntegration,
     ...buildRuntimeState({
       directiveRoot: input.directiveRoot,
@@ -2785,6 +2816,13 @@ export function resolveDirectiveWorkspaceState(input: {
           decisionState: engineRun?.record.decision?.decisionState ?? null,
           proofKind: engineRun?.record.proofPlan?.proofKind ?? null,
           nextAction: engineRun?.record.integrationProposal?.nextAction ?? null,
+        },
+        runtime: {
+          proposedHost: runtime.promotionReadiness?.proposedHost ?? null,
+          executionState: runtime.promotionReadiness?.executionState ?? null,
+          promotionReadinessBlockers: buildRuntimePromotionReadinessBlockers({
+            promotionReadiness: runtime.promotionReadiness ?? null,
+          }),
         },
       });
     } else {
