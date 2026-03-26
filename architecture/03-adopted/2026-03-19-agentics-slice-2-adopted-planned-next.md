@@ -9,7 +9,7 @@
   - Directive Daily Status Digest
   - Directive Docs Maintenance Sweep
 - Integration artifact:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
 
 ## gate evidence
 - `npm run check:directive-v0` -> PASS

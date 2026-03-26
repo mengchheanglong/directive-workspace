@@ -22,7 +22,7 @@ Keep the intent, not the scripts:
 ## Directive Use
 
 - Discovery may retain the audit idea for source-catalog review
-- Forge may retain curated-pack sync rules only if a product-owned skill-pack surface needs them
+- Runtime may retain curated-pack sync rules only if a product-owned skill-pack surface needs them
 
 ## Current Decision
 

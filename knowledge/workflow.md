@@ -38,7 +38,7 @@ It must not drop `Decide` or `Report`.
 
 2. Route
 - decide the adoption target early:
-  - Forge
+  - Runtime
   - Architecture
   - or Discovery holding state
 - when multiple internal-signal slices are available, prefer the highest-ranked unresolved gap in `discovery/gap-worklist.json`
@@ -75,7 +75,7 @@ When Architecture processes a source (repo, paper, framework, tool, workflow, me
 1. Source analysis per `shared/contracts/source-analysis-contract.md` — value map, baggage map, adaptation/improvement opportunities
 2. Adaptation decision per `shared/contracts/adaptation-decision-contract.md` — per-mechanism extract/adapt/improve decisions with mandatory delta evidence
 3. Experiment slice using `shared/templates/source-adaptation-record.md` or `experiment-record.md` with the source-adaptation fields filled
-4. If the adapted value has a runtime component, hand off to Forge via `shared/contracts/architecture-to-forge.md` with adaptation/improvement evidence
+4. If the adapted value has a runtime component, hand off to Runtime via `shared/contracts/architecture-to-runtime.md` with adaptation/improvement evidence
 
 The source-adaptation chain replaces the weak pattern (`extract → adopt`) with the doctrine-required strong pattern (`extract → adapt → improve`), which then continues through `Prove → Decide → Integrate + Report`.
 
@@ -89,19 +89,19 @@ Moving files, rewording notes, or updating queue/routing state without producing
 When a source-driven slice is expected to improve future Architecture work, emit a reusable mechanism packet per `shared/contracts/architecture-mechanism-packet.md` so later slices can assemble from adapted Directive value without reopening the full historical chain.
 When the value emerges primarily from multiple-source collision rather than any single source, emit a reusable synthesis packet per `shared/contracts/cross-source-synthesis-packet.md`.
 When an existing mechanism packet or synthesis packet already covers retained value needed by a later Architecture slice, consume that packet as a primary input before reopening the full historical source chain. Packet creation is not enough; compounding reuse is the stronger system behavior.
-When a source is genuinely mixed-value, use `shared/contracts/mixed-value-source-partition.md` to make packet reuse scope, fresh re-analysis scope, Architecture-retained mechanisms, and later Forge candidates explicit instead of forcing the whole source into one lane.
+When a source is genuinely mixed-value, use `shared/contracts/mixed-value-source-partition.md` to make packet reuse scope, fresh re-analysis scope, Architecture-retained mechanisms, and later Runtime candidates explicit instead of forcing the whole source into one lane.
 
 ### Architecture adoption decisions
 When an adapted/improved mechanism reaches the Decide step, use `shared/contracts/architecture-adoption-criteria.md` to determine:
 - whether the mechanism is ready for adoption (readiness check)
 - what artifact type it should become (contract, schema, template, policy, reference-pattern, shared-lib, doctrine-update)
-- whether to adopt in Architecture, stay experimental, or hand off to Forge
-- what usefulness-level treatment applies (direct → Forge handoff, structural → Architecture core, meta → self-improvement priority)
+- whether to adopt in Architecture, stay experimental, or hand off to Runtime
+- what usefulness-level treatment applies (direct → Runtime handoff, structural → Architecture core, meta → self-improvement priority)
 
-When the Decide step needs an executable outcome, resolve it through `shared/lib/architecture-adoption-resolution.ts` so review result, readiness gates, artifact type selection, and Forge threshold logic stay canonical.
+When the Decide step needs an executable outcome, resolve it through `shared/lib/architecture-adoption-resolution.ts` so review result, readiness gates, artifact type selection, and Runtime threshold logic stay canonical.
 When the Decide step must emit a machine-readable adoption artifact, build it through `shared/lib/architecture-adoption-artifacts.ts` so the output matches `shared/schemas/architecture-adoption-decision.schema.json`.
 When retained decision artifacts are expected to survive across later Architecture generations, keep their canonical `decision_format` through `shared/lib/architecture-adoption-decision-envelope.ts` so closeout, backfill, and cycle evaluation can distinguish artifact-shape upgrades cleanly.
-When the Decide step should run review, adoption, and retained decision emission as one canonical closeout lane, execute it through `shared/lib/architecture-closeout.ts`. Use an experiment record under `architecture/02-experiments/` for `stay_experimental` closeouts and an adopted record under `architecture/03-adopted/` for `adopt` or `hand_off_to_forge` closeouts.
+When the Decide step should run review, adoption, and retained decision emission as one canonical closeout lane, execute it through `shared/lib/architecture-closeout.ts`. Use an experiment record under `architecture/02-experiments/` for `stay_experimental` closeouts and an adopted record under `architecture/03-adopted/` for `adopt` or `hand_off_to_runtime` closeouts.
 When retained adoption decisions must be written, loaded, or backfilled from disk, route that persistence through `shared/lib/architecture-adoption-decision-store.ts` so closeout, corpus maintenance, and wave evaluation share one atomic product-owned store instead of host-local JSON handling.
 When a retained machine-readable adoption artifact is produced for an adopted slice, emit it through `shared/lib/architecture-adoption-decision-writer.ts` so it lands beside the adopted record in `architecture/03-adopted/` by default and cycle evaluation/corpus review can consume the on-disk decision state directly.
 When the live Decide-step lane already has review checks but not a pre-resolved review artifact, pass those checks to the same writer so the retained decision output stays on the canonical review -> adoption -> retention path.
@@ -115,13 +115,13 @@ Use `shared/contracts/architecture-artifact-lifecycle.md` for:
 - transition rules between states
 - reference-pattern admission criteria
 - experiment-to-adopted promotion requirements
-- adopted-to-Forge handoff requirements
+- adopted-to-Runtime handoff requirements
 - pre-doctrine record handling
 
 All new experiment and adopted records must include lifecycle classification fields:
 - origin (`source-driven` | `internally-generated`)
 - usefulness level (`direct` | `structural` | `meta`)
-- Forge threshold check
+- Runtime threshold check
 
 ### Architecture cycle evaluation
 At the start of each new Architecture wave, evaluate the previous cycle using `shared/templates/architecture-cycle-evaluation.md`. This tracks whether Architecture is getting better at source consumption, not just producing more artifacts.
@@ -133,8 +133,8 @@ Pre-boundary evidence can remain historical context, but it must not be counted 
 
 The corpus normalization record (`architecture/02-experiments/2026-03-22-architecture-corpus-normalization.md`) provides the baseline classification for all pre-doctrine adopted records.
 
-### Forge default
-- one follow-up record in `forge/follow-up/`
+### Runtime default
+- one follow-up record in `runtime/follow-up/`
 - one promotion record only when host/runtime delivery is real
 
 ## Escalate To Full Workflow When
@@ -145,7 +145,7 @@ Split the process into extra records only when one of these is true:
 - the route is disputed or changes midstream
 - the result should be held as `monitor`, `defer`, or `reference`
 - the output becomes a reusable contract, policy, or template
-- the work crosses from Architecture into Forge
+- the work crosses from Architecture into Runtime
 - the work touches Mission Control runtime behavior directly
 
 If none of those conditions are true, stay on the fast path.
@@ -154,7 +154,7 @@ If none of those conditions are true, stay on the fast path.
 
 - If the adoption target is still unclear after first-pass review, stop and hold in Discovery.
 - If the proof cannot be bounded cleanly, narrow the claim before continuing.
-- If an Architecture slice turns into runtime/callable work, hand it to Forge instead of stretching the slice.
+- If an Architecture slice turns into runtime/callable work, hand it to Runtime instead of stretching the slice.
 - If validation requires broad unrelated host gates, split the slice smaller before proceeding.
 
 ## Validation Bundles
@@ -186,7 +186,7 @@ Ask this first:
 
 "Is the main value a runtime/callable capability, or an internal framework improvement?"
 
-- runtime/callable capability -> Forge
+- runtime/callable capability -> Runtime
 - internal framework improvement -> Architecture
 - not actionable yet -> Discovery holding state
 

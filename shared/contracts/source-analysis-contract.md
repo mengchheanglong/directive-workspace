@@ -27,7 +27,7 @@ Use this contract when:
 
 Do not use for:
 - Discovery triage (use triage-record or discovery-fast-path-record)
-- Forge runtime evaluation (use evaluator-contract)
+- Runtime runtime evaluation (use evaluator-contract)
 
 ## Required analysis fields
 
@@ -115,8 +115,8 @@ Every Architecture source analysis must answer the following:
 - Works with: `phase-isolated-processing` when the analysis phase should hand off through an explicit packet rather than conversational continuity
 - Feeds downstream to: `architecture-mechanism-packet` when the source-derived mechanism should become a reusable building block for future Architecture work
 - Feeds downstream to: `cross-source-synthesis-packet` when the retained value emerges from collision, agreement, or tension across multiple sources
-- Feeds downstream to: `mixed-value-source-partition` when packet reuse is partial and the source contains both Architecture-retained and later Forge-candidate value
-- Feeds downstream to: `architecture-adoption-criteria` (adoption readiness, artifact type, Forge threshold)
+- Feeds downstream to: `mixed-value-source-partition` when packet reuse is partial and the source contains both Architecture-retained and later Runtime-candidate value
+- Feeds downstream to: `architecture-adoption-criteria` (adoption readiness, artifact type, Runtime threshold)
 - Feeds downstream to: `architecture-self-improvement-contract` (when `usefulness_level` is `meta`)
 - Does not replace: `evaluator-contract` (which governs measurement, not analysis)
 - Does not replace: `architecture-review-guardrails` (which governs review quality, not source analysis)

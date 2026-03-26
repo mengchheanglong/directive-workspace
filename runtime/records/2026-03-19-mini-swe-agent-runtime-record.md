@@ -1,0 +1,21 @@
+# Runtime Record: mini-swe-agent
+
+- Candidate id: mini-swe-agent
+- Candidate name: mini-swe-agent
+- Runtime record date: 2026-03-19
+- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-19-adopted-candidates-architecture-recheck.md`
+- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`
+- Runtime objective: Validate a fallback-lane wrapper and one non-deterministic rehearsal under runtime guardrails without importing mini-swe-agent as a hard production dependency.
+- Proposed host: Mission Control
+- Proposed runtime surface: Directive Workspace fallback execution lane
+- Execution slice: Wrapper/preflight check plus one bounded fallback rehearsal with transcript, modified file scope, verification command, and rollback command set.
+- Required proof: Runtime rehearsal artifact containing transcript, scope, pass/fail verification, and explicit rollback commands.
+- Required gates:
+  - `npm run check:directive-workspace-v0`
+  - `npm run check:directive-integration-proof`
+  - `npm run check:directive-workspace-health`
+  - `npm run check:ops-stack`
+- Risks: Windows terminal/runtime sensitivity; dependency footprint and interpreter drift; fallback lane could create operational complexity larger than the value it adds.
+- Rollback: Remove wrapper/preflight slice changes, delete rehearsal artifacts, and keep fallback lane disabled by default.
+- Current status: runtime slice executed; promotion record created (`2026-03-20`)
+- Next decision point: keep callable fallback status only if Windows encoding mitigation remains deterministic and sandbox isolation stays intact.

@@ -65,7 +65,7 @@
 - Improvement candidates:
   - unify lifecycle transition, score feedback, and blocked recovery into one product-owned executable surface
   - align the logic with Directive Workspace lifecycle states instead of OpenMOSS sub-task states
-  - make the helper reusable across Architecture, Discovery, and later Forge review loops
+  - make the helper reusable across Architecture, Discovery, and later Runtime review loops
 - Improvement type per candidate:
   - unified executable surface -> `composability`
   - Directive-specific lifecycle alignment -> `quality`

@@ -71,7 +71,7 @@ Status meanings:
 
 Track rule:
 - use `architecture` when the next slice is reusable operating logic
-- use `forge` when the next slice is runtime or behavior-preserving transformation work
+- use `runtime` when the next slice is runtime or behavior-preserving transformation work
 - use `discovery` when the next slice is still front-door behavior, intake discipline, or routing hygiene
 
 Adoption boundary:

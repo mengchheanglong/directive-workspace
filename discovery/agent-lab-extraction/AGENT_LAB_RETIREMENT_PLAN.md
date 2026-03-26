@@ -10,14 +10,14 @@ This is not a folder move.
 
 This is an extraction-and-cutover process:
 - keep what has product value
-- re-home that value under Discovery, Forge, or Architecture
+- re-home that value under Discovery, Runtime, or Architecture
 - drop the rest
 
 ## Current Status
 
 - phase status: cutover complete, archive snapshot created
 - runtime dependency status: clear
-- source-pack status: Forge-owned packs active
+- source-pack status: Runtime-owned packs active
 - registry status: `repo-sources.json` no longer indexed from `agent-lab`
 - source-ref status: legacy `agent-lab/...` refs migrated to Directive-owned refs
 - archive snapshot: `C:\Users\User\.openclaw\workspace\archive\agent-lab-retired-20260320-104211` (Mode A, 2026-03-20)
@@ -60,7 +60,7 @@ Priority targets:
 - `orchestration/scripts/*`
 
 Output:
-- Forge contracts
+- Runtime contracts
 - Discovery intake/routing rules
 - Architecture pattern notes
 - any surviving runbooks under product ownership
@@ -85,7 +85,7 @@ Priority targets:
 Output rule:
 - each item must end in one explicit state:
   - extracted to Discovery
-  - extracted to Forge
+  - extracted to Runtime
   - extracted to Architecture
   - extracted to multiple tracks
   - reference-only

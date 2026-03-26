@@ -24,7 +24,7 @@ Directive Workspace uses this hierarchy:
 
 - **Directive Workspace** - the whole goal-driven product
 - **Engine** - the shared core adaptation machinery inside Directive Workspace
-- **Discovery / Forge / Architecture** - the three main operating lanes of the Engine
+- **Discovery / Runtime / Architecture** - the three main operating lanes of the Engine
 
 Do not treat the lanes as peer products beside the Engine.
 
@@ -44,7 +44,7 @@ The Engine owns the common logic behind all three lanes:
 The Engine lanes are separated by adoption target, not by source type:
 
 - **Discovery** - goal-aware intake, filtering, routing, and capability-gap detection
-- **Forge** - reusable runtime conversion and behavior-preserving transformation
+- **Runtime** - reusable runtime conversion and behavior-preserving transformation
 - **Architecture** - engine self-improvement, adaptation quality improvement, and reusable operating logic
 
 Architecture is the lane closest to the current mission because the current mission is to improve the Engine itself.
@@ -78,7 +78,7 @@ Stable root export lanes:
 - `@directive-workspace/product/standalone-host/bootstrap`
 - `@directive-workspace/product/standalone-host/cli`
 - `@directive-workspace/product/standalone-host/config`
-- `@directive-workspace/product/standalone-host/forge`
+- `@directive-workspace/product/standalone-host/runtime`
 - `@directive-workspace/product/standalone-host/persistence`
 - `@directive-workspace/product/standalone-host/server`
 - `@directive-workspace/product/frontend`
@@ -86,7 +86,8 @@ Stable root export lanes:
 - `@directive-workspace/product/frontend/server`
 - `@directive-workspace/product/shared/discovery`
 - `@directive-workspace/product/shared/architecture`
-- `@directive-workspace/product/forge/core/v0`
+- `@directive-workspace/product/shared/workspace-state`
+- `@directive-workspace/product/runtime/core/v0`
 
 Initial Engine surface:
 
@@ -112,7 +113,7 @@ That Engine surface is host-agnostic and already supports one real source-proces
 The important boundary now is:
 
 - `engine/` = stable kernel plus Engine-owned lane definitions
-- `discovery/`, `forge/`, `architecture/` = lane operating surfaces, records, proofs, and adopted assets
+- `discovery/`, `runtime/`, `architecture/` = lane operating surfaces, records, proofs, and adopted assets
 - `hosts/` = adapters and reference hosts that consume the Engine
 
 Hosts should keep the Engine API stable and tailor lane behavior through Engine-owned lane definitions, not by rebuilding the kernel.
@@ -124,7 +125,7 @@ Directive Workspace should converge toward:
 - one reusable executable Engine that hosts can embed cleanly
 - one canonical runtime model for source intake, analysis, routing, extraction, adaptation, improvement, proof, decision, integration, and reporting
 - host adapters that call that Engine cleanly
-- Discovery / Forge / Architecture behavior that remains inside the Engine model instead of drifting into host-local reconstruction
+- Discovery / Runtime / Architecture behavior that remains inside the Engine model instead of drifting into host-local reconstruction
 
 Current host/reference surfaces such as:
 
@@ -145,13 +146,59 @@ Directive Workspace also includes a standalone filesystem reference host at:
 
 - [hosts/standalone-host/README.md](/C:/Users/User/.openclaw/workspace/directive-workspace/hosts/standalone-host/README.md)
 
-That reference host exposes a bounded HTTP API, config-driven boot, runtime status/access logging, optional SQLite persistence, optional bearer auth, a Discovery front door that can persist full Engine run records, and a bounded local Forge workflow. This is a shareable local host surface for GitHub/package usage. It is not yet the broader host/runtime replacement for Mission Control.
+That reference host exposes a bounded HTTP API, config-driven boot, runtime status/access logging, optional SQLite persistence, optional bearer auth, a Discovery front door that can persist full Engine run records and materialize Discovery intake/triage/routing outputs from the active mission and capability-gap corpus, and a bounded local Runtime workflow. This is a shareable local host surface for GitHub/package usage. It is not yet the broader host/runtime replacement for Mission Control.
 
 Directive Workspace also ships a minimal product-owned standalone frontend at:
 
 `hosts/web-host/`
 
-This standalone frontend is a direct product surface over the same Engine-native artifacts. The canonical frontend app lives in `frontend/` (Vite + Lit), and `hosts/web-host/` is the thin product-owned API/static host that serves it. It keeps Discovery as the front door, shows persisted Engine runs, queue state, routed handoff stubs, and Architecture bounded-start artifacts, and makes Directive Workspace operable on its own without forcing every product iteration through Mission Control.
+This standalone frontend is a direct product surface over the same Engine-native artifacts. The canonical frontend app lives in `frontend/` (Vite + Lit), and `hosts/web-host/` is the thin product-owned API/static host that serves it. It keeps Discovery as the front door, materializes inspectable Discovery intake/triage/routing artifacts from one real source submission, shows persisted Engine runs and queue state, derives the current live case artifact from the canonical resolver instead of treating the first downstream stub as the practical pointer, keeps downstream Architecture or Runtime advancement explicit through approval boundaries instead of automatic progression, and now exposes the Runtime follow-up review/open boundary, the Runtime record proof-open boundary, the Runtime proof runtime-capability-boundary-open boundary, and the runtime-capability-boundary promotion-readiness-open boundary as bounded non-executing Runtime steps.
+For Architecture bounded starts, the same frontend now surfaces derived closeout assistance from the bounded-start artifact plus linked Engine-run truth so the operator can review mission fit, extracted value, stage-preservation expectations, and suggested closeout summary language without losing explicit closeout control.
+
+## Validation
+
+Canonical product validation:
+
+```bash
+npm run check
+```
+
+That command now runs two bounded validations:
+
+- `check:frontend-host` validates the standalone frontend/host surface and its existing browser-level checks
+- `check:directive-workspace-composition` resolves and validates the current whole-product state across Discovery, Engine, Architecture, and Runtime using real product artifacts
+
+The whole-product composition checker is intentionally narrow:
+
+- it uses real March 24 and March 25 product artifacts
+- it reuses the existing Architecture composition checker
+- it calls existing shared helpers only
+- it does not mutate the tracked source-of-truth artifacts
+- it fails clearly if a shared product contract drifts, a lane link breaks, or a current next legal step is overstated
+
+Run the whole-product composition checker directly when you need the current Directive Workspace truth anchor:
+
+```bash
+npm run check:directive-workspace-composition
+```
+
+Run the read-only current-state report directly when you need a machine-readable snapshot of the current product truth:
+
+```bash
+npm run report:directive-workspace-state
+```
+
+You can also pass one real artifact path to focus the report on a specific case or lane:
+
+```bash
+npm run report:directive-workspace-state -- runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md
+```
+
+Focused report output now distinguishes:
+
+- `artifactStage` / `artifactNextLegalStep` = what the inspected artifact itself represents
+- `currentStage` / `nextLegalStep` = the latest known case state reachable from that artifact's linked chain
+- `currentHead.artifactPath` / `currentHead.artifactStage` = the current live artifact to continue from, derived from the canonical linked chain rather than queue-owned workflow state
 
 ## OpenClaw Note
 
@@ -175,7 +222,7 @@ OpenClaw-native rescue references:
 - `engine/` - shared core machinery and default Directive Workspace lane definitions
 - `sources/` - raw source snapshots, parked upstream material, and source notes that feed the Engine
 - `discovery/` - Discovery lane operating surfaces and records
-- `forge/` - Forge lane operating surfaces, proofs, records, and registry
+- `runtime/` - Runtime lane operating surfaces, proofs, records, and registry
 - `architecture/` - Architecture lane experiments, adoptions, and deferred decisions
 - `shared/` - product-owned contracts, schemas, templates, and shared vocabulary
 - `knowledge/` - canonical doctrine, workflow, mission definition, and operating policy

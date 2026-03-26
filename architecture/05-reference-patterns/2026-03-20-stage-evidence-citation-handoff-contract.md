@@ -117,7 +117,7 @@ Supporting artifacts:
 ## Validation Hooks
 
 - Architecture contract health:
-- `npm run check:directive-forge-records`
+- `npm run check:directive-runtime-records`
 - `npm run check:directive-integration-artifact-templates`
 - `npm run check:directive-citation-contracts`
 - System-wide guard:
@@ -126,4 +126,4 @@ Supporting artifacts:
 ## Adoption Boundary
 
 - This artifact is Architecture-only contract guidance.
-- Runtime/callable follow-up remains Forge-owned and requires separate promotion records.
+- Runtime/callable follow-up remains Runtime-owned and requires separate promotion records.

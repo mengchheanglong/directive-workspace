@@ -1,0 +1,227 @@
+{
+  "status": "active",
+  "updatedAt": "2026-03-21",
+  "policy": {
+    "selectorField": "Quality gate profile",
+    "familyField": "Promotion profile family",
+    "proofShapeField": "Proof shape",
+    "primaryHostCheckerField": "Primary host checker",
+    "resolutionRule": "Every Runtime promotion record must declare one cataloged quality gate profile. The selected profile resolves the family, proof shape, contract, and primary host checker.",
+    "proofShapeRule": "Proof artifacts must satisfy the proof shape associated with the selected profile; profile family and host checker must not be inferred ad hoc from candidate name or script behavior.",
+    "hostCheckerRule": "Each active promotion profile must have exactly one primary host checker command, with any extra gates recorded as supporting host checks.",
+    "nonApplicableFieldRule": "Promotion records may use `n/a` for fields that are not part of the selected proof shape, but the selector, family, proof shape, and primary host checker must still match this catalog."
+  },
+  "profiles": [
+    {
+      "id": "ao_cli_runtime_guard/v1",
+      "family": "bounded_ao_cli",
+      "proofShape": "ao_cli_status_snapshot/v1",
+      "contractPath": "shared/contracts/ao-cli-runtime-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-agent-orchestrator-cli-smoke",
+      "primaryHostCheckScriptPath": "scripts/check-directive-agent-orchestrator-cli-smoke.ts",
+      "supportingHostCheckCommands": [
+        "npm run runtime:agent-orchestrator:smoke",
+        "npm run check:directive-agent-orchestrator-preconditions",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded AO CLI follow-up slices where pass/fail depends on temp-copy buildability plus one CLI status proof, while the source pack remains follow_up_only and not yet live runtime."
+    },
+    {
+      "id": "workflow_operator_import_guard/v1",
+      "family": "bounded_workflow_operator_import",
+      "proofShape": "agent_pack_import_snapshot/v1",
+      "contractPath": "shared/contracts/workflow-operator-import-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-superpowers-runtime",
+      "primaryHostCheckScriptPath": "scripts/check-directive-superpowers-runtime.ts",
+      "supportingHostCheckCommands": [
+        "npm run runtime:superpowers:smoke",
+        "npm run check:agents-import-packs-api-backend",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded explicit-only workflow operator import lanes where pass/fail depends on import-pack API behavior, deterministic operator metadata, and curated workflow asset coverage rather than plugin or hook runtime adoption."
+    },
+    {
+      "id": "design_review_skill_guard/v1",
+      "family": "bounded_design_review_skill",
+      "proofShape": "agent_pack_import_snapshot/v1",
+      "contractPath": "shared/contracts/design-review-skill-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-design-philosophy-runtime",
+      "primaryHostCheckScriptPath": "scripts/check-directive-design-philosophy-runtime.ts",
+      "supportingHostCheckCommands": [
+        "npm run runtime:design-philosophy:smoke",
+        "npm run check:agents-import-packs-api-backend",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded explicit-only design-review skill import lanes where pass/fail depends on import-pack API behavior, deterministic reviewer metadata, and compact pack asset coverage."
+    },
+    {
+      "id": "context_operator_import_guard/v1",
+      "family": "bounded_context_operator_import",
+      "proofShape": "agent_pack_import_snapshot/v1",
+      "contractPath": "shared/contracts/context-operator-import-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-arscontexta-runtime",
+      "primaryHostCheckScriptPath": "scripts/check-directive-arscontexta-runtime.ts",
+      "supportingHostCheckCommands": [
+        "npm run runtime:arscontexta:smoke",
+        "npm run check:agents-import-packs-api-backend",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded explicit-only import lanes that surface context/planning/review operators from Runtime-owned packs without adopting the upstream methodology runtime."
+    },
+    {
+      "id": "legacy_live_runtime_guard/v1",
+      "family": "legacy_live_runtime",
+      "proofShape": "legacy_runtime_snapshot/v1",
+      "contractPath": "shared/contracts/legacy-live-runtime-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-live-runtime-accounting",
+      "primaryHostCheckScriptPath": "scripts/check-directive-live-runtime-accounting.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-source-pack-catalog",
+        "npm run check:directive-source-pack-readiness",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only to normalize already-live bounded host lanes that predate the modern Runtime promotion discipline. Do not use for new promotions."
+    },
+    {
+      "id": "promotion_quality_gate/v1",
+      "family": "research_quality_gate",
+      "proofShape": "quality_metric_snapshot/v1",
+      "contractPath": "shared/contracts/promotion-quality-gate.md",
+      "primaryHostCheckCommand": "npm run check:directive-promotion-quality-contracts",
+      "primaryHostCheckScriptPath": "scripts/check-directive-promotion-quality-contracts.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-v0",
+        "npm run check:directive-integration-proof",
+        "npm run check:directive-workspace-health",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [],
+      "notes": "Use for callable claims backed by coverage/evidence/citation quality thresholds."
+    },
+    {
+      "id": "agent_eval_guard/v1",
+      "family": "bounded_agent_eval",
+      "proofShape": "agent_eval_guard_snapshot/v1",
+      "contractPath": "shared/contracts/agent-eval-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-promptfoo-runtime",
+      "primaryHostCheckScriptPath": "scripts/check-directive-promptfoo-runtime.ts",
+      "supportingHostCheckCommands": [
+        "npm run eval:agents",
+        "npm run check:agent-evals",
+        "npm run check:agent-eval-regression",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded eval-lane promotions where pass/fail depends on score, failure-rate, and cost guard thresholds rather than citation quality."
+    },
+    {
+      "id": "browser_smoke_guard/v1",
+      "family": "bounded_browser_smoke",
+      "proofShape": "ui_smoke_snapshot/v1",
+      "contractPath": "shared/contracts/browser-smoke-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-puppeteer-runtime",
+      "primaryHostCheckScriptPath": "scripts/check-directive-puppeteer-runtime.ts",
+      "supportingHostCheckCommands": [
+        "npm run ui:smoke",
+        "npm run check:ui-smoke",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded browser smoke lanes where pass/fail depends on smoke report integrity, expected flows, and screenshot artifacts."
+    },
+    {
+      "id": "skill_lifecycle_guard/v1",
+      "family": "bounded_skill_lifecycle",
+      "proofShape": "agent_pack_import_snapshot/v1",
+      "contractPath": "shared/contracts/skill-lifecycle-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-skills-manager-runtime",
+      "primaryHostCheckScriptPath": "scripts/check-directive-skills-manager-runtime.ts",
+      "supportingHostCheckCommands": [
+        "npm run runtime:skills-manager:smoke",
+        "npm run check:agents-import-packs-api-backend",
+        "npm run check:ops-stack"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for bounded skill-lifecycle operator lanes where pass/fail depends on import-pack API behavior, deterministic source metadata, and pack asset coverage rather than eval or browser metrics."
+    },
+    {
+      "id": "behavior_preserving_transformation_guard/v1",
+      "family": "bounded_transformation",
+      "proofShape": "transformation_proof_artifact/v1",
+      "contractPath": "shared/contracts/evaluator-contract.md",
+      "primaryHostCheckCommand": "npm run check:directive-transformation-proof",
+      "primaryHostCheckScriptPath": "scripts/check-directive-transformation-proof.ts",
+      "supportingHostCheckCommands": [],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use for behavior-preserving transformation candidates where the proof is a before/after measurement with a preservation claim. Supporting host checks are transformation-specific and added per candidate."
+    }
+  ]
+}

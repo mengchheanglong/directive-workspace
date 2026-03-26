@@ -91,14 +91,14 @@ export type DirectiveEngineRunsOverview = {
   invalidArtifacts: number;
   counts: {
     discovery: number;
-    forge: number;
+    runtime: number;
     architecture: number;
     direct: number;
     structural: number;
     meta: number;
     humanReview: number;
     holdInDiscovery: number;
-    routeToForge: number;
+    routeToRuntime: number;
     acceptForArchitecture: number;
   };
   latest: {
@@ -220,14 +220,14 @@ function listEngineRunRecordPaths(engineRunsRoot: string) {
 function zeroCounts() {
   return {
     discovery: 0,
-    forge: 0,
+    runtime: 0,
     architecture: 0,
     direct: 0,
     structural: 0,
     meta: 0,
     humanReview: 0,
     holdInDiscovery: 0,
-    routeToForge: 0,
+    routeToRuntime: 0,
     acceptForArchitecture: 0,
   };
 }
@@ -272,7 +272,7 @@ export function readDirectiveEngineRunsOverview(
 
     const laneId = artifact.record.selectedLane?.laneId || artifact.record.candidate.recommendedLaneId;
     if (laneId === "discovery") counts.discovery += 1;
-    if (laneId === "forge") counts.forge += 1;
+    if (laneId === "runtime") counts.runtime += 1;
     if (laneId === "architecture") counts.architecture += 1;
 
     if (artifact.record.candidate.usefulnessLevel === "direct") counts.direct += 1;
@@ -289,8 +289,8 @@ export function readDirectiveEngineRunsOverview(
     if (artifact.record.decision.decisionState === "hold_in_discovery") {
       counts.holdInDiscovery += 1;
     }
-    if (artifact.record.decision.decisionState === "route_to_forge_follow_up") {
-      counts.routeToForge += 1;
+    if (artifact.record.decision.decisionState === "route_to_runtime_follow_up") {
+      counts.routeToRuntime += 1;
     }
     if (artifact.record.decision.decisionState === "accept_for_architecture") {
       counts.acceptForArchitecture += 1;

@@ -12,9 +12,9 @@ Make strict lifecycle artifact coverage visible in the standalone Directive Work
 
 - `C:\Users\User\.openclaw\workspace\mission-control\backend\src\modules\directive-workspace\directive-workspace.service.ts`
   - add strict lifecycle artifact coverage aggregation
-  - include `forge.lifecycleArtifacts` block in workspace overview payload
+  - include `runtime.lifecycleArtifacts` block in workspace overview payload
 - `C:\Users\User\.openclaw\workspace\mission-control\src\app\dashboard\directive-workspace\WorkspaceTracksOverviewPanel.tsx`
-  - render strict lifecycle coverage metrics in Forge card
+  - render strict lifecycle coverage metrics in Runtime card
 - `C:\Users\User\.openclaw\workspace\mission-control\src\lib\directive-workspace\lifecycle-artifacts.ts`
   - normalize provider breakdown parsing for strict TypeScript compatibility
 - `C:\Users\User\.openclaw\workspace\mission-control\src\server\services\directive-workspace-service.ts`

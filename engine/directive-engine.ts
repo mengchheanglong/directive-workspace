@@ -11,8 +11,8 @@ import {
   type DirectiveEngineLanePlanningInput,
   type DirectiveEngineLaneSet,
 } from "./lane.ts";
+import { normalizeDirectiveEngineSourceType } from "./source-type-normalization.ts";
 import {
-  DIRECTIVE_ENGINE_SUPPORTED_SOURCE_TYPES,
   type DirectiveEngineAdaptationPlan,
   type DirectiveEngineAnalysis,
   type DirectiveEngineCandidate,
@@ -138,17 +138,6 @@ function resolveMissionContext(
   };
 }
 
-function normalizeSourceType(value: unknown): DirectiveEngineSourceItem["sourceType"] {
-  const normalized = normalizeText(value).toLowerCase();
-  const match = DIRECTIVE_ENGINE_SUPPORTED_SOURCE_TYPES.find((item) => item === normalized);
-  if (match) {
-    return match;
-  }
-  throw new Error(
-    `directive_engine_invalid_source_type: ${String(value ?? "")}; supported types: ${DIRECTIVE_ENGINE_SUPPORTED_SOURCE_TYPES.join(", ")}`,
-  );
-}
-
 function deriveCandidateId(source: DirectiveEngineSourceItem) {
   return (
     sanitizeIdSegment(normalizeText(source.sourceId))
@@ -210,32 +199,202 @@ function uniqueStrings(values: Array<string | null | undefined>) {
   );
 }
 
+function flattenSourceSignals(source: DirectiveEngineSourceItem) {
+  return [
+    source.title,
+    source.summary ?? "",
+    source.missionAlignmentHint ?? "",
+    ...(source.notes ?? []),
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function resolveStructuralProcessStages(source: DirectiveEngineSourceItem) {
+  if (
+    source.sourceType !== "paper"
+    && source.sourceType !== "product-doc"
+    && source.sourceType !== "technical-essay"
+    && source.sourceType !== "workflow-writeup"
+    && source.sourceType !== "theory"
+  ) {
+    return [] as string[];
+  }
+
+  const lowered = flattenSourceSignals(source).toLowerCase();
+  const stages: string[] = [];
+
+  if (/\bplanning\b/.test(lowered)) {
+    stages.push("planning");
+  }
+  if (/\banalysis\b/.test(lowered)) {
+    stages.push("analysis");
+  }
+  if (/\bmutation\b/.test(lowered)) {
+    stages.push("mutation");
+  }
+  if (/\bevaluation\b/.test(lowered)) {
+    stages.push("evaluation");
+  }
+  if (/\bselection\b/.test(lowered)) {
+    stages.push("selection");
+  }
+  if (/\bcode generation\b/.test(lowered)) {
+    stages.push("code generation");
+  } else if (/\bgeneration\b/.test(lowered)) {
+    stages.push("generation");
+  }
+
+  return stages;
+}
+
+function resolveControlSignalProfile(source: DirectiveEngineSourceItem) {
+  if (
+    source.sourceType !== "paper"
+    && source.sourceType !== "product-doc"
+    && source.sourceType !== "technical-essay"
+    && source.sourceType !== "workflow-writeup"
+    && source.sourceType !== "theory"
+  ) {
+    return null;
+  }
+
+  const lowered = flattenSourceSignals(source).toLowerCase();
+  const signals: string[] = [];
+
+  if (/\bprecondition\b|\bprerequisite\b|\bchecklist\b|\bfail fast\b/.test(lowered)) {
+    signals.push("preconditions");
+  }
+  if (/\bdry-run\b|\bverify\b|\bverification\b|\bguard\b|\bhealth check\b/.test(lowered)) {
+    signals.push("verification");
+  }
+  if (/\brollback\b|\brevert\b|\bundo\b|\bunpublish\b/.test(lowered)) {
+    signals.push("rollback");
+  }
+  if (/\bkeep\b|\bdiscard\b|\bdecision\b|\bapprove\b|\bgate\b|\bready to ship\b/.test(lowered)) {
+    signals.push("decision");
+  }
+  if (/\bresults log\b|\bsummary\b|\blog\b|\brecord\b|\breport\b|\bmemory\b/.test(lowered)) {
+    signals.push("results logging");
+  }
+
+  const hasControlGate =
+    signals.includes("preconditions") || signals.includes("verification");
+  const hasDecisionOrRollback =
+    signals.includes("decision") || signals.includes("rollback");
+  const hasEvidenceBoundary = signals.includes("results logging");
+
+  if (
+    signals.length < 3
+    || !hasControlGate
+    || (!hasDecisionOrRollback && !hasEvidenceBoundary)
+  ) {
+    return null;
+  }
+
+  const mentionsLoop = /\b(loop|iteration|iterative)\b/.test(lowered);
+  const prefersBoundedProtocolFraming =
+    /\b(workflow|protocol)\b/.test(lowered)
+    && /\b(checklist|dry-run|inventory|ship|verify|log)\b/.test(lowered);
+
+  return {
+    signals,
+    framing: mentionsLoop && !prefersBoundedProtocolFraming
+      ? "iterative_loop"
+      : "bounded_protocol",
+  } as const;
+}
+
+function formatStructuralProcessStages(stages: string[]) {
+  return stages.join(" -> ");
+}
+
+function formatIterativeControlSignals(signals: string[]) {
+  return signals.join(", ");
+}
+
 function buildSourceAnalysis(
   input: {
     planningInput: DirectiveEngineLanePlanningInput;
     usefulnessRationale: string;
   },
 ): DirectiveEngineAnalysis {
+  const structuralProcessStages = resolveStructuralProcessStages(
+    input.planningInput.source,
+  );
+  const controlSignalProfile = resolveControlSignalProfile(
+    input.planningInput.source,
+  );
+  const structuralStageSummary = structuralProcessStages.length >= 2
+    ? `Structural stages detected: ${formatStructuralProcessStages(structuralProcessStages)}.`
+    : null;
+  const controlSignalSummary = controlSignalProfile
+    ? controlSignalProfile.framing === "iterative_loop"
+      ? `Loop-control signals detected: ${formatIterativeControlSignals(controlSignalProfile.signals)}.`
+      : `Bounded control/evidence signals detected: ${formatIterativeControlSignals(controlSignalProfile.signals)}.`
+    : null;
+  const derivedSummaries = [structuralStageSummary, controlSignalSummary].filter(Boolean);
+
   return {
     missionFitSummary:
-      normalizeText(input.planningInput.source.summary)
-      || `Assess ${input.planningInput.source.title || input.planningInput.candidateId} against mission "${input.planningInput.mission.currentObjective}".`,
+      derivedSummaries.length > 0
+        ? `${normalizeText(input.planningInput.source.summary) || `Assess ${input.planningInput.source.title || input.planningInput.candidateId} against mission "${input.planningInput.mission.currentObjective}".`} ${derivedSummaries.join(" ")}`
+        : normalizeText(input.planningInput.source.summary)
+          || `Assess ${input.planningInput.source.title || input.planningInput.candidateId} against mission "${input.planningInput.mission.currentObjective}".`,
     primaryAdoptionQuestion:
-      "What is the primary adoption target of the extracted value?",
+      structuralProcessStages.length >= 2
+        ? `Which parts of the ${formatStructuralProcessStages(structuralProcessStages)} stage pattern belong to Engine-owned workflow structure, and which parts should stay out of Architecture until a different adoption target is proven?`
+        : controlSignalProfile?.framing === "iterative_loop"
+          ? `Which explicit ${formatIterativeControlSignals(controlSignalProfile.signals)} boundaries belong to Engine-owned loop discipline, and which parts should stay out of Architecture until a different adoption target is proven?`
+          : controlSignalProfile
+            ? `Which explicit ${formatIterativeControlSignals(controlSignalProfile.signals)} boundaries belong to Engine-owned control and evidence discipline, and which parts should stay out of Architecture until a different adoption target is proven?`
+        : "What is the primary adoption target of the extracted value?",
     matchedCapabilityGapId: input.planningInput.routingAssessment.matchedGapId,
     usefulnessRationale: input.usefulnessRationale,
-    rationale: [...input.planningInput.routingAssessment.rationale],
+    rationale: [
+      ...input.planningInput.routingAssessment.rationale,
+      ...(structuralStageSummary
+        ? [
+            `${structuralStageSummary} Preserve those stage boundaries during Architecture adaptation instead of flattening them into one generic mechanism.`,
+          ]
+        : []),
+      ...(controlSignalSummary
+        ? [
+            controlSignalProfile?.framing === "iterative_loop"
+              ? `${controlSignalSummary} Preserve those bounded loop-control boundaries during Architecture adaptation instead of flattening them into one generic workflow heuristic.`
+              : `${controlSignalSummary} Preserve those bounded control and evidence boundaries during Architecture adaptation instead of flattening them into one generic workflow heuristic.`,
+          ]
+        : []),
+    ],
   };
 }
 
 function buildExtractionPlan(
   input: DirectiveEngineLanePlanningInput,
 ): DirectiveEngineExtractionPlan {
+  const structuralProcessStages = resolveStructuralProcessStages(input.source);
+  const controlSignalProfile = resolveControlSignalProfile(input.source);
   const extractedValue = uniqueStrings([
+    structuralProcessStages.length >= 2
+      ? `Stage-aware structural pattern: ${formatStructuralProcessStages(structuralProcessStages)} with explicit handoff boundaries.`
+      : null,
+    controlSignalProfile?.framing === "iterative_loop"
+      ? `Bounded loop-control pattern: explicit ${formatIterativeControlSignals(controlSignalProfile.signals)} boundaries for repeated iteration.`
+      : controlSignalProfile
+        ? `Bounded control/evidence pattern: explicit ${formatIterativeControlSignals(controlSignalProfile.signals)} boundaries for approval, validation, rollback, and reporting.`
+      : null,
     input.source.summary,
     ...(input.source.notes ?? []).slice(0, 3),
   ]);
   const excludedBaggage = uniqueStrings([
+    structuralProcessStages.length >= 2
+      ? "paper-specific benchmark and repository-generation detail that does not need to become Engine workflow logic"
+      : null,
+    controlSignalProfile?.framing === "iterative_loop"
+      ? "repo-local command sequences and autonomous execution policy that should not become Directive Workspace automation"
+      : controlSignalProfile
+        ? "domain-specific shipping or delivery actions that should not become Directive Workspace automation"
+      : null,
     input.source.sourceType === "github-repo" || input.source.sourceType === "external-system"
       ? "source-specific implementation baggage"
       : "non-mission-relevant source detail",
@@ -256,6 +415,13 @@ function buildExtractionPlan(
 function buildAdaptationPlan(
   input: DirectiveEngineLanePlanningInput,
 ): DirectiveEngineAdaptationPlan {
+  const structuralProcessStages = resolveStructuralProcessStages(input.source);
+  const controlSignalProfile = resolveControlSignalProfile(input.source);
+  const hasStageAwareStructuralPattern = input.lane.laneId === "architecture"
+    && structuralProcessStages.length >= 2;
+  const hasControlSignalPattern = input.lane.laneId === "architecture"
+    && Boolean(controlSignalProfile);
+
   switch (input.lane.laneId) {
     case "discovery":
       return {
@@ -267,6 +433,36 @@ function buildAdaptationPlan(
         ],
       };
     case "architecture":
+      if (hasStageAwareStructuralPattern) {
+        return {
+          directiveOwnedForm:
+            "Directive-owned Engine logic that preserves explicit stage boundaries for structural source adaptation instead of collapsing them into one generic Architecture mechanism.",
+          adaptedValue: [
+            `Keep ${formatStructuralProcessStages(structuralProcessStages)} as separate Engine-owned reasoning stages.`,
+            "Use those stage boundaries to decide what belongs in Discovery, Architecture, and Runtime before any downstream implementation claim is made.",
+          ],
+        };
+      }
+      if (hasControlSignalPattern && controlSignalProfile?.framing === "iterative_loop") {
+        return {
+          directiveOwnedForm:
+            "Directive-owned Engine logic that preserves explicit bounded loop-control boundaries for iterative structural sources instead of collapsing them into one generic Architecture heuristic.",
+          adaptedValue: [
+            `Keep ${formatIterativeControlSignals(controlSignalProfile.signals)} as separate Engine-owned control boundaries for repeated improvement loops.`,
+            "Use those boundaries to preserve fail-fast setup, proof discipline, rollback safety, and iteration memory without adopting source-specific execution behavior.",
+          ],
+        };
+      }
+      if (hasControlSignalPattern && controlSignalProfile?.framing === "bounded_protocol") {
+        return {
+          directiveOwnedForm:
+            "Directive-owned Engine logic that preserves explicit bounded control and evidence boundaries for structural protocols instead of collapsing them into one generic Architecture heuristic.",
+          adaptedValue: [
+            `Keep ${formatIterativeControlSignals(controlSignalProfile.signals)} as separate Engine-owned control and evidence boundaries.`,
+            "Use those boundaries to preserve checklist discipline, approval gates, verification, rollback clarity, and reporting structure without adopting source-specific shipping behavior.",
+          ],
+        };
+      }
       return {
         directiveOwnedForm:
           "Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.",
@@ -290,6 +486,9 @@ function buildAdaptationPlan(
 function buildImprovementPlan(
   input: DirectiveEngineLanePlanningInput,
 ): DirectiveEngineImprovementPlan {
+  const structuralProcessStages = resolveStructuralProcessStages(input.source);
+  const controlSignalProfile = resolveControlSignalProfile(input.source);
+
   switch (input.lane.laneId) {
     case "discovery":
       return {
@@ -301,6 +500,36 @@ function buildImprovementPlan(
           "Make source selection and routing clearer and more reusable than the original source context.",
       };
     case "architecture":
+      if (structuralProcessStages.length >= 2) {
+        return {
+          improvementGoals: [
+            "improve stage-aware engine analysis for structural sources",
+            "improve future source adaptation quality for ambiguous multi-stage candidates",
+          ],
+          intendedDelta:
+            `Turn multi-stage structural sources into explicit Engine-owned stage plans (${formatStructuralProcessStages(structuralProcessStages)}) so Architecture can preserve stage boundaries instead of flattening them into one generic adaptation step.`,
+        };
+      }
+      if (controlSignalProfile?.framing === "iterative_loop") {
+        return {
+          improvementGoals: [
+            "improve bounded iteration-control analysis for structural workflow sources",
+            "improve future Architecture adaptation quality for loop protocols with explicit safety boundaries",
+          ],
+          intendedDelta:
+            `Turn iterative structural sources into explicit Engine-owned loop-control plans (${formatIterativeControlSignals(controlSignalProfile.signals)}) so Architecture can preserve precondition, proof, rollback, decision, and results-memory boundaries instead of flattening them into one generic workflow note.`,
+        };
+      }
+      if (controlSignalProfile?.framing === "bounded_protocol") {
+        return {
+          improvementGoals: [
+            "improve bounded control and evidence analysis for structural protocols",
+            "improve future Architecture adaptation quality for approval, verification, rollback, and reporting structures",
+          ],
+          intendedDelta:
+            `Turn structural protocols with explicit ${formatIterativeControlSignals(controlSignalProfile.signals)} boundaries into Engine-owned control/evidence plans so Architecture can preserve those gates without inventing loop semantics or runtime shipping behavior.`,
+        };
+      }
       return {
         improvementGoals: [
           "improve engine self-improvement quality",
@@ -359,7 +588,7 @@ function buildDecision(input: {
   } else if (input.lane.laneId === "architecture") {
     decisionState = "accept_for_architecture";
   } else {
-    decisionState = "route_to_forge_follow_up";
+    decisionState = "route_to_runtime_follow_up";
   }
 
   return {
@@ -387,7 +616,7 @@ function buildReportPlan(input: {
       ? "discovery_routing_report"
       : input.lane.laneId === "architecture"
         ? "architecture_adaptation_report"
-        : "forge_follow_up_report";
+        : "runtime_follow_up_report";
 
   const requiredDestinations = [
     "directive_workspace_record",
@@ -504,7 +733,7 @@ export class DirectiveEngine {
     const mission = resolveMissionContext(input.mission);
     const source: DirectiveEngineSourceItem = {
       ...input.source,
-      sourceType: normalizeSourceType(input.source.sourceType),
+      sourceType: normalizeDirectiveEngineSourceType(input.source.sourceType),
       sourceRef: normalizeText(input.source.sourceRef),
       title: normalizeText(input.source.title),
       summary: normalizeText(input.source.summary) || null,

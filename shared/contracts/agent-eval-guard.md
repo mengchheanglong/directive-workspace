@@ -1,11 +1,11 @@
 # Agent Eval Guard Contract
 
 Purpose:
-- enforce bounded runtime-eval evidence on Forge promotion records before callable eval-lane claims
+- enforce bounded runtime-eval evidence on Runtime promotion records before callable eval-lane claims
 - ensure eval-lane promotions capture explicit thresholds, observed metrics, guard result, and rollback scope
 
 Scope:
-- applies to Forge promotion records whose `Quality gate profile` is `agent_eval_guard/v1`
+- applies to Runtime promotion records whose `Quality gate profile` is `agent_eval_guard/v1`
 - applies to linked proof artifacts referenced by `Proof path`
 
 Canonical profile:
@@ -18,7 +18,7 @@ Canonical proof shape:
 - `agent_eval_guard_snapshot/v1`
 
 Primary host checker:
-- `npm run check:directive-promptfoo-forge`
+- `npm run check:directive-promptfoo-runtime`
 
 Baseline thresholds:
 - score >= `0.8`
@@ -29,7 +29,7 @@ Required evidence:
 - promotion record declares `Quality gate profile: agent_eval_guard/v1`
 - promotion record declares `Promotion profile family: bounded_agent_eval`
 - promotion record declares `Proof shape: agent_eval_guard_snapshot/v1`
-- promotion record declares `Primary host checker: npm run check:directive-promptfoo-forge`
+- promotion record declares `Primary host checker: npm run check:directive-promptfoo-runtime`
 - promotion record links the host compile artifact and proof artifact
 - proof artifact records:
   - promotion profile family
@@ -49,11 +49,11 @@ Required evidence:
 Decision rules:
 1. A bounded eval lane may claim `pass` only when all observed metrics satisfy thresholds.
 2. A bounded eval lane must remain scoped to eval artifacts and guard checks; it does not imply broad upstream runtime adoption.
-3. Rollback must remove slice-specific Forge artifacts and checker wiring without disturbing unrelated host eval infrastructure.
+3. Rollback must remove slice-specific Runtime artifacts and checker wiring without disturbing unrelated host eval infrastructure.
 
 Validation hooks:
-- `npm run check:directive-promptfoo-forge`
+- `npm run check:directive-promptfoo-runtime`
 - `npm run check:ops-stack`
 
 Canonical inventory:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\PROMOTION_PROFILES.json`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\PROMOTION_PROFILES.json`

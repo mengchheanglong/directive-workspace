@@ -4,16 +4,16 @@ import {
   resolveDirectiveArchitectureCloseoutAbsolutePath,
   resolveDirectiveArchitectureCloseoutPath,
   type DirectiveArchitectureCloseoutWriteRequest,
-} from "./architecture-closeout";
+} from "./architecture-closeout.ts";
 import type {
   DirectiveArchitectureAdoptionDecisionArtifact,
-} from "./architecture-adoption-artifacts";
+} from "./architecture-adoption-artifacts.ts";
 import type {
   ArchitectureAdoptionResolution,
-} from "./architecture-adoption-resolution";
+} from "./architecture-adoption-resolution.ts";
 import type {
   ArchitectureReviewResolution,
-} from "./architecture-review-resolution";
+} from "./architecture-review-resolution.ts";
 
 export type DirectiveArchitectureAdoptionDecisionWriteRequest =
   Omit<DirectiveArchitectureCloseoutWriteRequest, "recordRelativePath"> & {

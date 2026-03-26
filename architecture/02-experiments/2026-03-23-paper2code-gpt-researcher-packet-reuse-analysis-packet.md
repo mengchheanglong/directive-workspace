@@ -48,7 +48,7 @@
   - emit a mechanism packet using the existing mechanism-packet system
 - Excluded or deferred items:
   - no new packet contract family
-  - no Forge handoff
+  - no Runtime handoff
 
 ## Open questions
 

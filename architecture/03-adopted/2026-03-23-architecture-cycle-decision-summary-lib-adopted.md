@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes`
+- Runtime threshold check: `yes`
 - Decision: `adopted`
 - Status: `product_materialized`
 
@@ -35,7 +35,7 @@ The new helper summarizes:
 2. usefulness-level composition
 3. artifact-type composition
 4. completion-status composition
-5. Forge handoff demand
+5. Runtime handoff demand
 6. meta self-improvement category coverage
 
 ## Why this improves the system

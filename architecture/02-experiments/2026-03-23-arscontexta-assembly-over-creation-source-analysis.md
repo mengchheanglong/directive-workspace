@@ -57,7 +57,7 @@ Type: source-driven analysis
 
 - Improvement candidates:
   - bind packets to adapted/improved Directive value rather than generic session summaries
-  - make packets explicit about baggage exclusion, Forge threshold, and product-owned artifact refs
+  - make packets explicit about baggage exclusion, Runtime threshold, and product-owned artifact refs
 - Improvement type per candidate:
   - `architecture mechanism packet` -> `composability`, `evaluability`, `generality`
   - `packet template/schema` -> `evaluability`, `quality`

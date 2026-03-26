@@ -18,7 +18,7 @@ In:
 
 Out:
 - upstream skill-pack runtime adoption
-- direct Forge callable integration in this slice
+- direct Runtime callable integration in this slice
 
 ## Dependencies
 

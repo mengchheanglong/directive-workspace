@@ -2,34 +2,34 @@
 
 Status: active
 Updated: 2026-03-21
-Owner: Directive Forge
+Owner: Directive Runtime
 
 ## Purpose
 
-Normalize older Forge packs that were already live in the host before the current proof/promotion/registry discipline was in place.
+Normalize older Runtime packs that were already live in the host before the current proof/promotion/registry discipline was in place.
 
 This contract exists to stop silent grandfathering.
 
 ## When To Use
 
 Use `legacy_live_runtime_guard/v1` only when all are true:
-- the pack is already classified `live_runtime` in `forge/source-packs/CATALOG.json`
+- the pack is already classified `live_runtime` in `runtime/source-packs/CATALOG.json`
 - a real host adapter already consumes it
 - a current bounded proof artifact can still be produced from the host
 - rollback can downgrade the pack back to `follow_up_only` without losing product ownership
 
 Do not use this contract for new promotions.
 
-New Forge runtime work must use a purpose-built promotion profile instead.
+New Runtime runtime work must use a purpose-built promotion profile instead.
 
 ## Required Accounting
 
 Every normalized legacy live-runtime pack must declare:
-- one Forge record
-- one Forge proof record
+- one Runtime record
+- one Runtime proof record
 - one promotion record
 - one registry entry
-- one live-runtime accounting entry in `forge/LIVE_RUNTIME_ACCOUNTING.json`
+- one live-runtime accounting entry in `runtime/LIVE_RUNTIME_ACCOUNTING.json`
 
 ## Proof Shape
 
@@ -56,4 +56,4 @@ It does not authorize:
 The primary structural checker is:
 - `npm run check:directive-live-runtime-accounting`
 
-Supporting host proof stays pack-specific and is recorded in the linked Forge proof record.
+Supporting host proof stays pack-specific and is recorded in the linked Runtime proof record.

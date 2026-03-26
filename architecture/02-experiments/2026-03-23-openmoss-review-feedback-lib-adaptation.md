@@ -56,10 +56,10 @@ Type: source-driven adaptation
   - `shared/contracts/lifecycle-transition-policy.md`
   - `shared/contracts/experiment-score-feedback.md`
   - `shared/lib/README.md`
-  - `forge/BOUNDARY_INVENTORY.json`
+  - `runtime/BOUNDARY_INVENTORY.json`
   - `mission-control/src/lib/directive-workspace/lifecycle-review-feedback.ts`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

@@ -45,7 +45,7 @@
   - adapt the source into an Architecture mechanism packet contract/template/schema
   - use the packet as a reusable output of source-driven Architecture slices, not as a replacement for source-analysis/adaptation records
 - Excluded or deferred items:
-  - no Forge runtime implementation
+  - no Runtime runtime implementation
   - no shared-lib parser yet
 
 ## Open questions

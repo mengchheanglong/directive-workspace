@@ -1,9 +1,9 @@
 # Transformation Record Template
 
-Use this template for behavior-preserving transformation work in Forge.
+Use this template for behavior-preserving transformation work in Runtime.
 
 Transformation work improves implementation quality while preserving existing behavior.
-It is a first-class Forge capability lane because it is highly verifiable.
+It is a first-class Runtime capability lane because it is highly verifiable.
 
 - Candidate id:
 - Candidate name:
@@ -47,7 +47,7 @@ It is a first-class Forge capability lane because it is highly verifiable.
 ## Decision
 
 - Decision state:
-- Adoption target: Forge
+- Adoption target: Runtime
 - Promotion record (if promoted):
 - Mission alignment (which active-mission objective does this serve):
 - Addresses known capability gap (gap_id or n/a):

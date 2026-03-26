@@ -11,12 +11,12 @@
     "record_date": "2026-03-22",
     "claimed_value": "Provides a bounded mechanism with likely reusable value.",
     "first_pass_summary": "Quickly understandable candidate with clear likely route and bounded proof need.",
-    "adoption_target": "forge",
+    "adoption_target": "runtime",
     "decision_state": "adopt",
-    "route_destination": "forge",
+    "route_destination": "runtime",
     "why_this_route": "Primary value is a repeatedly callable runtime capability.",
     "why_not_alternatives": "Architecture-only treatment would miss the reusable runtime objective.",
     "need_bounded_proof": "Need one bounded proof artifact before promotion.",
-    "next_artifact": "forge/records/2026-03-22-example-fast-path-record.md"
+    "next_artifact": "runtime/records/2026-03-22-example-fast-path-record.md"
   }
 }

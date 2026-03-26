@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this improves Directive Workspace's Decide-step output quality without needing a runtime surface
+- Runtime threshold check: `yes` - this improves Directive Workspace's Decide-step output quality without needing a runtime surface
 
 ## Why this slice exists
 
@@ -35,4 +35,4 @@ Bind it to an executable Architecture checker:
 Architecture should be able to generate a canonical adoption artifact that:
 - matches `architecture-adoption-decision.schema.json`
 - composes the executable adoption resolver instead of bypassing it
-- preserves meta self-improvement data and Forge handoff data in one machine-readable output
+- preserves meta self-improvement data and Runtime handoff data in one machine-readable output

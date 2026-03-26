@@ -4,7 +4,7 @@ Status: `PARKED_UNTIL_CURRENT_ARCHITECTURE_SLICES_COMPLETE`
 
 Superseded in part on 2026-03-20 by:
 - `./2026-03-20-arscontexta-context-patterns.md`
-- `../../forge/follow-up/2026-03-20-agency-agents-skill-pack-cutover.md`
+- `../../runtime/follow-up/2026-03-20-agency-agents-skill-pack-cutover.md`
 
 This note preserves two candidate directions for a later Directive Architecture cycle:
 - `agency-agents`

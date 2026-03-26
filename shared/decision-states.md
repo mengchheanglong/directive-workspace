@@ -7,7 +7,7 @@ Valid Directive decision states:
 - `monitor`
 - `experiment`
 - `accept_for_architecture`
-- `route_to_forge_follow_up`
+- `route_to_runtime_follow_up`
 - `knowledge_only`
 
 Rules:

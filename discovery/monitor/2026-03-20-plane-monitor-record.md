@@ -9,7 +9,7 @@
 - Promotion trigger conditions:
   - a concrete PM-system integration need appears in active roadmap
   - integration requires a new adapter contract
-  - adoption target is explicit (`Directive Architecture` and/or `Directive Forge follow-up`)
+  - adoption target is explicit (`Directive Architecture` and/or `Directive Runtime follow-up`)
 - Review cadence: on-demand + monthly sweep
 - Last review result: `2026-03-20` reanalysis bundle kept candidate in knowledge-only monitor
 - Next review date: `2026-04-20`

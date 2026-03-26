@@ -15,7 +15,7 @@ It is allowed to provide:
 It is not allowed to remain as a runtime dependency of Directive Workspace.
 
 Rule:
-- extract useful value into `Directive Discovery`, `Directive Forge`, or `Directive Architecture`
+- extract useful value into `Directive Discovery`, `Directive Runtime`, or `Directive Architecture`
 - record the extraction outcome explicitly
 - remove `agent-lab` only after every active dependency is cut over or dropped
 

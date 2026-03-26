@@ -1,0 +1,23 @@
+# Discovery Intake Record: Karpathy Autoresearch Discovery Front Door Pressure
+
+- Candidate id: dw-real-karpathy-autoresearch-discovery-v0-2026-03-25
+- Candidate name: Karpathy Autoresearch Discovery Front Door Pressure
+- Intake date: 2026-03-25
+- Source type: theory
+- Source reference: sources/intake/source-karpathy-autoresearch-concept.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Constraint plus metric plus autonomous iteration loop patterns that can improve Directive Workspace engine evaluation, proof, and self-improvement loop design.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 120309c0-c1bf-4fe6-b65b-cb610eede469 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-triage.md

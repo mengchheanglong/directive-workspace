@@ -19,7 +19,7 @@ In:
 
 Out:
 - upstream skill-pack/runtime adoption
-- Forge callable integration
+- Runtime callable integration
 - host UI redesign work
 
 ## Dependencies

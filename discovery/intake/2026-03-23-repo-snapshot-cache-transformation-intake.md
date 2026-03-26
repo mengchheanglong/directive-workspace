@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - removes repeated repo-snapshot reconstruction work across repeated dashboard/context reads
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -41,4 +41,4 @@ Bounded tradeoff:
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-23-repo-snapshot-cache-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-23-repo-snapshot-cache-transformation-record.md`

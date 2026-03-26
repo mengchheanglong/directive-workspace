@@ -13,7 +13,7 @@ It owns:
 - Architecture decision records and bounded experiment notes only; raw source snapshots live under `C:\Users\User\.openclaw\workspace\directive-workspace\sources\`
 
 It does not own:
-- runtime/callable capability delivery (that is Forge)
+- runtime/callable capability delivery (that is Runtime)
 - host runtime code, database, or APIs (that is Mission Control)
 - intake, triage, or routing (that is Discovery)
 - raw upstream repo storage (that is `directive-workspace/sources/`)
@@ -23,7 +23,7 @@ OpenClaw note:
 - if an Architecture document needs to mention OpenClaw rescue/recovery, reference `C:\Users\User\.openclaw\workspace\openclaw\RESCUE_OPENCLAW.md` instead of redefining the role here
 
 Handoff rule:
-- When Architecture work discovers runtime-worthy value, hand it to Forge via the Architecture-to-Forge handoff contract.
+- When Architecture work discovers runtime-worthy value, hand it to Runtime via the Architecture-to-Runtime handoff contract.
 - Do not leak runtime work into Architecture.
 
 Completion rule:

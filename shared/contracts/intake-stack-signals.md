@@ -22,7 +22,7 @@ Routing rules:
   - value is mostly contract, pattern, workflow, or framework improvement
   - runtime surface is broad or risky
   - the source looks stack-shaped but the useful value is governance or structure
-- prefer `Directive Forge` when:
+- prefer `Directive Runtime` when:
   - the value is a bounded callable/helper capability
   - runtime objective is explicit and reversible
   - current host gates can validate the runtime surface safely

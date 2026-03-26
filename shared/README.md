@@ -2,7 +2,7 @@
 
 `shared/` contains the canonical cross-track artifacts for Directive Workspace.
 
-It exists so Discovery, Forge, Architecture, and hosts do not invent their own incompatible vocabulary.
+It exists so Discovery, Runtime, Architecture, and hosts do not invent their own incompatible vocabulary.
 
 This folder should contain:
 - status definitions
@@ -16,7 +16,7 @@ This folder should contain:
 Current reusable templates include:
 - Discovery fast-path record
 - Discovery intake, triage, routing, and holding-state templates
-- Forge follow-up, execution, promotion, and registry templates
+- Runtime follow-up, execution, promotion, and registry templates
 - IntegrationContractArtifact and ProofChecklistArtifact templates
 - shared decision and experiment templates
 

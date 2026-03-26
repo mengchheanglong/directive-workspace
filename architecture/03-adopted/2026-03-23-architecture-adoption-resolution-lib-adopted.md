@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes`
+- Runtime threshold check: `yes`
 - Decision: `adopted`
 - Status: `product_materialized`
 
@@ -15,7 +15,7 @@ Directive Workspace had an executable review lane, but the Decide step was still
 That meant Architecture could review an evaluated slice, yet still leave adoption judgment implicit across:
 - readiness gates
 - artifact-type selection
-- Forge threshold logic
+- Runtime threshold logic
 - completion-status classification
 
 ## Adopted result
@@ -33,8 +33,8 @@ The new resolver:
 1. consumes the executable Architecture review resolution when available
 2. checks adoption readiness against the canonical contract
 3. resolves artifact type from the selection matrix
-4. decides `adopt`, `stay_experimental`, or `hand_off_to_forge`
-5. returns completion status, required gaps, and Forge handoff requirement in product-owned form
+4. decides `adopt`, `stay_experimental`, or `hand_off_to_runtime`
+5. returns completion status, required gaps, and Runtime handoff requirement in product-owned form
 
 ## Why this improves the system
 

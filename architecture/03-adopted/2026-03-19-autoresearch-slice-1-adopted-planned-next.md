@@ -7,7 +7,7 @@
 
 ## Slice 1 Integration
 - Mission Control change:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_AUTORESEARCH_SLICE_1_RUNBOOK.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AUTORESEARCH_SLICE_1_RUNBOOK.md`
 - Type: documentation-only integration contract (bounded run template + operator rules)
 
 ## Gate Evidence

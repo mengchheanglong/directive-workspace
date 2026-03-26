@@ -1,0 +1,38 @@
+# Superpowers Promotion Record
+
+- Candidate id: superpowers
+- Candidate name: superpowers
+- Promotion date: 2026-03-21
+- Linked Runtime record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-superpowers-runtime-record.md`
+- Target host: Mission Control
+- Target runtime surface: bounded workflow operator import lane
+- Integration mode: adapt
+- Source intent artifact: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-21-runtime-wave-02-shortlist.md`
+- Compile contract artifact: `C:\Users\User\.openclaw\workspace\mission-control\backend\src\modules\agents-import-packs\agents-import-packs.service.ts`
+- Runtime permissions profile: host-local agent catalog import through `POST /api/agents/import-packs` plus isolated smoke artifact writeback under `reports/agent-pack-imports/`
+- Safe output scope: `C:\Users\User\.openclaw\workspace\mission-control\reports\agent-pack-imports\` and project-scoped Mission Control agent catalog rows
+- Sanitize policy: no upstream plugin install flow, hook execution, global skill-store mutation, or unrelated project file changes are allowed by this slice
+- Proposed runtime status: callable (bounded-workflow-operator-import-lane)
+- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-superpowers-runtime-slice-01-proof.md`
+- Quality gate profile: workflow_operator_import_guard/v1
+- Promotion profile family: bounded_workflow_operator_import
+- Proof shape: agent_pack_import_snapshot/v1
+- Primary host checker: `npm run check:directive-superpowers-runtime`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: self_validated
+- Quality gate fail reasons: none
+- Required gates:
+  - `npm run runtime:superpowers:smoke`
+  - `npm run check:directive-superpowers-runtime`
+  - `npm run check:agents-import-packs-api-backend`
+  - `npm run check:ops-stack`
+- Validation result: all required gates PASS on 2026-03-21
+- Rollback plan: restore the pack to `follow_up_only`, remove superpowers-specific Runtime artifacts and checker wiring, and keep generic import-pack infrastructure only if still useful outside callable workflow-operator status.
+- Owner: operator
+- Promotion decision: approved for bounded callable workflow-operator follow-up

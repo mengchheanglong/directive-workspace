@@ -55,8 +55,8 @@ It improves the system by making sure source-driven Architecture slices are cred
 - delta evidence present: yes
 - no unresolved baggage: yes
 
-Forge threshold check:
-- no Forge handoff
+Runtime threshold check:
+- no Runtime handoff
 - the mechanism is valuable without a runtime surface because it governs Architecture’s own processing quality
 
 ## Self-improvement evidence

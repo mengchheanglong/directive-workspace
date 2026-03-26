@@ -7,7 +7,7 @@ Batch: `bundle-02`
 ## Executed Candidates
 
 ### `al-parked-hermes-agent`
-- Route target: `Directive Architecture` (+ optional Forge follow-up)
+- Route target: `Directive Architecture` (+ optional Runtime follow-up)
 - Result: `experiment`
 - Artifact:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-20-hermes-agent-reanalysis-bundle-02.md`

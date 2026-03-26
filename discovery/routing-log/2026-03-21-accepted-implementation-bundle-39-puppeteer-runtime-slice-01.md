@@ -2,12 +2,12 @@
 
 Date: 2026-03-21
 Status: accepted
-Target track: Directive Forge
-Adoption target: Directive Forge
+Target track: Directive Runtime
+Adoption target: Directive Runtime
 
 ## Why
 
-Puppeteer remained the next strongest Forge runtime candidate after the system bundles closed, but it needed to stay bounded to host UI validation rather than becoming a generic browser automation platform.
+Puppeteer remained the next strongest Runtime runtime candidate after the system bundles closed, but it needed to stay bounded to host UI validation rather than becoming a generic browser automation platform.
 
 ## Accepted implementation
 
@@ -17,6 +17,6 @@ Puppeteer remained the next strongest Forge runtime candidate after the system b
 
 ## Output
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-puppeteer-runtime-slice-01-proof.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-21-puppeteer-promotion-record.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\registry\2026-03-21-puppeteer-registry-entry.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-puppeteer-runtime-slice-01-proof.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-21-puppeteer-promotion-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\registry\2026-03-21-puppeteer-registry-entry.md`

@@ -12,7 +12,7 @@
 - Reason: 23-stage pipeline is heavy versus current bounded-slice cadence.
 
 4. `autogen` (3.15)
-- Reason: broad framework, weaker direct fit to Directive Forge loop.
+- Reason: broad framework, weaker direct fit to Directive Runtime loop.
 
 5. `openhands` (3.00)
 - Reason: execution overlap, no clear differentiated ROI over existing lanes.

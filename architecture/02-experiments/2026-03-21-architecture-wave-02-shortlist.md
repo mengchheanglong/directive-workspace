@@ -15,7 +15,7 @@ Wave 02 is limited to candidates that still have surviving Architecture value bu
 
 A candidate qualifies for Wave 02 only if all of the following are true:
 - Discovery routing is already explicit.
-- The remaining work is still Architecture, not Forge runtime follow-up.
+- The remaining work is still Architecture, not Runtime runtime follow-up.
 - The candidate adds a new internal mechanism family rather than duplicating the current closed set.
 - The next slice can be bounded to one contract, template, schema family, or policy artifact set.
 
@@ -38,13 +38,13 @@ A candidate qualifies for Wave 02 only if all of the following are true:
 
 ### 2) `al-parked-hermes-agent`
 - Current state:
-  - routed to Architecture with optional Forge follow-up
+  - routed to Architecture with optional Runtime follow-up
   - has reference-pattern outputs only
 - Existing outputs:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-hermes-agent-surviving-patterns.md`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-hermes-context-compaction-contract.md`
 - Why this is next:
-  - context-compaction fidelity remains a reusable internal handoff problem across Discovery, Architecture, and Forge
+  - context-compaction fidelity remains a reusable internal handoff problem across Discovery, Architecture, and Runtime
   - the current result is still mostly contract prose, not a shared reusable product artifact family
 - Proposed Architecture target:
   - product-owned shared contract or schema-backed handoff fidelity profile for compaction/bypass behavior

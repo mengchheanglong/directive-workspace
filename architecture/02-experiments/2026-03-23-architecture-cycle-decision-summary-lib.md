@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this improves Architecture cycle evaluation without needing a runtime surface
+- Runtime threshold check: `yes` - this improves Architecture cycle evaluation without needing a runtime surface
 
 ## Why this slice exists
 
@@ -34,7 +34,7 @@ Architecture cycle evaluation should be able to summarize:
 - adoption verdict distribution
 - artifact-type distribution
 - completion-status distribution
-- Forge handoff demand
+- Runtime handoff demand
 - meta self-improvement category coverage
 
 from generated adoption artifacts directly.

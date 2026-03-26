@@ -4,7 +4,7 @@ import type { DirectiveEngineUsefulnessLevel } from "./types.ts";
 export function classifyDirectiveEngineUsefulness(
   input: DirectiveEngineLanePlanningInput,
 ): DirectiveEngineUsefulnessLevel {
-  if (input.lane.laneId === "forge") {
+  if (input.lane.laneId === "runtime") {
     return "direct";
   }
 

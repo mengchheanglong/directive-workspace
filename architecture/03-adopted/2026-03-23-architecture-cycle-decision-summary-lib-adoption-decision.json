@@ -17,7 +17,7 @@
   "self_improvement": {
     "category": "evaluation_quality",
     "claim": "Architecture cycle evaluation will compare waves more reliably because generated adoption artifacts can now be summarized directly into decision metrics.",
-    "mechanism": "The cycle-decision summary helper aggregates verdict, usefulness, artifact-type, completion-status, Forge-handoff, and self-improvement-category counts from machine-readable adoption artifacts.",
+    "mechanism": "The cycle-decision summary helper aggregates verdict, usefulness, artifact-type, completion-status, Runtime-handoff, and self-improvement-category counts from machine-readable adoption artifacts.",
     "baseline_observation": "Cycle evaluation templates had no executable lane for aggregating decision composition from generated adoption artifacts.",
     "expected_effect": "Future cycle evaluations can anchor decision composition to generated artifacts instead of only prose adopted records.",
     "verification_method": "structural_inspection",
@@ -29,6 +29,6 @@
     "verdict": "adopt",
     "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
     "completion_status": "product_materialized",
-    "forge_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
   }
 }

@@ -71,7 +71,7 @@
       "type": "string",
       "enum": ["strong", "adequate", "weak", "skipped"]
     },
-    "forge_handoff": {
+    "runtime_handoff": {
       "type": "object",
       "properties": {
         "required": { "type": "boolean" },
@@ -145,7 +145,7 @@
       "properties": {
         "verdict": {
           "type": "string",
-          "enum": ["adopt", "stay_experimental", "hand_off_to_forge", "defer", "reject"]
+          "enum": ["adopt", "stay_experimental", "hand_off_to_runtime", "defer", "reject"]
         },
         "rationale": {
           "type": "string"
@@ -165,7 +165,7 @@
           "type": "string",
           "description": "Required when verdict is stay_experimental"
         },
-        "forge_threshold_check": {
+        "runtime_threshold_check": {
           "type": "string",
           "description": "Answer: Would this mechanism still be valuable if we never built a runtime surface for it?"
         }

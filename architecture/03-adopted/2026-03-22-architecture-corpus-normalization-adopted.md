@@ -5,7 +5,7 @@
 - Status: `product_materialized`
 - Origin: internally-generated
 - Usefulness level: `meta`
-- Forge threshold check: Yes, this is valuable without any runtime surface — it governs Architecture's own records.
+- Runtime threshold check: Yes, this is valuable without any runtime surface — it governs Architecture's own records.
 
 ## Problem
 
@@ -37,7 +37,7 @@ Every adopted Architecture record was classified by:
 - normalization status
 
 Key findings (corrected baseline, revision 2):
-- 14 structural, 3 direct (correctly Forge-routed), 7 meta (4 with self-improvement evidence)
+- 14 structural, 3 direct (correctly Runtime-routed), 7 meta (4 with self-improvement evidence)
 - Zero pre-doctrine records reference the new contracts
 - 3 meta-useful adoptions still lack self-improvement evidence (`discovery-gap-priority-worklist`, `source-adaptation-chain`, `source-adaptation-integration`)
 - 8 reference patterns promoted to shared contracts; 22 remain reference-only; 6 governance/infrastructure patterns were omitted from initial baseline
@@ -49,10 +49,10 @@ Key findings (corrected baseline, revision 2):
 Created `shared/contracts/architecture-artifact-lifecycle.md` - the missing "type system" for Architecture records. Defines:
 - **4 artifact states**: experiment, adopted, reference-pattern, deferred
 - **Required fields per state**: what each state must contain to be valid
-- **Transition rules**: experiment→adopted, experiment→deferred, experiment→reference-pattern, reference-pattern→adopted (promotion), reference-pattern→retired, adopted→Forge handoff
+- **Transition rules**: experiment→adopted, experiment→deferred, experiment→reference-pattern, reference-pattern→adopted (promotion), reference-pattern→retired, adopted→Runtime handoff
 - **Reference-pattern admission criteria**: what qualifies for reference vs. experiment vs. deferred
 - **Classification shortcuts**: quick decision tree for categorizing records
-- **Pre-doctrine handling**: existing records are classified, not rewritten, and Forge handoff is tracked as an adopted-record transition rather than a separate state
+- **Pre-doctrine handling**: existing records are classified, not rewritten, and Runtime handoff is tracked as an adopted-record transition rather than a separate state
 
 ### Phase 4: Corpus normalization record
 
@@ -66,7 +66,7 @@ Created `architecture/02-experiments/2026-03-22-architecture-corpus-normalizatio
 
 ### Phase 5: Integration
 
-- **Experiment record template**: added lifecycle classification fields (origin, usefulness level, Forge threshold check) and explicit next-decision options
+- **Experiment record template**: added lifecycle classification fields (origin, usefulness level, Runtime threshold check) and explicit next-decision options
 - **Workflow**: added Architecture artifact lifecycle section referencing the lifecycle contract and corpus normalization baseline
 - **Architecture completion rubric**: added Corpus Normalization Baseline section and Artifact Lifecycle Governance sections, corrected to revision 2 counts
 

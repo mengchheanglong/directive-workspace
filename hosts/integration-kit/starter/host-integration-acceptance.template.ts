@@ -83,7 +83,7 @@ export async function runHostIntegrationAcceptance(
     signal_acceptance: signalAcceptance,
     notes: [
       "Directive Workspace remains the product; the host is only accepted as a consumer of the canonical surface.",
-      "Passing this acceptance harness does not authorize host-local redefinition of Discovery, Forge, or Architecture vocabulary.",
+      "Passing this acceptance harness does not authorize host-local redefinition of Discovery, Runtime, or Architecture vocabulary.",
     ],
   };
 }

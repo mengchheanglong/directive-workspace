@@ -3,22 +3,22 @@
 - Candidate id: dw-live-scientify-engine-pressure-2026-03-24
 - Candidate name: Scientify Mixed Adoption Target Pressure
 - Triage date: 2026-03-24
-- First-pass summary: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Forge, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.
-- Problem it appears to solve: Open a bounded Forge follow-up and only involve host code through the engine adapter boundary.
-- Extractable value hypothesis: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Forge, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer. | Real GitHub source under sources/intake/scientify. Signals: workflow, automation, runtime capability, orchestration, handoff, engine improvement, routing ambiguity, scheduled delivery. Expected pressure: borderline Discovery versus Forge versus Architecture case. | record_shape:queue_only
-- Routing recommendation: Route to forge based on Engine decision route_to_forge_follow_up.
+- First-pass summary: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.
+- Problem it appears to solve: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
+- Extractable value hypothesis: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer. | Real GitHub source under sources/intake/scientify. Signals: workflow, automation, runtime capability, orchestration, handoff, engine improvement, routing ambiguity, scheduled delivery. Expected pressure: borderline Discovery versus Runtime versus Architecture case. | record_shape:queue_only
+- Routing recommendation: Route to runtime based on Engine decision route_to_runtime_follow_up.
 - Proposed adoption target: reusable runtime capability
 - Stack-shape summary: Source type github-repo; host dependence host_adapter_required; valuable without host runtime = no.
 - Boilerplate vs product boundary: Adapt the useful mechanism into Directive-owned form and exclude source-specific baggage: source-specific implementation baggage, host-local assumptions from the original source.
-- Suggested decision state: route_to_forge_follow_up
+- Suggested decision state: route_to_runtime_follow_up
 - Fit to current direction: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
-- Reusability across surfaces: Potentially reusable across hosts once operationalized into a bounded Forge artifact.
+- Reusability across surfaces: Potentially reusable across hosts once operationalized into a bounded Runtime artifact.
 - Operational risk: Human review still required before downstream execution or adoption.
-- Integration cost: Moderate - requires Forge follow-up proof before runtime integration.
-- Can current gates validate it safely: Yes, through forge_runtime_proof with gates bounded_runtime_scope, proof_artifact_present, host_adapter_review.
+- Integration cost: Moderate - requires Runtime follow-up proof before runtime integration.
+- Can current gates validate it safely: Yes, through runtime_runtime_proof with gates bounded_runtime_scope, proof_artifact_present, host_adapter_review.
 - Immediate risks: Source baggage could leak into host-specific implementation if the handoff is executed without review.
 - Missing evidence: runtime objective | evaluation method | rollback path | host-integration boundary note
 - Monitor/Defer trigger conditions: Defer if runtime proof scope cannot stay bounded.
 - Re-entry conditions: Keep the candidate at routed handoff status until a human-reviewed downstream slice is started.
-- Next action: Open a bounded Forge follow-up and only involve host code through the engine adapter boundary.
+- Next action: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
 - Linked intake record: discovery/intake/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-intake.md

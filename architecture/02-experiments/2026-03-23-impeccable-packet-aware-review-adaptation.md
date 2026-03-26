@@ -120,8 +120,8 @@ Type: source-driven review-system adaptation
   - `shared/templates/architecture-review-checklist.md`
   - `shared/templates/architecture-cycle-evaluation.md`
   - `knowledge/workflow.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

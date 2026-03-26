@@ -36,7 +36,7 @@ Standardize frontend and UX quality review language for Architecture documentati
 - vague status labels with no decision meaning
 - UI changes that conceal gate failures or degraded states
 - policy statements without validation method
-- architecture notes that blur Forge vs Architecture ownership
+- architecture notes that blur Runtime vs Architecture ownership
 
 ## Usage Rule
 

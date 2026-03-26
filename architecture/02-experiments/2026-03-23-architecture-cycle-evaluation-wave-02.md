@@ -72,7 +72,7 @@ Primary references:
 - Current state: `strong`
 - Change since last cycle: `improved`
 - Evidence: all four slices stayed correctly in Architecture because the extracted value was internal operating logic rather than runtime behavior, including the cross-source case that could easily have degraded into generic research notes
-- Highest priority gap: validate the same routing discipline on a source with mixed Architecture/Forge value so the boundary is tested under real ambiguity
+- Highest priority gap: validate the same routing discipline on a source with mixed Architecture/Runtime value so the boundary is tested under real ambiguity
 
 ### Evaluation quality
 - Current state: `strong`

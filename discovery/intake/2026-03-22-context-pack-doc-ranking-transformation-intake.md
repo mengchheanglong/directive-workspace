@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - reduces the CPU cost of quest-focus document ranking without changing the returned `ContextPack`
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -38,4 +38,4 @@ Replace legacy full-sort quest-goal document ranking with a preindexed top-N ran
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-context-pack-doc-ranking-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-context-pack-doc-ranking-transformation-record.md`

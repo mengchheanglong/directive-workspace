@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this improves Architecture's Decide-step retention without requiring a runtime surface
+- Runtime threshold check: `yes` - this improves Architecture's Decide-step retention without requiring a runtime surface
 
 ## Why this slice exists
 

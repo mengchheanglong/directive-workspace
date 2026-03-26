@@ -30,11 +30,11 @@ They mention `agent-lab` as source history, not as active runtime ownership.
 Current blocker count: 0
 
 Directive Workspace now has staged pack destinations under:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\source-packs\`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\source-packs\`
 
 All targeted source-pack directories are now active with `SOURCE_PACK_READY.md`.
 
-Active Forge-owned packs (ready marker present):
+Active Runtime-owned packs (ready marker present):
 - `agency-agents`
 - `agent-orchestrator`
 - `arscontexta`
@@ -50,7 +50,7 @@ Active Forge-owned packs (ready marker present):
 
 ### Check and compatibility scripts
 
-`C:\Users\User\.openclaw\workspace\mission-control\scripts\check-agents-import-packs-api-backend.ts` now prefers the Forge-owned `directive-workspace/forge/source-packs` root in its temp workspace and no longer requires an `agent-lab/tooling` fixture.
+`C:\Users\User\.openclaw\workspace\mission-control\scripts\check-agents-import-packs-api-backend.ts` now prefers the Runtime-owned `directive-workspace/runtime/source-packs` root in its temp workspace and no longer requires an `agent-lab/tooling` fixture.
 `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-tool-admission.ts` now writes its generated classification mirrors into Directive Workspace-owned extraction docs instead of mutating `agent-lab`.
 
 ## Meaning
@@ -101,9 +101,9 @@ Resolved in this audit cycle:
 - `C:\Users\User\.openclaw\workspace\mission-control\src\server\services\tooling-catalog-service.ts`
   - now points the Agents dashboard catalog at Directive Workspace-owned records instead of `agent-lab/tooling`
 - `C:\Users\User\.openclaw\workspace\mission-control\src\server\services\run-scoped-desloppify-service.ts`
-  - now reports a Directive Workspace Forge source-pack path instead of an `agent-lab` tool path label
+  - now reports a Directive Workspace Runtime source-pack path instead of an `agent-lab` tool path label
 - `C:\Users\User\.openclaw\workspace\mission-control\src\server\services\run-scoped-agency-agents-service.ts`
-  - now reports a Directive Workspace Forge source-pack path instead of an `agent-lab` tool path label
+  - now reports a Directive Workspace Runtime source-pack path instead of an `agent-lab` tool path label
 - `C:\Users\User\.openclaw\workspace\mission-control\backend\src\modules\agents-import-packs\agents-import-packs.service.ts`
   - now uses the centralized backend Directive source-pack resolver instead of carrying its own `agent-lab` path rules
 - `C:\Users\User\.openclaw\workspace\mission-control\backend\src\modules\agents-runtime\agents-runtime.service.ts`
@@ -113,15 +113,15 @@ Resolved in this audit cycle:
 - `C:\Users\User\.openclaw\workspace\mission-control\backend\src\modules\automation-run-tools\automation-run-tools.service.ts`
   - already relies on the centralized backend resolver for scoped tool source resolution
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\seed-repo-sources.ts`
-  - now scans only Directive Workspace-owned roots (`directive-workspace/forge/source-packs/`) and no longer indexes `agent-lab` roots in `repo-sources.json`
+  - now scans only Directive Workspace-owned roots (`directive-workspace/runtime/source-packs/`) and no longer indexes `agent-lab` roots in `repo-sources.json`
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\repo-sources-paths.ts`
   - no longer exports `agent-lab` roots for repo-source seeding/check workflows
 - `C:\Users\User\.openclaw\workspace\mission-control\src\server\paths\directive-source-packs.ts`
-  - now resolves source packs from Directive Workspace Forge-owned roots only
+  - now resolves source packs from Directive Workspace Runtime-owned roots only
 - `C:\Users\User\.openclaw\workspace\mission-control\backend\src\infra\paths\directive-source-packs.ts`
-  - now resolves source packs from Directive Workspace Forge-owned roots only
+  - now resolves source packs from Directive Workspace Runtime-owned roots only
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-agents-import-packs-api-backend.ts`
-  - now validates import-pack behavior against a Forge-owned source-pack fixture path instead of `agent-lab/tooling`
+  - now validates import-pack behavior against a Runtime-owned source-pack fixture path instead of `agent-lab/tooling`
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-tool-admission.ts`
   - now writes generated admission mirrors to `directive-workspace/discovery/agent-lab-extraction/` instead of `agent-lab`
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\seed-directive-workspace-candidates.ts`

@@ -28,7 +28,7 @@ Use this template when a source-driven Architecture slice should leave behind a 
 
 - Reuse targets:
 - Product-owned artifacts created:
-- Forge threshold check: `yes` (still valuable without runtime -> Architecture) | `no` (needs runtime -> Forge handoff)
+- Runtime threshold check: `yes` (still valuable without runtime -> Architecture) | `no` (needs runtime -> Runtime handoff)
 
 ## Self-improvement
 

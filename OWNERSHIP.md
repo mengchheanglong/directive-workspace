@@ -10,7 +10,7 @@
 - `Mission Control`
   - the host
   - active runtime host and unified command surface
-  - hosts Forge runtime behavior but does not own Forge as a product concept
+  - hosts Runtime runtime behavior but does not own Runtime as a product concept
   - integrates Directive Workspace but does not define it
   - should consume Directive Workspace through host adapters rather than reconstructing the product core locally
 
@@ -25,14 +25,14 @@
   - owns mission-aware intake, routing, capability-gap detection, and holding states
   - interprets mission context and defines usefulness for the active objective
 
-- `Directive Forge`
+- `Directive Runtime`
   - owns bounded runtime operationalization and behavior-preserving transformation
   - owns follow-up -> execution record -> promotion record -> registry lifecycle
 
 - `Directive Architecture`
   - owns reusable internal operating logic: contracts, schemas, templates, policies, rules, and doctrine
   - extracts essential mechanisms and converts them into product-owned assets
-  - hands off runtime-worthy work to Forge
+  - hands off runtime-worthy work to Runtime
 
 ## Explicit Non-Ownership
 
@@ -60,4 +60,4 @@ Canonical boundary reference:
 
 ## Canonical Routing Rule
 
-Forge and Architecture are separated by adoption target, not by source type.
+Runtime and Architecture are separated by adoption target, not by source type.

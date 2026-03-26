@@ -14,7 +14,7 @@
 - Execution artifact:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-19-mini-swe-agent-slice-3-execution.md`
 - Integration artifact:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`
 - Runtime smoke trajectory:
   - `C:\v\slice3-mini-a\slice3-mini.traj.json`
 

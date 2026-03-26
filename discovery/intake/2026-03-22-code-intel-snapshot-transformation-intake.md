@@ -10,16 +10,16 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - preserves the same code-intel detection behavior while reducing the size and duplication of a host evaluator
 - makes it easier to evolve supported language-server probes without repeating the same status/detail/suggestion pattern inline
-- strengthens the doctrine that Forge should handle behavior-preserving transformations on mission-relevant host surfaces
+- strengthens the doctrine that Runtime should handle behavior-preserving transformations on mission-relevant host surfaces
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving maintainability transformation on a mission-relevant runtime-host surface`
 
 ## Bounded Claim
@@ -39,4 +39,4 @@ Extract repeated TypeScript, Python, Go, and Rust language-probe logic out of `c
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-code-intel-snapshot-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-code-intel-snapshot-transformation-record.md`

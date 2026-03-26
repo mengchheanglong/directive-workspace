@@ -39,8 +39,8 @@ Escalate to the full split workflow only when the candidate is complex, cross-tr
 ## Handoff Rules
 - Update canonical docs when boundaries, decisions, or promotion rules change.
 - Prefer one record when one record is enough.
-- Keep quests concrete and tied to one track (Discovery, Architecture, Forge, or runtime host) to avoid mixed ownership.
+- Keep quests concrete and tied to one track (Discovery, Architecture, Runtime, or runtime host) to avoid mixed ownership.
 - Log reports with explicit pass/fail gates and artifact paths.
 - Do not mark runtime integration complete from framework decision alone; require runtime proof.
 - Treat stale adopt decisions without promotion task/proof as release blockers.
-- Apply routing rule consistently: Forge and Architecture are separated by adoption target, not source type.
+- Apply routing rule consistently: Runtime and Architecture are separated by adoption target, not source type.

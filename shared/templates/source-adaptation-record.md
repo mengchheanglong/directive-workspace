@@ -83,8 +83,8 @@ For each mechanism extracted:
 
 - Integration surface:
 - Integration dependencies:
-- Forge handoff required: `yes` | `no`
-- Forge handoff ref:
+- Runtime handoff required: `yes` | `no`
+- Runtime handoff ref:
 
 ## Quality summary
 

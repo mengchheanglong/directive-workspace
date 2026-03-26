@@ -21,18 +21,18 @@ Create a separate decision record only when the decision needs to stand alone as
 - Rollback:
 - Result summary:
 - Evidence path:
-- Next decision: `adopt` | `defer` | `reject` | `needs-more-evidence` | `hand-off-to-forge`
+- Next decision: `adopt` | `defer` | `reject` | `needs-more-evidence` | `hand-off-to-runtime`
 
 ## Lifecycle classification (per `architecture-artifact-lifecycle` contract)
 
 - Origin: `source-driven` | `internally-generated`
 - Usefulness level: `direct` | `structural` | `meta`
-- Forge threshold check: Would this mechanism still be valuable without a runtime surface? `yes` (→ Architecture) | `no` (→ Forge handoff)
+- Runtime threshold check: Would this mechanism still be valuable without a runtime surface? `yes` (→ Architecture) | `no` (→ Runtime handoff)
 
 ## Source adaptation fields (Architecture source-driven experiments only)
 
 Fill these when the experiment involves source-driven Architecture work.
-Leave blank for non-source work or Forge experiments.
+Leave blank for non-source work or Runtime experiments.
 
 - Source analysis ref: (path to source-analysis artifact, per `source-analysis-contract`)
 - Adaptation decision ref: (path to adaptation-decision artifact, per `adaptation-decision-contract`)

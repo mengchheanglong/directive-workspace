@@ -8,7 +8,7 @@ Type: adopted source-driven system improvement
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this slice improves Directive Workspace's Architecture review and cycle-evaluation system without needing a runtime surface
+- Runtime threshold check: `yes` - this slice improves Directive Workspace's Architecture review and cycle-evaluation system without needing a runtime surface
 
 ## Problem
 

@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this improves Directive Workspace's Decide-step quality without needing a runtime surface
+- Runtime threshold check: `yes` - this improves Directive Workspace's Decide-step quality without needing a runtime surface
 
 ## Why this slice exists
 
@@ -17,7 +17,7 @@ But the Decide step still lacked product-owned code that could combine:
 - review outcome
 - readiness gates
 - artifact-type selection
-- Forge threshold logic
+- Runtime threshold logic
 
 into one deterministic adoption decision.
 
@@ -39,6 +39,6 @@ Architecture adoption becomes executable instead of remaining contract + schema 
 The Decide step should now be able to resolve:
 - `adopt`
 - `stay_experimental`
-- `hand_off_to_forge`
+- `hand_off_to_runtime`
 
-with explicit rationale, completion status, required gaps, and Forge handoff requirement.
+with explicit rationale, completion status, required gaps, and Runtime handoff requirement.

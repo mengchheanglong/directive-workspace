@@ -30,7 +30,7 @@
 - Runtime/backend/frontend deployment model of gpt-researcher.
 - Provider/retriever runtime dependencies and API key setup.
 - Websocket/transport implementation details as integration target.
-- Any callable integration into Directive Forge/Mission Control runtime.
+- Any callable integration into Directive Runtime/Mission Control runtime.
 
 ## risk + rollback
 - Risks:
@@ -89,7 +89,7 @@ Added by corpus normalization program. This record predates the source-adaptatio
 - Origin: `source-driven` (gpt-researcher repo)
 - Usefulness level: `structural` — evidence/citation/evaluation schemas improve the Directive framework's ability to handle structured research output
 - Status class: `product_materialized` — three shared schemas + shared contract + host checks
-- Forge threshold check: yes — the extracted contract patterns (evidence normalization, citation fallback, evaluation metadata) are valuable without a runtime surface
+- Runtime threshold check: yes — the extracted contract patterns (evidence normalization, citation fallback, evaluation metadata) are valuable without a runtime surface
 
 ### Contract coverage assessment
 

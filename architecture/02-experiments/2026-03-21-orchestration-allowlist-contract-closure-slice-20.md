@@ -5,22 +5,22 @@
 - Experiment date: 2026-03-21
 - Owning track: Directive Architecture
 - Experiment type: integration slice
-- Objective: materialize the surviving agent-lab orchestration curation/export allowlist as a Directive Workspace product-owned contract with one Forge-facing template binding.
+- Objective: materialize the surviving agent-lab orchestration curation/export allowlist as a Directive Workspace product-owned contract with one Runtime-facing template binding.
 - Bounded scope: shared contract, template/readme binding, policy note, adopted-note closure, host checker wiring
 - Inputs:
   - `2026-03-20-agent-lab-orchestration-source-map.md`
   - `AGENT_LAB_EXTRACTION_LEDGER.md`
-  - `shared/contracts/forge-external-run-envelope.md`
+  - `shared/contracts/runtime-external-run-envelope.md`
 - Expected output:
   - `shared/contracts/source-pack-curation-allowlist.md`
-  - `shared/templates/forge-follow-up-record.md`
+  - `shared/templates/runtime-follow-up-record.md`
   - `architecture/05-reference-patterns/2026-03-21-agent-lab-orchestration-allowlist-policy.md`
 - Validation gate(s):
   - `npm run check:directive-orchestration-allowlist-contracts`
   - `npm run check:directive-architecture-contracts`
   - `npm run check:ops-stack`
 - Allowlist profile: `source_pack_curation_allowlist/v1`
-- Activation rule: `Forge source pack is documentation-only until SOURCE_PACK_READY.md exists`
+- Activation rule: `Runtime source pack is documentation-only until SOURCE_PACK_READY.md exists`
 - Failure criteria: required allowlist fields missing, template binding absent, or gates failing
 - Rollback: remove the allowlist contract, policy note, template/readme binding, checker wiring, and adopted-note closure
 - Result summary: complete

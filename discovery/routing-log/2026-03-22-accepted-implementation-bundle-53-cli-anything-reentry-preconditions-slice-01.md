@@ -2,7 +2,7 @@
 
 - Date: 2026-03-22
 - Candidate id: `al-parked-cli-anything`
-- Adoption target: `Directive Forge follow-up`
+- Adoption target: `Directive Runtime follow-up`
 - Decision state: `defer`
 - Result: first two re-entry preconditions are now product-owned and checkable
 
@@ -18,4 +18,4 @@
 
 ## Current Meaning
 
-The candidate is closer to eligibility, but it is still not an active Forge experiment.
+The candidate is closer to eligibility, but it is still not an active Runtime experiment.

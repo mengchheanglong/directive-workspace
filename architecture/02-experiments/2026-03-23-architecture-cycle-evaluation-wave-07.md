@@ -20,7 +20,7 @@ Primary record refs:
 - `architecture/03-adopted/2026-03-23-architecture-adoption-resolution-lib-adopted.md`
 - `architecture/03-adopted/2026-03-23-architecture-adoption-artifacts-lib-adopted.md`
 - `architecture/03-adopted/2026-03-23-architecture-cycle-decision-summary-lib-adopted.md`
-- `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-forge-handoff.md`
+- `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff.md`
 
 Evaluation surface:
 - `shared/lib/architecture-cycle-decision-loader.ts`
@@ -34,10 +34,10 @@ Evaluation surface:
 - Mechanisms adapted (explicit adaptation, not raw adoption): `0`
 - Mechanisms improved beyond source: `0`
 - Adoption decision artifacts reviewed: `6`
-- Adoption verdict counts: `5 adopt`, `1 hand_off_to_forge`, `0 stay_experimental`, `0 defer`, `0 reject`
+- Adoption verdict counts: `5 adopt`, `1 hand_off_to_runtime`, `0 stay_experimental`, `0 defer`, `0 reject`
 - Artifact type distribution: `5 shared-lib`, `1 contract`
 - Completion-status distribution: `5 product_materialized`, `1 routed_out_of_architecture`
-- Forge handoff required decisions: `1`
+- Runtime handoff required decisions: `1`
 - Total adoptions: `6`
 - Meta-useful adoptions: `5`
 - Adaptation coverage: `0 / 0 = not_applicable` for this evaluation-only cycle
@@ -77,7 +77,7 @@ Evaluation surface:
 ### Routing quality
 - Current state: `strong`
 - Change since last cycle: `stable`
-- Evidence: record-ref loading preserved the same `5 adopt` vs `1 hand_off_to_forge` composition as the retained decision corpus
+- Evidence: record-ref loading preserved the same `5 adopt` vs `1 hand_off_to_runtime` composition as the retained decision corpus
 - Highest priority gap: compare this routing composition across a later wave that contains more structural rather than mostly meta adoptions
 
 ### Evaluation quality
@@ -89,7 +89,7 @@ Evaluation surface:
 ### Handoff quality
 - Current state: `strong`
 - Change since last cycle: `stable`
-- Evidence: the `scientify-literature-monitoring` Forge handoff remains visible in the wave through its adopted record ref alone
+- Evidence: the `scientify-literature-monitoring` Runtime handoff remains visible in the wave through its adopted record ref alone
 - Highest priority gap: add another mixed-value handoff wave so handoff-quality comparison is not based on only one retained handoff
 
 ## Meta-usefulness claim verification

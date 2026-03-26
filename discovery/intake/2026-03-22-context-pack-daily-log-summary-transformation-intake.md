@@ -3,7 +3,7 @@
 - Candidate id: `dw-transform-context-pack-daily-log-summary`
 - Candidate name: `Context Pack Daily Log Summary Transformation`
 - Intake date: `2026-03-22`
-- Routed track: `Forge`
+- Routed track: `Runtime`
 - Transformation class: `behavior-preserving speed optimization`
 
 ## Problem

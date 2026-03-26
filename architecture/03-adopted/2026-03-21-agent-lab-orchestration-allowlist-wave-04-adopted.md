@@ -6,7 +6,7 @@
 - Adoption target: `Directive Architecture`
 - Adoption form:
   - shared contract
-  - Forge-facing template binding
+  - Runtime-facing template binding
   - Architecture policy note
 - Status class: `product_materialized`
 
@@ -20,10 +20,10 @@ That value belongs to Architecture because it governs what Directive Workspace m
 
 1. Added shared allowlist contract:
    - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\source-pack-curation-allowlist.md`
-2. Bound the rule into Forge follow-up capture:
-   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\forge-follow-up-record.md`
-3. Bound the rule into the Forge source-pack surface description:
-   - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\source-packs\README.md`
+2. Bound the rule into Runtime follow-up capture:
+   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\runtime-follow-up-record.md`
+3. Bound the rule into the Runtime source-pack surface description:
+   - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\source-packs\README.md`
 4. Recorded the retained mechanism and adaptation rule:
    - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-21-agent-lab-orchestration-allowlist-policy.md`
 
@@ -43,6 +43,6 @@ That value belongs to Architecture because it governs what Directive Workspace m
 ## Rollback
 
 - remove the shared allowlist contract
-- remove the Forge template/readme bindings
+- remove the Runtime template/readme bindings
 - remove host checker wiring
 - return the value to source-map/reference-only status

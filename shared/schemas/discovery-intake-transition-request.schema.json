@@ -13,7 +13,7 @@
     },
     "routing_target": {
       "type": ["string", "null"],
-      "enum": ["forge", "architecture", "monitor", "defer", "reject", "reference", null]
+      "enum": ["runtime", "architecture", "monitor", "defer", "reject", "reference", null]
     },
     "assigned_worker": { "type": ["string", "null"] },
     "intake_record_path": { "type": ["string", "null"] },

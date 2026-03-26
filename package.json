@@ -6,9 +6,14 @@
   "scripts": {
     "dev": "node --experimental-strip-types ./scripts/run-frontend-dev.ts",
     "build": "npm run frontend:build",
-    "check": "npm run check:frontend-host",
+    "check": "npm run check:frontend-host && npm run check:directive-workspace-composition",
+    "check:architecture-composition": "node --experimental-strip-types ./scripts/check-architecture-composition.ts",
+    "check:directive-workspace-composition": "node --experimental-strip-types ./scripts/check-directive-workspace-composition.ts",
     "frontend:build": "npm --prefix ./frontend run build",
     "check:frontend-host": "node --experimental-strip-types ./scripts/check-frontend-host.ts",
+    "report:directive-workspace-state": "node --experimental-strip-types ./scripts/report-directive-workspace-state.ts",
+    "report:architecture-materialization-due-check": "node --experimental-strip-types ./scripts/report-architecture-materialization-due-check.ts",
+    "report:directive-workspace-continuation-pack": "node --experimental-strip-types ./scripts/write-directive-workspace-continuation-pack.ts",
     "start": "npm run build && node --experimental-strip-types ./scripts/start-frontend.ts"
   },
   "exports": {
@@ -21,17 +26,19 @@
     "./standalone-host/bootstrap": "./hosts/standalone-host/bootstrap.ts",
     "./standalone-host/cli": "./hosts/standalone-host/cli.ts",
     "./standalone-host/config": "./hosts/standalone-host/config.ts",
-    "./standalone-host/forge": "./hosts/standalone-host/forge.ts",
+    "./standalone-host/runtime": "./hosts/standalone-host/runtime.ts",
     "./standalone-host/persistence": "./hosts/standalone-host/persistence.ts",
     "./standalone-host/server": "./hosts/standalone-host/server.ts",
     "./frontend": "./hosts/web-host/index.ts",
     "./frontend/cli": "./hosts/web-host/cli.ts",
     "./frontend/server": "./hosts/web-host/server.ts",
-    "./forge/core/v0": "./forge/core/v0.ts",
+    "./runtime/core/v0": "./runtime/core/v0.ts",
     "./shared/discovery": "./shared/lib/discovery/index.ts",
-    "./shared/architecture": "./shared/lib/architecture/index.ts"
+    "./shared/architecture": "./shared/lib/architecture/index.ts",
+    "./shared/workspace-state": "./shared/lib/dw-state.ts"
   },
   "devDependencies": {
-    "puppeteer": "^24.40.0"
+    "puppeteer": "^24.40.0",
+    "tsx": "^4.21.0"
   }
 }

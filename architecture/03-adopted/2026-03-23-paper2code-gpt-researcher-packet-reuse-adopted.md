@@ -8,7 +8,7 @@ Type: adopted cross-source source-driven improvement
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` — this slice improves Directive Architecture’s packetized source-adaptation system without needing a runtime surface
+- Runtime threshold check: `yes` — this slice improves Directive Architecture’s packetized source-adaptation system without needing a runtime surface
 
 ## Problem
 

@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - reduces context-pack wall-clock latency without changing the `ContextPack` contract
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -38,4 +38,4 @@ Run the bounded codegraph summary and n8n automation snapshot collection concurr
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-context-pack-async-latency-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-context-pack-async-latency-transformation-record.md`

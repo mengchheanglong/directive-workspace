@@ -73,8 +73,8 @@ For each extracted mechanism:
 
 - `integration_surface`: `shared/contracts` | `shared/schemas` | `shared/templates` | `architecture/05-reference-patterns` | `knowledge` | `shared/lib`
 - `integration_dependencies`: what existing assets must be updated or aware of this new artifact
-- `forge_handoff_required`: `yes` | `no` — if the extracted value also has a runtime component that should hand off to Forge
-- `forge_handoff_ref`: path to architecture-to-forge handoff record (if applicable)
+- `runtime_handoff_required`: `yes` | `no` — if the extracted value also has a runtime component that should hand off to Runtime
+- `runtime_handoff_ref`: path to architecture-to-runtime handoff record (if applicable)
 
 ### 6. Meta-usefulness check
 
@@ -87,7 +87,7 @@ For each extracted mechanism:
   - `improvement_quality`: improves the ability to improve beyond sources
   - `routing_quality`: improves routing accuracy
   - `evaluation_quality`: improves proof and evaluation
-  - `handoff_quality`: improves Architecture-to-Forge handoff
+  - `handoff_quality`: improves Architecture-to-Runtime handoff
   - `none`: no meta-usefulness (which is fine — not all extractions are self-improving)
 
 ### 7. Decision summary
@@ -111,9 +111,9 @@ For each extracted mechanism:
 - Works with: `phase-isolated-processing` when adaptation should consume a handoff packet from an isolated analysis phase
 - Feeds reusable output to: `architecture-mechanism-packet` when the adapted/improved result should become a compact reusable Architecture building block
 - Feeds reusable output to: `cross-source-synthesis-packet` when the adapted value should preserve agreements, tensions, and synthesis across multiple sources
-- Feeds output to: `architecture-adoption-criteria` (adoption readiness, artifact type selection, Forge threshold)
+- Feeds output to: `architecture-adoption-criteria` (adoption readiness, artifact type selection, Runtime threshold)
 - Feeds output to: proof phase (experiment-record, evaluator-contract, proof-checklist)
-- Feeds Forge handoff via: `architecture-to-forge` when runtime value is identified
+- Feeds Runtime handoff via: `architecture-to-runtime` when runtime value is identified
 - Feeds self-improvement tracking via: `architecture-self-improvement-contract` when `improves_source_consumption` is `yes`
 - Does not replace: `architecture-review-guardrails` (which governs review process quality)
 - Complements: `architecture-completion-rubric` (which governs what counts as done)

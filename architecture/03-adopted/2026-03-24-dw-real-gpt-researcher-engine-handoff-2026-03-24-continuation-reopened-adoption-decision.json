@@ -1,0 +1,33 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-real-gpt-researcher-engine-handoff-2026-03-24",
+  "adoption_date": "2026-03-25",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-bounded-starts/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-adopted.md",
+  "adaptation_quality": "adequate",
+  "improvement_quality": "adequate",
+  "self_improvement": {
+    "category": "adaptation_quality",
+    "claim": "Directive Workspace can retain this bounded Architecture result as a product-owned adoption boundary instead of forcing the next slice to reconstruct prior evidence by hand.",
+    "mechanism": "The adopted planned-next artifact and paired decision JSON materialize the bounded result into Directive-owned Architecture form.",
+    "baseline_observation": "The bounded result existed, but the operator still had to decide and restate how to carry it forward into the next Architecture materialization step.",
+    "expected_effect": "Future Architecture continuation can start from an explicit adopted artifact and decision envelope rather than re-reading the full result chain.",
+    "verification_method": "structural_inspection"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The bounded result is explicitly adopted as current-scope Directive-owned Architecture output.",
+    "completion_status": "product_materialized",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

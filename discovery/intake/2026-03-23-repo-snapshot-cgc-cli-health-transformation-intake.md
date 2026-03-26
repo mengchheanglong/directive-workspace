@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - stops repo snapshot from treating a broken `cgc` launcher as a valid CodeGraphContext runtime
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency and reliability correction on a mission-relevant host service`
 
 ## Bounded Claim
@@ -40,4 +40,4 @@ Bounded tradeoff:
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-23-repo-snapshot-cgc-cli-health-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-23-repo-snapshot-cgc-cli-health-transformation-record.md`

@@ -3,10 +3,10 @@ import type {
   ArchitectureCompletionStatus,
   ArchitectureSelfImprovementCategory,
   ArchitectureUsefulnessLevel,
-} from "./architecture-adoption-resolution";
+} from "./architecture-adoption-resolution.ts";
 import type {
   DirectiveArchitectureAdoptionDecisionArtifact,
-} from "./architecture-adoption-artifacts";
+} from "./architecture-adoption-artifacts.ts";
 
 export type ArchitectureDecisionVerdict =
   DirectiveArchitectureAdoptionDecisionArtifact["decision"]["verdict"];
@@ -17,7 +17,7 @@ export type DirectiveArchitectureCycleDecisionSummary = {
   usefulnessCounts: Record<ArchitectureUsefulnessLevel, number>;
   artifactTypeCounts: Record<ArchitectureArtifactType, number>;
   completionStatusCounts: Record<ArchitectureCompletionStatus, number>;
-  forgeHandoffRequiredCount: number;
+  runtimeHandoffRequiredCount: number;
   stayExperimentalCount: number;
   metaSelfImprovementCategoryCounts: Record<
     ArchitectureSelfImprovementCategory,
@@ -28,7 +28,7 @@ export type DirectiveArchitectureCycleDecisionSummary = {
 const DECISION_VERDICTS: ArchitectureDecisionVerdict[] = [
   "adopt",
   "stay_experimental",
-  "hand_off_to_forge",
+  "hand_off_to_runtime",
   "defer",
   "reject",
 ];
@@ -82,7 +82,7 @@ export function summarizeDirectiveArchitectureCycleDecisions(input: {
     SELF_IMPROVEMENT_CATEGORIES,
   );
 
-  let forgeHandoffRequiredCount = 0;
+  let runtimeHandoffRequiredCount = 0;
   let stayExperimentalCount = 0;
 
   for (const artifact of input.adoptionArtifacts) {
@@ -95,8 +95,8 @@ export function summarizeDirectiveArchitectureCycleDecisions(input: {
       completionStatusCounts[completionStatus] += 1;
     }
 
-    if (artifact.forge_handoff?.required) {
-      forgeHandoffRequiredCount += 1;
+    if (artifact.runtime_handoff?.required) {
+      runtimeHandoffRequiredCount += 1;
     }
     if (artifact.decision.verdict === "stay_experimental") {
       stayExperimentalCount += 1;
@@ -114,7 +114,7 @@ export function summarizeDirectiveArchitectureCycleDecisions(input: {
     usefulnessCounts,
     artifactTypeCounts,
     completionStatusCounts,
-    forgeHandoffRequiredCount,
+    runtimeHandoffRequiredCount,
     stayExperimentalCount,
     metaSelfImprovementCategoryCounts,
   };

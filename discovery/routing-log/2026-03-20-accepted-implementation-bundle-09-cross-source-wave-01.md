@@ -22,5 +22,5 @@ Open the next Discovery queue wave using non-repo sources (paper/theory) and rou
 
 ## Validation
 
-- `npm run check:directive-forge-records` -> PASS
+- `npm run check:directive-runtime-records` -> PASS
 - `npm run check:ops-stack` -> PASS

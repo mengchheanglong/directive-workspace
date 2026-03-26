@@ -28,7 +28,7 @@ export type ArchitectureCompletionStatus =
 export type ArchitectureAdoptionVerdict =
   | "adopt"
   | "stay_experimental"
-  | "hand_off_to_forge"
+  | "hand_off_to_runtime"
   | "defer"
   | "reject";
 export type ArchitectureSelfImprovementCategory =
@@ -64,7 +64,7 @@ export type ArchitectureAdoptionInput = {
   remainingValueIsRuntimeCapability?: boolean;
   requiresHostIntegration?: boolean;
   architectureValueCaptured?: boolean;
-  explicitForgeHandoffReady?: boolean;
+  explicitRuntimeHandoffReady?: boolean;
   valuableWithoutRuntimeSurface: boolean;
   metaSelfImprovementCategory?: ArchitectureSelfImprovementCategory;
   reviewResolution?: ArchitectureReviewResolution;
@@ -75,12 +75,12 @@ export type ArchitectureAdoptionResolution = {
   artifactType: ArchitectureArtifactType;
   readinessPassed: boolean;
   reviewPassed: boolean;
-  forgeThresholdCheck: string;
+  runtimeThresholdCheck: string;
   verdict: ArchitectureAdoptionVerdict;
   completionStatus: ArchitectureCompletionStatus;
   requiredGaps: string[];
   rationale: string;
-  forgeHandoff: {
+  runtimeHandoff: {
     required: boolean;
     rationale: string | null;
   };
@@ -160,12 +160,12 @@ function collectReadinessGaps(input: ArchitectureAdoptionInput) {
   return dedupe(gaps);
 }
 
-function shouldHandOffToForge(input: ArchitectureAdoptionInput) {
+function shouldHandOffToRuntime(input: ArchitectureAdoptionInput) {
   return Boolean(
     input.remainingValueIsRuntimeCapability
       && input.requiresHostIntegration
       && input.architectureValueCaptured
-      && input.explicitForgeHandoffReady,
+      && input.explicitRuntimeHandoffReady,
   );
 }
 
@@ -174,7 +174,7 @@ function resolveCompletionStatus(
   artifactType: ArchitectureArtifactType,
   input: ArchitectureAdoptionInput,
 ): ArchitectureCompletionStatus {
-  if (verdict === "hand_off_to_forge") {
+  if (verdict === "hand_off_to_runtime") {
     return "routed_out_of_architecture";
   }
   if (verdict === "reject") {
@@ -191,7 +191,7 @@ function resolveCompletionStatus(
     : "product_materialized";
 }
 
-function buildForgeThresholdCheck(input: ArchitectureAdoptionInput) {
+function buildRuntimeThresholdCheck(input: ArchitectureAdoptionInput) {
   return input.valuableWithoutRuntimeSurface
     ? "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
     : "no - the remaining value depends on runtime operationalization and should hand off once Architecture-retained value is captured";
@@ -205,7 +205,7 @@ export function resolveArchitectureAdoption(
   const reviewResult = input.reviewResolution?.reviewResult ?? "approved";
   const reviewPassed = reviewResult === "approved";
   const reviewRequiredChanges = input.reviewResolution?.requiredChanges ?? [];
-  const forgeThresholdCheck = buildForgeThresholdCheck(input);
+  const runtimeThresholdCheck = buildRuntimeThresholdCheck(input);
 
   if (!reviewPassed) {
     const requiredGaps = dedupe([...readinessGaps, ...reviewRequiredChanges]);
@@ -214,13 +214,13 @@ export function resolveArchitectureAdoption(
       artifactType,
       readinessPassed: readinessGaps.length === 0,
       reviewPassed: false,
-      forgeThresholdCheck,
+      runtimeThresholdCheck,
       verdict: "stay_experimental",
       completionStatus: "doc_only_or_planned",
       requiredGaps,
       rationale:
         "Architecture review did not clear the candidate; keep the mechanism in experiments until the review-required changes are closed.",
-      forgeHandoff: {
+      runtimeHandoff: {
         required: false,
         rationale: null,
       },
@@ -238,13 +238,13 @@ export function resolveArchitectureAdoption(
       artifactType,
       readinessPassed: false,
       reviewPassed: true,
-      forgeThresholdCheck,
+      runtimeThresholdCheck,
       verdict: "stay_experimental",
       completionStatus: "doc_only_or_planned",
       requiredGaps: readinessGaps,
       rationale:
         "The mechanism is not adoption-ready yet; keep it experimental until readiness and evidence gaps are closed.",
-      forgeHandoff: {
+      runtimeHandoff: {
         required: false,
         rationale: null,
       },
@@ -256,22 +256,22 @@ export function resolveArchitectureAdoption(
     };
   }
 
-  if (shouldHandOffToForge(input)) {
+  if (shouldHandOffToRuntime(input)) {
     return {
       sourceId: input.sourceId,
       artifactType,
       readinessPassed: true,
       reviewPassed: true,
-      forgeThresholdCheck,
-      verdict: "hand_off_to_forge",
+      runtimeThresholdCheck,
+      verdict: "hand_off_to_runtime",
       completionStatus: "routed_out_of_architecture",
       requiredGaps: [],
       rationale:
-        "Architecture has retained its product-owned value and the remaining work is runtime capability that belongs to Forge.",
-      forgeHandoff: {
+        "Architecture has retained its product-owned value and the remaining work is runtime capability that belongs to Runtime.",
+      runtimeHandoff: {
         required: true,
         rationale:
-          "Remaining value is callable/runtime capability that requires host integration and explicit Forge follow-up.",
+          "Remaining value is callable/runtime capability that requires host integration and explicit Runtime follow-up.",
       },
       reviewTrace: {
         score: input.reviewResolution?.reviewScore ?? null,
@@ -286,17 +286,17 @@ export function resolveArchitectureAdoption(
     artifactType,
     readinessPassed: true,
     reviewPassed: true,
-    forgeThresholdCheck,
+    runtimeThresholdCheck,
     verdict: "adopt",
     completionStatus: resolveCompletionStatus("adopt", artifactType, input),
     requiredGaps: reviewRequiredChanges,
     rationale:
       "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
-    forgeHandoff: {
+    runtimeHandoff: {
       required: input.usefulnessLevel === "direct",
       rationale:
         input.usefulnessLevel === "direct"
-          ? "Direct-useful mechanisms should keep an explicit Forge handoff plan even when Architecture adopts the retained structural value."
+          ? "Direct-useful mechanisms should keep an explicit Runtime handoff plan even when Architecture adopts the retained structural value."
           : null,
     },
     reviewTrace: {

@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - the retained value improves Directive Workspace's Architecture review lane without requiring a runtime surface
+- Runtime threshold check: `yes` - the retained value improves Directive Workspace's Architecture review lane without requiring a runtime surface
 
 ## Why this slice exists
 

@@ -20,7 +20,7 @@ In:
 Out:
 - Celtrix scaffolder runtime adoption
 - generated template ingestion
-- Forge runtime follow-up
+- Runtime runtime follow-up
 
 ## Dependencies
 

@@ -1,0 +1,24 @@
+# Discovery Triage Record: Scientify Runtime Generalization Run
+
+- Candidate id: dw-pressure-scientify-2026-03-25
+- Candidate name: Scientify Runtime Generalization Run
+- Triage date: 2026-03-25
+- First-pass summary: Runtime operationalization. Assess whether Scientify's plugin-style literature monitoring, scheduled research delivery, project-scoped research automation, and bounded MCP-backed workflow surfaces should become reusable runtime capability for Directive Workspace rather than Engine-core workflow logic.
+- Problem it appears to solve: Operationalize the value in a reusable runtime shape with stronger boundaries than the source.
+- Extractable value hypothesis: Runtime operationalization. Assess whether Scientify's plugin-style literature monitoring, scheduled research delivery, project-scoped research automation, and bounded MCP-backed workflow surfaces should become reusable runtime capability for Directive Workspace rather than Engine-core workflow logic. | real_second_runtime_generalization_run | local source mirror under sources/intake/scientify
+- Routing recommendation: Shared Engine routing selected runtime with usefulness level direct.
+- Proposed adoption target: reusable runtime capability
+- Stack-shape summary: github-repo source; host dependence host_adapter_required; integration mode reimplement.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned runtime capability or transformation artifact behind a host adapter boundary.. Excluded baggage: source-specific implementation baggage, host-local assumptions from the original source.
+- Suggested decision state: route_to_runtime_follow_up
+- Fit to current direction: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
+- Reusability across surfaces: Value depends on a later host adapter boundary for repeated runtime use.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: medium
+- Can current gates validate it safely: partially - proof plan runtime_runtime_proof defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: bounded_runtime_scope, proof_artifact_present, host_adapter_review
+- Missing evidence: runtime objective, evaluation method, rollback path, host-integration boundary note
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.
+- Next action: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
+- Linked intake record: discovery/intake/2026-03-25-dw-pressure-scientify-2026-03-25-intake.md

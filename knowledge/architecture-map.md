@@ -22,12 +22,12 @@ Doctrine:
 ### Mission Control
 - Active runtime host and unified command surface.
 - Owns runtime code, APIs, health gates, nightly/canary checks, and production behavior.
-- Hosts Forge runtime behavior but does not own Forge as a product concept.
+- Hosts Runtime runtime behavior but does not own Runtime as a product concept.
 
 ### Directive Workspace (the product)
 - Objective-driven capability evolution system with one Engine and three main Engine lanes:
   - Directive Discovery - mission-aware intake queue, routing, and capability-gap detection
-  - Directive Forge - bounded runtime operationalization and behavior-preserving transformation
+  - Directive Runtime - bounded runtime operationalization and behavior-preserving transformation
   - Directive Architecture - reusable internal operating logic (org-as-code)
 - Owns doctrine, contracts, decision model, Engine structure, and capability evolution logic.
 - Current status: standalone ownership complete, runtime hosted through Mission Control.
@@ -49,8 +49,8 @@ Doctrine:
 - current role: reusable operating-code layer — contracts, schemas, templates, policies, bounded experiments, adopted patterns, and historical records.
 - does not own OpenClaw-native rescue role definitions
 
-### Directive Forge surface
-- target product-owned surface: `C:\Users\User\.openclaw\workspace\directive-workspace\forge`
+### Directive Runtime surface
+- target product-owned surface: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime`
 - current role: bounded runtime operationalization and behavior-preserving transformation — records, contracts, core host-agnostic logic, promotion semantics, and dimensional evaluator proof.
 - current lifecycle: `follow-up -> records -> promotion-records -> registry`
 - current runtime host: `C:\Users\User\.openclaw\workspace\mission-control`

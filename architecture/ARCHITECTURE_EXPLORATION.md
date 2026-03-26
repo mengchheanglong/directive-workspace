@@ -15,7 +15,7 @@ It is an evidence-first architecture-improvement phase that extracts high-value 
 
 Directive Workspace converts breakthroughs into mission-relevant usefulness through three Engine lanes:
 - Discovery: mission-aware intake queue, routing, and capability-gap detection
-- Forge: bounded runtime operationalization and behavior-preserving transformation
+- Runtime: bounded runtime operationalization and behavior-preserving transformation
 - Architecture: reusable internal operating logic (org-as-code)
 
 This phase focuses on the Architecture lane while preserving Discovery-first routing semantics.
@@ -23,12 +23,12 @@ This phase focuses on the Architecture lane while preserving Discovery-first rou
 ## Build Order vs Flow Order
 
 Build order may be:
-- Forge first
+- Runtime first
 - Architecture second
 - Discovery later
 
 Operational flow order remains:
-- Discovery front door first, then route to Forge or Architecture.
+- Discovery front door first, then route to Runtime or Architecture.
 
 Phase 2 therefore behaves as:
 - Architecture-focused execution
@@ -55,12 +55,12 @@ Phase 2 therefore behaves as:
 - a callable/runtime promotion lane by default
 - a broad rewrite program without bounded proof
 - a blind import pipeline
-- a substitute for Discovery or Forge ownership
+- a substitute for Discovery or Runtime ownership
 
 ### Why default adoption here is architecture
 
 The purpose is to strengthen framework quality first.  
-If a candidate is primarily runtime/callable value, route it to Forge follow-up rather than forcing architecture adoption.
+If a candidate is primarily runtime/callable value, route it to Runtime follow-up rather than forcing architecture adoption.
 
 Architecture completion reference:
 - `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\architecture-completion-rubric.md`
@@ -70,11 +70,11 @@ Architecture completion reference:
 
 - `Directive Workspace`: umbrella system.
 - `Directive Discovery`: intake, first-pass triage, routing.
-- `Directive Forge`: callable/runtime adoption lane.
+- `Directive Runtime`: callable/runtime adoption lane.
 - `Directive Architecture`: internal framework-improvement lane.
 
 Canonical routing rule:
-- Forge and Architecture are separated by adoption target, not by source type.
+- Runtime and Architecture are separated by adoption target, not by source type.
 
 ## Scope
 
@@ -88,7 +88,7 @@ Canonical routing rule:
   - `other`
 - bounded experiments for architecture claims
 - architecture adoption decisions with explicit evidence
-- routing outputs that hand runtime-oriented value to Forge
+- routing outputs that hand runtime-oriented value to Runtime
 
 ### Out of scope
 
@@ -131,7 +131,7 @@ Allowed states:
 - `monitor`
 - `experiment`
 - `accept_for_architecture`
-- `route_to_forge_follow_up`
+- `route_to_runtime_follow_up`
 - `knowledge_only`
 
 Rule:
@@ -168,7 +168,7 @@ Evaluate each candidate on:
 
 No implementation without explicit target:
 - `Directive Architecture`
-- `Directive Forge follow-up`
+- `Directive Runtime follow-up`
 - `Directive Discovery backlog`
 - `Knowledge/reference only`
 
@@ -200,7 +200,7 @@ A candidate can move to `03-adopted` only if:
 - required gates are green for relevant changes
 
 Routing gate before final adoption:
-- "Is this primarily Architecture improvement, or should it be routed to Forge as runtime/callable follow-up?"
+- "Is this primarily Architecture improvement, or should it be routed to Runtime as runtime/callable follow-up?"
 
 ## Validation Bundles
 
@@ -254,5 +254,5 @@ Good progress is:
 - reproducible evidence
 - safer architecture integration
 - better framework quality
-- less confusion between Architecture and Forge work
+- less confusion between Architecture and Runtime work
 - more product-owned Directive Workspace artifacts, not just more Mission Control host-side enforcement

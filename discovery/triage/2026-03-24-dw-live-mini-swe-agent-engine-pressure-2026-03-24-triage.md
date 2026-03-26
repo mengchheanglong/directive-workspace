@@ -4,21 +4,21 @@
 - Candidate name: mini-swe-agent Runtime Capability Pressure
 - Triage date: 2026-03-24
 - First-pass summary: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.
-- Problem it appears to solve: Open a bounded Forge follow-up and only involve host code through the engine adapter boundary.
-- Extractable value hypothesis: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost. | Real GitHub source under sources/intake/mini-swe-agent. Signals: forge, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Forge follow-through may remain manual after Engine routing. | record_shape:queue_only
-- Routing recommendation: Route to forge based on Engine decision route_to_forge_follow_up.
+- Problem it appears to solve: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
+- Extractable value hypothesis: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost. | Real GitHub source under sources/intake/mini-swe-agent. Signals: runtime, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Runtime follow-through may remain manual after Engine routing. | record_shape:queue_only
+- Routing recommendation: Route to runtime based on Engine decision route_to_runtime_follow_up.
 - Proposed adoption target: reusable runtime transformation capability
 - Stack-shape summary: Source type github-repo; host dependence host_adapter_required; valuable without host runtime = no.
 - Boilerplate vs product boundary: Adapt the useful mechanism into Directive-owned form and exclude source-specific baggage: source-specific implementation baggage, host-local assumptions from the original source.
-- Suggested decision state: route_to_forge_follow_up
+- Suggested decision state: route_to_runtime_follow_up
 - Fit to current direction: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.
-- Reusability across surfaces: Potentially reusable across hosts once operationalized into a bounded Forge artifact.
+- Reusability across surfaces: Potentially reusable across hosts once operationalized into a bounded Runtime artifact.
 - Operational risk: Human review still required before downstream execution or adoption.
-- Integration cost: Moderate - requires Forge follow-up proof before runtime integration.
-- Can current gates validate it safely: Yes, through forge_transformation_proof with gates behavior_preservation, metric_improvement_or_equivalent_value, runtime_boundary_review.
+- Integration cost: Moderate - requires Runtime follow-up proof before runtime integration.
+- Can current gates validate it safely: Yes, through runtime_transformation_proof with gates behavior_preservation, metric_improvement_or_equivalent_value, runtime_boundary_review.
 - Immediate risks: Source baggage could leak into host-specific implementation if the handoff is executed without review.
 - Missing evidence: baseline artifact or metric | result artifact or metric | behavior-preserving claim | rollback path
 - Monitor/Defer trigger conditions: Defer if runtime proof scope cannot stay bounded.
 - Re-entry conditions: Keep the candidate at routed handoff status until a human-reviewed downstream slice is started.
-- Next action: Open a bounded Forge follow-up and only involve host code through the engine adapter boundary.
+- Next action: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
 - Linked intake record: discovery/intake/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-intake.md

@@ -24,7 +24,7 @@ tags:
 
 Canonical naming:
 - `Project Directive Workspace` = overall product
-- `Directive Forge` = callable-adoption system
+- `Directive Runtime` = callable-adoption system
 - `Directive Architecture` = framework-improvement system
 - `Directive Discovery` = discovery-front-door system (standalone module planned/in progress)
 
@@ -41,9 +41,9 @@ Doctrine clarification:
 - Directive Workspace starts from one core loop: ingest external capability, evaluate it, and improve the personal AI system with it.
 - The current structure is a decomposition of that same loop:
   - Directive Discovery = intake + first-pass triage + routing
-  - Directive Forge = callable/runtime operationalization
+  - Directive Runtime = callable/runtime operationalization
   - Directive Architecture = internal framework/workflow improvement
-- Forge and Architecture are separated by adoption target, not by source type.
+- Runtime and Architecture are separated by adoption target, not by source type.
 
 ## Core Idea
 The goal is not to build a vague self-improving AI.
@@ -103,25 +103,25 @@ The system goal is value integration, not repository cloning as product strategy
 - The boundary rule is strict: no direct external-repo runtime exposure without adaptation/re-implementation.
 
 ## Framework Clarification
-- Directive Forge is the callable-adoption system Mission Control currently hosts.
+- Directive Runtime is the callable-adoption system Mission Control currently hosts.
 - Directive Architecture focuses on improving that framework (better intake quality, better experiment quality, better decision evidence, better promotion safety).
-- Directive Discovery is the front-door routing system for finding/receiving useful sources and routing them to Forge or Architecture.
+- Directive Discovery is the front-door routing system for finding/receiving useful sources and routing them to Runtime or Architecture.
 - Mission Control remains the runtime host and destination for callable capabilities.
 - Reverse-engineering outputs should become native Directive Workspace or Mission Control assets, not passive external dependencies.
 
 Build-order clarification:
-- Discovery may be built as a formal module after Forge/Architecture implementation surfaces exist.
+- Discovery may be built as a formal module after Runtime/Architecture implementation surfaces exist.
 - Operational-loop clarification:
   - even before Discovery module is complete, intake/triage/routing should behave as Discovery-first.
 
 ## Day-to-Day Operating Flow
 1. Discovery intake captures candidate in Directive Workspace.
 2. Discovery triage routes by adoption target:
-   - Forge path for callable/runtime value
+   - Runtime path for callable/runtime value
    - Architecture path for internal framework value
    - or keep in Discovery as defer/monitor/reject/reference
 3. Downstream track evaluates with bounded proof and explicit decision logging.
-4. If routed to Forge and approved, create Mission Control integration task with promotion contract.
+4. If routed to Runtime and approved, create Mission Control integration task with promotion contract.
 5. Implement runtime capability in Mission Control.
 6. Prove runtime behavior with ops and integration checks.
 7. Record artifacts and update registry state.
@@ -258,7 +258,7 @@ This registry becomes the memory of how the workspace evolved over time.
 3. The routed downstream track runs deeper analysis and bounded experiments.
 4. The workspace records explicit decision state and adoption target.
 5. Accepted Architecture value is integrated into internal framework improvements.
-6. Accepted Forge value is promoted to runtime integration path.
+6. Accepted Runtime value is promoted to runtime integration path.
 7. Runtime integrations are validated with gates and proof before callable status.
 8. Registry and operating knowledge are updated for future decisions.
 

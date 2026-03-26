@@ -2,7 +2,7 @@
 
 Date: 2026-03-21
 Status: accepted
-Track target: `Directive Forge`
+Track target: `Directive Runtime`
 Bundle type: bounded runtime/import lane
 
 ## Accepted Work
@@ -14,8 +14,8 @@ Promote `arscontexta` as a bounded explicit-only import lane for three context o
 
 ## Required Product Outputs
 
-- one arscontexta Forge follow-up record
-- one Forge record
+- one arscontexta Runtime follow-up record
+- one Runtime record
 - one proof record
 - one promotion record
 - one registry entry

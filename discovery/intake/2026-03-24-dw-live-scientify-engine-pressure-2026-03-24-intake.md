@@ -8,7 +8,7 @@
 - Source location on disk: n/a
 - Submitted by: mission-control-discovery-engine-backfill
 - Why it entered the system: Backfilled from a real Engine run so the Discovery queue and downstream lane handoff reflect actual routing state.
-- Claimed value: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Forge, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.
+- Claimed value: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.
 - Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
 - Suspected adoption target: reusable runtime capability
 - Stack language: n/a

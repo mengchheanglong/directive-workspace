@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define the proof and evaluator expectations for a bounded Forge literature-monitoring slice before any host promotion.
+Define the proof and evaluator expectations for a bounded Runtime literature-monitoring slice before any host promotion.
 
 This guard exists to prevent a monitoring workflow from:
 - hiding weak evidence behind a normal-looking digest
@@ -61,7 +61,7 @@ The slice must be treated as failed if:
 ## Rollback Rule
 
 If the guard fails:
-- keep the candidate in Forge follow-up
+- keep the candidate in Runtime follow-up
 - do not open promotion
 - do not open registry acceptance
 - preserve Architecture-owned source and partition logic
@@ -73,7 +73,7 @@ If the guard fails:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\bounded-literature-monitoring-workflow.md`
 - Complements:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\evaluator-contract.md`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\forge-to-host.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-digest.md`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-degraded-state.md`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\literature-monitoring-digest.schema.json`

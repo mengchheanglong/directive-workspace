@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - removes repeated readonly repo query / file-load work from context-pack assembly when the underlying project state has not changed
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -44,4 +44,4 @@ with explicit invalidation on local create/update/delete mutation paths, without
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-23-context-pack-readonly-repo-cache-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-23-context-pack-readonly-repo-cache-transformation-record.md`

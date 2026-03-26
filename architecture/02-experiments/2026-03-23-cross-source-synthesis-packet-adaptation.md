@@ -124,8 +124,8 @@ Type: cross-source adaptation
   - `shared/contracts/phase-isolated-processing.md`
   - `shared/contracts/transformation-artifact-gate.md`
   - `shared/schemas/README.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

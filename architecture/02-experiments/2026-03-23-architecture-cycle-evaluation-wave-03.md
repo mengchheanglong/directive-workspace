@@ -62,7 +62,7 @@ This cycle focuses on the packet-aware review system activation:
 - Current state: `strong`
 - Change since last cycle: `stable`
 - Evidence: this slice stayed correctly in Architecture because the value was internal review/evaluation logic and not runtime behavior
-- Highest priority gap: apply the same routing discipline on a source with stronger mixed Architecture/Forge pressure
+- Highest priority gap: apply the same routing discipline on a source with stronger mixed Architecture/Runtime pressure
 
 ### Evaluation quality
 - Current state: `strong`

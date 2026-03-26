@@ -35,7 +35,7 @@ The following do not count as Architecture completion on their own:
 - an experiment note
 - an adopted note
 - a Mission Control checker, generator, parser, or adapter without a product-owned Directive Workspace artifact
-- a Forge follow-up record
+- a Runtime follow-up record
 - a runtime proof run
 
 Mission Control host work is downstream consumption of Architecture output, not the definition of the Architecture output.
@@ -76,7 +76,7 @@ Counts as:
 
 Use when:
 - the extracted pattern is valid
-- but the remaining real work belongs to Forge or another non-Architecture lane
+- but the remaining real work belongs to Runtime or another non-Architecture lane
 - and the handoff is explicit
 
 Counts as:
@@ -108,7 +108,7 @@ Formula:
 
 Rule:
 - never count Mission Control-only work as if it closes Architecture by itself
-- never leave routed Forge work inside the Architecture denominator after handoff is explicit
+- never leave routed Runtime work inside the Architecture denominator after handoff is explicit
 
 ## Current Baseline (2026-03-21)
 
@@ -122,9 +122,9 @@ This is the current adopted-set baseline under the strict product-owned rule.
 | `Paper2Code` | `product_materialized` | Product-owned stage-handoff schemas, templates, contracts, and canonical shared helper logic now exist in Directive Workspace. |
 | `openmoss` | `product_materialized` | Product-owned lifecycle transition contract, score-feedback contract, template fields, and closure policy note exist in Directive Workspace. |
 | `metaclaw` | `product_materialized` | Product-owned escalation/boundary contract, integration template fields, and closure policy note exist in Directive Workspace. |
-| `autoresearch` | `routed_out_of_architecture` | Remaining real work is Forge runtime follow-up, not Architecture product materialization. |
-| `agentics` | `routed_out_of_architecture` | Remaining real work is Forge playbook and runtime follow-up, not Architecture product materialization. |
-| `mini-swe-agent` | `routed_out_of_architecture` | Remaining real work is Forge fallback-lane operationalization, not Architecture product materialization. |
+| `autoresearch` | `routed_out_of_architecture` | Remaining real work is Runtime runtime follow-up, not Architecture product materialization. |
+| `agentics` | `routed_out_of_architecture` | Remaining real work is Runtime playbook and runtime follow-up, not Architecture product materialization. |
+| `mini-swe-agent` | `routed_out_of_architecture` | Remaining real work is Runtime fallback-lane operationalization, not Architecture product materialization. |
 
 Current estimate:
 - in-scope Architecture denominator: 6 candidates
@@ -146,7 +146,7 @@ Boundary note:
 Current-cycle Architecture is done when all of the following are true:
 - every in-scope adopted Architecture candidate is either `product_materialized`, `reference_only`, or explicitly removed from Architecture scope
 - no adopted Architecture candidate remains `doc_only_or_planned`
-- all routed-to-Forge candidates have explicit handoff records and are no longer treated as Architecture debt
+- all routed-to-Runtime candidates have explicit handoff records and are no longer treated as Architecture debt
 - the current core product artifact families are materially present:
   - stage handoff
   - evidence and citation
@@ -159,7 +159,7 @@ Current-cycle Architecture is done when all of the following are true:
 The Architecture corpus normalization record (`architecture/02-experiments/2026-03-22-architecture-corpus-normalization.md`) provides the first classified inventory of all adopted Architecture work.
 
 Key findings (corrected baseline, revision 2):
-- 24 adopted records classified by usefulness level (14 structural, 3 direct/Forge-routed, 7 meta, 4 with self-improvement evidence)
+- 24 adopted records classified by usefulness level (14 structural, 3 direct/Runtime-routed, 7 meta, 4 with self-improvement evidence)
 - 31 reference patterns assessed (8 promoted to shared contracts, 23 reference-only)
 - 8 deferred/rejected records classified with per-candidate lifecycle status
 - 3 meta-useful adoptions still lack self-improvement evidence (discovery-gap-priority-worklist, source-adaptation-chain, source-adaptation-integration)
@@ -172,11 +172,11 @@ This baseline should be used as input for the first Architecture cycle evaluatio
 All Architecture records are governed by `shared/contracts/architecture-artifact-lifecycle.md`, which defines:
 - required fields per state (experiment, adopted, reference-pattern, deferred)
 - transition rules between states
-- adopted-to-Forge handoff rules
+- adopted-to-Runtime handoff rules
 - reference-pattern admission and retirement criteria
 - pre-doctrine record handling
 
-New adopted records must include usefulness-level classification and Forge threshold check.
+New adopted records must include usefulness-level classification and Runtime threshold check.
 
 ## Immediate Remaining Architecture Work
 
@@ -191,7 +191,7 @@ When evaluating whether an adopted candidate is well-adopted (not just present):
 - check that the adoption used `shared/contracts/architecture-adoption-criteria.md` for artifact type selection
 - check that adaptation quality is `strong` or `adequate` with substantive delta evidence
 - check that meta-useful adoptions include a self-improvement evidence block per `shared/contracts/architecture-self-improvement-contract.md`
-- check that direct-useful adoptions have a Forge handoff plan (even if deferred)
+- check that direct-useful adoptions have a Runtime handoff plan (even if deferred)
 - check that source-driven Architecture work passes `shared/contracts/transformation-artifact-gate.md` with at least one transformed Directive-owned artifact
 - do not treat note movement, folder movement, queue updates, or prose expansion without transformed operating value as completed processing
 

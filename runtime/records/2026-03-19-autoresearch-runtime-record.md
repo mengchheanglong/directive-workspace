@@ -1,0 +1,21 @@
+# Runtime Record: autoresearch
+
+- Candidate id: autoresearch
+- Candidate name: autoresearch
+- Runtime record date: 2026-03-19
+- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-19-adopted-candidates-architecture-recheck.md`
+- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AUTORESEARCH_SLICE_1_RUNBOOK.md`
+- Runtime objective: Execute one real bounded autoresearch run against Directive Runtime runtime workflow and capture callable-oriented evidence.
+- Proposed host: Mission Control
+- Proposed runtime surface: Directive Workspace runtime follow-up lane
+- Execution slice: One bounded run using the documented `/autoresearch` contract, fixed scope, fixed metric, and fixed guard commands.
+- Required proof: Evidence artifact showing bounded run inputs, iteration outcomes, keep/discard decisions, and final gate state.
+- Required gates:
+  - `npm run check:directive-workspace-v0`
+  - `npm run check:directive-integration-proof`
+  - `npm run check:directive-workspace-health`
+  - `npm run check:ops-stack`
+- Risks: Scope creep during iterative loop; runtime run may create evidence without improving the target metric; host/runtime coupling may blur framework vs callable value if the slice is not bounded.
+- Rollback: Discard slice-specific runtime artifact and revert any slice-specific runtime changes. Keep Architecture pattern value intact.
+- Current status: runtime slice executed; promotion record created (`2026-03-20`)
+- Next decision point: track host-facing activation and decide whether to keep callable status active or revert to deferred follow-up.

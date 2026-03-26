@@ -33,7 +33,7 @@ Out:
 1. Merge stage-contract patterns (PaperCoder) with evidence/citation contract patterns (gpt-researcher).
 2. Define minimum artifact fields for each handoff stage.
 3. Define fallback/degrade rules for partial evidence and missing citations.
-4. Define deterministic validation hooks for Architecture and Forge checks.
+4. Define deterministic validation hooks for Architecture and Runtime checks.
 5. Record execution and gate evidence.
 
 ## Required Output Artifact
@@ -46,7 +46,7 @@ Out:
 2. `Get-Content -Raw C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-cross-source-theory-paper-patterns.md`
 3. `Get-Content -Raw C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-19-paper2code-directive-architecture-adopted-planned-next.md`
 4. `Get-Content -Raw C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-19-gpt-researcher-directive-architecture-adopted-planned-next.md`
-5. `npm run check:directive-forge-records` (mission-control)
+5. `npm run check:directive-runtime-records` (mission-control)
 6. `npm run check:ops-stack` (mission-control)
 
 ## Raw outputs (key excerpts)
@@ -54,12 +54,12 @@ Out:
 - routing source loaded: `cross-source-wave-01-routing`
 - reference pattern source loaded: `cross-source-theory-paper-patterns`
 - adopted contract baselines loaded: `paper2code` + `gpt-researcher`
-- `check:directive-forge-records` -> PASS
+- `check:directive-runtime-records` -> PASS
 - `check:ops-stack` -> PASS
 
 ## Validation Gates
 
-- `npm run check:directive-forge-records`
+- `npm run check:directive-runtime-records`
 - `npm run check:ops-stack`
 
 ## Rollback / No-op

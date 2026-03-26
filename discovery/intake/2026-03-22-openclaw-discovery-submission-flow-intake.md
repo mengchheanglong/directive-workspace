@@ -20,7 +20,7 @@
 - Decision state: `accept for architecture`
 - Route destination: `architecture`
 - Why this route: the result improves internal system behavior and proves Discovery-first coordination between OpenClaw and Directive Workspace
-- Why not the alternatives: `Forge` is not the right owner because no callable runtime lane is being promoted; `Discovery holding` would keep the front-door gap unresolved
+- Why not the alternatives: `Runtime` is not the right owner because no callable runtime lane is being promoted; `Discovery holding` would keep the front-door gap unresolved
 - Need bounded proof: `yes`
 - Next artifact: `architecture/02-experiments/2026-03-22-openclaw-discovery-submission-flow-slice-01.md`
 - Compaction profile (if compacted): `n/a`

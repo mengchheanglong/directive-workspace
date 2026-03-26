@@ -1,0 +1,23 @@
+# Discovery Intake Record: Autoresearch Core Principles for Operating Discipline
+
+- Candidate id: dw-mission-core-principles-operating-discipline-2026-03-26
+- Candidate name: Autoresearch Core Principles for Operating Discipline
+- Intake date: 2026-03-26
+- Source type: technical-essay
+- Source reference: sources/intake/autoresearch/skills/autoresearch/references/core-principles.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Mechanical verification, constrained scope, honest limitations, and strategy-vs-tactics separation all directly improve the Engine?s mission-driven ingestion and proof-backed adoption discipline.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run cfcf5c2d-60c8-4cef-84dd-e9d643bc8950 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-triage.md

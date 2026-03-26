@@ -8,7 +8,7 @@
     "title": "mini-swe-agent Runtime Capability Pressure",
     "summary": "Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.",
     "notes": [
-      "Real GitHub source under sources/intake/mini-swe-agent. Signals: forge, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Forge follow-through may remain manual after Engine routing.",
+      "Real GitHub source under sources/intake/mini-swe-agent. Signals: runtime, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Runtime follow-through may remain manual after Engine routing.",
       "record_shape:queue_only"
     ],
     "missionAlignmentHint": "Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.",
@@ -28,27 +28,27 @@
     ],
     "capabilityLanes": [
       "Directive engine materialization - one reusable executable core that hosts can embed cleanly",
-      "Runtime operationalization (Forge) - converting proven patterns into callable, bounded, measurable runtime behavior",
+      "Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior",
       "Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions",
       "Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement",
       "Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)",
       "Evaluation quality - dimensional measurement (evaluators), not just binary gates",
       "Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling"
     ],
-    "activeMissionMarkdown": "# Active Mission\n\nLast updated: 2026-03-24\nStatus: canonical\n\n## Current Objective\n\nBuild and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.\n\n## What Usefulness Means Under This Objective\n\nUseful means anything that materially improves:\n- revenue and conversion\n- execution speed and automation strength\n- decision quality and strategic leverage\n- cost efficiency and reliability\n- orchestration quality and agent coordination\n- capability-gap detection and self-improvement velocity\n\n## Capability Lanes That Matter Most\n\n1. Directive engine materialization - one reusable executable core that hosts can embed cleanly\n   Architecture is currently the closest lane to this objective because the current mission is to improve the Engine itself.\n2. Runtime operationalization (Forge) - converting proven patterns into callable, bounded, measurable runtime behavior\n3. Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions\n4. Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement\n5. Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)\n6. Evaluation quality - dimensional measurement (evaluators), not just binary gates\n7. Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling\n\n## Known Capability Gaps (Open)\n\n- gap: Canonical Directive engine surface only partially materialized\n  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Forge / Architecture logic centered inside the Engine\n  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Forge / Architecture operate as clear Engine lanes rather than loose top-level features\n\n## Recently Resolved Gaps\n\n- gap: Discovery as actual front door for most work - RESOLVED 2026-03-23\n  resolution: `check:discovery-front-door-coverage` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.\n\n- gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22\n  resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.\n\n- gap: Architecture-to-Forge handoff - RESOLVED 2026-03-22\n  resolution: Formal handoff record created for autoresearch bounded-run pattern. All contract fields exercised.\n\n- gap: Evaluator lane dimensional proof - RESOLVED 2026-03-22\n  resolution: Backend test boilerplate consolidation uses dimensional evaluator with numeric before/after (20.6% line reduction, 16.9% byte reduction). First non-vacuous dimensional proof.\n\n- gap: Discovery intake queue native usage - RESOLVED 2026-03-22\n  resolution: 5 native primary-mode queue entries achieved (threshold: 5+). 14 total entries (5 native, 9 backfill). Three behavior-preserving transformation candidates processed end-to-end through native queue.\n\n- gap: agent-lab legacy dependency - RESOLVED 2026-03-22\n  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Forge-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state."
+    "activeMissionMarkdown": "# Active Mission\n\nLast updated: 2026-03-24\nStatus: canonical\n\n## Current Objective\n\nBuild and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.\n\n## What Usefulness Means Under This Objective\n\nUseful means anything that materially improves:\n- revenue and conversion\n- execution speed and automation strength\n- decision quality and strategic leverage\n- cost efficiency and reliability\n- orchestration quality and agent coordination\n- capability-gap detection and self-improvement velocity\n\n## Capability Lanes That Matter Most\n\n1. Directive engine materialization - one reusable executable core that hosts can embed cleanly\n   Architecture is currently the closest lane to this objective because the current mission is to improve the Engine itself.\n2. Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior\n3. Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions\n4. Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement\n5. Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)\n6. Evaluation quality - dimensional measurement (evaluators), not just binary gates\n7. Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling\n\n## Known Capability Gaps (Open)\n\n- gap: Canonical Directive engine surface only partially materialized\n  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Runtime / Architecture logic centered inside the Engine\n  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Runtime / Architecture operate as clear Engine lanes rather than loose top-level features\n\n## Recently Resolved Gaps\n\n- gap: Discovery as actual front door for most work - RESOLVED 2026-03-23\n  resolution: `check:discovery-front-door-coverage` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.\n\n- gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22\n  resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.\n\n- gap: Architecture-to-Runtime handoff - RESOLVED 2026-03-22\n  resolution: Formal handoff record created for autoresearch bounded-run pattern. All contract fields exercised.\n\n- gap: Evaluator lane dimensional proof - RESOLVED 2026-03-22\n  resolution: Backend test boilerplate consolidation uses dimensional evaluator with numeric before/after (20.6% line reduction, 16.9% byte reduction). First non-vacuous dimensional proof.\n\n- gap: Discovery intake queue native usage - RESOLVED 2026-03-22\n  resolution: 5 native primary-mode queue entries achieved (threshold: 5+). 14 total entries (5 native, 9 backfill). Three behavior-preserving transformation candidates processed end-to-end through native queue.\n\n- gap: agent-lab legacy dependency - RESOLVED 2026-03-22\n  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Runtime-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state."
   },
   "openGaps": [],
   "selectedLane": {
-    "laneId": "forge",
-    "label": "Forge",
+    "laneId": "runtime",
+    "label": "Runtime",
     "hostDependence": "host_adapter_required",
     "valuableWithoutHostRuntime": false
   },
   "candidate": {
     "candidateId": "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
     "candidateName": "mini-swe-agent Runtime Capability Pressure",
-    "recommendedLaneId": "forge",
-    "recommendedLaneLabel": "Forge",
+    "recommendedLaneId": "runtime",
+    "recommendedLaneLabel": "Runtime",
     "recommendedRecordShape": "queue_only",
     "usefulnessLevel": "direct",
     "missionPriorityScore": 69,
@@ -58,8 +58,8 @@
     "requiresHumanReview": true,
     "rationale": [
       "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
-      "Recommended forge because its lane score (44) exceeded the alternatives.",
-      "Transformation signal is present (5/5), which strengthens Forge-style behavior-preserving work.",
+      "Recommended runtime because its lane score (44) exceeded the alternatives.",
+      "Transformation signal is present (5/5), which strengthens Runtime-style behavior-preserving work.",
       "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
       "Queue-only is recommended because the candidate still needs more routing clarity before record expansion."
     ]
@@ -71,14 +71,14 @@
     "usefulnessRationale": "Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
     "rationale": [
       "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
-      "Recommended forge because its lane score (44) exceeded the alternatives.",
-      "Transformation signal is present (5/5), which strengthens Forge-style behavior-preserving work.",
+      "Recommended runtime because its lane score (44) exceeded the alternatives.",
+      "Transformation signal is present (5/5), which strengthens Runtime-style behavior-preserving work.",
       "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
       "Queue-only is recommended because the candidate still needs more routing clarity before record expansion."
     ]
   },
   "routingAssessment": {
-    "recommendedLaneId": "forge",
+    "recommendedLaneId": "runtime",
     "recommendedRecordShape": "queue_only",
     "missionPriorityScore": 69,
     "confidence": "high",
@@ -93,7 +93,7 @@
       "laneScores": {
         "discovery": 9,
         "architecture": 6,
-        "forge": 44
+        "runtime": 44
       },
       "metaUsefulnessSignal": 2,
       "transformationSignal": 5,
@@ -103,8 +103,8 @@
     },
     "rationale": [
       "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
-      "Recommended forge because its lane score (44) exceeded the alternatives.",
-      "Transformation signal is present (5/5), which strengthens Forge-style behavior-preserving work.",
+      "Recommended runtime because its lane score (44) exceeded the alternatives.",
+      "Transformation signal is present (5/5), which strengthens Runtime-style behavior-preserving work.",
       "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
       "Queue-only is recommended because the candidate still needs more routing clarity before record expansion."
     ]
@@ -112,7 +112,7 @@
   "extractionPlan": {
     "extractedValue": [
       "Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.",
-      "Real GitHub source under sources/intake/mini-swe-agent. Signals: forge, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Forge follow-through may remain manual after Engine routing.",
+      "Real GitHub source under sources/intake/mini-swe-agent. Signals: runtime, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Runtime follow-through may remain manual after Engine routing.",
       "record_shape:queue_only"
     ],
     "excludedBaggage": [
@@ -135,7 +135,7 @@
     "intendedDelta": "Operationalize the value in a reusable runtime shape with stronger boundaries than the source."
   },
   "proofPlan": {
-    "proofKind": "forge_transformation_proof",
+    "proofKind": "runtime_transformation_proof",
     "objective": "Prove the same capability can be operationalized with a better implementation shape while preserving intended behavior.",
     "requiredEvidence": [
       "baseline artifact or metric",
@@ -151,33 +151,33 @@
     "rollbackPrompt": "Revert to the baseline implementation and keep the candidate in follow-up status until proof is stronger."
   },
   "decision": {
-    "decisionState": "route_to_forge_follow_up",
-    "adoptionTargetLaneId": "forge",
-    "adoptionTargetLaneLabel": "Forge",
+    "decisionState": "route_to_runtime_follow_up",
+    "adoptionTargetLaneId": "runtime",
+    "adoptionTargetLaneLabel": "Runtime",
     "requiresHumanApproval": true,
-    "summary": "Preliminary engine decision: route_to_forge_follow_up for Forge with additional human review required, pending human approval before final adoption.",
+    "summary": "Preliminary engine decision: route_to_runtime_follow_up for Runtime with additional human review required, pending human approval before final adoption.",
     "rationale": [
       "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
-      "Recommended forge because its lane score (44) exceeded the alternatives.",
-      "Transformation signal is present (5/5), which strengthens Forge-style behavior-preserving work.",
+      "Recommended runtime because its lane score (44) exceeded the alternatives.",
+      "Transformation signal is present (5/5), which strengthens Runtime-style behavior-preserving work.",
       "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
       "Queue-only is recommended because the candidate still needs more routing clarity before record expansion.",
-      "Open a bounded Forge follow-up and only involve host code through the engine adapter boundary."
+      "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary."
     ]
   },
   "integrationProposal": {
-    "targetLaneId": "forge",
-    "targetLaneLabel": "Forge",
+    "targetLaneId": "runtime",
+    "targetLaneLabel": "Runtime",
     "integrationMode": "reimplement",
     "hostDependence": "host_adapter_required",
     "valuableWithoutHostRuntime": false,
-    "handoffArtifactFamily": "forge_follow_up",
-    "nextAction": "Open a bounded Forge follow-up and only involve host code through the engine adapter boundary.",
+    "handoffArtifactFamily": "runtime_follow_up",
+    "nextAction": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.",
     "requiresHumanReview": true
   },
   "reportPlan": {
-    "reportKind": "forge_follow_up_report",
-    "summary": "Sync the route_to_forge_follow_up decision and reimplement integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
+    "reportKind": "runtime_follow_up_report",
+    "summary": "Sync the route_to_runtime_follow_up decision and reimplement integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
     "usefulnessRationale": "Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
     "requiredDestinations": [
       "directive_workspace_record",
@@ -200,7 +200,7 @@
     {
       "type": "candidate_routed",
       "at": "2026-03-24T00:00:00.000Z",
-      "summary": "Candidate routed to forge with usefulness level direct. Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality."
+      "summary": "Candidate routed to runtime with usefulness level direct. Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality."
     },
     {
       "type": "value_extracted",
@@ -220,22 +220,22 @@
     {
       "type": "proof_planned",
       "at": "2026-03-24T00:00:00.000Z",
-      "summary": "Proof plan forge_transformation_proof prepared."
+      "summary": "Proof plan runtime_transformation_proof prepared."
     },
     {
       "type": "decision_recorded",
       "at": "2026-03-24T00:00:00.000Z",
-      "summary": "Preliminary engine decision: route_to_forge_follow_up for Forge with additional human review required, pending human approval before final adoption."
+      "summary": "Preliminary engine decision: route_to_runtime_follow_up for Runtime with additional human review required, pending human approval before final adoption."
     },
     {
       "type": "integration_proposed",
       "at": "2026-03-24T00:00:00.000Z",
-      "summary": "Integration proposal targets forge via forge_follow_up."
+      "summary": "Integration proposal targets runtime via runtime_follow_up."
     },
     {
       "type": "report_planned",
       "at": "2026-03-24T00:00:00.000Z",
-      "summary": "Sync the route_to_forge_follow_up decision and reimplement integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality."
+      "summary": "Sync the route_to_runtime_follow_up decision and reimplement integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality."
     }
   ]
 }

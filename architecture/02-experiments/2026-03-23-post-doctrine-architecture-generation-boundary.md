@@ -10,7 +10,7 @@
   - Architecture cycle evaluation
   - meta-usefulness claim verification
   - packet-aware source-processing confirmation
-  - mixed-value routing and Architecture-to-Forge handoff confirmation
+  - mixed-value routing and Architecture-to-Runtime handoff confirmation
 
 ## Boundary reason
 

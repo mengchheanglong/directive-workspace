@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - reduces repo-snapshot rebuild cost even when the outer snapshot cache is cleared or expired
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -42,4 +42,4 @@ without changing:
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-23-repo-snapshot-internal-cache-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-23-repo-snapshot-internal-cache-transformation-record.md`

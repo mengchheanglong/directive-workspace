@@ -1,0 +1,33 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-autoresearch-proof-boundary-2026-03-25",
+  "adoption_date": "2026-03-25",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": false
+  },
+  "artifact_type": "template",
+  "artifact_path": "architecture/02-experiments/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-bounded-result.md",
+  "adaptation_quality": "adequate",
+  "improvement_quality": "skipped",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can carry this bounded Architecture slice forward into direct adoption without reopening the prior Engine, handoff, and post-consumption evidence chain by hand.",
+    "mechanism": "The bounded closeout now records an adoption-ready Architecture result and paired decision artifact directly on the bounded-result record.",
+    "baseline_observation": "Before this closeout, the reopened bounded slice still depended on manual interpretation to decide whether it could move forward as retained Directive-owned Architecture output.",
+    "expected_effect": "The bounded result 'Autoresearch remained a mixed Architecture case rather than a clean evaluator source, but the stricter proof-method requirement stayed honest because this bounded slice explicitly examined verification patterns, guard discipline, and custom verification guidance. Proof executed by npm.cmd run check plus structural inspection of sources/intake/autoresearch/README.md and sources/intake/autoresearch/guide/advanced-patterns.md; no code change was needed, so the result stays experimental instead of implying a stronger product delta than the case actually produced.' can now move directly into the normal adoption/materialization path as Architecture-owned output.",
+    "verification_method": "structural_inspection"
+  },
+  "decision": {
+    "verdict": "stay_experimental",
+    "rationale": "The mechanism is not adoption-ready yet; keep it experimental until readiness and evidence gaps are closed.",
+    "completion_status": "doc_only_or_planned",
+    "stay_experimental_reason": "All baggage must be explicitly excluded or justified before adoption.",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

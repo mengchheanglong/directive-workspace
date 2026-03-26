@@ -10,16 +10,16 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - preserves the same context-pack behavior while reducing the size and branching complexity of a high-leverage host service
 - makes it easier to evolve mission-conditioned focus behavior without re-editing one large host function
-- supports the doctrine that Forge should handle behavior-preserving transformations, not only new runtime adoption
+- supports the doctrine that Runtime should handle behavior-preserving transformations, not only new runtime adoption
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving maintainability transformation on a mission-relevant runtime-host surface`
 
 ## Bounded Claim
@@ -38,4 +38,4 @@ Extract quest/doc/graph focus-resolution logic, fallback document selection, and
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-context-pack-focus-resolution-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-context-pack-focus-resolution-transformation-record.md`

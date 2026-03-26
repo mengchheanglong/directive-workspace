@@ -29,7 +29,7 @@ Capture reusable architecture patterns extracted from non-repo sources without i
   - bounded iteration with keep/discard decisions
   - explicit stop criteria to prevent runaway optimization
 - Directive mapping:
-  - standardize bounded-slice runbooks and proof artifacts in Forge and Architecture
+  - standardize bounded-slice runbooks and proof artifacts in Runtime and Architecture
 - Adoption form:
   - workflow rule + evaluation method
 

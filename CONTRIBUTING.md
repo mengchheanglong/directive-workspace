@@ -23,7 +23,7 @@ Contributors should optimize for:
 Directive Workspace is the product. Mission Control is a host.
 
 2. Route by adoption target, not by source type.
-The same repo, paper, or product doc may belong in Forge or Architecture depending on the value being extracted.
+The same repo, paper, or product doc may belong in Runtime or Architecture depending on the value being extracted.
 
 3. Discovery is the front door.
 New candidates should enter through Discovery intake/triage/routing before deeper downstream work.
@@ -45,7 +45,7 @@ Appropriate:
 - shared contract/schema/template updates
 - Discovery intake/routing improvements
 - Architecture experiment records and adopted-pattern records
-- Forge product-level records and core host-agnostic logic
+- Runtime product-level records and core host-agnostic logic
 
 Not appropriate without explicit approval:
 - broad rewrites

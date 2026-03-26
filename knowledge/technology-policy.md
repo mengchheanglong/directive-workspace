@@ -18,7 +18,7 @@ That includes:
 - shared product libraries
 - schemas, validators, and generators
 - host-facing adapters
-- Forge core logic
+- Runtime core logic
 - lifecycle and contract enforcement helpers
 
 Reason:

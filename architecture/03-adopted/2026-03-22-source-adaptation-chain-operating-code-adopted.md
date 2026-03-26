@@ -11,7 +11,7 @@ The canonical source flow is:
 **Source → Analyze → Route → Extract → Adapt → Improve → Prove → Integrate**
 
 Before this bundle, Architecture had operating code for:
-- routing (routing matrix, discovery-to-architecture handoff, discovery-to-forge handoff)
+- routing (routing matrix, discovery-to-architecture handoff, discovery-to-runtime handoff)
 - promotion and proof (evaluator-contract, proof-checklist, promotion-contract, promotion-quality-gate)
 - completion tracking (architecture-completion-rubric)
 - review quality (architecture-review-guardrails)
@@ -49,7 +49,7 @@ Operationalizes the Extract → Adapt → Improve steps with required fields for
 - per-mechanism adaptation decisions with explicit delta (original vs adapted)
 - per-mechanism improvement decisions with explicit delta (original vs improved)
 - meta-usefulness check: does this improvement make Directive Workspace better at consuming future sources?
-- integration target with Forge handoff flag
+- integration target with Runtime handoff flag
 - quality summary forcing explicit assessment of adaptation and improvement quality
 
 ### 3. Source Adaptation Record Template (`shared/templates/source-adaptation-record.md`)
@@ -89,7 +89,7 @@ Product-owned artifacts:
 - `shared/templates/source-adaptation-record.md` — new
 - `shared/schemas/source-adaptation-decision.schema.json` — new
 
-No Mission Control dependency. No Forge dependency. Pure Architecture operating code.
+No Mission Control dependency. No Runtime dependency. Pure Architecture operating code.
 
 ## Meta-usefulness
 

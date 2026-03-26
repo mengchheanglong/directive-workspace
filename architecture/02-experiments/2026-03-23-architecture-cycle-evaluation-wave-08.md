@@ -32,10 +32,10 @@ Evaluation surface:
 - Mechanisms adapted (explicit adaptation, not raw adoption): `1`
 - Mechanisms improved beyond source: `1`
 - Adoption decision artifacts reviewed: `1`
-- Adoption verdict counts: `1 adopt`, `0 hand_off_to_forge`, `0 stay_experimental`, `0 defer`, `0 reject`
+- Adoption verdict counts: `1 adopt`, `0 hand_off_to_runtime`, `0 stay_experimental`, `0 defer`, `0 reject`
 - Artifact type distribution: `1 shared-lib`
 - Completion-status distribution: `1 product_materialized`
-- Forge handoff required decisions: `0`
+- Runtime handoff required decisions: `0`
 - Total adoptions: `1`
 - Meta-useful adoptions: `1`
 - Adaptation coverage: `1 / 1 = 100%`
@@ -76,7 +76,7 @@ Evaluation surface:
 - Current state: `strong`
 - Change since last cycle: `stable`
 - Evidence: the slice was kept in Architecture because the value is internal retained-decision infrastructure, not runtime capability
-- Highest priority gap: compare this with a future mixed-value source where part of the persistence mechanism should route to Forge
+- Highest priority gap: compare this with a future mixed-value source where part of the persistence mechanism should route to Runtime
 
 ### Evaluation quality
 - Current state: `strong`
@@ -87,8 +87,8 @@ Evaluation surface:
 ### Handoff quality
 - Current state: `adequate`
 - Change since last cycle: `stable`
-- Evidence: this slice correctly stayed inside Architecture and required no Forge handoff
-- Highest priority gap: keep the same discipline when a future source exposes both Architecture-retained and Forge-routed persistence/runtime value
+- Evidence: this slice correctly stayed inside Architecture and required no Runtime handoff
+- Highest priority gap: keep the same discipline when a future source exposes both Architecture-retained and Runtime-routed persistence/runtime value
 
 ## Meta-usefulness claim verification
 

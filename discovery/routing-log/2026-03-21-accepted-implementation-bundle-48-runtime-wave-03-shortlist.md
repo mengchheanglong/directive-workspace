@@ -1,0 +1,23 @@
+# Accepted Implementation Bundle 48
+
+- Date: 2026-03-21
+- Track: Runtime
+- Decision: open_new_wave
+- Wave id: Runtime Wave 03
+- Reason:
+  - Wave 02 is fully closed for its selected system bundles and bounded candidates
+  - the remaining Runtime debt is no longer another import-lane candidate
+  - the next honest task is a precondition-build decision for `agent-orchestrator`
+- Active candidate:
+  - `al-tooling-agent-orchestrator`
+- Active target:
+  - Runtime precondition-build slice only
+- Explicit non-selection:
+  - `al-parked-cli-anything`
+  - `al-parked-hermes-agent`
+  - `al-tooling-agency-agents`
+  - `al-parked-desloppify`
+  - `al-tooling-impeccable`
+  - `al-tooling-celtrix`
+- Output artifact:
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-21-runtime-wave-03-shortlist.md`

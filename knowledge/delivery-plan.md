@@ -25,7 +25,7 @@ tags:
 
 Canonical naming:
 - `Project Directive Workspace` = overall product
-- `Directive Forge` = callable-adoption system
+- `Directive Runtime` = callable-adoption system
 - `Directive Architecture` = framework-improvement system
 - `Directive Discovery` = discovery-front-door system (standalone module planned/in progress)
 
@@ -36,15 +36,15 @@ Doctrine clarification:
 - Directive Workspace starts from one core loop: ingest external capability, evaluate it, and improve the personal AI system with it.
 - That loop is decomposed into three specialized tracks:
   - Directive Discovery (intake + first-pass triage + routing)
-  - Directive Forge (callable/runtime adoption)
+  - Directive Runtime (callable/runtime adoption)
   - Directive Architecture (internal framework improvement)
-- Forge and Architecture are separated by adoption target, not by source type.
+- Runtime and Architecture are separated by adoption target, not by source type.
 - Build order and flow order are different:
-  - Build order can be Forge -> Architecture -> Discovery.
+  - Build order can be Runtime -> Architecture -> Discovery.
   - Operational flow still starts with Discovery.
 
 Canonical runtime naming for this plan:
-- read `Directive Forge` wherever older text says `Directive Workspace v0`
+- read `Directive Runtime` wherever older text says `Directive Workspace v0`
 - read `Directive Architecture` wherever older text refers to the framework-improvement lane
 
 Turn Directive Workspace into a usable v0 that proves the workspace can ingest a new external capability, evaluate its value to the user’s workflow, and record a grounded decision about adoption.
@@ -57,24 +57,24 @@ Turn Directive Workspace into a usable v0 that proves the workspace can ingest a
 
 ## Framework vs Runtime Clarification
 - Project Directive Workspace contains three systems:
-  - Directive Forge
+  - Directive Runtime
   - Directive Architecture
   - Directive Discovery
 - Directive Discovery is the front door in the operational loop.
-- Directive Forge and Directive Architecture are downstream handlers selected by adoption target.
+- Directive Runtime and Directive Architecture are downstream handlers selected by adoption target.
 - Directive Workspace is the framework and governance umbrella.
 - Mission Control is the execution/runtime host lane.
 - Phase 2 work improves Architecture quality (evaluation quality, promotion quality, lifecycle signal quality), not direct runtime implementation by default.
-- Runtime delivery still happens in Mission Control through explicit Forge promotion.
+- Runtime delivery still happens in Mission Control through explicit Runtime promotion.
 
 ## Capability Promotion Path
 1. Discovery intake receives external candidate (repo/paper/product/model/workflow).
 2. Discovery triage performs first-pass evaluation and routes by adoption target.
 3. Downstream track performs deep analysis and bounded experiment:
-   - Forge path for callable/runtime value
+   - Runtime path for callable/runtime value
    - Architecture path for internal framework value
-4. Record explicit decision with evidence (`accept_for_architecture` / `route_to_forge_follow_up` / `defer` / `monitor` / `reject` / `knowledge_only`).
-5. If routed to Forge and approved for runtime, open Mission Control integration task with promotion contract fields.
+4. Record explicit decision with evidence (`accept_for_architecture` / `route_to_runtime_follow_up` / `defer` / `monitor` / `reject` / `knowledge_only`).
+5. If routed to Runtime and approved for runtime, open Mission Control integration task with promotion contract fields.
 6. Implement as native Mission Control capability (re-implement/adapt/wrap).
 7. Verify gates and attach proof.
 8. Mark runtime integration complete.

@@ -20,7 +20,7 @@
 - Decision state: `accept for architecture`
 - Route destination: `architecture`
 - Why this route: the result is reusable internal operating logic for upstream signal submission and Discovery-first capability-gap detection
-- Why not the alternatives: `Forge` is not the right owner because no runtime lane is being promoted; `Discovery holding` would leave stale verification as passive drift
+- Why not the alternatives: `Runtime` is not the right owner because no runtime lane is being promoted; `Discovery holding` would leave stale verification as passive drift
 - Need bounded proof: `yes`
 - Next artifact: `architecture/02-experiments/2026-03-22-openclaw-runtime-verification-freshness-slice-01.md`
 - Compaction profile (if compacted): `n/a`

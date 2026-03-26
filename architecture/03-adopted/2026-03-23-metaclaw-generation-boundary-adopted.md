@@ -9,7 +9,7 @@
 
 ## Problem
 
-Directive Workspace had become better at source-driven Architecture work, packet reuse, mixed-value partitioning, and Architecture-to-Forge handoff.
+Directive Workspace had become better at source-driven Architecture work, packet reuse, mixed-value partitioning, and Architecture-to-Runtime handoff.
 
 But it still lacked a clean rule for one important self-improvement question:
 
@@ -88,8 +88,8 @@ Artifact type selection:
 - template for recording concrete boundary openings
 - schema for machine-checkable boundary notes
 
-Forge threshold check:
-- no Forge handoff
+Runtime threshold check:
+- no Runtime handoff
 - the mechanism is valuable even if no runtime surface is built
 
 ## Self-improvement evidence

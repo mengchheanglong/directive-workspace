@@ -30,8 +30,8 @@ Only the following export forms are valid by default:
 - product-owned shared library
 - Architecture reference pattern or policy note
 - Discovery reference/source-map note
-- Forge follow-up record
-- Forge source pack with explicit readiness marker
+- Runtime follow-up record
+- Runtime source pack with explicit readiness marker
 
 ## Excluded Baggage
 
@@ -45,8 +45,8 @@ The following must not be promoted by default:
 
 ## Activation Rules
 
-- A runtime-capable extracted pack must not be treated as live unless it has an explicit Forge-owned destination and readiness marker.
-- `forge/source-packs/*` remains documentation-only until `SOURCE_PACK_READY.md` exists.
+- A runtime-capable extracted pack must not be treated as live unless it has an explicit Runtime-owned destination and readiness marker.
+- `runtime/source-packs/*` remains documentation-only until `SOURCE_PACK_READY.md` exists.
 - Discovery and Architecture captures may preserve reference value without implying runtime activation.
 
 ## Rules
@@ -55,7 +55,7 @@ The following must not be promoted by default:
 - Direct mirrors of external tool folders are not callable truth by default.
 - Curation/export decisions must declare the ownership path where the extracted value will live.
 - If the retained value is governance, policy, or boundary logic, prefer shared contracts/templates/policies over runtime pack creation.
-- If the retained value is runtime-capable, route it through Forge follow-up with explicit readiness and rollback.
+- If the retained value is runtime-capable, route it through Runtime follow-up with explicit readiness and rollback.
 - If a source item does not fit an allowed export surface, keep it reference-only or drop it.
 
 ## Validation Hook

@@ -21,7 +21,7 @@ The correct hierarchy is:
   - whole product
 - **Engine**
   - shared core machinery
-- **Discovery / Forge / Architecture**
+- **Discovery / Runtime / Architecture**
   - the three operating lanes of the Engine
 
 Mission Control is the active runtime host. OpenClaw is the persistent orchestration layer.
@@ -48,7 +48,7 @@ Primary operating reference:
 
 ## Current Priorities
 - Priority 1: strengthen Discovery as the real mission-aware front door and reduce the intake-to-routing coverage gap.
-- Priority 2: keep Forge focused on bounded runtime operationalization and behavior-preserving transformation with explicit proof.
+- Priority 2: keep Runtime focused on bounded runtime operationalization and behavior-preserving transformation with explicit proof.
 - Priority 3: maintain operational reliability while improving evaluation quality through dimensional evaluators, not just binary gates.
 - Priority 4: resolve or retire remaining agent-lab-era bridge assumptions so ownership stays clean.
 

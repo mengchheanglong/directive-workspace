@@ -61,8 +61,8 @@ Primary baseline references:
 ### Routing quality
 - Current state: `adequate`
 - Change since last cycle: `first_cycle`
-- Evidence: the corpus correctly classifies 3 direct-useful candidates as Forge-routed, and the retroactively normalized `adopted-candidates-architecture-recheck` record materially improved lane-boundary discipline
-- Highest priority gap: make future Architecture adopted records carry clearer Forge-threshold and handoff references so route correctness is explicit, not reconstructed later
+- Evidence: the corpus correctly classifies 3 direct-useful candidates as Runtime-routed, and the retroactively normalized `adopted-candidates-architecture-recheck` record materially improved lane-boundary discipline
+- Highest priority gap: make future Architecture adopted records carry clearer Runtime-threshold and handoff references so route correctness is explicit, not reconstructed later
 
 ### Evaluation quality
 - Current state: `strong`
@@ -73,8 +73,8 @@ Primary baseline references:
 ### Handoff quality
 - Current state: `adequate`
 - Change since last cycle: `first_cycle`
-- Evidence: Architecture now has explicit Forge-threshold logic and the prior lane-boundary recheck prevented early candidates from silently dragging runtime work back into Architecture, but handoff references across historical adopted records are still uneven
-- Highest priority gap: require adopted records with direct usefulness to include explicit Forge handoff refs or explicit threshold justification
+- Evidence: Architecture now has explicit Runtime-threshold logic and the prior lane-boundary recheck prevented early candidates from silently dragging runtime work back into Architecture, but handoff references across historical adopted records are still uneven
+- Highest priority gap: require adopted records with direct usefulness to include explicit Runtime handoff refs or explicit threshold justification
 
 ## Meta-usefulness claim verification
 
@@ -83,7 +83,7 @@ Review meta-useful adoptions that already contain a self-improvement evidence bl
 | Adoption | Claim | Verification method | Result | Notes |
 |---|---|---|---|---|
 | `impeccable-wave-02-adopted` | Architecture review guardrails will improve future Architecture evaluation quality | `next_cycle_comparison` | `partially` | The current cleanup/evaluation pass caught lifecycle contradictions and stale baseline claims more systematically than earlier Architecture summaries, but there is not yet a second post-guardrail review cycle with comparable trend data |
-| `adopted-candidates-architecture-recheck` | Future planning will route runtime implementation to Forge instead of leaving it inside Architecture | `next_cycle_comparison` | `partially` | Subsequent runtime transformation work stayed in Forge and Architecture was resumed only after Forge stopping conditions were met, but this is still one bounded observation rather than a longer trend |
+| `adopted-candidates-architecture-recheck` | Future planning will route runtime implementation to Runtime instead of leaving it inside Architecture | `next_cycle_comparison` | `partially` | Subsequent runtime transformation work stayed in Runtime and Architecture was resumed only after Runtime stopping conditions were met, but this is still one bounded observation rather than a longer trend |
 | `architecture-maturity-bundle` | The next Architecture cycle evaluation will be able to fill real metrics and verify prior meta-usefulness claims | `next_cycle_comparison` | `confirmed` | This evaluation exists because that bundle added the self-improvement contract and cycle-evaluation template |
 | `architecture-corpus-normalization` | Future Architecture records will be easier to classify and the cycle baseline will support recurring evaluation | `next_cycle_comparison` | `confirmed` | The corrected corpus-normalization baseline was used directly for this evaluation and for the lifecycle cleanup performed immediately before it |
 

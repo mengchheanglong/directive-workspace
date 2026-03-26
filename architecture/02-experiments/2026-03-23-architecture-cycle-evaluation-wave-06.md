@@ -11,7 +11,7 @@
 This cycle evaluates the step after:
 - `architecture/02-experiments/2026-03-23-architecture-cycle-evaluation-wave-05.md`
 
-Wave 05 activated bounded Architecture-to-Forge handoff quality.
+Wave 05 activated bounded Architecture-to-Runtime handoff quality.
 The remaining system gap was that machine-readable adoption decisions still behaved more like checker fixtures than retained Architecture corpus state.
 
 Primary references:
@@ -20,7 +20,7 @@ Primary references:
 - `architecture/03-adopted/2026-03-23-architecture-adoption-resolution-lib-adoption-decision.json`
 - `architecture/03-adopted/2026-03-23-architecture-adoption-artifacts-lib-adoption-decision.json`
 - `architecture/03-adopted/2026-03-23-architecture-cycle-decision-summary-lib-adoption-decision.json`
-- `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-forge-handoff-adoption-decision.json`
+- `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff-adoption-decision.json`
 - `mission-control/scripts/check-directive-architecture-adoption-decision-corpus.ts`
 
 ## Source processing metrics
@@ -30,10 +30,10 @@ Primary references:
 - Mechanisms adapted (explicit adaptation, not raw adoption): `0`
 - Mechanisms improved beyond source: `0`
 - Adoption decision artifacts reviewed: `6`
-- Adoption verdict counts: `5 adopt`, `1 hand_off_to_forge`, `0 stay_experimental`, `0 defer`, `0 reject`
+- Adoption verdict counts: `5 adopt`, `1 hand_off_to_runtime`, `0 stay_experimental`, `0 defer`, `0 reject`
 - Artifact type distribution: `5 shared-lib`, `1 contract`
 - Completion-status distribution: `5 product_materialized`, `1 routed_out_of_architecture`
-- Forge handoff required decisions: `1`
+- Runtime handoff required decisions: `1`
 - Total adoptions: `6`
 - Meta-useful adoptions: `5`
 - Adaptation coverage: `0 / 0 = not_applicable` for this evaluation-only cycle
@@ -73,8 +73,8 @@ Primary references:
 ### Routing quality
 - Current state: `strong`
 - Change since last cycle: `stable`
-- Evidence: the retained corpus cleanly distinguishes five Architecture-retained meta adoptions from one direct-useful Forge handoff
-- Highest priority gap: widen the retained corpus to more mixed-value slices so Architecture-to-Forge routing composition can be compared across waves
+- Evidence: the retained corpus cleanly distinguishes five Architecture-retained meta adoptions from one direct-useful Runtime handoff
+- Highest priority gap: widen the retained corpus to more mixed-value slices so Architecture-to-Runtime routing composition can be compared across waves
 
 ### Evaluation quality
 - Current state: `strong`
@@ -85,7 +85,7 @@ Primary references:
 ### Handoff quality
 - Current state: `strong`
 - Change since last cycle: `stable`
-- Evidence: the retained decision corpus keeps the `scientify-literature-monitoring` Architecture-to-Forge handoff visible as machine-readable state instead of only prose
+- Evidence: the retained decision corpus keeps the `scientify-literature-monitoring` Architecture-to-Runtime handoff visible as machine-readable state instead of only prose
 - Highest priority gap: retain the same machine-readable handoff decision shape for future mixed-value handoffs, not only the first one
 
 ## Meta-usefulness claim verification

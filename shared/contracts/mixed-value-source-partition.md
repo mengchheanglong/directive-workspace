@@ -6,19 +6,19 @@ Profile: `mixed_value_source_partition/v1`
 
 Some sources contain both:
 - Architecture value that should become Directive-owned operating logic
-- Forge value that should become runtime or callable capability later
+- Runtime value that should become runtime or callable capability later
 
 Directive Workspace already has:
 - source analysis
 - adaptation decisions
-- Architecture-to-Forge handoff
+- Architecture-to-Runtime handoff
 - packetized retained value for stage/evidence continuity
 
 What it lacked was an explicit partition surface for mixed-value sources where:
 - some retained value can be reused from existing packets
 - some value must be re-analyzed from raw source because packet coverage is only partial
 - some value should stay in Architecture
-- some value should be deferred as Forge follow-up
+- some value should be deferred as Runtime follow-up
 
 This contract standardizes that split.
 
@@ -27,12 +27,12 @@ This contract standardizes that split.
 Use this contract when:
 - a source family contains both structural/meta-useful value and direct runtime value
 - Architecture should keep part of the source-derived mechanism
-- Forge follow-up is plausible but should not absorb the whole source immediately
+- Runtime follow-up is plausible but should not absorb the whole source immediately
 - existing mechanism packets or synthesis packets cover part of the retained value, but not the whole source
 
 Do not use when:
 - the source is cleanly Architecture-only
-- the source is cleanly Forge-only
+- the source is cleanly Runtime-only
 - Discovery has not yet narrowed the source enough to know what value is mixed
 
 ## Core rule
@@ -41,12 +41,12 @@ For a mixed-value source, Architecture must make the split explicit:
 1. what retained value is already covered by existing packets or adopted artifacts
 2. what retained value still requires direct source re-analysis
 3. what should become Architecture-owned operating code now
-4. what should become Forge handoff candidate later
+4. what should become Runtime handoff candidate later
 5. what should be excluded as baggage
 
 Mixed-value handling should not collapse into either:
 - reopening the whole source unnecessarily
-- routing the whole source to Forge because runtime value exists somewhere inside it
+- routing the whole source to Runtime because runtime value exists somewhere inside it
 
 ## Required fields
 
@@ -58,11 +58,11 @@ Mixed-value handling should not collapse into either:
 - `packet_coverage_scope`
 - `source_reanalysis_required`
 - `architecture_retained_mechanisms`
-- `forge_candidate_mechanisms`
+- `runtime_candidate_mechanisms`
 - `excluded_baggage`
 - `split_rationale`
 - `architecture_artifact_targets`
-- `forge_handoff_candidates`
+- `runtime_handoff_candidates`
 - `defer_or_revisit_conditions`
 
 ## Relationship to other contracts
@@ -70,7 +70,7 @@ Mixed-value handling should not collapse into either:
 - Works with: `source-analysis-contract`
 - Works with: `adaptation-decision-contract`
 - Works with: `architecture-adoption-criteria`
-- Works with: `architecture-to-forge`
+- Works with: `architecture-to-runtime`
 - Works with: `architecture-mechanism-packet`
 - Works with: `cross-source-synthesis-packet`
 - Feeds into: `architecture-cycle-evaluation.md`

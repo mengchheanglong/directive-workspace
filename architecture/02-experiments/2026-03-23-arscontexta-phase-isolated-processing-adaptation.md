@@ -35,7 +35,7 @@
 ### Mechanism: phase-isolated-processing
 
 - Adaptation required: `yes`
-- Adaptation description: reshape the general vault-processing philosophy into a Directive Workspace execution contract for heavy source-driven work in Architecture, Discovery, and Forge.
+- Adaptation description: reshape the general vault-processing philosophy into a Directive Workspace execution contract for heavy source-driven work in Architecture, Discovery, and Runtime.
 - Adaptation actions:
   - terminology alignment
   - structural reshape
@@ -58,7 +58,7 @@
 - Adaptation validates against:
   - `shared/templates/source-adaptation-record.md`
   - `shared/contracts/discovery-to-architecture.md`
-  - `shared/contracts/architecture-to-forge.md`
+  - `shared/contracts/architecture-to-runtime.md`
 - Original vs adapted delta: instead of generic queue/file passing, the adapted form defines explicit packet identity, mission linkage, inputs, outputs, decisions, open questions, gates, and fresh-context requirements.
 
 ### Mechanism: phase-handoff-packet-schema
@@ -110,8 +110,8 @@
   - `knowledge/workflow.md`
   - `shared/contracts/source-analysis-contract.md`
   - `shared/contracts/adaptation-decision-contract.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

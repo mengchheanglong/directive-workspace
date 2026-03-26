@@ -90,8 +90,8 @@ Type: cross-source adaptation
   - `shared/schemas/citation-set-artifact.schema.json`
   - `shared/schemas/evaluation-support-artifact.schema.json`
   - `shared/contracts/integration-proof-template-generator.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

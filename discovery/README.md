@@ -14,9 +14,9 @@ It owns:
 - revisit loops for monitor/defer items (trigger conditions, review cadence, no-op rules)
 
 It does not own:
-- deep experiments by default (that is Architecture or Forge)
+- deep experiments by default (that is Architecture or Runtime)
 - reusable operating-code extraction (that is Architecture)
-- runtime/callable delivery or behavior-preserving transformation (that is Forge)
+- runtime/callable delivery or behavior-preserving transformation (that is Runtime)
 
 Folders:
 - `intake/` - fast-path markdown intake records
@@ -36,7 +36,7 @@ Key files:
 - `C:\Users\User\.openclaw\scripts\submit-openclaw-maintenance-watchdog-signal.ps1` - bounded OpenClaw-root helper for degraded maintenance/watchdog state
 
 Rule:
-- all new candidates should enter through Discovery first - no bypass into Forge or Architecture without a Discovery record
+- all new candidates should enter through Discovery first - no bypass into Runtime or Architecture without a Discovery record
 - Discovery routes by adoption target, not by source type
 - routing is conditioned on the active mission (see `knowledge/active-mission.md`)
 - candidates that address known capability gaps (see `capability-gaps.json`) should be tagged
@@ -50,7 +50,7 @@ Operational loop:
 2. Split into `triage/` and `routing-log/` only when the case is complex, disputed, or held.
 3. Send the candidate to one of:
    - `Directive Architecture`
-   - `Directive Forge`
+   - `Directive Runtime`
    - `monitor/`
    - `deferred-or-rejected/`
    - `reference/`
@@ -74,7 +74,7 @@ Canonical references:
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\triage-record.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\routing-record.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\discovery-to-architecture.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\discovery-to-forge.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\discovery-to-runtime.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\discovery-gap-worklist.md`
 
 Retirement surface:

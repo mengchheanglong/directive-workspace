@@ -46,7 +46,7 @@ Reference: `shared/contracts/source-analysis-contract.md`, `shared/contracts/ada
 
 ## Relationship to existing verification
 
-- Gates remain the primary enforcement surface for all Forge work
+- Gates remain the primary enforcement surface for all Runtime work
 - Evaluators add dimensional measurement for transformation work and performance-sensitive changes
 - The transformation proof schema (`shared/schemas/transformation-proof-artifact.schema.json`) embeds evaluator fields directly
 - Promotion profiles that reference this contract require before/after measurement, not just pass/fail

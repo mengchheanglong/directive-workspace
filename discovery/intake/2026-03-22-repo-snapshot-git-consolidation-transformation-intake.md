@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - reduces process-spawn overhead in a dominant `buildRepoSnapshot` subpath
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -39,4 +39,4 @@ Consolidate branch, dirty-file, and ahead/behind collection into one `git status
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-repo-snapshot-git-consolidation-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-repo-snapshot-git-consolidation-transformation-record.md`

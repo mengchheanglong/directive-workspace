@@ -7,10 +7,10 @@ Batch: `bundle-01`
 ## Executed Candidates
 
 ### `al-parked-desloppify`
-- Route target: `Directive Forge`
-- Result: `accept-for-forge-follow-up`
+- Route target: `Directive Runtime`
+- Result: `accept-for-runtime-follow-up`
 - Artifact:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-desloppify-reanalysis-bundle-01.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-desloppify-reanalysis-bundle-01.md`
 
 ### `al-parked-codegraphcontext`
 - Route target: `Directive Architecture`
@@ -19,7 +19,7 @@ Batch: `bundle-01`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-20-codegraphcontext-reanalysis-bundle-01.md`
 
 ### `al-parked-autoresearch`
-- Route target: `Directive Architecture` (+ Forge boundary review)
+- Route target: `Directive Architecture` (+ Runtime boundary review)
 - Result: `experiment` (delta-first, no implicit runtime expansion)
 - Artifact:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-20-autoresearch-reanalysis-bundle-01.md`

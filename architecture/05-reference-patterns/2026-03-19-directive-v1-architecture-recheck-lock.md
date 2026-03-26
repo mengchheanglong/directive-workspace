@@ -28,7 +28,7 @@ Use this as the default baseline for subsequent planning and experiments.
 ## operating boundary
 - v1 Architecture decisions are reverse-engineering/pattern-extraction decisions.
 - They are not runtime-callable adoption decisions.
-- Runtime-callable promotion remains in Directive Forge lane.
+- Runtime-callable promotion remains in Directive Runtime lane.
 
 ## unlock protocol
 A later re-check may supersede this lock only if it:

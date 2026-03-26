@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define the smallest reusable Forge-owned runtime surface for recurring literature monitoring.
+Define the smallest reusable Runtime-owned runtime surface for recurring literature monitoring.
 
 This contract exists for bounded monitoring workflows that:
 - query a small paper-source pool
@@ -85,7 +85,7 @@ Architecture keeps:
 - promotion-quality gate logic
 - source-analysis and packet logic used to derive the workflow candidate
 
-Forge owns:
+Runtime owns:
 - callable workflow design
 - runtime proof shape
 - degraded-state handling behavior
@@ -93,15 +93,15 @@ Forge owns:
 
 ## Acceptance Rule
 
-This workflow is ready for Forge runtime execution only when:
+This workflow is ready for Runtime runtime execution only when:
 - the bounded workflow shape is explicit
 - the degraded-state guard is explicit
 - the slice has a proof checklist
 - rollback is bounded and reversible
 
 Related artifacts:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\architecture-to-forge.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\forge-to-host.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\architecture-to-runtime.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\literature-monitoring-degraded-state-guard.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-digest.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-degraded-state.md`

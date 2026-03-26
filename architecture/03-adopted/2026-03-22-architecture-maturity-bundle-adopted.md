@@ -9,9 +9,9 @@
 
 The previous two bundles created the source-adaptation chain (Analyze → Adapt → Improve) and wired it into the system. But after the adaptation-decision contract produces output, Architecture had no operating code for three critical downstream decisions:
 
-1. **When to adopt, what artifact type to use, and when to hand off to Forge** — no structured decision criteria existed. The completion rubric tracked whether things were materialized but not the decision logic for getting there.
+1. **When to adopt, what artifact type to use, and when to hand off to Runtime** — no structured decision criteria existed. The completion rubric tracked whether things were materialized but not the decision logic for getting there.
 
-2. **What different treatment each usefulness level gets** — the three-level classification (direct/structural/meta) appeared as an enum field but had no operating logic defining what each level means for adoption path, artifact type, Forge handoff, or self-improvement tracking.
+2. **What different treatment each usefulness level gets** — the three-level classification (direct/structural/meta) appeared as an enum field but had no operating logic defining what each level means for adoption path, artifact type, Runtime handoff, or self-improvement tracking.
 
 3. **Whether Architecture is actually improving** — meta-usefulness was a flag with no accountability. The system could claim "this improves our ability to consume future sources" with no evidence structure, no verification method, and no cycle-over-cycle comparison.
 
@@ -24,8 +24,8 @@ Profile: `architecture_adoption_criteria/v1`
 The missing "Decide" step operating code. Defines:
 - **Adoption readiness check**: 5 boolean conditions that must all be true before adoption (source analysis complete, adaptation decision complete, adaptation quality acceptable, delta evidence present, no unresolved baggage)
 - **Artifact type selection matrix**: structured decision logic for choosing contract vs. schema vs. template vs. policy vs. reference-pattern vs. shared-lib vs. doctrine-update
-- **Architecture-to-Forge threshold**: "Would this mechanism still be valuable if we never built a runtime surface for it?" Yes → Architecture. No → Forge.
-- **Usefulness level treatment**: different adoption paths for direct (→ Forge handoff), structural (→ Architecture core), and meta (→ self-improvement priority) usefulness
+- **Architecture-to-Runtime threshold**: "Would this mechanism still be valuable if we never built a runtime surface for it?" Yes → Architecture. No → Runtime.
+- **Usefulness level treatment**: different adoption paths for direct (→ Runtime handoff), structural (→ Architecture core), and meta (→ self-improvement priority) usefulness
 - **Stay-experimental criteria**: when to keep a mechanism in experiments instead of adopting
 
 ### 2. Architecture Self-Improvement Contract (`shared/contracts/architecture-self-improvement-contract.md`)
@@ -43,8 +43,8 @@ The missing self-improvement accountability. Defines:
 Machine-readable schema for adoption decisions. Key enforcement:
 - `readiness_check` with all 5 boolean fields required
 - `self_improvement` block required when `usefulness_level` is `meta`, with falsifiable `claim` and `verification_method`
-- `decision.verdict` with explicit options: `adopt`, `stay_experimental`, `hand_off_to_forge`, `defer`, `reject`
-- `decision.forge_threshold_check` field for the Forge threshold question
+- `decision.verdict` with explicit options: `adopt`, `stay_experimental`, `hand_off_to_runtime`, `defer`, `reject`
+- `decision.runtime_threshold_check` field for the Runtime threshold question
 
 ### 4. Architecture Cycle Evaluation Template (`shared/templates/architecture-cycle-evaluation.md`)
 
@@ -77,7 +77,7 @@ Before this bundle, Architecture could:
 
 But it could not:
 - decide *what artifact type* a mechanism should become → now it can (artifact type selection matrix)
-- decide *when to hand off to Forge* with structured logic → now it can (Forge threshold check)
+- decide *when to hand off to Runtime* with structured logic → now it can (Runtime threshold check)
 - differentiate treatment by usefulness level → now it does (direct/structural/meta paths)
 - evaluate whether it's actually improving → now it can (cycle evaluation structure)
 - hold meta-usefulness claims accountable → now it does (self-improvement evidence with verification)
@@ -91,7 +91,7 @@ Source → Analyze (source-analysis-contract)
        → Materialize (artifact type selection)
        → Track self-improvement (architecture-self-improvement-contract)
        → Evaluate cycles (architecture-cycle-evaluation template)
-       → Hand off to Forge when appropriate (architecture-to-forge + threshold logic)
+       → Hand off to Runtime when appropriate (architecture-to-runtime + threshold logic)
 ```
 
 ## Meta-usefulness

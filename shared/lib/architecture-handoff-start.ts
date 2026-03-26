@@ -1,6 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import {
+  normalizeDirectiveApprovalActor,
+  normalizeDirectiveWorkspaceRoot,
+  requireDirectiveEligibleStatus,
+  requireDirectiveString,
+  resolveDirectiveWorkspaceRelativePath,
+  writeDirectiveArtifactIfMissing,
+} from "../../engine/approval-boundary.ts";
 
 export type DirectiveArchitectureHandoffStartResult = {
   ok: true;
@@ -33,7 +40,7 @@ export type DirectiveArchitectureHandoffArtifact = {
   boundedScope: string[];
   inputs: string[];
   validationGates: string[];
-  forgeThresholdCheck: string;
+  runtimeThresholdCheck: string;
   rollback: string;
   nextDecision: string[];
   directiveRoot: string;
@@ -53,21 +60,6 @@ type ParsedArchitectureHandoff = Omit<
   | "startAbsolutePath"
   | "startExists"
 >;
-
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
-}
-
-function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
 
 function stripBackticks(value: string) {
   return value.trim().replace(/^`|`$/g, "");
@@ -135,15 +127,15 @@ function parseArchitectureHandoffMarkdown(markdown: string): ParsedArchitectureH
 
   return {
     title: titleLine.replace(/^# /, "").replace(/ Engine-Routed Architecture Experiment$/, "").trim(),
-    date: requiredString(dateLine.replace(/^Date:\s*/, ""), "handoff date"),
-    status: requiredString(statusLine.replace(/^Status:\s*/, ""), "handoff status"),
+    date: requireDirectiveString(dateLine.replace(/^Date:\s*/, ""), "handoff date"),
+    status: requireDirectiveString(statusLine.replace(/^Status:\s*/, ""), "handoff status"),
     candidateId: extractSingleValue(sourceSection, "Candidate id"),
     sourceReference: extractSingleValue(sourceSection, "Source reference"),
     engineRunRecordPath: extractSingleValue(sourceSection, "Engine run record"),
     engineRunReportPath: extractSingleValue(sourceSection, "Engine run report"),
     discoveryRoutingRecordPath: extractSingleValue(sourceSection, "Discovery routing record"),
     usefulnessLevel: extractSingleValue(sourceSection, "Usefulness level"),
-    usefulnessRationale: requiredString(
+    usefulnessRationale: requireDirectiveString(
       sourceSection
         .split(/\r?\n/)
         .find((entry) => entry.trim().startsWith("- Usefulness rationale:"))
@@ -154,31 +146,16 @@ function parseArchitectureHandoffMarkdown(markdown: string): ParsedArchitectureH
     boundedScope: extractList(extractSection(markdown, "Bounded scope")),
     inputs: extractList(extractSection(markdown, "Inputs")),
     validationGates: extractList(extractSection(markdown, "Validation gate(s)")),
-    forgeThresholdCheck: requiredString(
+    runtimeThresholdCheck: requireDirectiveString(
       lifecycleSection
         .split(/\r?\n/)
-        .find((entry) => entry.trim().startsWith("- Forge threshold check:"))
-        ?.replace(/^- Forge threshold check:\s*/, ""),
-      "forge threshold check",
+        .find((entry) => entry.trim().startsWith("- Runtime threshold check:"))
+        ?.replace(/^- Runtime threshold check:\s*/, ""),
+      "runtime threshold check",
     ),
     rollback: extractParagraph(extractSection(markdown, "Rollback")),
     nextDecision: extractList(extractSection(markdown, "Next decision")),
   };
-}
-
-function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
-  const normalizedInput = requiredString(inputPath, "handoffPath").replace(/\\/g, "/");
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error("invalid_input: handoffPath must stay within directive-workspace");
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
 }
 
 function resolveStartRelativePath(handoffRelativePath: string) {
@@ -196,9 +173,7 @@ function readArchitectureHandoffArtifact(input: {
     throw new Error("invalid_input: handoffPath must point to architecture/02-experiments/");
   }
 
-  const handoffAbsolutePath = normalizePath(
-    path.join(input.directiveRoot, input.handoffRelativePath),
-  );
+  const handoffAbsolutePath = path.resolve(input.directiveRoot, input.handoffRelativePath).replace(/\\/g, "/");
   if (!fs.existsSync(handoffAbsolutePath)) {
     throw new Error(`invalid_input: handoffPath not found: ${input.handoffRelativePath}`);
   }
@@ -207,7 +182,7 @@ function readArchitectureHandoffArtifact(input: {
     fs.readFileSync(handoffAbsolutePath, "utf8"),
   );
   const startRelativePath = resolveStartRelativePath(input.handoffRelativePath);
-  const startAbsolutePath = normalizePath(path.join(input.directiveRoot, startRelativePath));
+  const startAbsolutePath = path.resolve(input.directiveRoot, startRelativePath).replace(/\\/g, "/");
 
   return {
     ...parsed,
@@ -274,7 +249,7 @@ function renderArchitectureBoundedStart(input: {
     "",
     "- Origin: `source-driven`",
     `- Usefulness level: \`${input.parsed.usefulnessLevel}\``,
-    `- Forge threshold check: ${input.parsed.forgeThresholdCheck}`,
+    `- Runtime threshold check: ${input.parsed.runtimeThresholdCheck}`,
     "",
     "## Source adaptation fields (Architecture source-driven experiments only)",
     "",
@@ -294,8 +269,12 @@ export function readDirectiveArchitectureHandoffArtifact(input: {
   handoffPath: string;
   directiveRoot?: string;
 }) {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const handoffRelativePath = resolveDirectiveRelativePath(directiveRoot, input.handoffPath);
+  const directiveRoot = normalizeDirectiveWorkspaceRoot(input.directiveRoot);
+  const handoffRelativePath = resolveDirectiveWorkspaceRelativePath(
+    directiveRoot,
+    input.handoffPath,
+    "handoffPath",
+  );
   return readArchitectureHandoffArtifact({
     directiveRoot,
     handoffRelativePath,
@@ -306,8 +285,8 @@ export function listDirectiveArchitectureHandoffArtifacts(input: {
   directiveRoot?: string;
   maxEntries?: number;
 } = {}) {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const experimentsRoot = normalizePath(path.join(directiveRoot, "architecture", "02-experiments"));
+  const directiveRoot = normalizeDirectiveWorkspaceRoot(input.directiveRoot);
+  const experimentsRoot = path.resolve(directiveRoot, "architecture", "02-experiments").replace(/\\/g, "/");
   const maxEntries = Math.max(1, input.maxEntries ?? 20);
 
   if (!fs.existsSync(experimentsRoot)) {
@@ -331,25 +310,30 @@ export function startDirectiveArchitectureFromHandoff(input: {
   directiveRoot?: string;
   startedBy?: string | null;
 }): DirectiveArchitectureHandoffStartResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const handoffRelativePath = resolveDirectiveRelativePath(directiveRoot, input.handoffPath);
+  const directiveRoot = normalizeDirectiveWorkspaceRoot(input.directiveRoot);
+  const handoffRelativePath = resolveDirectiveWorkspaceRelativePath(
+    directiveRoot,
+    input.handoffPath,
+    "handoffPath",
+  );
   const artifact = readArchitectureHandoffArtifact({
     directiveRoot,
     handoffRelativePath,
   });
 
-  if (artifact.status !== "pending_review") {
-    throw new Error("invalid_input: only pending_review Architecture handoff stubs can be started");
-  }
+  requireDirectiveEligibleStatus({
+    subject: "Architecture handoff stub",
+    currentStatus: artifact.status,
+    allowedStatuses: ["pending_review"],
+    action: "be started",
+  });
 
   const snapshotAt = new Date().toISOString();
-  const created = !artifact.startExists;
-
-  if (created) {
-    const startedBy = String(input.startedBy || "directive-frontend-operator").trim()
-      || "directive-frontend-operator";
-    const startDate = snapshotAt.slice(0, 10);
-    const markdown = renderArchitectureBoundedStart({
+  const startedBy = normalizeDirectiveApprovalActor(input.startedBy);
+  const startDate = snapshotAt.slice(0, 10);
+  const created = writeDirectiveArtifactIfMissing({
+    absolutePath: artifact.startAbsolutePath as string,
+    content: renderArchitectureBoundedStart({
       handoffRelativePath,
       startDate,
       startedBy,
@@ -368,14 +352,12 @@ export function startDirectiveArchitectureFromHandoff(input: {
         boundedScope: artifact.boundedScope,
         inputs: artifact.inputs,
         validationGates: artifact.validationGates,
-        forgeThresholdCheck: artifact.forgeThresholdCheck,
+        runtimeThresholdCheck: artifact.runtimeThresholdCheck,
         rollback: artifact.rollback,
         nextDecision: artifact.nextDecision,
       },
-    });
-    fs.mkdirSync(path.dirname(artifact.startAbsolutePath as string), { recursive: true });
-    fs.writeFileSync(artifact.startAbsolutePath as string, markdown, "utf8");
-  }
+    }),
+  });
 
   return {
     ok: true,

@@ -7,13 +7,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
-import type { ForgeFollowUpRecordRequest } from "../../shared/lib/forge-follow-up-record-writer";
-import type { ForgeProofBundleRequest } from "../../shared/lib/forge-proof-bundle-writer";
-import type { ForgePromotionRecordRequest } from "../../shared/lib/forge-promotion-record-writer";
-import type { ForgeRegistryEntryRequest } from "../../shared/lib/forge-registry-entry-writer";
-import type { ForgeRecordRequest } from "../../shared/lib/forge-record-writer";
-import type { ForgeTransformationProofRequest } from "../../shared/lib/forge-transformation-proof-writer";
-import type { ForgeTransformationRecordRequest } from "../../shared/lib/forge-transformation-record-writer";
+import type { RuntimeFollowUpRecordRequest } from "../../shared/lib/runtime-follow-up-record-writer";
+import type { RuntimeProofBundleRequest } from "../../shared/lib/runtime-proof-bundle-writer";
+import type { RuntimePromotionRecordRequest } from "../../shared/lib/runtime-promotion-record-writer";
+import type { RuntimeRegistryEntryRequest } from "../../shared/lib/runtime-registry-entry-writer";
+import type { RuntimeRecordRequest } from "../../shared/lib/runtime-record-writer";
+import type { RuntimeTransformationProofRequest } from "../../shared/lib/runtime-transformation-proof-writer";
+import type { RuntimeTransformationRecordRequest } from "../../shared/lib/runtime-transformation-record-writer";
 import {
   DEFAULT_STANDALONE_RUNTIME_ARTIFACTS_RELATIVE_ROOT,
   STANDALONE_HOST_CONFIG_MODE,
@@ -418,12 +418,12 @@ export function startStandaloneHostServer(
         return;
       }
 
-      if (method === "GET" && pathname === "/api/forge/overview") {
-        routeId = "forge_overview";
+      if (method === "GET" && pathname === "/api/runtime/overview") {
+        routeId = "runtime_overview";
         const maxEntries = parseOptionalPositiveInt(
           requestUrl.searchParams.get("max_entries"),
         );
-        const overview = standaloneHost.readForgeOverview(maxEntries);
+        const overview = standaloneHost.readRuntimeOverview(maxEntries);
         writeJson(res, 200, { ok: true, overview });
         return;
       }
@@ -444,65 +444,65 @@ export function startStandaloneHostServer(
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/follow-ups") {
-        routeId = "forge_followup_write";
+      if (method === "POST" && pathname === "/api/runtime/follow-ups") {
+        routeId = "runtime_followup_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgeFollowUpRecordRequest;
-        const result = await standaloneHost.writeForgeFollowUp(request);
+        const request = JSON.parse(rawBody) as RuntimeFollowUpRecordRequest;
+        const result = await standaloneHost.writeRuntimeFollowUp(request);
         writeJson(res, 200, result);
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/records") {
-        routeId = "forge_record_write";
+      if (method === "POST" && pathname === "/api/runtime/records") {
+        routeId = "runtime_record_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgeRecordRequest;
-        const result = await standaloneHost.writeForgeRecord(request);
+        const request = JSON.parse(rawBody) as RuntimeRecordRequest;
+        const result = await standaloneHost.writeRuntimeRecord(request);
         writeJson(res, 200, result);
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/proof-bundles") {
-        routeId = "forge_proof_bundle_write";
+      if (method === "POST" && pathname === "/api/runtime/proof-bundles") {
+        routeId = "runtime_proof_bundle_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgeProofBundleRequest;
-        const result = await standaloneHost.writeForgeProofBundle(request);
+        const request = JSON.parse(rawBody) as RuntimeProofBundleRequest;
+        const result = await standaloneHost.writeRuntimeProofBundle(request);
         writeJson(res, 200, result);
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/transformation-proofs") {
-        routeId = "forge_transformation_proof_write";
+      if (method === "POST" && pathname === "/api/runtime/transformation-proofs") {
+        routeId = "runtime_transformation_proof_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgeTransformationProofRequest;
-        const result = await standaloneHost.writeForgeTransformationProof(request);
+        const request = JSON.parse(rawBody) as RuntimeTransformationProofRequest;
+        const result = await standaloneHost.writeRuntimeTransformationProof(request);
         writeJson(res, 200, result);
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/transformation-records") {
-        routeId = "forge_transformation_record_write";
+      if (method === "POST" && pathname === "/api/runtime/transformation-records") {
+        routeId = "runtime_transformation_record_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgeTransformationRecordRequest;
-        const result = await standaloneHost.writeForgeTransformationRecord(request);
+        const request = JSON.parse(rawBody) as RuntimeTransformationRecordRequest;
+        const result = await standaloneHost.writeRuntimeTransformationRecord(request);
         writeJson(res, 200, result);
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/promotion-records") {
-        routeId = "forge_promotion_record_write";
+      if (method === "POST" && pathname === "/api/runtime/promotion-records") {
+        routeId = "runtime_promotion_record_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgePromotionRecordRequest;
-        const result = await standaloneHost.writeForgePromotionRecord(request);
+        const request = JSON.parse(rawBody) as RuntimePromotionRecordRequest;
+        const result = await standaloneHost.writeRuntimePromotionRecord(request);
         writeJson(res, 200, result);
         return;
       }
 
-      if (method === "POST" && pathname === "/api/forge/registry-entries") {
-        routeId = "forge_registry_entry_write";
+      if (method === "POST" && pathname === "/api/runtime/registry-entries") {
+        routeId = "runtime_registry_entry_write";
         const rawBody = await readBody(req);
-        const request = JSON.parse(rawBody) as ForgeRegistryEntryRequest;
-        const result = await standaloneHost.writeForgeRegistryEntry(request);
+        const request = JSON.parse(rawBody) as RuntimeRegistryEntryRequest;
+        const result = await standaloneHost.writeRuntimeRegistryEntry(request);
         writeJson(res, 200, result);
         return;
       }

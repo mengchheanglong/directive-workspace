@@ -19,16 +19,16 @@ Architecture is the org-as-code layer. Its outputs are operating code, not passi
 
 When routing a source to Architecture, the next required step is a source analysis per `shared/contracts/source-analysis-contract.md`, followed by adaptation decisions per `shared/contracts/adaptation-decision-contract.md`. Architecture should not skip straight to extraction or adoption.
 
-## Route To Directive Forge
+## Route To Directive Runtime
 
-Choose `Directive Forge` when the main value is:
+Choose `Directive Runtime` when the main value is:
 - a callable workflow capability
 - a runtime operational surface
 - a host-facing capability that should become usable in practice
 - a follow-up that needs promotion contract, proof, and runtime integration
 - a behavior-preserving transformation (same capability, better implementation — speed, cost, reliability, maintainability)
 
-Do not route to Forge just because the source looks tool-like.
+Do not route to Runtime just because the source looks tool-like.
 
 ## Keep In Discovery
 
@@ -55,4 +55,4 @@ Usefulness is not fixed. It depends on the current objective.
 
 ## Canonical Rule
 
-Forge and Architecture are separated by adoption target, not by source type.
+Runtime and Architecture are separated by adoption target, not by source type.

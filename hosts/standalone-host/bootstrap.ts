@@ -7,20 +7,20 @@ export const DEFAULT_STANDALONE_BOOTSTRAP_CONFIG_FILENAME =
   "standalone-host.config.json";
 export const DEFAULT_STANDALONE_BOOTSTRAP_EXAMPLE_SUBMISSION_FILENAME =
   "discovery-submission.queue-only.example.json";
-export const DEFAULT_STANDALONE_BOOTSTRAP_FORGE_FOLLOW_UP_FILENAME =
-  "forge-follow-up.example.json";
-export const DEFAULT_STANDALONE_BOOTSTRAP_FORGE_RECORD_FILENAME =
-  "forge-record.example.json";
-export const DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROOF_FILENAME =
-  "forge-proof-bundle.example.json";
+export const DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_FOLLOW_UP_FILENAME =
+  "runtime-follow-up.example.json";
+export const DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_RECORD_FILENAME =
+  "runtime-record.example.json";
+export const DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROOF_FILENAME =
+  "runtime-proof-bundle.example.json";
 export const DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_PROOF_FILENAME =
-  "forge-transformation-proof.example.json";
+  "runtime-transformation-proof.example.json";
 export const DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_RECORD_FILENAME =
-  "forge-transformation-record.example.json";
-export const DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROMOTION_FILENAME =
-  "forge-promotion-record.example.json";
-export const DEFAULT_STANDALONE_BOOTSTRAP_FORGE_REGISTRY_FILENAME =
-  "forge-registry-entry.example.json";
+  "runtime-transformation-record.example.json";
+export const DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROMOTION_FILENAME =
+  "runtime-promotion-record.example.json";
+export const DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_REGISTRY_FILENAME =
+  "runtime-registry-entry.example.json";
 export const DEFAULT_STANDALONE_BOOTSTRAP_README_FILENAME = "README.md";
 
 export type BootstrapStandaloneHostWorkspaceOptions = {
@@ -38,13 +38,13 @@ export type BootstrapStandaloneHostWorkspaceResult = {
   configPath: string;
   readmePath: string;
   exampleSubmissionPath: string;
-  exampleForgeFollowUpPath: string;
-  exampleForgeRecordPath: string;
-  exampleForgeProofPath: string;
+  exampleRuntimeFollowUpPath: string;
+  exampleRuntimeRecordPath: string;
+  exampleRuntimeProofPath: string;
   exampleTransformationProofPath: string;
   exampleTransformationRecordPath: string;
-  exampleForgePromotionPath: string;
-  exampleForgeRegistryPath: string;
+  exampleRuntimePromotionPath: string;
+  exampleRuntimeRegistryPath: string;
   createdPaths: string[];
 };
 
@@ -88,21 +88,21 @@ function createExampleSubmission(receivedAt: string): JsonValue {
   };
 }
 
-function createForgeFollowUpExample(receivedAt: string): JsonValue {
+function createRuntimeFollowUpExample(receivedAt: string): JsonValue {
   return {
-    candidate_id: "dw-bootstrap-forge-example",
-    candidate_name: "Bootstrap Forge Example",
+    candidate_id: "dw-bootstrap-runtime-example",
+    candidate_name: "Bootstrap Runtime Example",
     follow_up_date: receivedAt,
     current_decision_state: "accepted_for_bounded_local_follow_up",
     origin_track: "architecture",
     runtime_value_to_operationalize:
-      "Create a bounded Forge follow-up from a standalone local/shareable host without Mission Control.",
+      "Create a bounded Runtime follow-up from a standalone local/shareable host without Mission Control.",
     proposed_host: "directive-workspace-standalone-host",
     proposed_integration_mode: "local_shareable_workflow",
     source_pack_allowlist_profile: "n/a",
     allowed_export_surfaces: [
       "@directive-workspace/product/standalone-host",
-      "@directive-workspace/product/standalone-host/forge",
+      "@directive-workspace/product/standalone-host/runtime",
     ],
     excluded_baggage: [
       "broad runtime promotion claims",
@@ -114,11 +114,11 @@ function createForgeFollowUpExample(receivedAt: string): JsonValue {
       "keep filesystem artifacts canonical even when SQLite is enabled",
     ],
     required_proof: [
-      "forge/follow-up and forge/records artifacts can be written locally",
-      "standalone host can report Forge overview without Mission Control",
+      "runtime/follow-up and runtime/records artifacts can be written locally",
+      "standalone host can report Runtime overview without Mission Control",
     ],
     required_gates: [
-      "check:directive-standalone-forge-host",
+      "check:directive-standalone-runtime-host",
     ],
     trial_scope_limit: [
       "markdown workflow artifacts only",
@@ -128,38 +128,38 @@ function createForgeFollowUpExample(receivedAt: string): JsonValue {
       "example payloads still need real source-specific details before any live promotion decision",
     ],
     rollback:
-      "Delete the generated Forge follow-up and any linked local example artifacts.",
+      "Delete the generated Runtime follow-up and any linked local example artifacts.",
     no_op_path:
-      "Keep using the standalone host for Discovery only until a real Forge slice is needed.",
+      "Keep using the standalone host for Discovery only until a real Runtime slice is needed.",
     review_cadence: "review on the next standalone-host completeness pass",
     current_status: "follow_up_only",
   };
 }
 
-function createForgeRecordExample(receivedAt: string): JsonValue {
+function createRuntimeRecordExample(receivedAt: string): JsonValue {
   return {
-    candidate_id: "dw-bootstrap-forge-example",
-    candidate_name: "Bootstrap Forge Example",
-    forge_record_date: receivedAt,
-    origin_path: `architecture/03-adopted/${receivedAt}-bootstrap-forge-example-origin.md`,
+    candidate_id: "dw-bootstrap-runtime-example",
+    candidate_name: "Bootstrap Runtime Example",
+    runtime_record_date: receivedAt,
+    origin_path: `architecture/03-adopted/${receivedAt}-bootstrap-runtime-example-origin.md`,
     linked_follow_up_record:
-      `forge/follow-up/${receivedAt}-dw-bootstrap-forge-example-forge-follow-up-record.md`,
+      `runtime/follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
     runtime_objective:
-      "Materialize the first bounded Forge record from the standalone host's local/shareable surface.",
+      "Materialize the first bounded Runtime record from the standalone host's local/shareable surface.",
     proposed_host: "directive-workspace-standalone-host",
-    proposed_runtime_surface: "local markdown-defined forge workflow",
+    proposed_runtime_surface: "local markdown-defined runtime workflow",
     execution_slice:
-      "Write a bounded Forge record and expose it through the standalone host overview/API without claiming runtime parity.",
+      "Write a bounded Runtime record and expose it through the standalone host overview/API without claiming runtime parity.",
     required_proof:
-      `forge/records/${receivedAt}-dw-bootstrap-forge-example-proof-checklist.md`,
+      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
     required_gates: [
-      "check:directive-standalone-forge-host",
+      "check:directive-standalone-runtime-host",
     ],
     risks: [
       "example origin paths are placeholders and should be replaced for real work",
     ],
     rollback:
-      "Delete the generated Forge record and linked follow-up if the example is no longer useful.",
+      "Delete the generated Runtime record and linked follow-up if the example is no longer useful.",
     current_status: "follow_up_only",
     next_decision_point:
       "After local review, decide whether to open a real bounded runtime slice.",
@@ -170,31 +170,31 @@ function createForgeRecordExample(receivedAt: string): JsonValue {
   };
 }
 
-function createForgeProofExample(receivedAt: string): JsonValue {
+function createRuntimeProofExample(receivedAt: string): JsonValue {
   return {
-    candidate_id: "dw-bootstrap-forge-example",
-    candidate_name: "Bootstrap Forge Example",
+    candidate_id: "dw-bootstrap-runtime-example",
+    candidate_name: "Bootstrap Runtime Example",
     proof_date: receivedAt,
-    linked_forge_record:
-      `forge/records/${receivedAt}-dw-bootstrap-forge-example-forge-record.md`,
+    linked_runtime_record:
+      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
     required_proof_items: [
-      "Forge record exists",
+      "Runtime record exists",
       "Gate snapshot JSON exists",
       "Rollback verification note is captured",
     ],
     validation_commands: [
-      "check:directive-standalone-forge-host",
+      "check:directive-standalone-runtime-host",
       "check:directive-standalone-api-host",
     ],
     source_proof_artifacts: [
-      `forge/follow-up/${receivedAt}-dw-bootstrap-forge-example-forge-follow-up-record.md`,
-      `forge/records/${receivedAt}-dw-bootstrap-forge-example-forge-record.md`,
+      `runtime/follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
+      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
     ],
     gate_snapshot: {
       overall_result: "pass",
       evaluated_gates: [
         {
-          command: "check:directive-standalone-forge-host",
+          command: "check:directive-standalone-runtime-host",
           result: "pass",
         },
         {
@@ -204,13 +204,13 @@ function createForgeProofExample(receivedAt: string): JsonValue {
       ],
       evidence: [
         "local artifact lifecycle written",
-        "Forge overview reports follow-up, record, proof, promotion, and registry state",
+        "Runtime overview reports follow-up, record, proof, promotion, and registry state",
       ],
     },
     pass_fail_summary:
-      "Bounded standalone Forge proof bundle generated locally with passing host and API evidence.",
+      "Bounded standalone Runtime proof bundle generated locally with passing host and API evidence.",
     rollback_verification:
-      "Delete the proof checklist, gate snapshot JSON, and linked local Forge artifacts to roll back the example cleanly.",
+      "Delete the proof checklist, gate snapshot JSON, and linked local Runtime artifacts to roll back the example cleanly.",
     status: "validated_locally",
   };
 }
@@ -241,7 +241,7 @@ function createTransformationProofExample(receivedAt: string): JsonValue {
       "Delete the generated transformation proof and transformation record artifacts to return the local bundle to its pre-example state.",
     regression_checks: [
       {
-        check_name: "check:directive-standalone-forge-host",
+        check_name: "check:directive-standalone-runtime-host",
         result: "pass",
       },
     ],
@@ -256,7 +256,7 @@ function createTransformationRecordExample(receivedAt: string): JsonValue {
     transformation_type: "maintainability",
     discovery_intake_path:
       `discovery/intake/${receivedAt}-bootstrap-transformation-intake.md`,
-    component: "standalone-host Forge transformation lane",
+    component: "standalone-host Runtime transformation lane",
     current_implementation:
       "Transformation artifacts existed as templates and historical records without a canonical standalone-host writer path.",
     baseline_metric: "manual_transformation_recording_steps",
@@ -273,12 +273,12 @@ function createTransformationRecordExample(receivedAt: string): JsonValue {
       "count the remaining operator step once canonical writers exist",
     evaluator_type: "automated",
     evaluator_command:
-      "npm run check:directive-standalone-forge-host && npm run check:directive-standalone-api-host",
+      "npm run check:directive-standalone-runtime-host && npm run check:directive-standalone-api-host",
     comparison_mode: "before-after",
     baseline_artifact_path:
-      `forge/records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
+      `runtime/records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
     result_artifact_path:
-      `forge/records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
+      `runtime/records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
     correctness_preserved:
       "yes - the transformation proof still satisfies the canonical schema and the standalone host still stays bounded/local",
     metric_improvement_measured:
@@ -288,34 +288,34 @@ function createTransformationRecordExample(receivedAt: string): JsonValue {
     rollback_tested: "yes - bounded local artifacts only",
     decision_state: "evaluated",
     mission_alignment:
-      "Improve Forge's behavior-preserving transformation lane as part of Directive Workspace system quality.",
+      "Improve Runtime's behavior-preserving transformation lane as part of Directive Workspace system quality.",
     capability_gap_id: "gap-transformation-lane",
   };
 }
 
-function createForgePromotionExample(receivedAt: string): JsonValue {
+function createRuntimePromotionExample(receivedAt: string): JsonValue {
   return {
-    candidate_id: "dw-bootstrap-forge-example",
-    candidate_name: "Bootstrap Forge Example",
+    candidate_id: "dw-bootstrap-runtime-example",
+    candidate_name: "Bootstrap Runtime Example",
     promotion_date: receivedAt,
-    linked_forge_record:
-      `forge/records/${receivedAt}-dw-bootstrap-forge-example-forge-record.md`,
+    linked_runtime_record:
+      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
     target_host: "directive-workspace-standalone-host",
-    target_runtime_surface: "bounded local forge artifact lifecycle",
+    target_runtime_surface: "bounded local runtime artifact lifecycle",
     integration_mode: "reimplement",
     source_intent_artifact:
-      `forge/follow-up/${receivedAt}-dw-bootstrap-forge-example-forge-follow-up-record.md`,
-    compile_contract_artifact: "shared/contracts/forge-to-host.md",
+      `runtime/follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
+    compile_contract_artifact: "shared/contracts/runtime-to-host.md",
     runtime_permissions_profile: "local_filesystem_only",
-    safe_output_scope: "directive-root/forge/**",
+    safe_output_scope: "directive-root/runtime/**",
     sanitize_policy: "no_external_network_side_effects",
     proposed_runtime_status: "bounded_local_reference",
     proof_path:
-      `forge/records/${receivedAt}-dw-bootstrap-forge-example-proof-checklist.md`,
+      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
     quality_gate_profile: "bounded_local_reference_guard/v1",
     promotion_profile_family: "bounded_local_reference",
-    proof_shape: "forge_local_artifact_proof/v1",
-    primary_host_checker: "npm run check:directive-standalone-forge-host",
+    proof_shape: "runtime_local_artifact_proof/v1",
+    primary_host_checker: "npm run check:directive-standalone-runtime-host",
     full_text_coverage_threshold: "0",
     evidence_binding_threshold: "100",
     citation_error_threshold: "0",
@@ -326,38 +326,38 @@ function createForgePromotionExample(receivedAt: string): JsonValue {
     validation_state: "validated_locally",
     quality_gate_fail_reasons: [],
     required_gates: [
-      "check:directive-standalone-forge-host",
+      "check:directive-standalone-runtime-host",
       "check:directive-standalone-api-host",
     ],
     validation_result:
-      "Standalone host can write and read the full bounded Forge artifact lifecycle locally.",
+      "Standalone host can write and read the full bounded Runtime artifact lifecycle locally.",
     rollback_plan:
-      "Delete the generated promotion record and related local Forge artifacts.",
-    owner: "Directive Forge",
+      "Delete the generated promotion record and related local Runtime artifacts.",
+    owner: "Directive Runtime",
     promotion_decision: "approved_for_bounded_local_reference_use",
   };
 }
 
-function createForgeRegistryExample(receivedAt: string): JsonValue {
+function createRuntimeRegistryExample(receivedAt: string): JsonValue {
   return {
-    candidate_id: "dw-bootstrap-forge-example",
-    candidate_name: "Bootstrap Forge Example",
+    candidate_id: "dw-bootstrap-runtime-example",
+    candidate_name: "Bootstrap Runtime Example",
     registry_date: receivedAt,
     linked_promotion_record:
-      `forge/promotion-records/${receivedAt}-dw-bootstrap-forge-example-promotion-record.md`,
+      `runtime/promotion-records/${receivedAt}-dw-bootstrap-runtime-example-promotion-record.md`,
     host: "directive-workspace-standalone-host",
-    runtime_surface: "bounded local forge artifact lifecycle",
+    runtime_surface: "bounded local runtime artifact lifecycle",
     runtime_status: "reference_live",
     proof_path:
-      `forge/records/${receivedAt}-dw-bootstrap-forge-example-proof-checklist.md`,
-    last_validated_by: "check:directive-standalone-forge-host",
+      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
+    last_validated_by: "check:directive-standalone-runtime-host",
     last_validation_date: receivedAt,
     active_risks: [
       "local reference lane only",
       "not a broad Mission Control replacement",
     ],
     rollback_path:
-      "Delete the generated registry entry and revert the local Forge lifecycle artifacts.",
+      "Delete the generated registry entry and revert the local Runtime lifecycle artifacts.",
     notes: [
       "This example is for bounded local/shareable usage.",
       "Generate the proof bundle before using this for real promotion history.",
@@ -384,26 +384,26 @@ Contents:
 - \`${input.configFilename}\` - standalone host config
 - \`directive-root/\` - local Directive root for Discovery/runtime artifacts
 - \`${DEFAULT_STANDALONE_BOOTSTRAP_EXAMPLE_SUBMISSION_FILENAME}\` - queue-only Discovery submission example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_FOLLOW_UP_FILENAME}\` - Forge follow-up example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_RECORD_FILENAME}\` - Forge record example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROOF_FILENAME}\` - Forge proof bundle example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_PROOF_FILENAME}\` - Forge transformation proof example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_RECORD_FILENAME}\` - Forge transformation record example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROMOTION_FILENAME}\` - Forge promotion record example
-- \`${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_REGISTRY_FILENAME}\` - Forge registry entry example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_FOLLOW_UP_FILENAME}\` - Runtime follow-up example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_RECORD_FILENAME}\` - Runtime record example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROOF_FILENAME}\` - Runtime proof bundle example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_PROOF_FILENAME}\` - Runtime transformation proof example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_RECORD_FILENAME}\` - Runtime transformation record example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROMOTION_FILENAME}\` - Runtime promotion record example
+- \`${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_REGISTRY_FILENAME}\` - Runtime registry entry example
 
 Quickstart:
 Run these from the Directive Workspace repo root:
 1. \`tsx hosts/standalone-host/cli.ts discovery-submit --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_EXAMPLE_SUBMISSION_FILENAME}\`
 2. \`tsx hosts/standalone-host/cli.ts discovery-overview --config ${input.outputRoot}/${input.configFilename}\`
-3. \`tsx hosts/standalone-host/cli.ts forge-followup-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_FOLLOW_UP_FILENAME}\`
-4. \`tsx hosts/standalone-host/cli.ts forge-record-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_RECORD_FILENAME}\`
-5. \`tsx hosts/standalone-host/cli.ts forge-proof-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROOF_FILENAME}\`
-6. \`tsx hosts/standalone-host/cli.ts forge-transformation-proof-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_PROOF_FILENAME}\`
-7. \`tsx hosts/standalone-host/cli.ts forge-transformation-record-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_RECORD_FILENAME}\`
-8. \`tsx hosts/standalone-host/cli.ts forge-promotion-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROMOTION_FILENAME}\`
-9. \`tsx hosts/standalone-host/cli.ts forge-registry-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_FORGE_REGISTRY_FILENAME}\`
-10. \`tsx hosts/standalone-host/cli.ts forge-overview --config ${input.outputRoot}/${input.configFilename}\`
+3. \`tsx hosts/standalone-host/cli.ts runtime-followup-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_FOLLOW_UP_FILENAME}\`
+4. \`tsx hosts/standalone-host/cli.ts runtime-record-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_RECORD_FILENAME}\`
+5. \`tsx hosts/standalone-host/cli.ts runtime-proof-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROOF_FILENAME}\`
+6. \`tsx hosts/standalone-host/cli.ts runtime-transformation-proof-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_PROOF_FILENAME}\`
+7. \`tsx hosts/standalone-host/cli.ts runtime-transformation-record-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_RECORD_FILENAME}\`
+8. \`tsx hosts/standalone-host/cli.ts runtime-promotion-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROMOTION_FILENAME}\`
+9. \`tsx hosts/standalone-host/cli.ts runtime-registry-write --config ${input.outputRoot}/${input.configFilename} --input-json-path ${input.outputRoot}/${DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_REGISTRY_FILENAME}\`
+10. \`tsx hosts/standalone-host/cli.ts runtime-overview --config ${input.outputRoot}/${input.configFilename}\`
 11. \`tsx hosts/standalone-host/cli.ts serve --config ${input.outputRoot}/${input.configFilename}\`
 
 Notes:
@@ -445,22 +445,22 @@ export function bootstrapStandaloneHostWorkspace(
       DEFAULT_STANDALONE_BOOTSTRAP_EXAMPLE_SUBMISSION_FILENAME,
     ),
   );
-  const exampleForgeFollowUpPath = normalizeAbsolutePath(
+  const exampleRuntimeFollowUpPath = normalizeAbsolutePath(
     path.resolve(
       outputRoot,
-      DEFAULT_STANDALONE_BOOTSTRAP_FORGE_FOLLOW_UP_FILENAME,
+      DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_FOLLOW_UP_FILENAME,
     ),
   );
-  const exampleForgeRecordPath = normalizeAbsolutePath(
+  const exampleRuntimeRecordPath = normalizeAbsolutePath(
     path.resolve(
       outputRoot,
-      DEFAULT_STANDALONE_BOOTSTRAP_FORGE_RECORD_FILENAME,
+      DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_RECORD_FILENAME,
     ),
   );
-  const exampleForgeProofPath = normalizeAbsolutePath(
+  const exampleRuntimeProofPath = normalizeAbsolutePath(
     path.resolve(
       outputRoot,
-      DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROOF_FILENAME,
+      DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROOF_FILENAME,
     ),
   );
   const exampleTransformationProofPath = normalizeAbsolutePath(
@@ -475,43 +475,43 @@ export function bootstrapStandaloneHostWorkspace(
       DEFAULT_STANDALONE_BOOTSTRAP_TRANSFORMATION_RECORD_FILENAME,
     ),
   );
-  const exampleForgePromotionPath = normalizeAbsolutePath(
+  const exampleRuntimePromotionPath = normalizeAbsolutePath(
     path.resolve(
       outputRoot,
-      DEFAULT_STANDALONE_BOOTSTRAP_FORGE_PROMOTION_FILENAME,
+      DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_PROMOTION_FILENAME,
     ),
   );
-  const exampleForgeRegistryPath = normalizeAbsolutePath(
+  const exampleRuntimeRegistryPath = normalizeAbsolutePath(
     path.resolve(
       outputRoot,
-      DEFAULT_STANDALONE_BOOTSTRAP_FORGE_REGISTRY_FILENAME,
+      DEFAULT_STANDALONE_BOOTSTRAP_RUNTIME_REGISTRY_FILENAME,
     ),
   );
   const includeSqlitePersistence = options.includeSqlitePersistence !== false;
   const includeAuthTemplate = options.includeAuthTemplate === true;
-  const forgeFollowUpDirectory = normalizeAbsolutePath(
-    path.resolve(directiveRoot, "forge", "follow-up"),
+  const runtimeFollowUpDirectory = normalizeAbsolutePath(
+    path.resolve(directiveRoot, "runtime", "follow-up"),
   );
-  const forgeRecordsDirectory = normalizeAbsolutePath(
-    path.resolve(directiveRoot, "forge", "records"),
+  const runtimeRecordsDirectory = normalizeAbsolutePath(
+    path.resolve(directiveRoot, "runtime", "records"),
   );
-  const forgePromotionRecordsDirectory = normalizeAbsolutePath(
-    path.resolve(directiveRoot, "forge", "promotion-records"),
+  const runtimePromotionRecordsDirectory = normalizeAbsolutePath(
+    path.resolve(directiveRoot, "runtime", "promotion-records"),
   );
-  const forgeRegistryDirectory = normalizeAbsolutePath(
-    path.resolve(directiveRoot, "forge", "registry"),
+  const runtimeRegistryDirectory = normalizeAbsolutePath(
+    path.resolve(directiveRoot, "runtime", "registry"),
   );
 
   fs.mkdirSync(runtimeArtifactsDirectory, { recursive: true });
-  fs.mkdirSync(forgeFollowUpDirectory, { recursive: true });
-  fs.mkdirSync(forgeRecordsDirectory, { recursive: true });
-  fs.mkdirSync(forgePromotionRecordsDirectory, { recursive: true });
-  fs.mkdirSync(forgeRegistryDirectory, { recursive: true });
+  fs.mkdirSync(runtimeFollowUpDirectory, { recursive: true });
+  fs.mkdirSync(runtimeRecordsDirectory, { recursive: true });
+  fs.mkdirSync(runtimePromotionRecordsDirectory, { recursive: true });
+  fs.mkdirSync(runtimeRegistryDirectory, { recursive: true });
   writeJson(queuePath, createInitialQueue(receivedAt));
   writeJson(exampleSubmissionPath, createExampleSubmission(receivedAt));
-  writeJson(exampleForgeFollowUpPath, createForgeFollowUpExample(receivedAt));
-  writeJson(exampleForgeRecordPath, createForgeRecordExample(receivedAt));
-  writeJson(exampleForgeProofPath, createForgeProofExample(receivedAt));
+  writeJson(exampleRuntimeFollowUpPath, createRuntimeFollowUpExample(receivedAt));
+  writeJson(exampleRuntimeRecordPath, createRuntimeRecordExample(receivedAt));
+  writeJson(exampleRuntimeProofPath, createRuntimeProofExample(receivedAt));
   writeJson(
     exampleTransformationProofPath,
     createTransformationProofExample(receivedAt),
@@ -520,8 +520,8 @@ export function bootstrapStandaloneHostWorkspace(
     exampleTransformationRecordPath,
     createTransformationRecordExample(receivedAt),
   );
-  writeJson(exampleForgePromotionPath, createForgePromotionExample(receivedAt));
-  writeJson(exampleForgeRegistryPath, createForgeRegistryExample(receivedAt));
+  writeJson(exampleRuntimePromotionPath, createRuntimePromotionExample(receivedAt));
+  writeJson(exampleRuntimeRegistryPath, createRuntimeRegistryExample(receivedAt));
   writeJson(configPath, {
     $schema: "https://directive-workspace.dev/schemas/standalone-host-config.schema.json",
     mode: "standalone_reference_api_host",
@@ -570,29 +570,29 @@ export function bootstrapStandaloneHostWorkspace(
     configPath,
     readmePath,
     exampleSubmissionPath,
-    exampleForgeFollowUpPath,
-    exampleForgeRecordPath,
-    exampleForgeProofPath,
+    exampleRuntimeFollowUpPath,
+    exampleRuntimeRecordPath,
+    exampleRuntimeProofPath,
     exampleTransformationProofPath,
     exampleTransformationRecordPath,
-    exampleForgePromotionPath,
-    exampleForgeRegistryPath,
+    exampleRuntimePromotionPath,
+    exampleRuntimeRegistryPath,
     createdPaths: [
       configPath,
       readmePath,
       exampleSubmissionPath,
-      exampleForgeFollowUpPath,
-      exampleForgeRecordPath,
-      exampleForgeProofPath,
+      exampleRuntimeFollowUpPath,
+      exampleRuntimeRecordPath,
+      exampleRuntimeProofPath,
       exampleTransformationProofPath,
       exampleTransformationRecordPath,
-      exampleForgePromotionPath,
-      exampleForgeRegistryPath,
+      exampleRuntimePromotionPath,
+      exampleRuntimeRegistryPath,
       queuePath,
-      forgeFollowUpDirectory,
-      forgeRecordsDirectory,
-      forgePromotionRecordsDirectory,
-      forgeRegistryDirectory,
+      runtimeFollowUpDirectory,
+      runtimeRecordsDirectory,
+      runtimePromotionRecordsDirectory,
+      runtimeRegistryDirectory,
       runtimeArtifactsDirectory,
     ],
   };

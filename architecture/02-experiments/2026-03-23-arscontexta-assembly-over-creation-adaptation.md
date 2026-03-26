@@ -64,7 +64,7 @@ Type: source-driven adaptation
   - constrain
 - Adaptation validates against:
   - `shared/contracts/architecture-mechanism-packet.md`
-- Original vs adapted delta: instead of a general “session output,” the adapted template becomes a reusable Directive packet with explicit usefulness level, Forge threshold, and meta-usefulness fields.
+- Original vs adapted delta: instead of a general “session output,” the adapted template becomes a reusable Directive packet with explicit usefulness level, Runtime threshold, and meta-usefulness fields.
 
 ### Mechanism: architecture-mechanism-packet-schema
 
@@ -84,7 +84,7 @@ Type: source-driven adaptation
 ### Mechanism: architecture-mechanism-packet
 
 - Improvement applied: `yes`
-- Improvement description: require explicit baggage exclusion, product artifact refs, and Forge threshold judgment so the packet preserves Directive-owned operational value instead of generic composability rhetoric.
+- Improvement description: require explicit baggage exclusion, product artifact refs, and Runtime threshold judgment so the packet preserves Directive-owned operational value instead of generic composability rhetoric.
 - Improvement type: `composability`
 - Improvement rationale: future Architecture work needs a packet that is directly reusable inside Directive’s operating system, not merely inspiring.
 - Improvement evidence plan: verify that the contract is integrated into workflow and source-adaptation contracts as a reusable downstream artifact.
@@ -123,8 +123,8 @@ Type: source-driven adaptation
   - `knowledge/workflow.md`
   - `shared/schemas/README.md`
   - `shared/lib/README.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

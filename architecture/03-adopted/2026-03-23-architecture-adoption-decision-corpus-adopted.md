@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes`
+- Runtime threshold check: `yes`
 - Decision: `adopted`
 - Status: `product_materialized`
 
@@ -25,7 +25,7 @@ Added an on-disk Architecture decision corpus in `architecture/03-adopted/` for 
 3. `2026-03-23-architecture-adoption-resolution-lib-adoption-decision.json`
 4. `2026-03-23-architecture-adoption-artifacts-lib-adoption-decision.json`
 5. `2026-03-23-architecture-cycle-decision-summary-lib-adoption-decision.json`
-6. `2026-03-23-scientify-literature-monitoring-forge-handoff-adoption-decision.json`
+6. `2026-03-23-scientify-literature-monitoring-runtime-handoff-adoption-decision.json`
 
 Added an executable corpus checker:
 - `mission-control/scripts/check-directive-architecture-adoption-decision-corpus.ts`

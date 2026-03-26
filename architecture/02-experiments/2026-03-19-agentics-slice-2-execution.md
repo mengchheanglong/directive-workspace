@@ -1,8 +1,8 @@
 # Agentics Slice 2 Execution Evidence (2026-03-19)
 
 ## what changed
-- Added translated playbook templates in Directive Forge follow-up:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
+- Added translated playbook templates in Directive Runtime follow-up:
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
 - Performed dry-run validation against existing Directive artifacts (read-only analysis).
 - No API/schema/runtime code changes.
 
@@ -51,5 +51,5 @@ npm run check:ops-stack
 ## rollback result/status
 - Rollback not required (all checks green).
 - Rollback path remains valid and minimal:
-  - remove `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
+  - remove `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
   - remove this execution evidence file

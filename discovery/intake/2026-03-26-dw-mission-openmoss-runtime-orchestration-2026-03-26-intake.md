@@ -1,0 +1,23 @@
+# Discovery Intake Record: OpenMOSS Runtime Orchestration Surface
+
+- Candidate id: dw-mission-openmoss-runtime-orchestration-2026-03-26
+- Candidate name: OpenMOSS Runtime Orchestration Surface
+- Intake date: 2026-03-26
+- Source type: github-repo
+- Source reference: sources/intake/OpenMOSS/README.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: A reusable runtime orchestration surface for planning, executing, reviewing, and patroling autonomous work could matter directly to the active mission?s operationalization and orchestration reliability lanes.
+- Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.
+- Suspected adoption target: reusable runtime transformation capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run e905a45b-10da-4549-afa0-8e58a43a3606 selected runtime. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-triage.md

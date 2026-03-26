@@ -1,0 +1,34 @@
+# Mini-SWE-Agent Promotion Record
+
+- Candidate id: mini-swe-agent
+- Candidate name: mini-swe-agent
+- Promotion date: 2026-03-20
+- Linked Runtime record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-19-mini-swe-agent-runtime-record.md`
+- Target host: Mission Control
+- Target runtime surface: Directive Workspace fallback execution lane
+- Integration mode: adapt
+- Proposed runtime status: callable (bounded fallback lane)
+- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-20-mini-swe-agent-runtime-slice-01-proof.md`
+- Quality gate profile: promotion_quality_gate/v1
+- Promotion profile family: research_quality_gate
+- Proof shape: quality_metric_snapshot/v1
+- Primary host checker: `npm run check:directive-promotion-quality-contracts`
+- Full-text coverage threshold (%): 80
+- Evidence-binding threshold (%): 90
+- Citation-error threshold (%): 2
+- Observed full-text coverage (%): 100
+- Observed evidence-binding (%): 95
+- Observed citation error rate (%): 0
+- Quality gate result: pass
+- Validation state: self_validated
+- Quality gate fail reasons: none
+- Required gates:
+  - `npm run check:directive-workspace-v0`
+  - `npm run check:directive-integration-proof`
+  - `npm run check:directive-workspace-health`
+  - `npm run check:directive-promotion-quality-contracts`
+  - `npm run check:ops-stack`
+- Validation result: all required gates PASS on 2026-03-20
+- Rollback plan: delete bounded rehearsal artifacts and promotion/registry records; keep fallback lane disabled by default.
+- Owner: operator
+- Promotion decision: approved for bounded callable follow-up with Windows encoding mitigation note

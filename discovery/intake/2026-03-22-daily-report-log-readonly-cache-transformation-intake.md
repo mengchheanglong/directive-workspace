@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - reduces repeated readonly daily-log reconstruction work for context-pack and related host paths
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host surface`
 
 ## Bounded Claim
@@ -38,4 +38,4 @@ Add a short-lived readonly cache for `listDailyReportLogs(userId, projectId, { m
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-daily-report-log-readonly-cache-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-daily-report-log-readonly-cache-transformation-record.md`

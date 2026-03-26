@@ -37,4 +37,4 @@ Reason:
 
 Architecture should execute Wave 03 as one bounded Celtrix slice.
 
-No Forge runtime/callable expansion is authorized by this bundle.
+No Runtime runtime/callable expansion is authorized by this bundle.

@@ -27,7 +27,7 @@ Prefer Architecture route when:
 - runtime surface is broad and risky
 - integration requires framework-level changes
 
-Prefer Forge route when:
+Prefer Runtime route when:
 - value is a bounded callable/helper capability
 - runtime objective is explicit and reversible
 - gate validation can be done safely with current host checks

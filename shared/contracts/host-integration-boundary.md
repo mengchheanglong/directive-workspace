@@ -17,7 +17,7 @@ It is not the definition of Directive Workspace either.
 
 Directive Workspace owns the canonical definition of:
 - Discovery
-- Forge
+- Runtime
 - Architecture
 - doctrine
 - contracts

@@ -31,10 +31,10 @@ Evaluation surface:
 - Mechanisms adapted (explicit adaptation, not raw adoption): `1`
 - Mechanisms improved beyond source: `1`
 - Adoption decision artifacts reviewed: `1`
-- Adoption verdict counts: `1 adopt`, `0 hand_off_to_forge`, `0 stay_experimental`, `0 defer`, `0 reject`
+- Adoption verdict counts: `1 adopt`, `0 hand_off_to_runtime`, `0 stay_experimental`, `0 defer`, `0 reject`
 - Artifact type distribution: `1 shared-lib`
 - Completion-status distribution: `1 product_materialized`
-- Forge handoff required decisions: `0`
+- Runtime handoff required decisions: `0`
 - Total adoptions: `1`
 - Meta-useful adoptions: `1`
 - Adaptation coverage: `1 / 1 = 100%`
@@ -86,7 +86,7 @@ Evaluation surface:
 ### Handoff quality
 - Current state: `adequate`
 - Change since last cycle: `stable`
-- Evidence: this slice correctly required no Forge handoff
+- Evidence: this slice correctly required no Runtime handoff
 - Highest priority gap: continue separating retained Architecture format mechanics from any future runtime artifact-envelope work
 
 ## Meta-usefulness claim verification

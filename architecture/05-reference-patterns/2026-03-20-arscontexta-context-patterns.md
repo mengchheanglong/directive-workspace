@@ -38,7 +38,7 @@ Useful invariant:
 - work moves through named phases with explicit transformation intent
 
 Directive implication:
-- strengthens how Discovery, Architecture, and Forge define handoffs and artifact mutation
+- strengthens how Discovery, Architecture, and Runtime define handoffs and artifact mutation
 
 ### Schema-backed quality
 

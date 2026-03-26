@@ -19,7 +19,7 @@ It should not be mistaken for:
 The target product center is a machine-executable core that can:
 - intake sources against mission context
 - classify usefulness
-- route candidates to Discovery, Architecture, or Forge
+- route candidates to Discovery, Architecture, or Runtime
 - perform adaptation/improvement work
 - run proof/evaluation flows
 - emit integration proposals and host-consumable outputs
@@ -59,7 +59,7 @@ Current slice scope:
 - integration-proposal generation
 
 Current slice gap:
-- more of Discovery, Architecture, and Forge still lives outside the engine than inside it
+- more of Discovery, Architecture, and Runtime still lives outside the engine than inside it
 - analysis/extraction/adaptation/improvement are still planning artifacts, not full engine-owned execution
 
 ## Engine vs Lanes
@@ -108,10 +108,10 @@ Before expanding more host breadth, the next product goal is:
 
 That means prioritizing:
 1. expand the canonical engine API
-2. keep Discovery / Architecture / Forge as explicit Engine lanes instead of as peer product surfaces or host-local policy blobs
+2. keep Discovery / Architecture / Runtime as explicit Engine lanes instead of as peer product surfaces or host-local policy blobs
 3. deepen the canonical runtime state model
 4. strengthen the storage/adapter boundary
 5. move more end-to-end DW behavior from helper flows into executable engine logic plus Engine lanes
 
 This direction is meant to prevent drift.
-Future host, Architecture, and Forge work should be judged against whether it strengthens the engine itself.
+Future host, Architecture, and Runtime work should be judged against whether it strengthens the engine itself.

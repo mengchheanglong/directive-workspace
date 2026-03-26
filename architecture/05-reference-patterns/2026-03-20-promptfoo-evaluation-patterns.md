@@ -34,8 +34,8 @@ It is:
 ## Directive Target
 
 - `Directive Architecture`
-- secondary `Directive Forge` runtime follow-up
+- secondary `Directive Runtime` runtime follow-up
 
 ## Follow-up
 
-This source supports stronger evaluation and promotion discipline in both Architecture and Forge.
+This source supports stronger evaluation and promotion discipline in both Architecture and Runtime.

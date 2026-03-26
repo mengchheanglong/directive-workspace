@@ -60,7 +60,7 @@
         },
         "route_destination": {
           "type": "string",
-          "enum": ["forge", "architecture", "monitor", "defer", "reject", "reference"]
+          "enum": ["runtime", "architecture", "monitor", "defer", "reject", "reference"]
         },
         "why_this_route": { "type": "string", "minLength": 1 },
         "why_not_alternatives": { "type": "string", "minLength": 1 },
@@ -221,7 +221,7 @@
             "adoption_target": { "type": "string", "minLength": 1 },
             "route_destination": {
               "type": "string",
-              "enum": ["forge", "architecture", "monitor", "defer", "reject", "reference"]
+              "enum": ["runtime", "architecture", "monitor", "defer", "reject", "reference"]
             },
             "why_this_route": { "type": "string", "minLength": 1 },
             "why_not_alternatives": { "type": "string", "minLength": 1 },
@@ -256,7 +256,7 @@
             "adoption_target": { "type": "string", "minLength": 1 },
             "route_destination": {
               "type": "string",
-              "enum": ["forge", "architecture", "monitor", "defer", "reject", "reference"]
+              "enum": ["runtime", "architecture", "monitor", "defer", "reject", "reference"]
             },
             "rationale": { "type": "string", "minLength": 1 },
             "evidence_path": { "type": "string", "minLength": 1 },

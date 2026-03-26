@@ -2,7 +2,7 @@
 
 Purpose:
 - generate minimal `IntegrationContractArtifact` and `ProofChecklistArtifact` skeletons from experiment design artifacts
-- reduce manual contract drift during Architecture-to-Forge handoff preparation
+- reduce manual contract drift during Architecture-to-Runtime handoff preparation
 
 Profile:
 - `integration_proof_template_generator/v1`

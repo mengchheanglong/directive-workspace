@@ -1,13 +1,13 @@
 import type {
   DirectiveArchitectureAdoptionDecisionArtifact,
-} from "./architecture-adoption-artifacts";
+} from "./architecture-adoption-artifacts.ts";
 import {
   listDirectiveArchitectureAdoptionDecisionArtifacts,
-} from "./architecture-adoption-decision-store";
+} from "./architecture-adoption-decision-store.ts";
 import {
   summarizeDirectiveArchitectureCycleDecisions,
   type DirectiveArchitectureCycleDecisionSummary,
-} from "./architecture-cycle-decision-summary";
+} from "./architecture-cycle-decision-summary.ts";
 
 export type DirectiveArchitectureCycleDecisionRecordLoad = {
   recordRelativePath: string;

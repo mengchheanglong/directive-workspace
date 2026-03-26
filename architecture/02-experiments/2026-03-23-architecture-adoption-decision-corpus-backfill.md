@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this improves retained Architecture decision-state maintenance without requiring a runtime surface
+- Runtime threshold check: `yes` - this improves retained Architecture decision-state maintenance without requiring a runtime surface
 
 ## Why this slice exists
 
@@ -30,7 +30,7 @@ Use the live writer on the current bounded retained corpus:
 3. `architecture-adoption-resolution-lib`
 4. `architecture-adoption-artifacts-lib`
 5. `architecture-cycle-decision-summary-lib`
-6. `scientify-literature-monitoring-forge-handoff`
+6. `scientify-literature-monitoring-runtime-handoff`
 
 ## Expected result
 

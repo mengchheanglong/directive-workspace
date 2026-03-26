@@ -30,6 +30,6 @@
     "verdict": "adopt",
     "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
     "completion_status": "product_materialized",
-    "forge_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
   }
 }

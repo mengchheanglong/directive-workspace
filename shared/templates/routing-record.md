@@ -14,7 +14,7 @@ Default path:
 - Route destination:
 - Why this route:
 - Why not the alternatives:
-- Handoff contract used: (`discovery-to-architecture` | `discovery-to-forge` | other)
+- Handoff contract used: (`discovery-to-architecture` | `discovery-to-runtime` | other)
 - Receiving track owner:
 - Required next artifact: (for Architecture source work: `source-analysis-contract` → `adaptation-decision-contract`)
 - Compaction profile (if compacted):

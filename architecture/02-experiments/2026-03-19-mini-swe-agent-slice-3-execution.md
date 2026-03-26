@@ -11,7 +11,7 @@
 
 ## what changed
 - Added extracted fallback pattern doc:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`
 - Created runtime smoke sandbox outside mission-control tree for bounded validation:
   - `C:\v\mswea3` (short-path venv)
   - `C:\v\slice3-mini-a\run_slice3_mswea.py`
@@ -65,6 +65,6 @@
 ## rollback status
 - Rollback not required (all required gates green).
 - Reversible rollback path remains:
-1. Remove `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`.
+1. Remove `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_MINI_SWE_AGENT_SLICE_3_FALLBACK_PATTERN.md`.
 2. Delete sandbox artifacts under `C:\v\mswea3` and `C:\v\slice3-mini-a`.
 3. Remove this execution evidence note.

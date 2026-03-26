@@ -24,7 +24,7 @@
     "candidate_id": { "type": "string", "minLength": 1 },
     "track": {
       "type": "string",
-      "enum": ["Discovery", "Architecture", "Forge"]
+      "enum": ["Discovery", "Architecture", "Runtime"]
     },
     "phase_completed": { "type": "string", "minLength": 1 },
     "next_phase": { "type": "string", "minLength": 1 },

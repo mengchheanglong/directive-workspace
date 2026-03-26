@@ -11,7 +11,7 @@ This runbook is the final step after extraction, not a replacement for extractio
 ## Preconditions
 
 All of the following must be true:
-- runtime source-pack resolution is Forge-owned only
+- runtime source-pack resolution is Runtime-owned only
 - `repo-sources.json` has no `agent-lab` entries
 - `directive_capabilities.source_ref` has no `agent-lab/...` values
 - `agent-lab` is frozen/read-only

@@ -38,8 +38,8 @@ const ARCHITECTURE_KEYWORDS = [
   "self-improvement",
 ];
 
-const FORGE_KEYWORDS = [
-  "forge",
+const RUNTIME_KEYWORDS = [
+  "runtime",
   "runtime",
   "callable",
   "skill",
@@ -269,11 +269,11 @@ function deriveLaneScores(input: {
 }) {
   const discoverySignal = countKeywordHits(input.sourceText, DISCOVERY_KEYWORDS);
   const architectureSignal = countKeywordHits(input.sourceText, ARCHITECTURE_KEYWORDS);
-  const forgeSignal = countKeywordHits(input.sourceText, FORGE_KEYWORDS);
+  const baseRuntimeSignal = countKeywordHits(input.sourceText, RUNTIME_KEYWORDS);
   const metaUsefulnessSignal = countKeywordHits(input.sourceText, META_USEFULNESS_KEYWORDS);
   const transformationSignal = countKeywordHits(input.sourceText, TRANSFORMATION_KEYWORDS);
   const runtimeSignal =
-    forgeSignal +
+    baseRuntimeSignal +
     (RUNTIME_SOURCE_TYPES.has(input.source.sourceType) ? 2 : 0);
   const structuralSignal =
     architectureSignal +
@@ -290,8 +290,8 @@ function deriveLaneScores(input: {
 
   const matchedGapDiscoverySignal = countKeywordHits(matchedGapText, DISCOVERY_KEYWORDS);
   const matchedGapArchitectureSignal = countKeywordHits(matchedGapText, ARCHITECTURE_KEYWORDS);
-  const matchedGapForgeSignal =
-    countKeywordHits(matchedGapText, FORGE_KEYWORDS)
+  const matchedGapRuntimeSignal =
+    countKeywordHits(matchedGapText, RUNTIME_KEYWORDS)
     + countKeywordHits(matchedGapText, TRANSFORMATION_KEYWORDS);
 
   const laneScores = {
@@ -302,10 +302,10 @@ function deriveLaneScores(input: {
     architecture:
       structuralSignal * 3 +
       matchedGapArchitectureSignal * 2,
-    forge:
+    runtime:
       runtimeSignal * 3 +
       transformationSignal * 2 +
-      matchedGapForgeSignal * 2,
+      matchedGapRuntimeSignal * 2,
   };
 
   return {
@@ -317,18 +317,18 @@ function deriveLaneScores(input: {
 }
 
 function deriveRecommendedLane(
-  laneScores: Record<"discovery" | "architecture" | "forge", number>,
+  laneScores: Record<"discovery" | "architecture" | "runtime", number>,
 ) {
   return (Object.entries(laneScores).sort((left, right) => {
     if (right[1] !== left[1]) {
       return right[1] - left[1];
     }
     return left[0].localeCompare(right[0]);
-  })[0]?.[0] ?? "discovery") as "discovery" | "architecture" | "forge";
+  })[0]?.[0] ?? "discovery") as "discovery" | "architecture" | "runtime";
 }
 
 function deriveAmbiguityPenalty(
-  laneScores: Record<"discovery" | "architecture" | "forge", number>,
+  laneScores: Record<"discovery" | "architecture" | "runtime", number>,
 ) {
   const sortedScores = Object.values(laneScores).sort((left, right) => right - left);
   if (sortedScores.length < 2) {
@@ -354,7 +354,7 @@ function deriveConfidence(
 }
 
 function deriveRecommendedRecordShape(input: {
-  recommendedLaneId: "discovery" | "architecture" | "forge";
+  recommendedLaneId: "discovery" | "architecture" | "runtime";
   confidence: DirectiveEngineRoutingConfidence;
   matchedGap: DirectiveEngineCapabilityGap | null;
 }) {
@@ -426,7 +426,7 @@ export function assessDirectiveEngineRouting(input: {
   );
   if (transformationSignal > 0) {
     rationale.push(
-      `Transformation signal is present (${transformationSignal}/5), which strengthens Forge-style behavior-preserving work.`,
+      `Transformation signal is present (${transformationSignal}/5), which strengthens Runtime-style behavior-preserving work.`,
     );
   }
   if (metaUsefulnessSignal > 0) {

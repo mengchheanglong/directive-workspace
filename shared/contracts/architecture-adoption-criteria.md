@@ -8,7 +8,7 @@ Operationalize the Decide step of the canonical source flow for Architecture:
 
 **Source → Analyze → Route → Extract → Adapt → Improve → Prove → Integrate**
 
-This contract governs when an adapted/improved mechanism should be adopted, what artifact type it should become, when it should stay experimental, and when it should hand off to Forge.
+This contract governs when an adapted/improved mechanism should be adopted, what artifact type it should become, when it should stay experimental, and when it should hand off to Runtime.
 
 Without this contract, Architecture adoption decisions are ad hoc: mechanisms get adopted because they "seem useful" or because the experiment completed, not because structured criteria were met.
 
@@ -64,21 +64,21 @@ Selection rules:
 - When unclear between `contract` and `policy`, prefer `contract` if there are required fields, prefer `policy` if there are only rules
 - When unclear between `template` and `contract`, prefer `template` if the output is a filled document, prefer `contract` if the output is a constraint set
 
-### 3. Architecture-to-Forge threshold
+### 3. Architecture-to-Runtime threshold
 
-Hand off to Forge instead of adopting in Architecture when **all** of the following are true:
+Hand off to Runtime instead of adopting in Architecture when **all** of the following are true:
 
 - the remaining value is **callable runtime capability**, not reusable internal operating logic
 - the mechanism requires host integration, runtime gates, or production deployment
 - Architecture has already captured its own value (the framework pattern, policy, or operating logic)
-- the handoff can be explicit via `shared/contracts/architecture-to-forge.md`
+- the handoff can be explicit via `shared/contracts/architecture-to-runtime.md`
 
-Do **not** hand off to Forge when:
+Do **not** hand off to Runtime when:
 - the mechanism is purely structural (improves how the system works, not what it does at runtime)
 - the mechanism is meta-useful (improves the engine's own source-consumption ability)
-- the Forge handoff would leave Architecture with no product-owned artifact
+- the Runtime handoff would leave Architecture with no product-owned artifact
 
-Threshold rule: if you are unsure whether the remaining work is Architecture or Forge, ask: "Would this mechanism still be valuable if we never built a runtime surface for it?" If yes, it belongs in Architecture. If no, it belongs in Forge.
+Threshold rule: if you are unsure whether the remaining work is Architecture or Runtime, ask: "Would this mechanism still be valuable if we never built a runtime surface for it?" If yes, it belongs in Architecture. If no, it belongs in Runtime.
 
 ### 4. Usefulness level treatment
 
@@ -86,14 +86,14 @@ The three usefulness levels from the source-analysis contract require different 
 
 #### Direct usefulness (`direct`)
 - The mechanism is useful immediately for repeated user/runtime use.
-- Default path: extract, adapt, improve, then hand off to Forge for runtime operationalization.
+- Default path: extract, adapt, improve, then hand off to Runtime for runtime operationalization.
 - Architecture retains: the adapted framework pattern or operating logic as a reference pattern or contract.
-- Adoption artifact: usually `reference-pattern` or `contract` in Architecture, with a Forge handoff.
+- Adoption artifact: usually `reference-pattern` or `contract` in Architecture, with a Runtime handoff.
 
 #### Structural usefulness (`structural`)
 - The mechanism is useful for how the system works.
 - Default path: extract, adapt, improve, then adopt as a product-owned Architecture artifact.
-- No Forge handoff unless a runtime component is also identified.
+- No Runtime handoff unless a runtime component is also identified.
 - Adoption artifact: usually `contract`, `schema`, `template`, or `policy`.
 - Evidence required: explain how the mechanism improves system structure (routing, evaluation, handoff, workflow, or doctrine quality).
 
@@ -131,8 +131,8 @@ When adopting, the Architecture adopted record must include:
 - `improvement_quality`: `strong` | `adequate` | `weak` | `skipped` (with rationale if weak/skipped)
 - `meta_useful`: `yes` | `no`
 - `self_improvement_category`: if meta-useful
-- `forge_handoff`: `yes` | `no`
-- `forge_handoff_ref`: if applicable
+- `runtime_handoff`: `yes` | `no`
+- `runtime_handoff_ref`: if applicable
 - `completion_status`: per `architecture-completion-rubric` status classes
 
 ## Rules
@@ -140,17 +140,17 @@ When adopting, the Architecture adopted record must include:
 - Never adopt with `adaptation_quality` = `weak` or `skipped` unless explicitly justified
 - Never adopt without substantive delta evidence
 - Meta-useful mechanisms get adoption priority
-- Direct-useful mechanisms should have a Forge handoff plan even if the handoff is deferred
+- Direct-useful mechanisms should have a Runtime handoff plan even if the handoff is deferred
 - Structural-useful mechanisms are the core Architecture output — they strengthen the system itself
 - The artifact type selection matrix is a decision aid, not a gate — use judgment when the matrix is ambiguous
 - Every adoption must be traceable to a source-analysis record and an adaptation-decision record
 
-For mixed-value sources, prefer adopting an explicit partition artifact in Architecture before any Forge handoff so the retained Architecture value is not lost.
+For mixed-value sources, prefer adopting an explicit partition artifact in Architecture before any Runtime handoff so the retained Architecture value is not lost.
 
 ## Relationship to other contracts
 
 - Receives input from: `adaptation-decision-contract` (the adapted/improved mechanism)
 - Feeds output to: `architecture-completion-rubric` (completion tracking)
-- Feeds Forge handoff via: `architecture-to-forge` (when direct-useful with runtime component)
+- Feeds Runtime handoff via: `architecture-to-runtime` (when direct-useful with runtime component)
 - Feeds self-improvement tracking via: `architecture-self-improvement-contract` (when meta-useful)
 - Complements: `architecture-review-guardrails` (review process quality)

@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - removes repeated reads and recomputation across summary, overview, full, readiness, and repo-snapshot context generation
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host path`
 
 ## Bounded Claim
@@ -45,4 +45,4 @@ without changing:
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-dashboard-context-preload-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-dashboard-context-preload-transformation-record.md`

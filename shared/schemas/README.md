@@ -1,7 +1,7 @@
 # Shared Schemas
 
 This folder holds the canonical Directive Workspace contract schemas used by
-Discovery, Architecture, Forge, and host checks.
+Discovery, Architecture, Runtime, and host checks.
 
 Current scope:
 - architecture-contract artifacts plus Discovery operating-surface request schemas and the standalone-host runtime-profile schema

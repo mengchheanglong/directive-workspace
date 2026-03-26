@@ -17,34 +17,34 @@ Purpose:
 Current files:
 - `bootstrap.ts`
 - `config.ts`
-- `forge.ts`
+- `runtime.ts`
 - `persistence.ts`
 - `runtime.ts`
 - `index.ts`
 - `cli.ts`
 - `server.ts`
 - `standalone-host.config.example.json`
-- `examples/forge-follow-up.example.json`
-- `examples/forge-record.example.json`
-- `examples/forge-proof-bundle.example.json`
-- `examples/forge-transformation-proof.example.json`
-- `examples/forge-transformation-record.example.json`
-- `examples/forge-promotion-record.example.json`
-- `examples/forge-registry-entry.example.json`
+- `examples/runtime-follow-up.example.json`
+- `examples/runtime-record.example.json`
+- `examples/runtime-proof-bundle.example.json`
+- `examples/runtime-transformation-proof.example.json`
+- `examples/runtime-transformation-record.example.json`
+- `examples/runtime-promotion-record.example.json`
+- `examples/runtime-registry-entry.example.json`
 
 Available commands:
 - `init`
 - `acceptance-quickstart`
 - `discovery-submit`
 - `discovery-overview`
-- `forge-followup-write`
-- `forge-record-write`
-- `forge-proof-write`
-- `forge-transformation-proof-write`
-- `forge-transformation-record-write`
-- `forge-promotion-write`
-- `forge-registry-write`
-- `forge-overview`
+- `runtime-followup-write`
+- `runtime-record-write`
+- `runtime-proof-write`
+- `runtime-transformation-proof-write`
+- `runtime-transformation-record-write`
+- `runtime-promotion-write`
+- `runtime-registry-write`
+- `runtime-overview`
 - `serve`
 
 Bootstrap/init:
@@ -53,13 +53,13 @@ Bootstrap/init:
   - `standalone-host.config.json`
   - `directive-root/discovery/intake-queue.json`
   - `discovery-submission.queue-only.example.json`
-  - `forge-follow-up.example.json`
-  - `forge-record.example.json`
-  - `forge-proof-bundle.example.json`
-  - `forge-transformation-proof.example.json`
-  - `forge-transformation-record.example.json`
-  - `forge-promotion-record.example.json`
-  - `forge-registry-entry.example.json`
+  - `runtime-follow-up.example.json`
+  - `runtime-record.example.json`
+  - `runtime-proof-bundle.example.json`
+  - `runtime-transformation-proof.example.json`
+  - `runtime-transformation-record.example.json`
+  - `runtime-promotion-record.example.json`
+  - `runtime-registry-entry.example.json`
   - local `README.md`
 - expansion direction note:
   - `EXPANSION_DIRECTION.md`
@@ -92,14 +92,14 @@ Reference API endpoints:
 - `GET /api/discovery/overview?max_entries=<n>`
 - `POST /api/discovery/submissions?dry_run=1`
 - `POST /api/discovery/submissions?process_with_engine=1`
-- `GET /api/forge/overview?max_entries=<n>`
-- `POST /api/forge/follow-ups`
-- `POST /api/forge/records`
-- `POST /api/forge/proof-bundles`
-- `POST /api/forge/transformation-proofs`
-- `POST /api/forge/transformation-records`
-- `POST /api/forge/promotion-records`
-- `POST /api/forge/registry-entries`
+- `GET /api/runtime/overview?max_entries=<n>`
+- `POST /api/runtime/follow-ups`
+- `POST /api/runtime/records`
+- `POST /api/runtime/proof-bundles`
+- `POST /api/runtime/transformation-proofs`
+- `POST /api/runtime/transformation-records`
+- `POST /api/runtime/promotion-records`
+- `POST /api/runtime/registry-entries`
 
 Engine-backed Discovery front door:
 - `discovery-submit --process-with-engine` keeps source entry at the existing Discovery front door, then runs the submitted source through the Directive Engine
@@ -107,17 +107,17 @@ Engine-backed Discovery front door:
 - the CLI/API response returns the persisted artifact paths plus the full Engine run record so the host can consume the canonical Engine-owned output directly
 - `dry_run` still skips Engine persistence and reports that the Engine step was not executed
 
-Current bounded Forge-side local workflow support:
-- write a Forge follow-up artifact from JSON input
-- write a Forge record artifact from JSON input
-- generate a Forge proof checklist plus gate snapshot JSON from JSON input
-- write a Forge transformation proof artifact from JSON input
-- write a Forge transformation record artifact from JSON input
-- write a Forge promotion record from JSON input
-- write a Forge registry entry from JSON input
-- read a Forge overview across local follow-up, record, proof, transformation proof, transformation record, promotion, and registry artifacts
+Current bounded Runtime-side local workflow support:
+- write a Runtime follow-up artifact from JSON input
+- write a Runtime record artifact from JSON input
+- generate a Runtime proof checklist plus gate snapshot JSON from JSON input
+- write a Runtime transformation proof artifact from JSON input
+- write a Runtime transformation record artifact from JSON input
+- write a Runtime promotion record from JSON input
+- write a Runtime registry entry from JSON input
+- read a Runtime overview across local follow-up, record, proof, transformation proof, transformation record, promotion, and registry artifacts
 - require a real linked proof artifact before promotion and registry writes can advance
-- keep this lane bounded to local/shareable workflow artifacts, not full Forge runtime parity
+- keep this lane bounded to local/shareable workflow artifacts, not full Runtime runtime parity
 
 This is a reference host, not the full runtime replacement for Mission Control.
 Mission Control remains the first broad runtime host.

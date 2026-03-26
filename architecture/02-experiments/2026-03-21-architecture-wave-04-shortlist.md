@@ -15,7 +15,7 @@ Wave 04 should only open candidates that still hold surviving internal-structure
 
 A candidate qualifies for Wave 04 only if all of the following are true:
 - Discovery routing is explicit.
-- The remaining work is Architecture, not Forge runtime follow-up.
+- The remaining work is Architecture, not Runtime runtime follow-up.
 - The candidate adds a reusable internal control or boundary rule not already represented in `shared/contracts`, `shared/templates`, or `shared/lib`.
 - The next slice can be bounded to one product-owned contract, template, schema, or policy family.
 
@@ -24,7 +24,7 @@ A candidate qualifies for Wave 04 only if all of the following are true:
 ### 1) `al-src-agent-lab-orchestration-allowlist`
 - Current state:
   - surviving value exists only as source-map/reference guidance
-  - the Forge external run envelope is already extracted, but the curation/export allowlist boundary is not yet normalized as a product-owned Directive Workspace contract
+  - the Runtime external run envelope is already extracted, but the curation/export allowlist boundary is not yet normalized as a product-owned Directive Workspace contract
 - Existing outputs:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\reference\2026-03-20-agent-lab-orchestration-source-map.md`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\agent-lab-extraction\AGENT_LAB_EXTRACTION_LEDGER.md`
@@ -56,12 +56,12 @@ A candidate qualifies for Wave 04 only if all of the following are true:
 
 ### `al-src-skills-manager`
 - Reason:
-  - surviving value routes to Forge and Discovery, not Architecture
+  - surviving value routes to Runtime and Discovery, not Architecture
   - skill-root precedence and lifecycle handling are runtime/source-pack concerns first
 
 ### `al-src-tooling-scripts`
 - Reason:
-  - surviving value remains Discovery/Forge operational discipline
+  - surviving value remains Discovery/Runtime operational discipline
   - no remaining Architecture-specific contract gap is strong enough to open a bounded slice now
 
 ### Closed prior-wave candidates
@@ -91,7 +91,7 @@ Escalate to shared-contract or host checks only when the allowlist boundary is c
 Wave 04 is properly opened when:
 - the one active candidate is explicit
 - monitor-held candidates remain explicitly excluded
-- Forge-routed source-map items are not miscounted as Architecture work
+- Runtime-routed source-map items are not miscounted as Architecture work
 - the next Architecture slice can start from the allowlist boundary without redoing routing
 
 Completion note:

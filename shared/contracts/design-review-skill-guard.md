@@ -1,11 +1,11 @@
 # Design Review Skill Guard Contract
 
 Purpose:
-- enforce bounded design-review skill import evidence on Forge promotion records before callable design-review claims
+- enforce bounded design-review skill import evidence on Runtime promotion records before callable design-review claims
 - ensure software-design-philosophy promotions capture explicit import-pack results, deterministic reviewer metadata, and rollback scope
 
 Scope:
-- applies to Forge promotion records whose `Quality gate profile` is `design_review_skill_guard/v1`
+- applies to Runtime promotion records whose `Quality gate profile` is `design_review_skill_guard/v1`
 - applies to linked proof artifacts referenced by `Proof path`
 
 Canonical profile:
@@ -18,7 +18,7 @@ Canonical proof shape:
 - `agent_pack_import_snapshot/v1`
 
 Primary host checker:
-- `npm run check:directive-design-philosophy-forge`
+- `npm run check:directive-design-philosophy-runtime`
 
 Baseline thresholds:
 - explicit import route returns `200`
@@ -37,7 +37,7 @@ Required evidence:
 - promotion record declares `Quality gate profile: design_review_skill_guard/v1`
 - promotion record declares `Promotion profile family: bounded_design_review_skill`
 - promotion record declares `Proof shape: agent_pack_import_snapshot/v1`
-- promotion record declares `Primary host checker: npm run check:directive-design-philosophy-forge`
+- promotion record declares `Primary host checker: npm run check:directive-design-philosophy-runtime`
 - promotion record links the host compile artifact and proof artifact
 - proof artifact records:
   - import smoke report path
@@ -49,19 +49,19 @@ Required evidence:
   - imported workflow mode
   - imported pack asset labels
   - gate outcomes for:
-    - `npm run forge:design-philosophy:smoke`
-    - `npm run check:directive-design-philosophy-forge`
+    - `npm run runtime:design-philosophy:smoke`
+    - `npm run check:directive-design-philosophy-runtime`
     - `npm run check:agents-import-packs-api-backend`
     - `npm run check:ops-stack`
 
 Decision rules:
 1. A bounded design-review lane may claim `pass` only when the import smoke artifact proves the pack imports only by explicit request and stays out of the default import path.
 2. A bounded design-review lane must remain scoped to importing the `Design Philosophy Reviewer`; it does not imply adoption of the full upstream installation path or generic skill-pack runtime as product truth.
-3. Rollback must remove slice-specific Forge artifacts and checker wiring without disturbing unrelated import-pack API behavior.
+3. Rollback must remove slice-specific Runtime artifacts and checker wiring without disturbing unrelated import-pack API behavior.
 
 Validation hooks:
-- `npm run check:directive-design-philosophy-forge`
+- `npm run check:directive-design-philosophy-runtime`
 - `npm run check:ops-stack`
 
 Canonical inventory:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\PROMOTION_PROFILES.json`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\PROMOTION_PROFILES.json`

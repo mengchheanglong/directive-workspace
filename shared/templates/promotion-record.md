@@ -3,7 +3,7 @@
 - Candidate id:
 - Candidate name:
 - Promotion date:
-- Linked Forge record:
+- Linked Runtime record:
 - Target host:
 - Target runtime surface:
 - Integration mode:

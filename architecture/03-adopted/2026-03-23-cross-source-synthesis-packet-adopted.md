@@ -8,7 +8,7 @@ Type: adopted cross-source source-driven improvement
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` — the packet improves Directive Architecture’s multi-source synthesis ability even without a runtime surface
+- Runtime threshold check: `yes` — the packet improves Directive Architecture’s multi-source synthesis ability even without a runtime surface
 
 ## Problem
 

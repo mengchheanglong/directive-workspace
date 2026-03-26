@@ -28,7 +28,7 @@ Anti-patterns:
 - vague status labels with no decision meaning
 - changes that conceal gate failures or degraded states
 - recommendations with no validation method
-- proposals that blur Forge vs Architecture ownership
+- proposals that blur Runtime vs Architecture ownership
 - broad redesign requests without bounded evidence
 - reviews that reopen full source history even though reusable mechanism or synthesis packets already exist
 - stage-boundary artifacts that become detached from evidence, citation, or proof support artifacts

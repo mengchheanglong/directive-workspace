@@ -4,12 +4,48 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
-import { closeDirectiveArchitectureBoundedStart } from "../../shared/lib/architecture-bounded-closeout.ts";
+import {
+  closeDirectiveArchitectureBoundedStart,
+  continueDirectiveArchitectureFromBoundedResult,
+} from "../../shared/lib/architecture-bounded-closeout.ts";
+import {
+  createDirectiveArchitectureImplementationTarget,
+} from "../../shared/lib/architecture-implementation-target.ts";
+import {
+  createDirectiveArchitectureImplementationResult,
+} from "../../shared/lib/architecture-implementation-result.ts";
+import {
+  confirmDirectiveArchitectureRetention,
+} from "../../shared/lib/architecture-retention.ts";
+import {
+  createDirectiveArchitectureIntegrationRecord,
+} from "../../shared/lib/architecture-integration-record.ts";
+import {
+  recordDirectiveArchitectureConsumption,
+} from "../../shared/lib/architecture-consumption-record.ts";
+import {
+  evaluateDirectiveArchitectureConsumption,
+} from "../../shared/lib/architecture-post-consumption-evaluation.ts";
+import {
+  reopenDirectiveArchitectureFromEvaluation,
+} from "../../shared/lib/architecture-reopen-from-evaluation.ts";
+import { adoptDirectiveArchitectureResult } from "../../shared/lib/architecture-result-adoption.ts";
 import { startDirectiveArchitectureFromHandoff } from "../../shared/lib/architecture-handoff-start.ts";
 import { createStandaloneFilesystemHost } from "../standalone-host/runtime.ts";
 import {
+  readDirectiveFrontendDiscoveryRoutingDetail,
+  readDirectiveFrontendRuntimeRecordDetail,
+  readDirectiveFrontendRuntimeProofDetail,
+  readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail,
   readDirectiveFrontendArchitectureResultDetail,
   readDirectiveFrontendArchitectureStartDetail,
+  readDirectiveFrontendArchitectureAdoptionDetail,
+  readDirectiveFrontendArchitectureImplementationTargetDetail,
+  readDirectiveFrontendArchitectureImplementationResultDetail,
+  readDirectiveFrontendArchitectureRetentionDetail,
+  readDirectiveFrontendArchitectureIntegrationRecordDetail,
+  readDirectiveFrontendArchitectureConsumptionRecordDetail,
+  readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail,
   readDirectiveFrontendArtifactText,
   readDirectiveFrontendHandoffDetail,
   readDirectiveFrontendQueueEntry,
@@ -172,12 +208,36 @@ export function startDirectiveFrontendServer(
           candidateId: String(url.searchParams.get("candidateId") || "").trim(),
         }));
       }
+      if (method === "GET" && pathname === "/api/discovery-routing-records/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendDiscoveryRoutingDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
       if (method === "GET" && pathname === "/api/handoffs") {
         const snapshot = readDirectiveFrontendSnapshot({ directiveRoot, maxHandoffs: 250 });
         return void writeJson(res, 200, snapshot.handoffStubs);
       }
       if (method === "GET" && pathname === "/api/handoffs/detail") {
         return void writeJson(res, 200, readDirectiveFrontendHandoffDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/runtime-records/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendRuntimeRecordDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/runtime-proofs/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendRuntimeProofDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/runtime-runtime-capability-boundaries/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail({
           directiveRoot,
           relativePath: String(url.searchParams.get("path") || "").trim(),
         }));
@@ -190,6 +250,48 @@ export function startDirectiveFrontendServer(
       }
       if (method === "GET" && pathname === "/api/architecture-results/detail") {
         return void writeJson(res, 200, readDirectiveFrontendArchitectureResultDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-adoptions/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitectureAdoptionDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-implementation-targets/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitectureImplementationTargetDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-implementation-results/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitectureImplementationResultDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-retained/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitectureRetentionDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-integration-records/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitectureIntegrationRecordDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-consumption-records/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitectureConsumptionRecordDetail({
+          directiveRoot,
+          relativePath: String(url.searchParams.get("path") || "").trim(),
+        }));
+      }
+      if (method === "GET" && pathname === "/api/architecture-post-consumption-evaluations/detail") {
+        return void writeJson(res, 200, readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail({
           directiveRoot,
           relativePath: String(url.searchParams.get("path") || "").trim(),
         }));
@@ -209,6 +311,65 @@ export function startDirectiveFrontendServer(
           : await runtimeHost.submitDiscoveryEntry(payload, false);
         return void writeJson(res, 200, result);
       }
+      if (method === "POST" && pathname === "/api/discovery/front-door") {
+        const payload = parseJsonBody<DiscoverySubmissionRequest>(await readBody(req));
+        return void writeJson(res, 200, await runtimeHost.submitDiscoveryFrontDoor(payload));
+      }
+      if (method === "POST" && pathname === "/api/discovery/open-route") {
+        const payload = parseJsonBody<{
+          routingPath: string;
+          approved?: boolean;
+        }>(await readBody(req));
+        return void writeJson(res, 200, await runtimeHost.openDiscoveryRoute({
+          routingPath: payload.routingPath,
+          approved: payload.approved,
+          approvedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/runtime/open-follow-up") {
+        const payload = parseJsonBody<{
+          followUpPath: string;
+          approved?: boolean;
+        }>(await readBody(req));
+        return void writeJson(res, 200, await runtimeHost.openRuntimeFollowUp({
+          followUpPath: payload.followUpPath,
+          approved: payload.approved,
+          approvedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/runtime/open-proof") {
+        const payload = parseJsonBody<{
+          runtimeRecordPath: string;
+          approved?: boolean;
+        }>(await readBody(req));
+        return void writeJson(res, 200, await runtimeHost.openRuntimeRecordProof({
+          runtimeRecordPath: payload.runtimeRecordPath,
+          approved: payload.approved,
+          approvedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/runtime/open-runtime-capability-boundary") {
+        const payload = parseJsonBody<{
+          runtimeProofPath: string;
+          approved?: boolean;
+        }>(await readBody(req));
+        return void writeJson(res, 200, await runtimeHost.openRuntimeProofRuntimeCapabilityBoundary({
+          runtimeProofPath: payload.runtimeProofPath,
+          approved: payload.approved,
+          approvedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/runtime/open-promotion-readiness") {
+        const payload = parseJsonBody<{
+          capabilityBoundaryPath: string;
+          approved?: boolean;
+        }>(await readBody(req));
+        return void writeJson(res, 200, await runtimeHost.openRuntimePromotionReadiness({
+          capabilityBoundaryPath: payload.capabilityBoundaryPath,
+          approved: payload.approved,
+          approvedBy: "directive-frontend-operator",
+        }));
+      }
 
       if (method === "POST" && pathname === "/api/architecture/handoff-start") {
         const payload = parseJsonBody<{ handoffPath: string }>(await readBody(req));
@@ -222,19 +383,24 @@ export function startDirectiveFrontendServer(
         const payload = parseJsonBody<{
           startPath: string;
           resultSummary: string;
-          nextDecision?: "needs-more-evidence" | "defer" | "reject";
+          primaryEvidencePath?: string;
+          transformedArtifactsProduced?: string[];
+          nextDecision?: "needs-more-evidence" | "adopt" | "defer" | "reject";
           valueShape?: "interface_or_handoff" | "data_shape" | "working_document" | "behavior_rule" | "design_pattern" | "executable_logic" | "operating_model_change";
           adaptationQuality?: "strong" | "adequate" | "weak" | "skipped";
           improvementQuality?: "strong" | "adequate" | "weak" | "skipped";
           proofExecuted?: boolean;
           targetArtifactClarified?: boolean;
           deltaEvidencePresent?: boolean;
+          noUnresolvedBaggage?: boolean;
           productArtifactMaterialized?: boolean;
         }>(await readBody(req));
         return void writeJson(res, 200, closeDirectiveArchitectureBoundedStart({
           directiveRoot,
           startPath: payload.startPath,
           resultSummary: payload.resultSummary,
+          primaryEvidencePath: payload.primaryEvidencePath,
+          transformedArtifactsProduced: payload.transformedArtifactsProduced,
           nextDecision: payload.nextDecision,
           valueShape: payload.valueShape,
           adaptationQuality: payload.adaptationQuality,
@@ -242,8 +408,163 @@ export function startDirectiveFrontendServer(
           proofExecuted: payload.proofExecuted,
           targetArtifactClarified: payload.targetArtifactClarified,
           deltaEvidencePresent: payload.deltaEvidencePresent,
+          noUnresolvedBaggage: payload.noUnresolvedBaggage,
           productArtifactMaterialized: payload.productArtifactMaterialized,
           closedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/bounded-continuation") {
+        const payload = parseJsonBody<{
+          resultPath: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, continueDirectiveArchitectureFromBoundedResult({
+          directiveRoot,
+          resultPath: payload.resultPath,
+          continuedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/adopt-result") {
+        const payload = parseJsonBody<{
+          resultPath: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, adoptDirectiveArchitectureResult({
+          directiveRoot,
+          resultPath: payload.resultPath,
+          adoptedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/create-implementation-target") {
+        const payload = parseJsonBody<{
+          adoptionPath: string;
+          selectedBoundedSlice?: string[];
+          mechanicalSuccessCriteria?: string[];
+          explicitLimitations?: string[];
+        }>(await readBody(req));
+        return void writeJson(res, 200, createDirectiveArchitectureImplementationTarget({
+          directiveRoot,
+          adoptionPath: payload.adoptionPath,
+          selectedBoundedSlice: payload.selectedBoundedSlice,
+          mechanicalSuccessCriteria: payload.mechanicalSuccessCriteria,
+          explicitLimitations: payload.explicitLimitations,
+          createdBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/create-implementation-result") {
+        const payload = parseJsonBody<{
+          targetPath: string;
+          resultSummary: string;
+          outcome?: "success" | "failure";
+          deviations?: string;
+          evidence?: string;
+          validationResult?: string;
+          rollbackNote?: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, createDirectiveArchitectureImplementationResult({
+          directiveRoot,
+          targetPath: payload.targetPath,
+          resultSummary: payload.resultSummary,
+          outcome: payload.outcome,
+          deviations: payload.deviations,
+          evidence: payload.evidence,
+          validationResult: payload.validationResult,
+          rollbackNote: payload.rollbackNote,
+          completedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/confirm-retention") {
+        const payload = parseJsonBody<{
+          resultPath: string;
+          usefulnessAssessment?: string;
+          stabilityLevel?: "stable" | "bounded-stable" | "provisional";
+          reuseScope?: string;
+          confirmationDecision?: string;
+          rollbackBoundary?: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, confirmDirectiveArchitectureRetention({
+          directiveRoot,
+          resultPath: payload.resultPath,
+          usefulnessAssessment: payload.usefulnessAssessment,
+          stabilityLevel: payload.stabilityLevel,
+          reuseScope: payload.reuseScope,
+          confirmationDecision: payload.confirmationDecision,
+          rollbackBoundary: payload.rollbackBoundary,
+          confirmedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/create-integration-record") {
+        const payload = parseJsonBody<{
+          retainedPath: string;
+          integrationTargetSurface?: string;
+          readinessSummary?: string;
+          expectedEffect?: string;
+          validationBoundary?: string;
+          integrationDecision?: string;
+          rollbackBoundary?: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, createDirectiveArchitectureIntegrationRecord({
+          directiveRoot,
+          retainedPath: payload.retainedPath,
+          integrationTargetSurface: payload.integrationTargetSurface,
+          readinessSummary: payload.readinessSummary,
+          expectedEffect: payload.expectedEffect,
+          validationBoundary: payload.validationBoundary,
+          integrationDecision: payload.integrationDecision,
+          rollbackBoundary: payload.rollbackBoundary,
+          createdBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/record-consumption") {
+        const payload = parseJsonBody<{
+          integrationPath: string;
+          appliedSurface?: string;
+          applicationSummary?: string;
+          observedEffect?: string;
+          validationResult?: string;
+          outcome?: "success" | "failure";
+          rollbackNote?: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, recordDirectiveArchitectureConsumption({
+          directiveRoot,
+          integrationPath: payload.integrationPath,
+          appliedSurface: payload.appliedSurface,
+          applicationSummary: payload.applicationSummary,
+          observedEffect: payload.observedEffect,
+          validationResult: payload.validationResult,
+          outcome: payload.outcome,
+          rollbackNote: payload.rollbackNote,
+          recordedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/evaluate-consumption") {
+        const payload = parseJsonBody<{
+          consumptionPath: string;
+          decision?: "keep" | "reopen";
+          rationale?: string;
+          observedStability?: string;
+          retainedUsefulnessAssessment?: string;
+          nextBoundedAction?: string;
+          rollbackNote?: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, evaluateDirectiveArchitectureConsumption({
+          directiveRoot,
+          consumptionPath: payload.consumptionPath,
+          decision: payload.decision,
+          rationale: payload.rationale,
+          observedStability: payload.observedStability,
+          retainedUsefulnessAssessment: payload.retainedUsefulnessAssessment,
+          nextBoundedAction: payload.nextBoundedAction,
+          rollbackNote: payload.rollbackNote,
+          evaluatedBy: "directive-frontend-operator",
+        }));
+      }
+      if (method === "POST" && pathname === "/api/architecture/reopen-from-evaluation") {
+        const payload = parseJsonBody<{
+          evaluationPath: string;
+        }>(await readBody(req));
+        return void writeJson(res, 200, reopenDirectiveArchitectureFromEvaluation({
+          directiveRoot,
+          evaluationPath: payload.evaluationPath,
+          reopenedBy: "directive-frontend-operator",
         }));
       }
 

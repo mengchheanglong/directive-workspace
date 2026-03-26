@@ -18,7 +18,7 @@ Directive Workspace is not:
 - a paper summary system
 - a coding-only evaluator
 - a host feature inside Mission Control
-- a loose collection of Discovery / Forge / Architecture folders
+- a loose collection of Discovery / Runtime / Architecture folders
 
 Directive Workspace **is**:
 a self-improving source adaptation system that turns sources into mission-relevant usefulness and becomes better over time at doing so.
@@ -29,17 +29,17 @@ Directive Workspace is the **whole product**.
 
 Inside Directive Workspace, the **Engine** is the shared adaptation core.
 
-Discovery, Forge, and Architecture are the **three main operating lanes of the Engine**.
+Discovery, Runtime, and Architecture are the **three main operating lanes of the Engine**.
 
 The correct hierarchy is:
 
 - Directive Workspace
   - Engine
     - Discovery lane
-    - Forge lane
+    - Runtime lane
     - Architecture lane
 
-Do not treat Discovery / Forge / Architecture as loose peer products.
+Do not treat Discovery / Runtime / Architecture as loose peer products.
 Do not collapse Engine into Architecture.
 Architecture is the lane closest to the current mission because the current mission is to improve the Engine itself.
 
@@ -64,7 +64,7 @@ Engine owns the common machinery across all lanes, including:
 - cross-lane handoff logic
 - record / contract / registry coordination
 
-If a piece of logic is shared across Discovery, Forge, and Architecture, it likely belongs to Engine.
+If a piece of logic is shared across Discovery, Runtime, and Architecture, it likely belongs to Engine.
 
 ## Canonical workflow
 
@@ -124,7 +124,7 @@ Discovery exists to:
 - identify extraction candidates
 - identify risks and boundaries
 - identify improvement opportunities on top of the source
-- decide whether the source should route to Forge or Architecture
+- decide whether the source should route to Runtime or Architecture
 - maintain capability-gap visibility
 - keep source collection and filtering efficient
 
@@ -145,11 +145,11 @@ Engine should also emit the default usefulness rationale into its own analysis/r
 
 Discovery is mainly the **efficiency layer** for collection, filtering, and routing.
 
-## Forge lane
+## Runtime lane
 
-Forge is the **runtime usefulness conversion lane**.
+Runtime is the **runtime usefulness conversion lane**.
 
-Route to Forge when the extracted value should become:
+Route to Runtime when the extracted value should become:
 - a reusable skill
 - a callable capability
 - a source-pack
@@ -157,9 +157,9 @@ Route to Forge when the extracted value should become:
 - a repeated execution surface
 - a reusable operational asset the user will call again
 
-Forge is responsible for converting extracted usefulness into Directive-owned runtime capability.
+Runtime is responsible for converting extracted usefulness into Directive-owned runtime capability.
 
-Forge is the primary home of **behavior-preserving transformation** when the transformed result becomes reusable runtime capability.
+Runtime is the primary home of **behavior-preserving transformation** when the transformed result becomes reusable runtime capability.
 
 Examples include:
 - bad code → good code
@@ -170,11 +170,11 @@ Examples include:
 - same behavior → better implementation
 - same algorithm → better language/runtime fit
 
-Forge answers:
+Runtime answers:
 
 **How do we make this useful again and again?**
 
-Forge should emphasize:
+Runtime should emphasize:
 - bounded runtime operationalization
 - measurable usefulness
 - proof and evaluator clarity
@@ -224,14 +224,14 @@ The primary routing question is:
 
 **What is the primary adoption target of the extracted value?**
 
-- If the target is **reusable runtime capability**, route to **Forge**
+- If the target is **reusable runtime capability**, route to **Runtime**
 - If the target is **system logic, workflow, evaluation, structure, or adaptation ability**, route to **Architecture**
 - If unclear, keep the source in **Discovery** until the target becomes clear
 
-Forge and Architecture are separated by **adoption target**, not by source type.
+Runtime and Architecture are separated by **adoption target**, not by source type.
 
 A GitHub repo can route to Architecture.
-A research paper can route to Forge.
+A research paper can route to Runtime.
 Source type does not decide the track by itself.
 
 ## Behavior-preserving transformation rule
@@ -251,10 +251,10 @@ Examples include:
 
 Ownership is determined by the **primary adoption target**:
 
-- Route to **Forge** when the transformed result becomes reusable runtime capability, callable skill, runtime workflow, or repeated execution surface.
+- Route to **Runtime** when the transformed result becomes reusable runtime capability, callable skill, runtime workflow, or repeated execution surface.
 - Route to **Architecture** when the transformed result improves the Engine, workflow, structure, evaluator quality, proof logic, contracts, schemas, templates, or long-term adaptation ability.
 
-This means behavior-preserving transformation is not Forge-only.
+This means behavior-preserving transformation is not Runtime-only.
 It is a shared Directive Workspace pattern whose ownership depends on what the transformation is ultimately for.
 
 ## Three levels of usefulness
@@ -263,7 +263,7 @@ Directive Workspace should distinguish between:
 
 ### 1. Direct usefulness
 Useful immediately for repeated runtime/user-facing use.
-Usually Forge.
+Usually Runtime.
 
 ### 2. Structural usefulness
 Useful for how the system works.
@@ -283,7 +283,7 @@ The main goal right now is **not** merely to process many sources through the wo
 
 The main goal right now is to improve the system itself so:
 - Discovery works as it is supposed to work
-- Forge works as it is supposed to work
+- Runtime works as it is supposed to work
 - Architecture works as it is supposed to work
 - Engine becomes the real shared adaptation core
 - Directive Workspace becomes better at consuming and improving from future sources
@@ -292,11 +292,11 @@ That means the project is currently in an **Engine-building phase**.
 
 ### Current emphasis
 - Discovery should become better at source collection, filtering, routing, and capability-gap visibility
-- Forge should become better at runtime usefulness conversion and behavior-preserving transformation
+- Runtime should become better at runtime usefulness conversion and behavior-preserving transformation
 - Architecture should become better at improving the Engine’s adaptation ability
 - Directive Workspace as a whole should become better at self-improvement through source consumption
 
-Forge is important, but it is not the center of the product.
+Runtime is important, but it is not the center of the product.
 Discovery is necessary, but mainly as an efficiency lane.
 Architecture is closest to the current mission because the current mission is to improve the Engine itself.
 
@@ -339,7 +339,7 @@ When making changes inside Directive Workspace:
 1. Identify whether the work affects:
    - Engine
    - Discovery
-   - Forge
+   - Runtime
    - Architecture
    - shared doctrine/contracts/schemas/templates
 
@@ -362,10 +362,10 @@ When making changes inside Directive Workspace:
 ## What to avoid
 
 Avoid:
-- treating Discovery / Forge / Architecture as peer products
+- treating Discovery / Runtime / Architecture as peer products
 - collapsing Engine into Architecture
 - reducing Directive Workspace to source collection only
-- reducing Forge to “tool adoption” only
+- reducing Runtime to “tool adoption” only
 - reducing Architecture to note-taking
 - treating extraction as enough without adaptation/improvement
 - dropping Decide or Report from the workflow
@@ -375,4 +375,4 @@ Avoid:
 
 ## Final doctrine sentence
 
-Directive Workspace is a self-improving goal-driven product whose Engine consumes external sources, judges their mission-relevant usefulness, extracts and refines that usefulness, and upgrades either reusable runtime capability through Forge or the system’s own operating intelligence through Architecture.
+Directive Workspace is a self-improving goal-driven product whose Engine consumes external sources, judges their mission-relevant usefulness, extracts and refines that usefulness, and upgrades either reusable runtime capability through Runtime or the system’s own operating intelligence through Architecture.

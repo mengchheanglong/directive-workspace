@@ -30,13 +30,13 @@ Lock the next Architecture wave after Wave 03 closure using the strict product-o
 - `dw-src-nanogpt-grokking`
   - remain `knowledge-only`
 - `al-src-skills-manager`
-  - route remains `Directive Forge` / `Directive Discovery`
+  - route remains `Directive Runtime` / `Directive Discovery`
 - `al-src-tooling-scripts`
-  - remain Discovery/Forge reference-only
+  - remain Discovery/Runtime reference-only
 
 ## Boundaries
 
-- Do not reopen Forge execution-envelope work in this wave.
+- Do not reopen Runtime execution-envelope work in this wave.
 - Do not reopen monitor-held candidates without trigger changes.
 - Do not treat runtime/source-pack lifecycle issues as Architecture by default.
 

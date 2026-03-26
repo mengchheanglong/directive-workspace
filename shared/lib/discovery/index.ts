@@ -10,3 +10,5 @@ export * from "../discovery-case-record-writer.ts";
 export * from "../discovery-fast-path-record-writer.ts";
 export * from "../discovery-submission-router.ts";
 export * from "../discovery-mission-routing.ts";
+export * from "../discovery-front-door.ts";
+export * from "../discovery-route-opener.ts";

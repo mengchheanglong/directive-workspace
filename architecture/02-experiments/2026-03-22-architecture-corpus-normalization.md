@@ -31,9 +31,9 @@ This is not a rewrite. It is a classification pass that makes the corpus self-aw
 | `Paper2Code` | source: Paper2Code repo | structural | product_materialized | no | no (implicit) | no | no | pre-doctrine, well-structured |
 | `openmoss` | source: OpenMOSS repo | structural | product_materialized | no | no (implicit) | no | no | pre-doctrine, well-structured |
 | `metaclaw` | source: metaclaw repo | structural | product_materialized | no | no (implicit) | no | no | pre-doctrine, clean closure |
-| `autoresearch` | source: autoresearch repo | direct | routed_out_of_architecture | no | no | no | no | correctly Forge-routed |
-| `agentics` | source: agentics repo | direct | routed_out_of_architecture | no | no | no | no | correctly Forge-routed |
-| `mini-swe-agent` | source: mini-swe-agent repo | direct | routed_out_of_architecture | no | no | no | no | correctly Forge-routed |
+| `autoresearch` | source: autoresearch repo | direct | routed_out_of_architecture | no | no | no | no | correctly Runtime-routed |
+| `agentics` | source: agentics repo | direct | routed_out_of_architecture | no | no | no | no | correctly Runtime-routed |
+| `mini-swe-agent` | source: mini-swe-agent repo | direct | routed_out_of_architecture | no | no | no | no | correctly Runtime-routed |
 | `adopted-candidates-architecture-recheck` | internal | **meta** | product_materialized | n/a | n/a | no | yes (retroactive identification) | normalized retroactively, governance/routing validation record |
 
 ### Wave 2 closure adoptions (2026-03-21)
@@ -70,7 +70,7 @@ This is not a rewrite. It is a classification pass that makes the corpus self-aw
 | Usefulness level | Count | Records |
 |---|---|---|
 | structural | 14 | gh-aw, scientify, gpt-researcher, Paper2Code, openmoss, metaclaw, codegraphcontext, hermes, celtrix, agent-lab-orchestration-allowlist, openclaw-discovery-submission-flow, openclaw-maintenance-watchdog-signal-lane, openclaw-runtime-verification-freshness, rescue-openclaw-role |
-| direct (Forge-routed) | 3 | autoresearch, agentics, mini-swe-agent |
+| direct (Runtime-routed) | 3 | autoresearch, agentics, mini-swe-agent |
 | meta | 7 | adopted-candidates-architecture-recheck, impeccable, discovery-gap-priority-worklist, source-adaptation-chain, source-adaptation-integration, architecture-maturity-bundle, architecture-corpus-normalization |
 | **Total** | **24** | |
 
@@ -184,7 +184,7 @@ The remaining uncovered meta-useful records are:
 
 This normalization record classifies all 24 adopted Architecture records by usefulness level:
 - 14 records are structural (system-improving mechanisms)
-- 3 records are direct (correctly Forge-routed)
+- 3 records are direct (correctly Runtime-routed)
 - 7 records are meta (self-improving mechanisms, 4 have self-improvement evidence)
 
 This distribution is healthy. Architecture should be dominated by structural usefulness with a meaningful meta-useful minority. The meta-useful rate (29%) is higher than expected, partly because the self-referential doctrine records (source-adaptation-chain, integration, maturity, corpus-normalization) are inherently meta.

@@ -1,0 +1,30 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "scientify-literature-monitoring",
+  "adoption_date": "2026-03-23",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-23-scientify-mixed-value-partition-source-analysis.md",
+  "adaptation_decision_ref": "architecture/02-experiments/2026-03-23-scientify-mixed-value-partition-adaptation.md",
+  "usefulness_level": "direct",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "contract",
+  "artifact_path": "architecture/03-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "runtime_handoff": {
+    "required": true,
+    "ref": "runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md",
+    "rationale": "Remaining value is callable/runtime capability that requires host integration and explicit Runtime follow-up."
+  },
+  "decision": {
+    "verdict": "hand_off_to_runtime",
+    "rationale": "Architecture has retained its product-owned value and the remaining work is runtime capability that belongs to Runtime.",
+    "completion_status": "routed_out_of_architecture",
+    "runtime_threshold_check": "no - the remaining value depends on runtime operationalization and should hand off once Architecture-retained value is captured"
+  }
+}

@@ -12,7 +12,7 @@ Type: implementation bundle
 ## Accepted Work
 
 - materialize the surviving curation/export allowlist as a product-owned shared contract
-- bind the rule into Forge follow-up capture and Forge source-pack surface guidance
+- bind the rule into Runtime follow-up capture and Runtime source-pack surface guidance
 - record the retained mechanism in an Architecture policy note
 
 ## Boundary
@@ -24,5 +24,5 @@ Type: implementation bundle
 ## Result
 
 - shared allowlist contract created
-- Forge-facing template/readme binding added
+- Runtime-facing template/readme binding added
 - candidate closed as Architecture product materialization

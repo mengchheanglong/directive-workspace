@@ -16,10 +16,10 @@
   "improvement_quality": "adequate",
   "self_improvement": {
     "category": "handoff_quality",
-    "claim": "Architecture will route retained value versus Forge handoff more consistently because the Decide step now resolves that split in code.",
-    "mechanism": "The adoption resolver combines review result, readiness gates, artifact selection, completion status, and Forge threshold logic in one canonical path.",
-    "baseline_observation": "Before this helper, Architecture review could pass while adoption versus Forge handoff remained partly implicit across prose and checker expectations.",
-    "expected_effect": "Future Decide-step work will produce more consistent stay-experimental versus adopt versus Forge-handoff outcomes.",
+    "claim": "Architecture will route retained value versus Runtime handoff more consistently because the Decide step now resolves that split in code.",
+    "mechanism": "The adoption resolver combines review result, readiness gates, artifact selection, completion status, and Runtime threshold logic in one canonical path.",
+    "baseline_observation": "Before this helper, Architecture review could pass while adoption versus Runtime handoff remained partly implicit across prose and checker expectations.",
+    "expected_effect": "Future Decide-step work will produce more consistent stay-experimental versus adopt versus Runtime-handoff outcomes.",
     "verification_method": "structural_inspection",
     "verification_result": "confirmed",
     "verification_date": "2026-03-23",
@@ -29,6 +29,6 @@
     "verdict": "adopt",
     "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
     "completion_status": "product_materialized",
-    "forge_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
   }
 }

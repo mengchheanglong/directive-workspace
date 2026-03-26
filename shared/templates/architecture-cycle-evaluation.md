@@ -22,7 +22,7 @@ Enforces `shared/contracts/architecture-self-improvement-contract.md`.
 - Adoption verdict counts:
 - Artifact type distribution:
 - Completion-status distribution:
-- Forge handoff required decisions:
+- Runtime handoff required decisions:
 - Total adoptions:
 - Meta-useful adoptions:
 - Adaptation coverage: (adapted / extracted)

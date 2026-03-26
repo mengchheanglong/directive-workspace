@@ -42,7 +42,7 @@ If the review needs a deterministic next-state recommendation, feed the complete
 - vague status labels:
 - concealed gate failures or degraded states:
 - missing validation method:
-- blurred Forge vs Architecture ownership:
+- blurred Runtime vs Architecture ownership:
 - unbounded rewrite pressure:
 - ignored reusable packet inputs:
 - broken artifact/evidence continuity:

@@ -4,7 +4,7 @@ import type {
   DirectiveEngineLaneSet,
 } from "./lane.ts";
 
-type DirectiveWorkspaceLaneId = "discovery" | "architecture" | "forge";
+type DirectiveWorkspaceLaneId = "discovery" | "architecture" | "runtime";
 
 type DirectiveWorkspaceLaneOverrides = Partial<
   Record<
@@ -65,12 +65,12 @@ function buildArchitectureProofPlan(
   };
 }
 
-function buildForgeProofPlan(
+function buildRuntimeProofPlan(
   input: DirectiveEngineLanePlanningInput,
 ) {
   if (input.routingAssessment.scoreBreakdown.transformationSignal > 0) {
     return {
-      proofKind: "forge_transformation_proof",
+      proofKind: "runtime_transformation_proof",
       objective:
         "Prove the same capability can be operationalized with a better implementation shape while preserving intended behavior.",
       requiredEvidence: [
@@ -90,7 +90,7 @@ function buildForgeProofPlan(
   }
 
   return {
-    proofKind: "forge_runtime_proof",
+    proofKind: "runtime_runtime_proof",
     objective:
       "Prove the candidate can become a bounded callable capability with clear objective, evaluator, and rollback behavior.",
     requiredEvidence: [
@@ -133,15 +133,15 @@ function createBaseLanes(): DirectiveEngineLaneDefinition[] {
       planProof: buildArchitectureProofPlan,
     },
     {
-      laneId: "forge",
-      label: "Forge",
+      laneId: "runtime",
+      label: "Runtime",
       hostDependence: "host_adapter_required",
       valuableWithoutHostRuntime: false,
       defaultIntegrationMode: "adapt",
-      handoffArtifactFamily: "forge_follow_up",
+      handoffArtifactFamily: "runtime_follow_up",
       nextAction:
-        "Open a bounded Forge follow-up and only involve host code through the engine adapter boundary.",
-      planProof: buildForgeProofPlan,
+        "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.",
+      planProof: buildRuntimeProofPlan,
     },
   ];
 }

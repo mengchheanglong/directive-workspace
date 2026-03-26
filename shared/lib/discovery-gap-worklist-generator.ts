@@ -28,7 +28,7 @@ export type DiscoveryQueueEntry = {
   status?: DiscoveryQueueEntryStatus;
   routing_target?:
     | "architecture"
-    | "forge"
+    | "runtime"
     | "monitor"
     | "defer"
     | "reject"
@@ -63,7 +63,7 @@ export type DiscoveryGapWorklistItem = {
   };
   mission_objective: string;
   gap_status: "ready" | "in_progress" | "blocked" | "monitoring" | "resolved";
-  next_slice_track: "discovery" | "architecture" | "forge";
+  next_slice_track: "discovery" | "architecture" | "runtime";
   latest_candidate_id: string | null;
   latest_candidate_status: DiscoveryQueueEntryStatus | null;
   latest_result_path: string | null;
@@ -127,10 +127,10 @@ const DISCOVERY_HINTS = [
   "routing",
 ];
 
-const FORGE_HINTS = [
+const RUNTIME_HINTS = [
   "callable",
   "cost",
-  "forge",
+  "runtime",
   "import",
   "latency",
   "performance",
@@ -277,8 +277,8 @@ function deriveNextSliceTrack(gap: CapabilityGapRecord) {
   if (countKeywordHits(combined, DISCOVERY_HINTS) > 0) {
     return "discovery" as const;
   }
-  if (countKeywordHits(combined, FORGE_HINTS) > 0) {
-    return "forge" as const;
+  if (countKeywordHits(combined, RUNTIME_HINTS) > 0) {
+    return "runtime" as const;
   }
   return "architecture" as const;
 }
@@ -335,7 +335,7 @@ function deriveGapStatus(
 
 function deriveNextAction(
   gap: CapabilityGapRecord,
-  nextSliceTrack: "discovery" | "architecture" | "forge",
+  nextSliceTrack: "discovery" | "architecture" | "runtime",
   latestCandidate: DiscoveryQueueEntry | null,
   blockingReason: string | null,
 ) {
@@ -353,8 +353,8 @@ function deriveNextAction(
     return "Open the next bounded Discovery slice that increases native front-door usage and improves intake-to-routing coverage.";
   }
 
-  if (nextSliceTrack === "forge") {
-    return "Open the next bounded Forge slice that converts the remaining gap into a measurable runtime or behavior-preserving transformation gain.";
+  if (nextSliceTrack === "runtime") {
+    return "Open the next bounded Runtime slice that converts the remaining gap into a measurable runtime or behavior-preserving transformation gain.";
   }
 
   return "Open the next bounded Architecture slice that converts the remaining gap into Directive-owned operating code.";

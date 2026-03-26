@@ -13,7 +13,7 @@ This cycle evaluates the next step after:
 
 Wave 03 proved packet consumption as a system behavior.
 Wave 04 tests the harder case:
-- a source where packet reuse is only partial and the Architecture/Forge split must be made explicitly
+- a source where packet reuse is only partial and the Architecture/Runtime split must be made explicitly
 
 Primary reference:
 - `architecture/03-adopted/2026-03-23-scientify-mixed-value-partition-adopted.md`
@@ -37,26 +37,26 @@ Primary reference:
 ### Routing quality
 - Current state: `strong`
 - Change since last cycle: `improved`
-- Evidence: this cycle gave Architecture an explicit mixed-value split surface tied to packet reuse scope and later Forge candidates instead of forcing a whole-source lane decision
-- Highest priority gap: run one later slice that produces a real Architecture-to-Forge handoff from the partition surface rather than stopping at Architecture adoption
+- Evidence: this cycle gave Architecture an explicit mixed-value split surface tied to packet reuse scope and later Runtime candidates instead of forcing a whole-source lane decision
+- Highest priority gap: run one later slice that produces a real Architecture-to-Runtime handoff from the partition surface rather than stopping at Architecture adoption
 
 ### Handoff quality
 - Current state: `adequate`
 - Change since last cycle: `improved`
-- Evidence: the slice names Forge follow-up candidates explicitly, but it did not yet execute a new handoff record from the partition surface
-- Highest priority gap: use the partition contract to generate one real Architecture-to-Forge handoff on a later mixed-value source
+- Evidence: the slice names Runtime follow-up candidates explicitly, but it did not yet execute a new handoff record from the partition surface
+- Highest priority gap: use the partition contract to generate one real Architecture-to-Runtime handoff on a later mixed-value source
 
 ## Meta-usefulness claim verification
 
 | Adoption | Claim | Verification method | Result | Notes |
 |---|---|---|---|---|
 | `impeccable-packet-aware-review-adopted` | Architecture review/evaluation will become packet-aware and measure compounding reuse directly | `next_cycle_comparison` | `confirmed` | the Scientify slice reused packet inputs while explicitly recording partial packet coverage instead of treating packets as total substitutes |
-| `scientify-mixed-value-partition-adopted` | mixed-value sources can now be handled with explicit packet reuse scope, re-analysis scope, Architecture retention, and Forge candidates | `next_cycle_comparison` | `confirmed` | the adopted contract/template/schema now materialize that split as system operating code |
+| `scientify-mixed-value-partition-adopted` | mixed-value sources can now be handled with explicit packet reuse scope, re-analysis scope, Architecture retention, and Runtime candidates | `next_cycle_comparison` | `confirmed` | the adopted contract/template/schema now materialize that split as system operating code |
 
 ## Cycle verdict
 
 - Overall self-improvement: `improving`
 - Strongest category this cycle: `routing_quality`
 - Weakest category this cycle: `handoff_quality`
-- Next cycle priority: use the mixed-value partition surface to generate a real Architecture-to-Forge handoff from a later ambiguous source
-- Specific investment recommendation: choose one mixed-value source where a bounded runtime candidate is clear enough to produce a formal handoff without collapsing the whole source into Forge
+- Next cycle priority: use the mixed-value partition surface to generate a real Architecture-to-Runtime handoff from a later ambiguous source
+- Specific investment recommendation: choose one mixed-value source where a bounded runtime candidate is clear enough to produce a formal handoff without collapsing the whole source into Runtime

@@ -59,8 +59,8 @@ Type: source-driven adaptation
   - `shared/schemas/architecture-adoption-decision.schema.json`
   - `mission-control/src/lib/directive-workspace/architecture-adoption-decision-envelope.ts`
   - `mission-control/scripts/backfill-directive-architecture-adoption-decision-corpus.ts`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

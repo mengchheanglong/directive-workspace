@@ -73,8 +73,8 @@ That is a real Architecture-system improvement, not just another schema note.
 Artifact type selection:
 - shared lib for executable retained-artifact construction behavior
 
-Forge threshold check:
-- no Forge handoff
+Runtime threshold check:
+- no Runtime handoff
 - the mechanism is valuable even if no runtime surface is promoted
 
 ## Self-improvement evidence

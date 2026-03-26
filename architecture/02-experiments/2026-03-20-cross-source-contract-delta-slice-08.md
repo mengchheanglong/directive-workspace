@@ -2,7 +2,7 @@
 
 Date: 2026-03-20
 Candidate id: `dw-cross-source-wave-01`
-Track: Directive Architecture + Forge promotion contract enforcement
+Track: Directive Architecture + Runtime promotion contract enforcement
 Status: executed
 
 ## Objective
@@ -26,9 +26,9 @@ Out:
 
 - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-19-scientify-slice-6-adopted-planned-next.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\promotion-contract.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-autoresearch-promotion-record.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-agentics-promotion-record.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-mini-swe-agent-promotion-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-autoresearch-promotion-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-agentics-promotion-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-mini-swe-agent-promotion-record.md`
 
 ## Execution Steps
 

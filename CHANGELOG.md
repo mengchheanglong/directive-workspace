@@ -3,19 +3,19 @@
 ## 2026-03-24
 
 ### Changed
-- aligned the package surface, inventory, doctrine, and focused engine checks to the Engine hierarchy now governed by `Directive Workspace -> Engine -> Discovery/Forge/Architecture lanes`, removing the stale peer `profiles/` surface and treating the three lanes as Engine-owned operating lanes
+- aligned the package surface, inventory, doctrine, and focused engine checks to the Engine hierarchy now governed by `Directive Workspace -> Engine -> Discovery/Runtime/Architecture lanes`, removing the stale peer `profiles/` surface and treating the three lanes as Engine-owned operating lanes
 - restored the full governing workflow to `Source -> Analyze -> Route -> Extract -> Adapt -> Improve -> Prove -> Decide -> Integrate + Report`, then extended the executable Engine with first-class analysis, extraction, adaptation, improvement, decision, and report planning artifacts so the runtime shape no longer stops at proof/integration planning alone
 
 ## 2026-03-23
 
 ### Changed
-- separated the first engine slice from Discovery / Architecture / Forge policy by introducing `DirectiveEngineProfile` in `engine/` plus a separate `profiles/directive-workspace.ts` feature-profile layer, so hosts can keep the engine stable while tailoring track behavior to their own objective without rewriting the kernel
+- separated the first engine slice from Discovery / Architecture / Runtime policy by introducing `DirectiveEngineProfile` in `engine/` plus a separate `profiles/directive-workspace.ts` feature-profile layer, so hosts can keep the engine stable while tailoring track behavior to their own objective without rewriting the kernel
 - materialized the first canonical engine slice under `engine/` with `DirectiveEngine`, a product-owned store boundary, and one executable source -> mission -> routing -> proof-plan -> integration-proposal flow, then aligned the root package/inventory/check direction around that kernel instead of leaving `./engine` as a placeholder export
 - corrected product-direction drift in doctrine/planning docs so Directive Workspace now explicitly centers the missing executable engine kernel instead of treating standalone hosts, Mission Control integration, or Markdown-first assets as the core system
-- strengthened the standalone Forge local/shareable lane with canonical `forge-proof-bundle-writer.ts`, a new standalone proof CLI/API flow, bootstrap/examples, overview accounting, and proof-existence enforcement on promotion/registry writes, so outside users can now generate real Forge proof artifacts locally instead of advancing with placeholder proof paths
-- added canonical `forge-transformation-proof-writer.ts` and `forge-transformation-record-writer.ts` plus standalone-host CLI/API/bootstrap coverage and enforcement, so the local/shareable Forge lane now covers product-owned transformation proof and transformation record flows instead of leaving that slice as templates and historical records only
-- extended the standalone Forge local/shareable lane from follow-up-and-record only to the full bounded Forge artifact lifecycle through canonical promotion-record and registry-entry writers, new standalone CLI/API routes, bootstrap examples, and expanded checks, so outside users can now carry a local Forge candidate through follow-up, execution record, promotion, registry, and overview without Mission Control while still staying short of broad Forge runtime parity
-- expanded the standalone reference host with a first bounded Forge-side local workflow lane through `hosts/standalone-host/forge.ts`, new Forge CLI/API commands, bootstrap/examples, and a dedicated checker, so outside GitHub/local users can now write Forge follow-up/record artifacts and read Forge overview state without Mission Control while still keeping the host well short of full Forge runtime parity
+- strengthened the standalone Runtime local/shareable lane with canonical `runtime-proof-bundle-writer.ts`, a new standalone proof CLI/API flow, bootstrap/examples, overview accounting, and proof-existence enforcement on promotion/registry writes, so outside users can now generate real Runtime proof artifacts locally instead of advancing with placeholder proof paths
+- added canonical `runtime-transformation-proof-writer.ts` and `runtime-transformation-record-writer.ts` plus standalone-host CLI/API/bootstrap coverage and enforcement, so the local/shareable Runtime lane now covers product-owned transformation proof and transformation record flows instead of leaving that slice as templates and historical records only
+- extended the standalone Runtime local/shareable lane from follow-up-and-record only to the full bounded Runtime artifact lifecycle through canonical promotion-record and registry-entry writers, new standalone CLI/API routes, bootstrap examples, and expanded checks, so outside users can now carry a local Runtime candidate through follow-up, execution record, promotion, registry, and overview without Mission Control while still staying short of broad Runtime runtime parity
+- expanded the standalone reference host with a first bounded Runtime-side local workflow lane through `hosts/standalone-host/runtime.ts`, new Runtime CLI/API commands, bootstrap/examples, and a dedicated checker, so outside GitHub/local users can now write Runtime follow-up/record artifacts and read Runtime overview state without Mission Control while still keeping the host well short of full Runtime runtime parity
 - added a standalone-host bootstrap/init lane through `hosts/standalone-host/bootstrap.ts`, the `init` CLI command, and a dedicated checker, so outside GitHub/local users can scaffold a usable Directive root, config, and starter Discovery input in one step instead of hand-assembling internal folders
 - added an optional product-owned SQLite persistence lane to the standalone reference host through `hosts/standalone-host/persistence.ts`, config/schema support, and a dedicated checker, so Directive Workspace now has a stronger standalone ledger/index without borrowing Mission Control's database layer or replacing canonical filesystem artifacts
 - added an optional static-bearer auth boundary to the standalone reference API host through `auth` config support, `/api/*` guard enforcement, and a dedicated auth checker, so the product-owned reference server no longer has to remain fully open when used beyond throwaway local testing
@@ -27,26 +27,26 @@
 - decoupled live OpenClaw Discovery signal helpers and host-integration starter/examples from the now-resolved `gap-discovery-front-door-coverage` assumption, making `capability_gap_id` nullable for maintenance/watchdog signal payloads and tightening checks so active helpers stay valid after gap resolution
 - added `shared/lib/architecture-cycle-decision-loader.ts` plus the bounded Mission Control mirror and wave-evaluation host script, so Architecture cycle evaluation can now load closeout-emitted decision artifacts directly from a wave's experiment/adopted record refs instead of maintaining separate manual JSON path lists
 - added `shared/lib/architecture-closeout.ts` plus the bounded Mission Control mirror and host closeout script, so Architecture slices can now resolve review, resolve adoption, enforce record-state correctness, and emit retained machine-readable decision artifacts through one canonical executable Decide-step lane instead of manual helper sequencing
-- consumed machine-readable Architecture adoption artifacts in the cycle-evaluation lane through `shared/lib/architecture-cycle-decision-summary.ts` plus the bounded Mission Control mirror, so cycle evaluation can now aggregate adoption verdicts, artifact types, completion statuses, Forge handoff demand, and meta self-improvement categories from generated decision artifacts instead of prose-only adopted records
+- consumed machine-readable Architecture adoption artifacts in the cycle-evaluation lane through `shared/lib/architecture-cycle-decision-summary.ts` plus the bounded Mission Control mirror, so cycle evaluation can now aggregate adoption verdicts, artifact types, completion statuses, Runtime handoff demand, and meta self-improvement categories from generated decision artifacts instead of prose-only adopted records
 - materialized the Architecture Decide-step output as executable product-owned code through `shared/lib/architecture-adoption-artifacts.ts` plus the bounded Mission Control mirror, so adoption decisions can now be emitted directly in the canonical `architecture-adoption-decision.schema.json` shape instead of stopping at prose plus resolver output
-- turned the Architecture Decide step into executable product-owned code through `shared/lib/architecture-adoption-resolution.ts` plus the bounded Mission Control mirror, so adoption readiness, artifact-type selection, completion-status classification, and Forge handoff resolution now run through one canonical helper instead of remaining contract/schema-only
+- turned the Architecture Decide step into executable product-owned code through `shared/lib/architecture-adoption-resolution.ts` plus the bounded Mission Control mirror, so adoption readiness, artifact-type selection, completion-status classification, and Runtime handoff resolution now run through one canonical helper instead of remaining contract/schema-only
 - turned the Architecture review lane into executable product-owned code through `shared/lib/architecture-review-resolution.ts` plus the bounded Mission Control mirror, so `architecture_review_guardrails/v1` now resolves evaluated slices into scored approve/follow-up/resume/block outcomes instead of remaining checklist-only
 - operationalized the already-adopted OpenMOSS lifecycle and review-score mechanisms as executable product-owned code through `shared/lib/lifecycle-review-feedback.ts` plus the bounded Mission Control mirror, so Directive Workspace now has a canonical transition/review/recovery helper instead of leaving that behavior at contract-only depth
 - extracted MetaClaw's generation-bump stale-sample boundary into Architecture through `shared/contracts/self-improvement-generation-boundary.md`, `shared/templates/generation-boundary-note.md`, and `shared/schemas/generation-boundary-note.schema.json`, then opened `architecture/02-experiments/2026-03-23-post-doctrine-architecture-generation-boundary.md` so self-improvement claims can now separate historical baseline evidence from clean post-change confirmation
-- completed the first bounded live-provider Forge proof for `scientify-literature-monitoring` through `mission-control/scripts/run-scientify-literature-monitoring-live-fetch.ts`, emitting real OpenAlex + arXiv qualified/degraded artifacts plus `forge/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json` while keeping delivery host-neutral/no-op and not opening promotion yet
-- completed the first product-side Forge proof for `scientify-literature-monitoring` through generated qualified/degraded sample artifacts plus `forge/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof.md`, proving executable digest/degraded artifact generation before any host promotion or live provider execution
-- added canonical shared-lib builder `shared/lib/literature-monitoring-artifacts.ts` plus the bounded Mission Control mirror so the first Forge literature-monitoring slice can emit normalized digest and degraded-state artifacts from executable product-owned code instead of only Markdown templates
-- materialized the first Forge runtime output artifacts for `scientify-literature-monitoring` through `shared/templates/literature-monitoring-digest.md`, `shared/templates/literature-monitoring-degraded-state.md`, and their paired schemas, so the first execution slice now has concrete success/degraded payloads instead of only workflow-level guard language
-- opened the first real Forge runtime-definition slice for a mixed-value Architecture handoff through `forge/records/2026-03-23-scientify-literature-monitoring-forge-record.md`, keeping the `scientify-literature-monitoring` candidate bounded at workflow/proof-definition level before any host promotion or runtime activation
-- adopted `shared/contracts/bounded-literature-monitoring-workflow.md` and `shared/contracts/literature-monitoring-degraded-state-guard.md` so Forge now has an explicit minimal workflow surface and degraded-state proof rule for bounded literature-monitoring candidates instead of only a handoff note
-- added `forge/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md` and linked it from the active follow-up, making the next Forge step concrete: prove both qualified-pool digest output and degraded-quality visibility before any host-facing promotion
-- accepted the first live mixed-value Architecture-to-Forge follow-up inside Forge itself through `forge/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-forge-handoff.md` and `forge/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`, so the `scientify` literature-monitoring candidate now exists as a bounded Forge-owned follow-up instead of only an Architecture-side handoff note
-- updated `forge/README.md` so Forge no longer claims there is no active candidate after the real `scientify-literature-monitoring` Architecture handoff; the track now reflects one active bounded follow-up with no runtime slice opened yet
-- activated the first real mixed-value Architecture-to-Forge handoff through `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-forge-handoff.md`, narrowing the `scientify` source to a bounded literature-monitoring runtime candidate instead of handing the whole plugin stack to Forge
-- updated the `scientify` mixed-value partition adoption with an explicit Forge handoff transition and added `architecture/02-experiments/2026-03-23-architecture-cycle-evaluation-wave-05.md`, moving the weakest Architecture category from handoff ambiguity toward actual Forge acceptance
-- executed the first mixed-value Architecture routing slice on `scientify`, reusing the existing evidence-backed stage-synthesis packets where valid but adding an explicit mixed-value partition surface for packet coverage scope, fresh re-analysis scope, Architecture-retained mechanisms, and later Forge candidates
-- adopted `shared/contracts/mixed-value-source-partition.md`, `shared/templates/mixed-value-source-partition.md`, and `shared/schemas/mixed-value-source-partition.schema.json` so Architecture can now process ambiguous sources without collapsing into whole-source Forge routing or unnecessary full-source reconstruction
-- integrated mixed-value source partitioning into `knowledge/workflow.md`, `shared/contracts/source-analysis-contract.md`, `shared/contracts/architecture-to-forge.md`, and `shared/contracts/architecture-adoption-criteria.md`, then added `architecture/02-experiments/2026-03-23-architecture-cycle-evaluation-wave-04.md` to record the routing-quality gain and the remaining handoff-quality gap
+- completed the first bounded live-provider Runtime proof for `scientify-literature-monitoring` through `mission-control/scripts/run-scientify-literature-monitoring-live-fetch.ts`, emitting real OpenAlex + arXiv qualified/degraded artifacts plus `runtime/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json` while keeping delivery host-neutral/no-op and not opening promotion yet
+- completed the first product-side Runtime proof for `scientify-literature-monitoring` through generated qualified/degraded sample artifacts plus `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof.md`, proving executable digest/degraded artifact generation before any host promotion or live provider execution
+- added canonical shared-lib builder `shared/lib/literature-monitoring-artifacts.ts` plus the bounded Mission Control mirror so the first Runtime literature-monitoring slice can emit normalized digest and degraded-state artifacts from executable product-owned code instead of only Markdown templates
+- materialized the first Runtime runtime output artifacts for `scientify-literature-monitoring` through `shared/templates/literature-monitoring-digest.md`, `shared/templates/literature-monitoring-degraded-state.md`, and their paired schemas, so the first execution slice now has concrete success/degraded payloads instead of only workflow-level guard language
+- opened the first real Runtime runtime-definition slice for a mixed-value Architecture handoff through `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-record.md`, keeping the `scientify-literature-monitoring` candidate bounded at workflow/proof-definition level before any host promotion or runtime activation
+- adopted `shared/contracts/bounded-literature-monitoring-workflow.md` and `shared/contracts/literature-monitoring-degraded-state-guard.md` so Runtime now has an explicit minimal workflow surface and degraded-state proof rule for bounded literature-monitoring candidates instead of only a handoff note
+- added `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md` and linked it from the active follow-up, making the next Runtime step concrete: prove both qualified-pool digest output and degraded-quality visibility before any host-facing promotion
+- accepted the first live mixed-value Architecture-to-Runtime follow-up inside Runtime itself through `runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md` and `runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`, so the `scientify` literature-monitoring candidate now exists as a bounded Runtime-owned follow-up instead of only an Architecture-side handoff note
+- updated `runtime/README.md` so Runtime no longer claims there is no active candidate after the real `scientify-literature-monitoring` Architecture handoff; the track now reflects one active bounded follow-up with no runtime slice opened yet
+- activated the first real mixed-value Architecture-to-Runtime handoff through `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff.md`, narrowing the `scientify` source to a bounded literature-monitoring runtime candidate instead of handing the whole plugin stack to Runtime
+- updated the `scientify` mixed-value partition adoption with an explicit Runtime handoff transition and added `architecture/02-experiments/2026-03-23-architecture-cycle-evaluation-wave-05.md`, moving the weakest Architecture category from handoff ambiguity toward actual Runtime acceptance
+- executed the first mixed-value Architecture routing slice on `scientify`, reusing the existing evidence-backed stage-synthesis packets where valid but adding an explicit mixed-value partition surface for packet coverage scope, fresh re-analysis scope, Architecture-retained mechanisms, and later Runtime candidates
+- adopted `shared/contracts/mixed-value-source-partition.md`, `shared/templates/mixed-value-source-partition.md`, and `shared/schemas/mixed-value-source-partition.schema.json` so Architecture can now process ambiguous sources without collapsing into whole-source Runtime routing or unnecessary full-source reconstruction
+- integrated mixed-value source partitioning into `knowledge/workflow.md`, `shared/contracts/source-analysis-contract.md`, `shared/contracts/architecture-to-runtime.md`, and `shared/contracts/architecture-adoption-criteria.md`, then added `architecture/02-experiments/2026-03-23-architecture-cycle-evaluation-wave-04.md` to record the routing-quality gain and the remaining handoff-quality gap
 - executed the first packet-consumption Architecture slice on the `impeccable` review family, consuming the existing `evidence-backed-stage-synthesis` mechanism packet and its paired cross-source synthesis packet as primary inputs to improve Architecture review and cycle-evaluation quality instead of creating another packet family
 - upgraded `shared/contracts/architecture-review-guardrails.md`, `shared/templates/architecture-review-checklist.md`, `shared/templates/architecture-cycle-evaluation.md`, and `knowledge/workflow.md` so Architecture review explicitly checks packet consumption and artifact/evidence continuity and cycle evaluation can now measure packet-consumption reuse directly
 - added the third real Architecture cycle evaluation at `architecture/02-experiments/2026-03-23-architecture-cycle-evaluation-wave-03.md`, confirming the system has moved from packet emission to packet consumption and shifting the next priority to noisier mixed-value packet reuse tests
@@ -81,7 +81,7 @@
 - canonical `shared/schemas/source-adaptation-decision.schema.json` making the full adaptation decision chain machine-readable with required delta fields and meta-usefulness structure
 - Architecture adopted record `2026-03-22-source-adaptation-chain-operating-code-adopted.md` documenting the gap between stated doctrine and missing operating code for the adapt/improve steps
 - integrated the source-adaptation chain into the Discovery → Architecture handoff contract with source-analysis preparation fields and a rule requiring source-analysis-contract as Architecture's next step
-- integrated adaptation/improvement evidence into the Architecture → Forge handoff contract so Forge receives adapted/improved value, not raw extracts
+- integrated adaptation/improvement evidence into the Architecture → Runtime handoff contract so Runtime receives adapted/improved value, not raw extracts
 - added source-adaptation fields to the experiment-record template for Architecture source-driven experiments
 - added source-analysis preparation section to the discovery-fast-path-record template for Architecture-bound routing
 - added Architecture adaptation evaluation metrics to the evaluator contract (adaptation coverage, improvement coverage, baggage exclusion rate, delta evidence completeness, meta-usefulness hit rate)
@@ -90,30 +90,30 @@
 - updated the canonical workflow with an explicit Architecture source-driven work section describing the 4-step adaptation chain
 - updated the intake checklist to reference source-analysis-contract as the deeper evaluation step after triage
 - Architecture adopted record `2026-03-22-source-adaptation-integration-bundle-adopted.md` documenting the integration of source-adaptation assets into routing, templates, handoffs, workflow, and evaluation
-- canonical `shared/contracts/architecture-adoption-criteria.md` defining structured adoption readiness checks, artifact type selection matrix, Architecture-to-Forge threshold logic, and usefulness-level treatment paths (direct/structural/meta)
+- canonical `shared/contracts/architecture-adoption-criteria.md` defining structured adoption readiness checks, artifact type selection matrix, Architecture-to-Runtime threshold logic, and usefulness-level treatment paths (direct/structural/meta)
 - canonical `shared/contracts/architecture-self-improvement-contract.md` defining seven self-improvement categories, falsifiable evidence structure for meta-useful adoptions, cycle evaluation structure, and verification methods for meta-usefulness claims
-- canonical `shared/schemas/architecture-adoption-decision.schema.json` making adoption decisions machine-readable with required readiness checks, self-improvement evidence for meta-useful adoptions, and Forge threshold logic
+- canonical `shared/schemas/architecture-adoption-decision.schema.json` making adoption decisions machine-readable with required readiness checks, self-improvement evidence for meta-useful adoptions, and Runtime threshold logic
 - canonical `shared/templates/architecture-cycle-evaluation.md` for cycle-over-cycle self-improvement assessment with adaptation/improvement coverage metrics, per-category state tracking, and meta-usefulness claim verification
 - updated the canonical workflow with Architecture adoption decision and cycle evaluation sections
 - updated the adaptation-decision contract and source-analysis contract relationship sections to reference downstream adoption criteria and self-improvement tracking
 - updated the architecture-completion-rubric with adoption quality rule and self-improvement tracking rule
 - Architecture adopted record `2026-03-22-architecture-maturity-bundle-adopted.md` documenting the maturity gain from adoption criteria, self-improvement tracking, and cycle evaluation
-- canonical `shared/contracts/architecture-artifact-lifecycle.md` defining the Architecture artifact type system: 4 states (experiment, adopted, reference-pattern, deferred), adopted-to-Forge handoff rules, reference-pattern admission/retirement criteria, and pre-doctrine record handling
+- canonical `shared/contracts/architecture-artifact-lifecycle.md` defining the Architecture artifact type system: 4 states (experiment, adopted, reference-pattern, deferred), adopted-to-Runtime handoff rules, reference-pattern admission/retirement criteria, and pre-doctrine record handling
 - deep audit and retroactive classification of the full Architecture corpus in `architecture/02-experiments/2026-03-22-architecture-corpus-normalization.md` covering all 21 adopted records by usefulness level and contract coverage, all 25 reference patterns by lifecycle state, and 6 specific audit findings
-- added lifecycle classification fields (origin, usefulness level, Forge threshold check) and explicit next-decision options to the experiment-record template
+- added lifecycle classification fields (origin, usefulness level, Runtime threshold check) and explicit next-decision options to the experiment-record template
 - updated the canonical workflow with Architecture artifact lifecycle governance section
 - updated the architecture-completion-rubric with corpus normalization baseline and artifact lifecycle governance sections
 - Architecture adopted record `2026-03-22-architecture-corpus-normalization-adopted.md` documenting the deep audit, corpus classification, artifact lifecycle contract, and integration
 
 ### Changed
 - removed remaining workspace-level direct execution references to `workspace/agent-lab/orchestration/scripts/invoke-external-tool.ps1` by routing active callers through the OpenClaw-root runner instead
-- fixed `forge/source-packs/scripts/sync-curated-packs.ps1` to mirror from Forge-owned source packs instead of the retired `agent-lab/tooling` root
+- fixed `runtime/source-packs/scripts/sync-curated-packs.ps1` to mirror from Runtime-owned source packs instead of the retired `agent-lab/tooling` root
 - updated bridge-status docs so the only remaining legacy dependency is described as an OpenClaw-root bridge issue, not an active Directive Workspace runtime dependency
-- migrated the OpenClaw-root external-tool bridge to `scripts/external-tools/` so live adapters now resolve through Forge source packs, Mission Control runtime dependencies, or OpenClaw-owned root state instead of `workspace/agent-lab/orchestration`
+- migrated the OpenClaw-root external-tool bridge to `scripts/external-tools/` so live adapters now resolve through Runtime source packs, Mission Control runtime dependencies, or OpenClaw-owned root state instead of `workspace/agent-lab/orchestration`
 - Discovery now has a canonical gap worklist so unresolved mission-linked capability gaps can drive the next internal slice instead of remaining passive registry rows
 - moved raw Architecture source snapshots out of `architecture/00-intake` and `architecture/04-deferred-or-rejected` into the dedicated `sources/` surface so Architecture stays operating-code-oriented instead of behaving like repo storage
-- updated Doctrine / README / execution-plan guidance so raw source storage is separated from Architecture and Forge operating lanes
-- removed the generated `node_modules` tree from the `forge/source-packs/agent-orchestrator` product surface and tightened the Forge source-pack hygiene rule around generated dependencies and caches
+- updated Doctrine / README / execution-plan guidance so raw source storage is separated from Architecture and Runtime operating lanes
+- removed the generated `node_modules` tree from the `runtime/source-packs/agent-orchestrator` product surface and tightened the Runtime source-pack hygiene rule around generated dependencies and caches
 - opened the first mission-relevant host transformation slice on `mission-control/src/server/services/context-pack-service.ts` and reduced `buildContextPack` from 264 lines to 130 by extracting explicit focus-resolution helpers without changing the `ContextPack` contract
 - opened the second mission-relevant host transformation slice on `mission-control/src/server/services/workspace-intel-service.ts` and reduced `buildWorkspaceReadiness` from 171 lines to 26 by extracting explicit readiness-signal and readiness-check helpers without changing the `WorkspaceReadiness` contract
 - opened the third mission-relevant host transformation slice on `mission-control/src/server/services/workspace-intel-service.ts` and reduced `collectCodeIntelSnapshot` from 193 lines to 51 by extracting explicit language-probe helpers without changing the `RepoCodeIntelSnapshot` contract
@@ -151,33 +151,33 @@
 - post-closure `Architecture Wave 02` shortlist and Discovery routing bundle
 - post-closure `Architecture Wave 03` shortlist centered on Celtrix stack-signal routing quality
 - workflow doctrine hardening and report-sync coverage for workflow docs
-- canonical `shared/contracts/agent-eval-guard.md` for bounded eval-lane Forge promotion
-- Discovery routing artifact for Forge system-first reprioritization
+- canonical `shared/contracts/agent-eval-guard.md` for bounded eval-lane Runtime promotion
+- Discovery routing artifact for Runtime system-first reprioritization
 - host-side source-pack readiness enforcement check
-- canonical Forge mirror/package boundary inventory
-- host-side Forge boundary inventory enforcement check
-- canonical Forge source-pack catalog and classification surface
+- canonical Runtime mirror/package boundary inventory
+- host-side Runtime boundary inventory enforcement check
+- canonical Runtime source-pack catalog and classification surface
 - host-side source-pack catalog enforcement check
-- canonical Forge promotion-profile catalog
+- canonical Runtime promotion-profile catalog
 - host-side promotion-profile catalog enforcement check
-- canonical Forge import-source policy catalog
+- canonical Runtime import-source policy catalog
 - host-side import-source policy enforcement check
 - canonical `shared/contracts/legacy-live-runtime-guard.md`
-- canonical Forge live-runtime accounting inventory
+- canonical Runtime live-runtime accounting inventory
 - canonical `shared/contracts/context-operator-import-guard.md`
 - canonical `shared/contracts/browser-smoke-guard.md`
-- host-side bounded browser-lane Forge checker
+- host-side bounded browser-lane Runtime checker
 - canonical `shared/contracts/skill-lifecycle-guard.md`
-- host-side bounded skill-lifecycle Forge checker
+- host-side bounded skill-lifecycle Runtime checker
 - host-side `agent-orchestrator` precondition checker
-- Forge Wave 02 queue refresh artifacts
+- Runtime Wave 02 queue refresh artifacts
 - host-side live-runtime accounting enforcement check
-- host-side bounded arscontexta import-lane Forge checker
+- host-side bounded arscontexta import-lane Runtime checker
 - canonical `shared/contracts/design-review-skill-guard.md`
-- host-side bounded design-review skill Forge checker
+- host-side bounded design-review skill Runtime checker
 - canonical `shared/contracts/workflow-operator-import-guard.md`
-- host-side bounded workflow-operator Forge checker
-- Forge Wave 03 shortlist and Discovery routing bundle
+- host-side bounded workflow-operator Runtime checker
+- Runtime Wave 03 shortlist and Discovery routing bundle
 
 ### Changed
 - doctrine, execution plan, delivery workflow, and track readmes now point to one canonical workflow
@@ -187,29 +187,29 @@
 - `shared/templates/experiment-record.md` now includes transition/scoring/recovery fields
 - `shared/templates/integration-contract-artifact.md` now includes escalation/background-window/boundary-check fields
 - `shared/schemas/` now includes the full stage-contract chain (`intake`, `analysis`, `experiment design`, `integration`, `proof`)
-- Forge Wave 01 is now explicitly system-first after the completed promptfoo slice
+- Runtime Wave 01 is now explicitly system-first after the completed promptfoo slice
 - runtime source-pack resolution now requires `SOURCE_PACK_READY.md`
-- Forge quality-profile handling now splits `promotion_quality_gate/v1` from `agent_eval_guard/v1`
-- Forge mirror/package boundary truth now lives in `forge/BOUNDARY_INVENTORY.json` instead of hardcoded host script lists
-- Forge source-pack activation now depends on `source-packs/CATALOG.json` classification plus `SOURCE_PACK_READY.md`, not readiness alone
-- Forge promotion-profile handling now resolves family, proof shape, and primary host checker from `forge/PROMOTION_PROFILES.json` instead of implicit per-checker assumptions
-- Forge agent-pack import defaults and explicit import eligibility now resolve from `forge/IMPORT_SOURCE_POLICY.json` instead of hardcoded backend lists
-- `agency-agents` and `desloppify` now have explicit Forge proof/promotion/registry accounting instead of silent legacy live-runtime status
+- Runtime quality-profile handling now splits `promotion_quality_gate/v1` from `agent_eval_guard/v1`
+- Runtime mirror/package boundary truth now lives in `runtime/BOUNDARY_INVENTORY.json` instead of hardcoded host script lists
+- Runtime source-pack activation now depends on `source-packs/CATALOG.json` classification plus `SOURCE_PACK_READY.md`, not readiness alone
+- Runtime promotion-profile handling now resolves family, proof shape, and primary host checker from `runtime/PROMOTION_PROFILES.json` instead of implicit per-checker assumptions
+- Runtime agent-pack import defaults and explicit import eligibility now resolve from `runtime/IMPORT_SOURCE_POLICY.json` instead of hardcoded backend lists
+- `agency-agents` and `desloppify` now have explicit Runtime proof/promotion/registry accounting instead of silent legacy live-runtime status
 - `arscontexta` is now promoted as an explicit-only bounded context-operator import lane with live-runtime accounting
 - `software-design-philosophy-skill` is now promoted as an explicit-only bounded design-review skill import lane with live-runtime accounting
 - `superpowers` is now promoted as an explicit-only bounded workflow-operator import lane with live-runtime accounting
-- Puppeteer is now promoted as a bounded browser smoke lane with live-runtime source-pack classification and Forge proof/promotion/registry artifacts
-- Skills-manager is now promoted as a bounded skill lifecycle import lane with live-runtime source-pack classification and Forge proof/promotion/registry artifacts
-- `agent-orchestrator` is corrected back to blocked Forge follow-up until the Forge-owned pack contains a runnable AO CLI artifact
-- Forge Wave 01 is now closed, Wave 02 system cleanup plus `arscontexta`, `software-design-philosophy-skill`, and `superpowers` are complete, and Wave 03 now opens with the AO CLI precondition-build target
+- Puppeteer is now promoted as a bounded browser smoke lane with live-runtime source-pack classification and Runtime proof/promotion/registry artifacts
+- Skills-manager is now promoted as a bounded skill lifecycle import lane with live-runtime source-pack classification and Runtime proof/promotion/registry artifacts
+- `agent-orchestrator` is corrected back to blocked Runtime follow-up until the Runtime-owned pack contains a runnable AO CLI artifact
+- Runtime Wave 01 is now closed, Wave 02 system cleanup plus `arscontexta`, `software-design-philosophy-skill`, and `superpowers` are complete, and Wave 03 now opens with the AO CLI precondition-build target
 
 ## 2026-03-19
 
 ### Added
 - Standalone `directive-workspace` product root
-- dedicated `discovery`, `forge`, `architecture`, `shared`, `knowledge`, and `hosts` surfaces
+- dedicated `discovery`, `runtime`, `architecture`, `shared`, `knowledge`, and `hosts` surfaces
 - standalone ownership, doctrine, execution, and migration references
-- standalone Forge core surface and host-sync discipline
+- standalone Runtime core surface and host-sync discipline
 - publish-readiness and contributor guidance
 
 ### Changed
@@ -218,15 +218,15 @@
 - Architecture records were normalized to the standalone path
 
 ### Notes
-- Forge runtime remains hosted in Mission Control
+- Runtime runtime remains hosted in Mission Control
 - remaining work is host/runtime polish, not product-boundary migration
 ### Notes
-- opened Architecture Wave 04 through `al-src-agent-lab-orchestration-allowlist`, keeping monitor-held candidates closed by trigger rule and keeping Forge-routed source-map items out of Architecture scope
-- closed the Wave 04 allowlist boundary by materializing `shared/contracts/source-pack-curation-allowlist.md` and binding it into Forge follow-up/source-pack guidance
-- opened Forge Wave 01 with `al-tooling-promptfoo` as the first active runtime candidate
+- opened Architecture Wave 04 through `al-src-agent-lab-orchestration-allowlist`, keeping monitor-held candidates closed by trigger rule and keeping Runtime-routed source-map items out of Architecture scope
+- closed the Wave 04 allowlist boundary by materializing `shared/contracts/source-pack-curation-allowlist.md` and binding it into Runtime follow-up/source-pack guidance
+- opened Runtime Wave 01 with `al-tooling-promptfoo` as the first active runtime candidate
 - completed the promptfoo bounded eval-lane promotion slice
-- reprioritized the remaining Forge queue around system cleanup before broader runtime expansion
-- 2026-03-21: proved the Forge-owned `agent-orchestrator` CLI precondition through a bounded local build and `ao --help` execution, reopened AO as an active bounded CLI follow-up candidate while keeping it `follow_up_only` rather than `live_runtime`.
+- reprioritized the remaining Runtime queue around system cleanup before broader runtime expansion
+- 2026-03-21: proved the Runtime-owned `agent-orchestrator` CLI precondition through a bounded local build and `ao --help` execution, reopened AO as an active bounded CLI follow-up candidate while keeping it `follow_up_only` rather than `live_runtime`.
 - 2026-03-21: completed bounded AO CLI runtime slice 01 with a temp-copy `ao status --json` host proof against a generated local runtime config, while keeping `agent-orchestrator` `follow_up_only` pending a narrower host-adapter promotion decision.
 # 2026-03-21
 
@@ -240,8 +240,8 @@
 - Discovery queue status transitions now have a canonical shared transition lib, a host transition writer wrapper, and a checker-backed dry-run path instead of relying on ad hoc JSON edits.
 - Re-anchored Directive Workspace doctrine precedence so root `CLAUDE.md` plus the local doctrine/audit skills are the governing sources and DW docs are treated as aligned product-level projections.
 - Corrected stale phase-era and mission-gap planning drift in `active-mission.md`, `execution-plan.md`, `charter.md`, and `CONTRIBUTING.md` so current priorities match the real doctrine: Discovery-first coverage, mission-conditioned usefulness, behavior-preserving transformation, and explicit legacy-bridge cleanup.
-- Refreshed the Forge queue for Wave 04 and recorded an explicit no-active-candidate state instead of opening a fake runtime slice.
-- Closed stale Forge follow-up records that were already promoted, normalized, or absorbed into Architecture.
+- Refreshed the Runtime queue for Wave 04 and recorded an explicit no-active-candidate state instead of opening a fake runtime slice.
+- Closed stale Runtime follow-up records that were already promoted, normalized, or absorbed into Architecture.
 - Added the first real `CLI-Anything` re-entry artifacts: command-mediation contract, command-class approval policy, and a checker-backed deferred state.
 - Exercised the bounded `OpenClaw -> Discovery` path with one real root-helper submission, completed it through Discovery-first Architecture processing, and updated the front-door gap/worklist plus host notes to treat that path as active instead of deferred.
 - Added a second bounded OpenClaw upstream path that turns stale runtime verification evidence into a Discovery candidate through `submit-openclaw-runtime-verification-signal.ps1`, exercised it once against live stale reports, and closed the resulting Architecture slice.
@@ -262,10 +262,10 @@
 - Added a package-ready host integration kit CLI example so third-party hosts can run acceptance quickstart flows, submission dry-runs, and canonical payload printing from the command line without copying starter files first.
 - Added a filesystem-backed starter storage bridge for the host integration kit so package-ready acceptance and split-case submission proofs can validate real artifact existence instead of depending only on in-memory state.
 - Added a canonical Discovery mission-routing assessment engine so candidate routing can be scored against active mission pressure, open gaps, and track signals instead of relying mainly on manual handling.
-- Added a measured Forge transformation slice for context-pack quest-focus doc ranking, with a real legacy-vs-indexed benchmark proving faster bounded top-N ranking on the live control-plane dataset.
-- Added a measured Forge transformation slice for context-pack readiness reuse, removing duplicate docs/quests/reports/repo-snapshot loads from the readiness path when buildContextPack already has those surfaces.
-- Added a measured Forge transformation slice for repo-snapshot git command consolidation, cutting git metadata overhead in `buildRepoSnapshot` while preserving the existing snapshot shape.
-- Added a measured Forge transformation slice for context-pack daily-log summary loading, replacing full daily-report markdown/materialization work with a summary-only read path for context-pack assembly.
+- Added a measured Runtime transformation slice for context-pack quest-focus doc ranking, with a real legacy-vs-indexed benchmark proving faster bounded top-N ranking on the live control-plane dataset.
+- Added a measured Runtime transformation slice for context-pack readiness reuse, removing duplicate docs/quests/reports/repo-snapshot loads from the readiness path when buildContextPack already has those surfaces.
+- Added a measured Runtime transformation slice for repo-snapshot git command consolidation, cutting git metadata overhead in `buildRepoSnapshot` while preserving the existing snapshot shape.
+- Added a measured Runtime transformation slice for context-pack daily-log summary loading, replacing full daily-report markdown/materialization work with a summary-only read path for context-pack assembly.
 - 2026-03-23: retained six real `architecture-adoption-decision` JSON artifacts beside adopted Architecture records, added an executable corpus checker for them, and opened Wave 06 so cycle evaluation now consumes on-disk decision state instead of synthetic-only artifact inputs.
 - 2026-03-23: added a canonical Architecture adoption-decision writer lib plus a host writer/checker so retained `*-adoption-decision.json` artifacts can be emitted beside adopted records through one executable path instead of manual JSON backfill.
 - 2026-03-23: upgraded the Architecture adoption-decision writer into a live Decide-step lane that can consume raw review checks, resolve review/adoption canonically, and retain the decision artifact in one path.

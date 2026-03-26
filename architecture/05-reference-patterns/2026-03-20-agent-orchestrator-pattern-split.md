@@ -13,7 +13,7 @@ Type: reference pattern extraction
 `agent-orchestrator` is useful for Directive Workspace in two different ways:
 
 1. architecture pattern source
-2. possible Forge runtime follow-up
+2. possible Runtime runtime follow-up
 
 This note records only the Architecture side.
 
@@ -59,4 +59,4 @@ Directive implication:
 
 ## Follow-up
 
-The runtime-candidate side is tracked separately in Forge.
+The runtime-candidate side is tracked separately in Runtime.

@@ -223,10 +223,10 @@
           "type": "array",
           "items": { "type": "string" }
         },
-        "forge_handoff_required": {
+        "runtime_handoff_required": {
           "type": "boolean"
         },
-        "forge_handoff_ref": {
+        "runtime_handoff_ref": {
           "type": "string"
         }
       }

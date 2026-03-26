@@ -25,7 +25,7 @@ Valid source expansion: papers, theory writeups, product docs, technical essays,
 2. Perform first-pass triage in `01-triage` with `INTAKE_CHECKLIST.md`.
 3. Route by adoption target:
    - Architecture value -> continue here
-   - Forge/runtime value -> record Forge follow-up
+   - Runtime/runtime value -> record Runtime follow-up
    - not actionable -> defer/monitor/reject/reference
 4. Run bounded proof in `02-experiments` for promising candidates.
 5. Record explicit decision + adoption target.
@@ -42,10 +42,10 @@ It does not mean:
 - make the repo callable in Mission Control
 - promote it into runtime by default
 
-Callable/runtime delivery belongs to Directive Forge + Mission Control follow-through, not this lab by itself.
+Callable/runtime delivery belongs to Directive Runtime + Mission Control follow-through, not this lab by itself.
 
 Routing rule:
-- Forge and Architecture are separated by adoption target, not by source type.
+- Runtime and Architecture are separated by adoption target, not by source type.
 
 Build-order rule:
 - Discovery may be built later as a standalone module, but Discovery logic is still the first step of the operating loop and is applied here during Phase 2.

@@ -27,10 +27,10 @@ Reason: start post-repo wave from paper/theory sources so Discovery remains the 
 - Source reference: `sources/intake/source-karpathy-autoresearch-concept.md`
 - Source location on disk: `C:\Users\User\.openclaw\workspace\directive-workspace\sources\intake\source-karpathy-autoresearch-concept.md`
 - Submitted by: `operator`
-- Why it entered the system: formalize loop constraints and metric discipline now that Forge autoresearch promotion is closed.
+- Why it entered the system: formalize loop constraints and metric discipline now that Runtime autoresearch promotion is closed.
 - Claimed value: constraint + metric + bounded autonomous iteration as a stable execution doctrine.
 - Initial relevance to the workspace: high
-- Suspected adoption target: `Directive Architecture` + `Directive Forge follow-up`
+- Suspected adoption target: `Directive Architecture` + `Directive Runtime follow-up`
 
 ### 3) dw-src-rag-architecture
 - Candidate id: `dw-src-rag-architecture`

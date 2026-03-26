@@ -1,0 +1,26 @@
+# Arscontexta Runtime Slice 01 Proof
+
+- Candidate id: arscontexta
+- Candidate name: arscontexta
+- Proof date: 2026-03-21
+- Linked Runtime record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-arscontexta-runtime-record.md`
+- Quality gate profile: context_operator_import_guard/v1
+- Promotion profile family: bounded_context_operator_import
+- Proof shape: agent_pack_import_snapshot/v1
+- Primary host checker: `npm run check:directive-arscontexta-runtime`
+- Import smoke report path: `C:\Users\User\.openclaw\workspace\mission-control\reports\agent-pack-imports\arscontexta-latest.json`
+- Import smoke archive path: `C:\Users\User\.openclaw\workspace\mission-control\reports\agent-pack-imports\arscontexta-2026-03-21T15-26-20-104Z.json`
+- Imported agent count: `3`
+- Default import arscontexta count: `0`
+- Updated existing count: `3`
+- Imported agent names: `Ars Context Architect`, `Ars Delivery Builder`, `Ars Quality Reviewer`
+- Imported agent source refs: `arscontexta/context-architect`, `arscontexta/delivery-builder`, `arscontexta/quality-reviewer`
+- Imported workflow modes: `planning`, `execution`, `review`
+- Imported pack asset labels: `README.md`, `methodology`, `reference`, `skills`, `skill-sources`
+- Supporting gate outcomes:
+  - `npm run runtime:arscontexta:smoke` -> PASS
+  - `npm run check:directive-arscontexta-runtime` -> PASS
+  - `npm run check:agents-import-packs-api-backend` -> PASS
+  - `npm run check:ops-stack` -> PASS
+- Result: pass
+- Rollback note: if import-pack behavior drifts, demote the pack to `follow_up_only`, remove arscontexta-specific Runtime artifacts/checker wiring, and keep generic import-pack infrastructure only if still justified independently.

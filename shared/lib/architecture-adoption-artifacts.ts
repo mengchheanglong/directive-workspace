@@ -49,9 +49,10 @@ export type DirectiveArchitectureAdoptionDecisionArtifact = {
   readiness_check: ArchitectureAdoptionReadinessCheck;
   artifact_type: ArchitectureArtifactType;
   artifact_path: string;
+  primary_evidence_path?: string;
   adaptation_quality: ArchitectureAdoptionInput["adaptationQuality"];
   improvement_quality?: ArchitectureAdoptionInput["improvementQuality"];
-  forge_handoff?: {
+  runtime_handoff?: {
     required: boolean;
     ref?: string;
     rationale?: string;
@@ -72,17 +73,18 @@ export type DirectiveArchitectureAdoptionDecisionArtifact = {
     rationale: string;
     completion_status?: ArchitectureCompletionStatus;
     stay_experimental_reason?: string;
-    forge_threshold_check?: string;
+    runtime_threshold_check?: string;
   };
 };
 
 export type DirectiveArchitectureAdoptionDecisionArtifactInput =
   ArchitectureAdoptionInput & {
     artifactPath: string;
+    primaryEvidencePath?: string;
     adoptionDate?: string;
     sourceAnalysisRef?: string;
     adaptationDecisionRef?: string;
-    forgeHandoffRef?: string;
+    runtimeHandoffRef?: string;
     selfImprovement?: DirectiveArchitectureSelfImprovementArtifact;
     adoptionResolution?: ArchitectureAdoptionResolution;
   };
@@ -113,7 +115,7 @@ const QUALITY_LEVELS = new Set<ArchitectureAdoptionInput["adaptationQuality"]>([
 const DECISION_VERDICTS = new Set<ArchitectureAdoptionVerdict>([
   "adopt",
   "stay_experimental",
-  "hand_off_to_forge",
+  "hand_off_to_runtime",
   "defer",
   "reject",
 ]);
@@ -165,19 +167,19 @@ function buildStayExperimentalReason(
   return resolution.rationale;
 }
 
-function buildForgeHandoff(
+function buildRuntimeHandoff(
   input: DirectiveArchitectureAdoptionDecisionArtifactInput,
   resolution: ArchitectureAdoptionResolution,
 ) {
-  const ref = (input.forgeHandoffRef || "").trim() || undefined;
-  const rationale = resolution.forgeHandoff.rationale || undefined;
+  const ref = (input.runtimeHandoffRef || "").trim() || undefined;
+  const rationale = resolution.runtimeHandoff.rationale || undefined;
 
-  if (!resolution.forgeHandoff.required && !ref && !rationale) {
+  if (!resolution.runtimeHandoff.required && !ref && !rationale) {
     return undefined;
   }
 
   return mergeDirectiveArtifactSections({
-    required: resolution.forgeHandoff.required,
+    required: resolution.runtimeHandoff.required,
     ref: ref ?? DIRECTIVE_ARTIFACT_UNSET,
     rationale: rationale ?? DIRECTIVE_ARTIFACT_UNSET,
   });
@@ -244,8 +246,8 @@ export function buildDirectiveArchitectureAdoptionDecisionArtifact(
     completion_status: resolution.completionStatus ?? DIRECTIVE_ARTIFACT_UNSET,
     stay_experimental_reason:
       buildStayExperimentalReason(resolution) ?? DIRECTIVE_ARTIFACT_UNSET,
-    forge_threshold_check:
-      resolution.forgeThresholdCheck ?? DIRECTIVE_ARTIFACT_UNSET,
+    runtime_threshold_check:
+      resolution.runtimeThresholdCheck ?? DIRECTIVE_ARTIFACT_UNSET,
   });
 
   return mergeDirectiveArtifactSections({
@@ -260,11 +262,13 @@ export function buildDirectiveArchitectureAdoptionDecisionArtifact(
     readiness_check: input.readinessCheck,
     artifact_type: resolution.artifactType,
     artifact_path: artifactPath,
+    primary_evidence_path:
+      (input.primaryEvidencePath || "").trim() || DIRECTIVE_ARTIFACT_UNSET,
     adaptation_quality: input.adaptationQuality,
     improvement_quality:
       input.improvementQuality ?? DIRECTIVE_ARTIFACT_UNSET,
-    forge_handoff:
-      buildForgeHandoff(input, resolution) ?? DIRECTIVE_ARTIFACT_UNSET,
+    runtime_handoff:
+      buildRuntimeHandoff(input, resolution) ?? DIRECTIVE_ARTIFACT_UNSET,
     self_improvement:
       buildSelfImprovement(input, resolution) ?? DIRECTIVE_ARTIFACT_UNSET,
     decision,
@@ -308,6 +312,12 @@ export function isDirectiveArchitectureAdoptionDecisionArtifact(
   if (!nonEmptyString(root.artifact_path)) {
     return false;
   }
+  if (
+    root.primary_evidence_path !== undefined
+    && !nonEmptyString(root.primary_evidence_path)
+  ) {
+    return false;
+  }
 
   const readiness = asRecord(root.readiness_check);
   if (!readiness) return false;
@@ -324,17 +334,17 @@ export function isDirectiveArchitectureAdoptionDecisionArtifact(
     }
   }
 
-  if (root.forge_handoff !== undefined) {
-    const forgeHandoff = asRecord(root.forge_handoff);
-    if (!forgeHandoff || typeof forgeHandoff.required !== "boolean") {
+  if (root.runtime_handoff !== undefined) {
+    const runtimeHandoff = asRecord(root.runtime_handoff);
+    if (!runtimeHandoff || typeof runtimeHandoff.required !== "boolean") {
       return false;
     }
-    if (forgeHandoff.ref !== undefined && !nonEmptyString(forgeHandoff.ref)) {
+    if (runtimeHandoff.ref !== undefined && !nonEmptyString(runtimeHandoff.ref)) {
       return false;
     }
     if (
-      forgeHandoff.rationale !== undefined
-      && !nonEmptyString(forgeHandoff.rationale)
+      runtimeHandoff.rationale !== undefined
+      && !nonEmptyString(runtimeHandoff.rationale)
     ) {
       return false;
     }
@@ -416,8 +426,8 @@ export function isDirectiveArchitectureAdoptionDecisionArtifact(
     return false;
   }
   if (
-    decision.forge_threshold_check !== undefined
-    && !nonEmptyString(decision.forge_threshold_check)
+    decision.runtime_threshold_check !== undefined
+    && !nonEmptyString(decision.runtime_threshold_check)
   ) {
     return false;
   }

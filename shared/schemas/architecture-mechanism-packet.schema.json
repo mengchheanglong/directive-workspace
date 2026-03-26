@@ -17,7 +17,7 @@
     "improved_form",
     "reuse_targets",
     "artifact_refs",
-    "forge_threshold_check",
+    "runtime_threshold_check",
     "meta_usefulness",
     "meta_usefulness_category"
   ],
@@ -47,7 +47,7 @@
       "type": "array",
       "items": { "type": "string", "minLength": 1 }
     },
-    "forge_threshold_check": { "type": "boolean" },
+    "runtime_threshold_check": { "type": "boolean" },
     "meta_usefulness": { "type": "boolean" },
     "meta_usefulness_category": {
       "type": "string",

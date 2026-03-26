@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes`
+- Runtime threshold check: `yes`
 - Decision: `adopted`
 - Status: `product_materialized`
 

@@ -79,8 +79,8 @@ That improves Directive Workspace more directly than another contract-only slice
 Artifact type selection:
 - shared lib for executable product-owned behavior
 
-Forge threshold check:
-- no Forge handoff
+Runtime threshold check:
+- no Runtime handoff
 - the mechanism is valuable even if no runtime surface is promoted
 
 ## Self-improvement evidence

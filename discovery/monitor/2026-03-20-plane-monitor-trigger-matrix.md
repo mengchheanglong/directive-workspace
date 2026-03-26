@@ -16,7 +16,7 @@ Define explicit trigger conditions for when `plane` should stay in monitor vs be
 | No concrete PM-system integration need in active roadmap | Stay monitor | Discovery | Default state |
 | Integration request appears but no adapter contract needed | Stay reference/monitor | Discovery | Keep boundary-rule role only |
 | Concrete integration request requires new adapter contract | Promote to triage | Discovery -> Architecture | Create intake + triage + routing records |
-| Host/runtime callable capability is explicitly requested | Route to Forge follow-up | Forge | Only after Architecture/Discovery decision confirms runtime need |
+| Host/runtime callable capability is explicitly requested | Route to Runtime follow-up | Runtime | Only after Architecture/Discovery decision confirms runtime need |
 
 ## Promotion Preconditions
 

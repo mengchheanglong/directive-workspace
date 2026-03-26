@@ -32,9 +32,9 @@ Architecture self-improvement is measured across seven categories. Each correspo
 | `extraction_quality` | Are extraction decisions more precise? Less unnecessary baggage imported? | Better extraction → less rework during adaptation |
 | `adaptation_quality` | Are adaptations producing mechanisms that fit Directive Workspace better? | Better adaptation → less friction during integration |
 | `improvement_quality` | Are improvements going deeper beyond the original source? | Better improvement → more Directive-owned value per source |
-| `routing_quality` | Are routing decisions more accurate? Fewer mis-routes? | Better routing → less wasted Architecture/Forge effort |
+| `routing_quality` | Are routing decisions more accurate? Fewer mis-routes? | Better routing → less wasted Architecture/Runtime effort |
 | `evaluation_quality` | Are proofs and evaluations more rigorous? Fewer false positives? | Better evaluation → higher trust in adopted mechanisms |
-| `handoff_quality` | Are Architecture-to-Forge handoffs cleaner? Less information lost? | Better handoff → faster Forge operationalization |
+| `handoff_quality` | Are Architecture-to-Runtime handoffs cleaner? Less information lost? | Better handoff → faster Runtime operationalization |
 
 ## Self-improvement evidence structure
 
@@ -115,7 +115,7 @@ For each of the seven categories, answer:
 - If a meta-useful adoption changes the baseline for how prior evidence should be judged, open a generation boundary and keep pre-boundary evidence out of clean confirmation counts.
 - Cycle evaluation is recommended at the start of each new Architecture wave, not at the end of every individual adoption.
 - If `verification_result` shows a claim was false, that is useful information, not a failure. Record it and use it to improve future meta-usefulness judgment.
-- The cycle comparison record is the Architecture equivalent of Forge's evaluator results — it measures whether the system is getting better, not just bigger.
+- The cycle comparison record is the Architecture equivalent of Runtime's evaluator results — it measures whether the system is getting better, not just bigger.
 
 ## Anti-patterns
 

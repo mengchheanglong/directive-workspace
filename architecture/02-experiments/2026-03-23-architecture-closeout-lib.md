@@ -23,7 +23,7 @@ It now:
 It supports:
 - `stay_experimental` closeout from `architecture/02-experiments/`
 - `adopt` closeout from `architecture/03-adopted/`
-- `hand_off_to_forge` closeout from `architecture/03-adopted/`
+- `hand_off_to_runtime` closeout from `architecture/03-adopted/`
 
 ## Why it matters
 

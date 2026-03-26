@@ -41,7 +41,7 @@
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: Would this mechanism still be valuable without a runtime surface? `yes
+- Runtime threshold check: Would this mechanism still be valuable without a runtime surface? `yes
 
 ## Source adaptation fields (Architecture source-driven experiments only)
 

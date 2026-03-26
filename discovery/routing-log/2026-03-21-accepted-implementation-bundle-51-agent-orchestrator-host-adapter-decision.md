@@ -2,13 +2,13 @@
 
 - Date: 2026-03-21
 - Candidate id: `agent-orchestrator`
-- Adoption target: `Directive Forge follow-up`
+- Adoption target: `Directive Runtime follow-up`
 - Decision state: `defer`
 - Result: keep AO as verified `follow_up_only` CLI utility lane
 
 ## Scope
 
-Close the post-proof AO decision slice by aligning Mission Control with the real Forge state.
+Close the post-proof AO decision slice by aligning Mission Control with the real Runtime state.
 
 ## Implemented
 
@@ -24,4 +24,4 @@ Close the post-proof AO decision slice by aligning Mission Control with the real
 
 ## Next valid step
 
-Open a new Forge slice only if one narrower AO host adapter surface is selected for promotion.
+Open a new Runtime slice only if one narrower AO host adapter surface is selected for promotion.

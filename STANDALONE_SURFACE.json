@@ -6,7 +6,7 @@
     "productOwnerReason": "Directive Workspace is the standalone product and canonical owner of doctrine, contracts, shared operating assets, and mission-driven capability evolution logic.",
     "packageName": "@directive-workspace/product",
     "releaseMode": "reference_api_host_lane_ready_for_shareable_local_use",
-    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with an initial canonical Engine plus an Engine-owned Discovery/Forge/Architecture lane set, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local use but not yet the broader host replacement for Mission Control.",
+    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with an initial canonical Engine plus an Engine-owned Discovery/Runtime/Architecture lane set, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local use but not yet the broader host replacement for Mission Control.",
     "runtimeHost": "mission-control",
     "runtimeHostReason": "Mission Control remains the current runtime host while Directive Workspace owns the package-ready product surface."
   },
@@ -14,7 +14,7 @@
     "activeExportKeys": [
       ".",
       "./engine",
-      "./forge/core/v0",
+      "./runtime/core/v0",
       "./integration-kit",
       "./integration-kit/cli",
       "./integration-kit/starter",
@@ -22,7 +22,7 @@
       "./standalone-host/bootstrap",
       "./standalone-host/cli",
       "./standalone-host/config",
-      "./standalone-host/forge",
+      "./standalone-host/runtime",
       "./standalone-host/persistence",
       "./standalone-host/server",
       "./frontend",
@@ -84,9 +84,9 @@
       "kind": "shared_barrel"
     },
     {
-      "id": "forge-core-v0-entry",
-      "path": "forge/core/v0.ts",
-      "kind": "forge_core_entry"
+      "id": "runtime-core-v0-entry",
+      "path": "runtime/core/v0.ts",
+      "kind": "runtime_core_entry"
     },
     {
       "id": "integration-kit-root",
@@ -119,8 +119,8 @@
       "kind": "reference_host_surface"
     },
     {
-      "id": "standalone-host-forge",
-      "path": "hosts/standalone-host/forge.ts",
+      "id": "standalone-host-runtime",
+      "path": "hosts/standalone-host/runtime.ts",
       "kind": "reference_host_surface"
     },
     {

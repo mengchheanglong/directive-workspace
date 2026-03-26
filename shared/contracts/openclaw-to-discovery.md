@@ -54,7 +54,7 @@ Minimal OpenClaw payloads still enter as queue-only pending items by default.
 ## Submission Rules
 
 - OpenClaw submits only to Discovery
-- OpenClaw must not route directly to Forge or Architecture
+- OpenClaw must not route directly to Runtime or Architecture
 - OpenClaw must not modify existing Discovery records
 - OpenClaw submissions always enter as:
   - `status: pending`

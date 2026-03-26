@@ -27,4 +27,4 @@ Keep the design guardrail idea:
 
 ## Current Decision
 
-Reference only. No direct runtime or Forge adoption planned.
+Reference only. No direct runtime or Runtime adoption planned.

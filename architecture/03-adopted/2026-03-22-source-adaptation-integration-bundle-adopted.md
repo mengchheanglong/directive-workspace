@@ -22,10 +22,10 @@ These assets defined the right structure for the Analyze/Adapt/Improve steps, bu
 **Before:** 8 required fields, no reference to what Architecture should do next with a source.
 **After:** Added source-analysis preparation fields (initial value hypothesis, initial baggage signals, usefulness level hint, capability gap reference) and a rule that Architecture's next step for source work is the `source-analysis-contract`, not direct extraction.
 
-### 2. Architecture → Forge handoff (`shared/contracts/architecture-to-forge.md`)
+### 2. Architecture → Runtime handoff (`shared/contracts/architecture-to-runtime.md`)
 
 **Before:** Referred to "extracted mechanism" — raw extracted value with no adaptation/improvement evidence.
-**After:** Added required adaptation/improvement evidence fields (source-analysis ref, adaptation-decision ref, adaptation summary, improvement summary, value-handed-to-Forge description). Added rule that Forge receives adapted/improved value, not raw extracts. Added meta-usefulness flag.
+**After:** Added required adaptation/improvement evidence fields (source-analysis ref, adaptation-decision ref, adaptation summary, improvement summary, value-handed-to-Runtime description). Added rule that Runtime receives adapted/improved value, not raw extracts. Added meta-usefulness flag.
 
 ### 3. Experiment record template (`shared/templates/experiment-record.md`)
 
@@ -50,7 +50,7 @@ These assets defined the right structure for the Analyze/Adapt/Improve steps, bu
 ### 7. Workflow (`knowledge/workflow.md`)
 
 **Before:** Architecture default was "one experiment slice + one adopted/deferred outcome." No mention of source-adaptation chain.
-**After:** Added "Architecture source-driven work" section describing the 4-step source-adaptation chain (analysis → adaptation decision → experiment → Forge handoff if applicable). Explicitly states when to skip the chain (purely internal work with no external source).
+**After:** Added "Architecture source-driven work" section describing the 4-step source-adaptation chain (analysis → adaptation decision → experiment → Runtime handoff if applicable). Explicitly states when to skip the chain (purely internal work with no external source).
 
 ### 8. Intake checklist (`architecture/01-triage/INTAKE_CHECKLIST.md`)
 
@@ -59,7 +59,7 @@ These assets defined the right structure for the Analyze/Adapt/Improve steps, bu
 
 ### 9. Evaluator contract (`shared/contracts/evaluator-contract.md`)
 
-**Before:** Evaluators defined only for Forge transformation work and performance-sensitive changes.
+**Before:** Evaluators defined only for Runtime transformation work and performance-sensitive changes.
 **After:** Added "Architecture adaptation evaluation" section defining informational evaluator metrics for source-adaptation quality: adaptation coverage, improvement coverage, baggage exclusion rate, delta evidence completeness, meta-usefulness hit rate. These are not gates — they track whether the adaptation chain is producing real value or silently defaulting to `extract → adopt`.
 
 ## Why this matters
@@ -69,7 +69,7 @@ The source-adaptation contracts defined the right questions. This integration bu
 - When Discovery routes a source to Architecture, the handoff now tells Architecture to start with source analysis
 - When Architecture processes a source, the workflow now describes the 4-step chain
 - When Architecture records an experiment, the template now has fields for adaptation/improvement evidence
-- When Architecture hands off to Forge, the contract now requires adapted/improved value, not raw extracts
+- When Architecture hands off to Runtime, the contract now requires adapted/improved value, not raw extracts
 - When the system evaluates Architecture quality, the evaluator contract now defines adaptation-specific metrics
 
 ## Rollback

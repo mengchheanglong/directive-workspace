@@ -3,9 +3,9 @@
 - Contract id: `workflow_operator_import_guard/v1`
 - Contract family: `bounded_workflow_operator_import`
 - Proof shape: `agent_pack_import_snapshot/v1`
-- Primary host checker: `npm run check:directive-superpowers-forge`
+- Primary host checker: `npm run check:directive-superpowers-runtime`
 - Supporting host evidence:
-  - `npm run forge:superpowers:smoke`
+  - `npm run runtime:superpowers:smoke`
   - `npm run check:agents-import-packs-api-backend`
   - `npm run check:ops-stack`
 
@@ -40,12 +40,12 @@ Allow `superpowers` to become a bounded explicit-only workflow operator import l
 - no plugin marketplace installation flow
 - no hook execution as product truth
 - no automatic skill overlay into global agent state
-- no upstream plugin/runtime behavior treated as canonical Forge behavior
+- no upstream plugin/runtime behavior treated as canonical Runtime behavior
 - no default import activation
 
 ## Rollback
 
 - restore `superpowers` to `follow_up_only`
-- remove superpowers-specific Forge proof/promotion/registry artifacts
+- remove superpowers-specific Runtime proof/promotion/registry artifacts
 - remove superpowers-specific checker wiring
 - keep generic import-pack infrastructure only if it remains justified independently

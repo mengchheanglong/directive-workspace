@@ -1,0 +1,38 @@
+# v0 Normalizer Transformation Promotion Record
+
+- Candidate id: dw-transform-v0-normalizer-consolidation
+- Candidate name: v0.ts Normalizer Consolidation
+- Promotion date: 2026-03-22
+- Linked Runtime record: `runtime/records/2026-03-22-v0-normalizer-transformation-record.md`
+- Target host: Mission Control
+- Target runtime surface: runtime/core/v0.ts (mirrored to mission-control/src/lib/directive-workspace/v0.ts)
+- Integration mode: in-place transformation (behavior-preserving)
+- Source intent artifact: `discovery/intake/2026-03-22-v0-normalizer-transformation-intake.md`
+- Compile contract artifact: n/a (in-place transformation, not a new import)
+- Runtime permissions profile: n/a (no new runtime permissions — existing runtime core module)
+- Safe output scope: runtime/core/v0.ts and its host mirror only
+- Sanitize policy: no new exports, no new dependencies, no behavioral changes — same API surface with reduced implementation
+- Proposed runtime status: live (already deployed via runtime-sync mirror)
+- Proof path: `runtime/records/2026-03-22-v0-normalizer-transformation-proof.json`
+- Quality gate profile: behavior_preserving_transformation_guard/v1
+- Promotion profile family: bounded_transformation
+- Proof shape: transformation_proof_artifact/v1
+- Primary host checker: `npm run check:directive-transformation-proof`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: self_validated
+- Quality gate fail reasons: none
+- Required gates:
+  - `npm run check:directive-runtime-sync`
+  - `npm run check:directive-transformation-proof`
+  - `npm run typecheck`
+  - `npm run build`
+- Validation result: all required gates PASS on 2026-03-22
+- Rollback plan: revert runtime/core/v0.ts and its Mission Control mirror to pre-transformation state via git revert. Mirror sync checker confirms both copies stay aligned.
+- Owner: operator
+- Promotion decision: approved — behavior-preserving transformation that reduces normalizer section from 126 to 55 lines while preserving all 10 exported function signatures, types, and error messages

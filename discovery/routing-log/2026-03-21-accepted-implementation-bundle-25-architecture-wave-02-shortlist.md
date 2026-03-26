@@ -55,4 +55,4 @@ Reason:
 
 Architecture should execute Wave 02 in shortlist order and keep each candidate bounded to one product-owned artifact family at a time.
 
-No Forge runtime/callable expansion is authorized by this bundle.
+No Runtime runtime/callable expansion is authorized by this bundle.

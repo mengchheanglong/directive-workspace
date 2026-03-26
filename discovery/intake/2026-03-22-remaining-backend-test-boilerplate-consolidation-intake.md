@@ -25,5 +25,5 @@ Runtime operationalization — maintainability and reliability of verification s
 
 ## Routing
 
-- Routing target: forge
+- Routing target: runtime
 - Routing rationale: behavior-preserving transformation — live runtime capability, measurable improvement

@@ -12,7 +12,7 @@ Convert accepted/active reanalysis outcomes into execution-ready slices with exp
 
 1. `al-parked-desloppify`
 - slice file:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-desloppify-implementation-slice-01.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-desloppify-implementation-slice-01.md`
 
 2. `al-parked-codegraphcontext`
 - slice file:
@@ -32,7 +32,7 @@ Convert accepted/active reanalysis outcomes into execution-ready slices with exp
 
 ## Produced Artifacts
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-desloppify-utility-contract.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-desloppify-utility-contract.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-codegraphcontext-index-query-contract.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-hermes-context-compaction-contract.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-impeccable-review-policy.md`

@@ -16,4 +16,4 @@ Validation:
 
 Decision:
 - accepted for Architecture closure
-- no Forge routing required
+- no Runtime routing required

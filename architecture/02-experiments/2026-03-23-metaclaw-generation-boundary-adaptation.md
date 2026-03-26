@@ -119,8 +119,8 @@ Type: source-driven adaptation
   - `shared/templates/architecture-cycle-evaluation.md`
   - `knowledge/workflow.md`
   - `shared/schemas/README.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

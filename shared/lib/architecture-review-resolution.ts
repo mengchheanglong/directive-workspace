@@ -24,7 +24,7 @@ export type ArchitectureReviewAntiPatternId =
   | "vague_status_labels"
   | "concealed_gate_failures_or_degraded_states"
   | "missing_validation_method"
-  | "blurred_forge_vs_architecture_ownership"
+  | "blurred_runtime_vs_architecture_ownership"
   | "unbounded_rewrite_pressure"
   | "ignored_reusable_packet_inputs"
   | "broken_artifact_evidence_continuity";
@@ -106,7 +106,7 @@ const ARCHITECTURE_REVIEW_CHECK_WEIGHTS: Record<
     failurePenalty: 2,
     warningPenalty: 1,
     criticalFailure: true,
-    changeHint: "Clarify whether the value stays in Architecture or should hand off to Forge.",
+    changeHint: "Clarify whether the value stays in Architecture or should hand off to Runtime.",
   },
   packet_consumption_check: {
     failurePenalty: 1,
@@ -141,10 +141,10 @@ const ARCHITECTURE_REVIEW_ANTI_PATTERN_HINTS: Record<
     fatal: true,
     changeHint: "State how the proposal will be validated before it can advance.",
   },
-  blurred_forge_vs_architecture_ownership: {
+  blurred_runtime_vs_architecture_ownership: {
     penalty: 2,
     fatal: true,
-    changeHint: "Split Architecture-retained value from runtime/Forge-owned value explicitly.",
+    changeHint: "Split Architecture-retained value from runtime/Runtime-owned value explicitly.",
   },
   unbounded_rewrite_pressure: {
     penalty: 1,

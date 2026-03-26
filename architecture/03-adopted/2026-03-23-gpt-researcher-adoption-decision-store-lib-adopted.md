@@ -78,8 +78,8 @@ That improves Architecture at its actual job:
 Artifact type selection:
 - shared lib for executable product-owned persistence behavior
 
-Forge threshold check:
-- no Forge handoff
+Runtime threshold check:
+- no Runtime handoff
 - the mechanism is valuable even if no runtime surface is promoted
 
 ## Self-improvement evidence

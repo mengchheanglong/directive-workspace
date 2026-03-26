@@ -8,11 +8,11 @@ Type: adopted mixed-value source improvement
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - the retained value improves Directive Workspace's source-routing and split-decision quality even if no runtime surface is built
+- Runtime threshold check: `yes` - the retained value improves Directive Workspace's source-routing and split-decision quality even if no runtime surface is built
 
 ## Problem
 
-Directive Workspace had become better at packet emission, packet consumption, and packet-aware review, but it still lacked a clean operating surface for mixed-value sources where packet reuse is helpful but partial and the Architecture/Forge split must be made explicitly.
+Directive Workspace had become better at packet emission, packet consumption, and packet-aware review, but it still lacked a clean operating surface for mixed-value sources where packet reuse is helpful but partial and the Architecture/Runtime split must be made explicitly.
 
 Scientify is the clearest example because it contains:
 - staged evidence-backed research workflow value
@@ -44,24 +44,24 @@ The system can now say, for one source:
 - what retained value is already covered by existing packets
 - what still needs fresh source re-analysis
 - what should stay in Architecture now
-- what should become a bounded Forge candidate later
+- what should become a bounded Runtime candidate later
 - what should be excluded as baggage
 
-## Forge handoff transition
+## Runtime handoff transition
 
-- Forge handoff: `yes`
-- Forge handoff ref:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-23-scientify-literature-monitoring-forge-handoff.md`
+- Runtime handoff: `yes`
+- Runtime handoff ref:
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-23-scientify-literature-monitoring-runtime-handoff.md`
 
 The first bounded runtime candidate selected from the partition is:
 - scheduled literature monitoring with digest delivery
 
 ## Self-improvement evidence
 
-- Claim: Directive Workspace now handles mixed-value sources more accurately because it can distinguish partial packet reuse from fresh source re-analysis and separate Architecture-retained value from Forge candidates explicitly.
+- Claim: Directive Workspace now handles mixed-value sources more accurately because it can distinguish partial packet reuse from fresh source re-analysis and separate Architecture-retained value from Runtime candidates explicitly.
 - Mechanism: this slice used Scientify plus the existing evidence-backed stage-synthesis packets to create a mixed-value partition contract/template/schema.
-- Baseline observation: before this slice, packet reuse and Architecture-to-Forge handoff existed, but no explicit surface described partial packet coverage and mixed-value partition decisions together.
-- Expected effect: future ambiguous sources can be processed without collapsing into either full historical reconstruction or premature whole-source Forge routing.
+- Baseline observation: before this slice, packet reuse and Architecture-to-Runtime handoff existed, but no explicit surface described partial packet coverage and mixed-value partition decisions together.
+- Expected effect: future ambiguous sources can be processed without collapsing into either full historical reconstruction or premature whole-source Runtime routing.
 - Verification method: `next_cycle_comparison`
 - Category: `routing_quality`
 

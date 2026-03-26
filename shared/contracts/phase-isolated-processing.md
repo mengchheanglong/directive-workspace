@@ -51,7 +51,7 @@ Typical Discovery mapping:
 - `route`
 - `record`
 
-Typical Forge mapping:
+Typical Runtime mapping:
 - `measure`
 - `transform`
 - `verify`

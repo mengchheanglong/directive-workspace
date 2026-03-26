@@ -1,7 +1,7 @@
 # Hermes-Agent Reanalysis Bundle 02
 
 Date: 2026-03-20
-Track: Directive Architecture (+ optional Forge follow-up)
+Track: Directive Architecture (+ optional Runtime follow-up)
 Type: bounded reanalysis slice
 Candidate id: `al-parked-hermes-agent`
 Decision state: `experiment`
@@ -19,7 +19,7 @@ Baseline stance:
 
 New in this reanalysis:
 - require a concrete contract extraction target instead of generic pattern preservation
-- define optional Forge follow-up only for bounded utility surfaces
+- define optional Runtime follow-up only for bounded utility surfaces
 
 No change:
 - no full hermes runtime adoption
@@ -35,7 +35,7 @@ Acceptance criteria:
   - compaction boundary
   - minimum handoff fidelity requirements
   - failure fallback when compaction confidence is low
-- optional Forge follow-up is listed only as secondary, not default
+- optional Runtime follow-up is listed only as secondary, not default
 
 Risk:
 - medium (contract can become abstract if not tied to current workflow)

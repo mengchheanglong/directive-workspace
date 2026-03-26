@@ -25,7 +25,7 @@ The Decide step is no longer just:
 It is now one canonical closeout path that can prove:
 - `adopt`
 - `stay_experimental`
-- `hand_off_to_forge`
+- `hand_off_to_runtime`
 
 ## Proof surface
 

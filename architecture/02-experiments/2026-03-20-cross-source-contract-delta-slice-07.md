@@ -13,7 +13,7 @@ Expose strict lifecycle artifact coverage in the Directive Workspace overview su
 
 In:
 - add lifecycle artifact coverage aggregation to backend workspace overview payload
-- expose strict coverage metrics in standalone track panel (Forge card)
+- expose strict coverage metrics in standalone track panel (Runtime card)
 - resolve typecheck blockers in shared lifecycle artifact normalization and directive service evaluation flow
 - verify gates remain green
 
@@ -33,8 +33,8 @@ Out:
 ## Execution Steps
 
 1. Add strict lifecycle artifact shape/coverage helpers in workspace overview service path.
-2. Append `forge.lifecycleArtifacts` coverage block in `workspace/overview` response.
-3. Render strict-required/strict-bound/strict-missing + coverage percentages in Forge card.
+2. Append `runtime.lifecycleArtifacts` coverage block in `workspace/overview` response.
+3. Render strict-required/strict-bound/strict-missing + coverage percentages in Runtime card.
 4. Fix discovered typecheck issues in lifecycle artifact normalization and evaluation sourceRef binding.
 5. Re-run directive and ops gates.
 
@@ -70,6 +70,6 @@ Out:
 
 ## Rollback / No-op
 
-- remove `forge.lifecycleArtifacts` block from workspace overview response
+- remove `runtime.lifecycleArtifacts` block from workspace overview response
 - remove strict coverage cards from `WorkspaceTracksOverviewPanel`
 - keep lifecycle artifact gate/backfill behavior unchanged

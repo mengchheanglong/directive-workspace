@@ -20,7 +20,7 @@
 - Decision state: `accept for architecture`
 - Route destination: `architecture`
 - Why this route: the result is reusable internal operating logic for Discovery and should become product-owned contract/schema/worklist behavior
-- Why not the alternatives: `Forge` is not the right owner because this is not runtime capability; `Discovery holding` would preserve the problem instead of correcting it
+- Why not the alternatives: `Runtime` is not the right owner because this is not runtime capability; `Discovery holding` would preserve the problem instead of correcting it
 - Need bounded proof: `yes`
 - Next artifact: `architecture/02-experiments/2026-03-22-discovery-gap-driven-priority-loop-slice-01.md`
 - Compaction profile (if compacted): `n/a`

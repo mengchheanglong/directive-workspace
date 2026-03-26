@@ -15,7 +15,7 @@ Wave 03 is intentionally narrow. It should execute only candidates that still ad
 
 A candidate qualifies for Wave 03 only if all of the following are true:
 - Discovery routing is explicit.
-- The remaining work is Architecture, not Forge runtime follow-up.
+- The remaining work is Architecture, not Runtime runtime follow-up.
 - The candidate adds a reusable internal mechanism that is not already covered by the closed Architecture cycles.
 - The next slice can be bounded to one product-owned contract, template, schema, or policy artifact family.
 

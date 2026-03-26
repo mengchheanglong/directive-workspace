@@ -57,13 +57,13 @@ Type: source-driven adaptation
   - `shared/lib/architecture-closeout.ts`
   - `shared/lib/architecture-cycle-decision-loader.ts`
   - `shared/lib/README.md`
-  - `forge/BOUNDARY_INVENTORY.json`
+  - `runtime/BOUNDARY_INVENTORY.json`
   - `mission-control/src/lib/directive-workspace/architecture-adoption-decision-store.ts`
   - `mission-control/scripts/close-directive-architecture-slice.ts`
   - `mission-control/scripts/write-directive-architecture-adoption-decision.ts`
   - `mission-control/scripts/backfill-directive-architecture-adoption-decision-corpus.ts`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

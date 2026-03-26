@@ -27,7 +27,7 @@ Route to Architecture.
 
 Reason:
 - this is operating-code extraction for the Discovery front door
-- the value is the bounded signal adapter itself, not a Forge runtime promotion
+- the value is the bounded signal adapter itself, not a Runtime runtime promotion
 
 ## Expected Result
 

@@ -1,16 +1,16 @@
 # Accepted Implementation Bundle 41: Agent-Orchestrator Precondition Correction
 
 Date: 2026-03-21
-Track: Directive Forge
+Track: Directive Runtime
 Status: accepted
 
 ## Summary
 
-Correct `agent-orchestrator` from false live-runtime state back to blocked follow-up until the Forge-owned source pack contains a runnable AO CLI artifact.
+Correct `agent-orchestrator` from false live-runtime state back to blocked follow-up until the Runtime-owned source pack contains a runnable AO CLI artifact.
 
 ## Decision
 
-- keep the pack as a Forge follow-up candidate
+- keep the pack as a Runtime follow-up candidate
 - do not open the runtime slice yet
 - align frontend and backend host resolution with the same live-runtime precondition
 
@@ -18,5 +18,5 @@ Correct `agent-orchestrator` from false live-runtime state back to blocked follo
 
 - source-pack catalog correction
 - blocked follow-up note
-- Forge correction record
+- Runtime correction record
 - host precondition checker

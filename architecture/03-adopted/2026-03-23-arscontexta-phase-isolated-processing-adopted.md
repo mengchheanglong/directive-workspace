@@ -74,8 +74,8 @@ Artifact type selection:
 - template for human-readable packet transfer
 - schema for machine-readable packet validation
 
-Forge threshold check:
-- no Forge handoff
+Runtime threshold check:
+- no Runtime handoff
 - the mechanism is valuable even if no runtime surface is built
 
 ## Self-improvement evidence

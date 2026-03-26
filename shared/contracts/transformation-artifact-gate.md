@@ -43,7 +43,7 @@ Use this gate when:
 
 Do not use when:
 - the work is only queue intake or triage in Discovery
-- the work is a Forge runtime transformation (Forge uses proof + evaluator lanes instead)
+- the work is a Runtime runtime transformation (Runtime uses proof + evaluator lanes instead)
 
 ## Required processing outcome
 

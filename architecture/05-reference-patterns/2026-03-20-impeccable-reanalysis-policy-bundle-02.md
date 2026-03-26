@@ -30,7 +30,7 @@ No change:
 ## Policy Scope
 
 - this candidate contributes policy language and review heuristics only
-- any callable/runtime usage requires separate Forge decision
+- any callable/runtime usage requires separate Runtime decision
 
 Rollback / No-op path:
 - if policy language proves noisy, keep original reference note only

@@ -38,9 +38,9 @@ Record what `agent-lab/orchestration` used to do so the value can be routed into
 
 Route from this source as follows:
 
-- registry semantics -> `Directive Discovery` and `Directive Forge`
-- external run contract -> `Directive Forge`
-- adapter isolation pattern -> `Directive Forge` and `Directive Architecture`
+- registry semantics -> `Directive Discovery` and `Directive Runtime`
+- external run contract -> `Directive Runtime`
+- adapter isolation pattern -> `Directive Runtime` and `Directive Architecture`
 - curation/export allowlist policy -> `Directive Architecture`
 - start/health/stop local stack scripts -> `reference-only` unless a surviving host runbook needs them
 

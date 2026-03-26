@@ -8,7 +8,7 @@ import {
   type DiscoveryQueueEntry,
 } from "./discovery-gap-worklist-generator.ts";
 
-export type DiscoveryRoutingTrack = "discovery" | "architecture" | "forge";
+export type DiscoveryRoutingTrack = "discovery" | "architecture" | "runtime";
 
 export type DiscoveryMissionRoutingConfidence = "high" | "medium" | "low";
 
@@ -63,8 +63,8 @@ const ARCHITECTURE_KEYWORDS = [
   "structure",
 ];
 
-const FORGE_KEYWORDS = [
-  "forge",
+const RUNTIME_KEYWORDS = [
+  "runtime",
   "runtime",
   "callable",
   "skill",
@@ -213,7 +213,7 @@ function deriveExplicitRouteDestination(
     request.case_record?.routing.route_destination ??
     request.fast_path?.route_destination ??
     null;
-  if (explicitRoute === "architecture" || explicitRoute === "forge") {
+  if (explicitRoute === "architecture" || explicitRoute === "runtime") {
     return explicitRoute;
   }
   return null;
@@ -272,10 +272,10 @@ function deriveTrackScores(
 ) {
   const discoverySignal = countKeywordHits(requestText, DISCOVERY_KEYWORDS);
   const architectureSignal = countKeywordHits(requestText, ARCHITECTURE_KEYWORDS);
-  const forgeSignal = countKeywordHits(requestText, FORGE_KEYWORDS);
+  const runtimeSignal = countKeywordHits(requestText, RUNTIME_KEYWORDS);
   const transformationSignal = countKeywordHits(requestText, TRANSFORMATION_KEYWORDS);
   const runtimeSignal =
-    forgeSignal +
+    runtimeSignal +
     (request.source_type && RUNTIME_SOURCE_TYPES.has(request.source_type) ? 2 : 0);
   const structuralSignal =
     architectureSignal +
@@ -289,10 +289,10 @@ function deriveTrackScores(
     architecture:
       structuralSignal * 3 +
       (matchedGap?.next_slice_track === "architecture" ? 4 : 0),
-    forge:
+    runtime:
       runtimeSignal * 3 +
       transformationSignal * 2 +
-      (matchedGap?.next_slice_track === "forge" ? 4 : 0),
+      (matchedGap?.next_slice_track === "runtime" ? 4 : 0),
   };
 
   return {
@@ -432,7 +432,7 @@ export function assessDiscoveryMissionRouting(input: {
   );
   if (transformationSignal > 0) {
     rationale.push(
-      `Transformation signal is present (${transformationSignal}/5), which strengthens Forge-style behavior-preserving work.`,
+      `Transformation signal is present (${transformationSignal}/5), which strengthens Runtime-style behavior-preserving work.`,
     );
   }
   if (routeConflict && explicitRouteDestination) {

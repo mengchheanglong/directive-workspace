@@ -1,7 +1,7 @@
 # Accepted Implementation Bundle 34: Promptfoo Runtime Slice 01
 
 Date: 2026-03-21
-Track: Directive Discovery -> Directive Forge
+Track: Directive Discovery -> Directive Runtime
 Status: accepted
 Type: runtime proof bundle
 
@@ -13,7 +13,7 @@ Type: runtime proof bundle
 
 - execute one bounded Promptfoo-backed eval run through Mission Control
 - validate eval guard thresholds and regression stability
-- record Forge runtime proof, promotion contract, and registry state
+- record Runtime runtime proof, promotion contract, and registry state
 
 ## Boundary
 
@@ -23,7 +23,7 @@ Type: runtime proof bundle
 
 ## Result
 
-- Forge record created
+- Runtime record created
 - runtime proof captured
 - promotion approved for bounded eval lane
 - registry entry recorded

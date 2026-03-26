@@ -1,13 +1,13 @@
 import fs from "node:fs";
 
 import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
-import type { ForgeFollowUpRecordRequest } from "../../shared/lib/forge-follow-up-record-writer";
-import type { ForgeProofBundleRequest } from "../../shared/lib/forge-proof-bundle-writer";
-import type { ForgePromotionRecordRequest } from "../../shared/lib/forge-promotion-record-writer";
-import type { ForgeRegistryEntryRequest } from "../../shared/lib/forge-registry-entry-writer";
-import type { ForgeRecordRequest } from "../../shared/lib/forge-record-writer";
-import type { ForgeTransformationProofRequest } from "../../shared/lib/forge-transformation-proof-writer";
-import type { ForgeTransformationRecordRequest } from "../../shared/lib/forge-transformation-record-writer";
+import type { RuntimeFollowUpRecordRequest } from "../../shared/lib/runtime-follow-up-record-writer";
+import type { RuntimeProofBundleRequest } from "../../shared/lib/runtime-proof-bundle-writer";
+import type { RuntimePromotionRecordRequest } from "../../shared/lib/runtime-promotion-record-writer";
+import type { RuntimeRegistryEntryRequest } from "../../shared/lib/runtime-registry-entry-writer";
+import type { RuntimeRecordRequest } from "../../shared/lib/runtime-record-writer";
+import type { RuntimeTransformationProofRequest } from "../../shared/lib/runtime-transformation-proof-writer";
+import type { RuntimeTransformationRecordRequest } from "../../shared/lib/runtime-transformation-record-writer";
 import { bootstrapStandaloneHostWorkspace } from "./bootstrap";
 import {
   applyStandaloneHostConfigOverrides,
@@ -30,14 +30,14 @@ type CommandName =
   | "acceptance-quickstart"
   | "discovery-submit"
   | "discovery-overview"
-  | "forge-followup-write"
-  | "forge-record-write"
-  | "forge-proof-write"
-  | "forge-transformation-proof-write"
-  | "forge-transformation-record-write"
-  | "forge-promotion-write"
-  | "forge-registry-write"
-  | "forge-overview"
+  | "runtime-followup-write"
+  | "runtime-record-write"
+  | "runtime-proof-write"
+  | "runtime-transformation-proof-write"
+  | "runtime-transformation-record-write"
+  | "runtime-promotion-write"
+  | "runtime-registry-write"
+  | "runtime-overview"
   | "serve";
 
 type FlagMap = Record<string, string[]>;
@@ -50,14 +50,14 @@ Commands:
   acceptance-quickstart --output-root <path> [--host-name <name>] [--relative-output-path <path>] [--generated-at <iso>]
   discovery-submit (--directive-root <path> | --config <path>) --input-json-path <path> [--received-at <yyyy-mm-dd>] [--unresolved-gap-id <id> ...] [--persistence-sqlite-path <path>] [--dry-run] [--process-with-engine]
   discovery-overview (--directive-root <path> | --config <path>) [--max-entries <n>] [--received-at <yyyy-mm-dd>] [--persistence-sqlite-path <path>]
-  forge-followup-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-record-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-proof-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-transformation-proof-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-transformation-record-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-promotion-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-registry-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
-  forge-overview (--directive-root <path> | --config <path>) [--max-entries <n>] [--persistence-sqlite-path <path>]
+  runtime-followup-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-record-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-proof-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-transformation-proof-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-transformation-record-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-promotion-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-registry-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
+  runtime-overview (--directive-root <path> | --config <path>) [--max-entries <n>] [--persistence-sqlite-path <path>]
   serve (--directive-root <path> | --config <path>) [--host <host>] [--port <port>] [--received-at <yyyy-mm-dd>] [--unresolved-gap-id <id> ...] [--auth-bearer-token <token>] [--persistence-sqlite-path <path>]
 `);
 }
@@ -264,14 +264,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-followup-write") {
+  if (command === "runtime-followup-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgeFollowUpRecordRequest>(inputJsonPath);
-      const result = await host.writeForgeFollowUp(request);
+      const request = readJsonFile<RuntimeFollowUpRecordRequest>(inputJsonPath);
+      const result = await host.writeRuntimeFollowUp(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -279,14 +279,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-record-write") {
+  if (command === "runtime-record-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgeRecordRequest>(inputJsonPath);
-      const result = await host.writeForgeRecord(request);
+      const request = readJsonFile<RuntimeRecordRequest>(inputJsonPath);
+      const result = await host.writeRuntimeRecord(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -294,14 +294,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-promotion-write") {
+  if (command === "runtime-promotion-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgePromotionRecordRequest>(inputJsonPath);
-      const result = await host.writeForgePromotionRecord(request);
+      const request = readJsonFile<RuntimePromotionRecordRequest>(inputJsonPath);
+      const result = await host.writeRuntimePromotionRecord(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -309,14 +309,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-proof-write") {
+  if (command === "runtime-proof-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgeProofBundleRequest>(inputJsonPath);
-      const result = await host.writeForgeProofBundle(request);
+      const request = readJsonFile<RuntimeProofBundleRequest>(inputJsonPath);
+      const result = await host.writeRuntimeProofBundle(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -324,14 +324,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-transformation-proof-write") {
+  if (command === "runtime-transformation-proof-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgeTransformationProofRequest>(inputJsonPath);
-      const result = await host.writeForgeTransformationProof(request);
+      const request = readJsonFile<RuntimeTransformationProofRequest>(inputJsonPath);
+      const result = await host.writeRuntimeTransformationProof(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -339,14 +339,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-transformation-record-write") {
+  if (command === "runtime-transformation-record-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgeTransformationRecordRequest>(inputJsonPath);
-      const result = await host.writeForgeTransformationRecord(request);
+      const request = readJsonFile<RuntimeTransformationRecordRequest>(inputJsonPath);
+      const result = await host.writeRuntimeTransformationRecord(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -354,14 +354,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-registry-write") {
+  if (command === "runtime-registry-write") {
     const inputJsonPath = readRequiredFlag(flags, "input-json-path");
     const runtimeConfig = readOptionalRuntimeConfig(flags);
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<ForgeRegistryEntryRequest>(inputJsonPath);
-      const result = await host.writeForgeRegistryEntry(request);
+      const request = readJsonFile<RuntimeRegistryEntryRequest>(inputJsonPath);
+      const result = await host.writeRuntimeRegistryEntry(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
       host.close();
@@ -369,14 +369,14 @@ async function main() {
     return;
   }
 
-  if (command === "forge-overview") {
+  if (command === "runtime-overview") {
     const runtimeConfig = readOptionalRuntimeConfig(flags);
     const maxEntriesRaw = readOptionalFlag(flags, "max-entries");
     const maxEntries = maxEntriesRaw ? Number(maxEntriesRaw) : undefined;
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const overview = host.readForgeOverview(
+      const overview = host.readRuntimeOverview(
         Number.isFinite(maxEntries) ? maxEntries : undefined,
       );
       process.stdout.write(`${JSON.stringify({ ok: true, overview }, null, 2)}\n`);

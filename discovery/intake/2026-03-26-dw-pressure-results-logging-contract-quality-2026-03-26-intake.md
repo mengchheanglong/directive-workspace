@@ -1,0 +1,23 @@
+# Discovery Intake Record: Autoresearch Results Logging Protocol
+
+- Candidate id: dw-pressure-results-logging-contract-quality-2026-03-26
+- Candidate name: Autoresearch Results Logging Protocol
+- Intake date: 2026-03-26
+- Source type: workflow-writeup
+- Source reference: sources/intake/autoresearch/skills/autoresearch/references/results-logging.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Assess this structured results-logging protocol for Engine-owned contract, schema, and template value, especially explicit field discipline, enum discipline, reproducible record structure, and better Architecture closeout/result-evidence contracts without creating runtime logging automation.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 30fa43d7-ae65-45eb-b03b-f9f3453bc896 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-triage.md

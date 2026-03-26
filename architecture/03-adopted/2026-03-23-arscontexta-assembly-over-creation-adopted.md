@@ -8,7 +8,7 @@ Type: adopted source-driven improvement
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` — this mechanism is still valuable without a runtime surface because it improves how Architecture preserves and reuses adapted source value
+- Runtime threshold check: `yes` — this mechanism is still valuable without a runtime surface because it improves how Architecture preserves and reuses adapted source value
 
 ## Problem
 
@@ -53,7 +53,7 @@ The adapted form:
 
 Directive improved the source mechanism by:
 - tying packet quality to transformed Directive-owned assets
-- making packet contents explicit about Forge threshold and meta-usefulness
+- making packet contents explicit about Runtime threshold and meta-usefulness
 - adding a machine-readable schema for future validation
 - making packets serve Architecture self-improvement rather than general session capture
 

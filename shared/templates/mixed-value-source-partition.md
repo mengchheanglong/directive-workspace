@@ -17,10 +17,10 @@
 - Why they stay in Architecture:
 - Architecture artifact targets:
 
-## Forge candidate mechanisms
+## Runtime candidate mechanisms
 
 - Candidate mechanisms:
-- Why they are Forge candidates:
+- Why they are Runtime candidates:
 - Handoff candidates:
 
 ## Excluded baggage

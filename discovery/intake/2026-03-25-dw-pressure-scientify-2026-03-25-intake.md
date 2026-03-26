@@ -1,0 +1,23 @@
+# Discovery Intake Record: Scientify Runtime Generalization Run
+
+- Candidate id: dw-pressure-scientify-2026-03-25
+- Candidate name: Scientify Runtime Generalization Run
+- Intake date: 2026-03-25
+- Source type: github-repo
+- Source reference: https://github.com/user/scientify
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Runtime operationalization. Assess whether Scientify's plugin-style literature monitoring, scheduled research delivery, project-scoped research automation, and bounded MCP-backed workflow surfaces should become reusable runtime capability for Directive Workspace rather than Engine-core workflow logic.
+- Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 3f8cf48f-0fca-4623-a341-a6c7514eadd7 selected runtime. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-25-dw-pressure-scientify-2026-03-25-triage.md

@@ -20,6 +20,6 @@
   },
   "notes": [
     "Directive Workspace remains the product; the host is only accepted as a consumer of the canonical surface.",
-    "Passing acceptance does not authorize host-local redefinition of Discovery, Forge, or Architecture vocabulary."
+    "Passing acceptance does not authorize host-local redefinition of Discovery, Runtime, or Architecture vocabulary."
   ]
 }

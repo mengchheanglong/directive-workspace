@@ -1,0 +1,431 @@
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import {
+  readDirectiveArchitectureImplementationTargetDetail,
+} from "./architecture-implementation-target.ts";
+
+export type CreateDirectiveArchitectureImplementationResultInput = {
+  targetPath: string;
+  directiveRoot?: string;
+  completedBy?: string | null;
+  resultSummary: string;
+  outcome?: "success" | "failure";
+  deviations?: string | null;
+  evidence?: string | null;
+  validationResult?: string | null;
+  rollbackNote?: string | null;
+};
+
+export type DirectiveArchitectureImplementationResultCreateResult = {
+  ok: true;
+  created: boolean;
+  snapshotAt: string;
+  directiveRoot: string;
+  targetRelativePath: string;
+  targetAbsolutePath: string;
+  resultRelativePath: string;
+  resultAbsolutePath: string;
+  candidateId: string;
+  candidateName: string;
+  usefulnessLevel: string;
+  outcome: "success" | "failure";
+};
+
+export type DirectiveArchitectureImplementationResultDetail = {
+  directiveRoot: string;
+  resultRelativePath: string;
+  resultAbsolutePath: string;
+  targetRelativePath: string;
+  targetAbsolutePath: string;
+  adoptionRelativePath: string;
+  sourceResultRelativePath: string;
+  candidateId: string;
+  candidateName: string;
+  usefulnessLevel: string;
+  sourceDecisionFormat: string;
+  sourceCompletionStatus: string;
+  sourceVerificationMethod: string;
+  sourceVerificationResult: string;
+  sourceRuntimeThresholdCheck: string;
+  sourceAdoptionVerdict: string;
+  sourceReadinessPassed: boolean;
+  sourceFailedReadinessChecks: string[];
+  sourceRuntimeHandoffRequired: boolean;
+  sourceRuntimeHandoffRationale: string;
+  sourceArtifactPath: string;
+  sourcePrimaryEvidencePath: string;
+  sourceSelfImprovementCategory: string;
+  sourceSelfImprovementVerificationMethod: string;
+  sourceSelfImprovementVerificationResult: string;
+  objective: string;
+  selectedBoundedSlice: string[];
+  mechanicalSuccessCriteria: string[];
+  explicitLimitations: string[];
+  outcome: "success" | "failure";
+  resultSummary: string;
+  validationResult: string;
+  rollbackNote: string;
+  content: string;
+};
+
+function normalizePath(filePath: string) {
+  return path.resolve(filePath).replace(/\\/g, "/");
+}
+
+function getDefaultDirectiveWorkspaceRoot() {
+  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
+}
+
+function requiredString(value: string | null | undefined, fieldName: string) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    throw new Error(`invalid_input: ${fieldName} is required`);
+  }
+  return value.trim();
+}
+
+function optionalString(value: string | null | undefined) {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function normalizeRelativePath(inputPath: string) {
+  return requiredString(inputPath, "path").replace(/\\/g, "/");
+}
+
+function extractSectionBullets(content: string, heading: string) {
+  const escapedHeading = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = content.match(new RegExp(`## ${escapedHeading}\\r?\\n([\\s\\S]*?)(?=\\r?\\n## |$)`));
+  if (!match) {
+    return [] as string[];
+  }
+
+  return match[1]
+    .split(/\r?\n/)
+    .filter((line) => line.startsWith("- "))
+    .map((line) => line.replace(/^- /u, "").trim())
+    .filter((line) => line.length > 0);
+}
+
+function renderBulletList(items: string[], fallback: string) {
+  if (items.length === 0) {
+    return `- ${fallback}`;
+  }
+
+  return items.map((item) => `- ${item}`).join("\n");
+}
+
+function formatYesNo(value: boolean) {
+  return value ? "yes" : "no";
+}
+
+function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
+  const normalizedInput = normalizeRelativePath(inputPath);
+  const root = path.resolve(directiveRoot);
+  const absolutePath = path.isAbsolute(normalizedInput)
+    ? path.resolve(normalizedInput)
+    : path.resolve(root, normalizedInput);
+  const normalizedRootPrefix = `${root}${path.sep}`;
+
+  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
+    throw new Error("invalid_input: path must stay within directive-workspace");
+  }
+
+  return path.relative(root, absolutePath).replace(/\\/g, "/");
+}
+
+function resolveImplementationResultRelativePath(targetRelativePath: string) {
+  const fileName = path.posix.basename(targetRelativePath);
+  if (!fileName.endsWith("-implementation-target.md")) {
+    throw new Error("invalid_input: targetPath must point to an implementation target artifact");
+  }
+
+  return path.posix.join(
+    "architecture/05-implementation-results",
+    fileName.replace(/-implementation-target\.md$/u, "-implementation-result.md"),
+  );
+}
+
+export function readDirectiveArchitectureImplementationResultPathForTarget(input: {
+  directiveRoot: string;
+  targetRelativePath: string;
+}) {
+  const directiveRoot = normalizePath(input.directiveRoot);
+  const targetRelativePath = resolveDirectiveRelativePath(
+    directiveRoot,
+    input.targetRelativePath,
+  );
+  const resultRelativePath = resolveImplementationResultRelativePath(targetRelativePath);
+  const resultAbsolutePath = normalizePath(path.join(directiveRoot, resultRelativePath));
+
+  return fs.existsSync(resultAbsolutePath) ? resultRelativePath : null;
+}
+
+function renderImplementationResultMarkdown(input: {
+  snapshotAt: string;
+  completedBy: string;
+  targetRelativePath: string;
+  resultRelativePath: string;
+  adoptionRelativePath: string;
+  sourceResultRelativePath: string;
+  candidateId: string;
+  candidateName: string;
+  usefulnessLevel: string;
+  sourceDecisionFormat: string;
+  sourceCompletionStatus: string;
+  sourceVerificationMethod: string;
+  sourceVerificationResult: string;
+  sourceRuntimeThresholdCheck: string;
+  sourceAdoptionVerdict: string;
+  sourceReadinessPassed: boolean;
+  sourceFailedReadinessChecks: string[];
+  sourceRuntimeHandoffRequired: boolean;
+  sourceRuntimeHandoffRationale: string;
+  sourceArtifactPath: string;
+  sourcePrimaryEvidencePath: string;
+  sourceSelfImprovementCategory: string;
+  sourceSelfImprovementVerificationMethod: string;
+  sourceSelfImprovementVerificationResult: string;
+  objective: string;
+  selectedBoundedSlice: string[];
+  mechanicalSuccessCriteria: string[];
+  explicitLimitations: string[];
+  outcome: "success" | "failure";
+  resultSummary: string;
+  deviations: string | null;
+  evidence: string | null;
+  validationResult: string;
+  rollbackNote: string;
+}) {
+  const selectedBoundedSlice = renderBulletList(
+    input.selectedBoundedSlice,
+    "The completed work stayed within one bounded tactical slice.",
+  );
+  const mechanicalSuccessCriteria = renderBulletList(
+    input.mechanicalSuccessCriteria,
+    "The completed work records one explicit mechanical success criterion.",
+  );
+  const explicitLimitations = renderBulletList(
+    input.explicitLimitations,
+    "The completed work stays within the explicit Architecture boundary.",
+  );
+  const failedReadinessChecks = renderBulletList(
+    input.sourceFailedReadinessChecks,
+    "none",
+  );
+
+  return [
+    `# Implementation Result: ${input.candidateName} (${input.snapshotAt.slice(0, 10)})`,
+    "",
+    "## target closure",
+    `- Candidate id: \`${input.candidateId}\``,
+    `- Candidate name: ${input.candidateName}`,
+    `- Source implementation target: \`${input.targetRelativePath}\``,
+    `- Source adoption artifact: \`${input.adoptionRelativePath}\``,
+    ...(input.sourceResultRelativePath
+      ? [`- Source bounded result artifact: \`${input.sourceResultRelativePath}\``]
+      : ["- Source bounded result artifact: not retained in this legacy adopted slice."]),
+    `- Usefulness level: \`${input.usefulnessLevel}\``,
+    `- Completion approval: \`${input.completedBy}\``,
+    "",
+    "## objective",
+    `- Objective retained: ${input.objective}`,
+    "",
+    "## decision envelope continuity",
+    `- Source decision format retained: \`${input.sourceDecisionFormat}\``,
+    `- Source completion status retained: \`${input.sourceCompletionStatus}\``,
+    `- Source verification method retained: \`${input.sourceVerificationMethod}\``,
+    `- Source verification result retained: \`${input.sourceVerificationResult}\``,
+    `- Source runtime threshold check retained: ${input.sourceRuntimeThresholdCheck}`,
+    "",
+    "## adoption resolution continuity",
+    `- Source verdict retained: \`${input.sourceAdoptionVerdict}\``,
+    `- Source readiness passed retained: ${formatYesNo(input.sourceReadinessPassed)}`,
+    `- Source Runtime handoff required retained: ${formatYesNo(input.sourceRuntimeHandoffRequired)}`,
+    `- Source Runtime handoff rationale retained: ${input.sourceRuntimeHandoffRationale || "none recorded"}`,
+    `- Source artifact path retained: \`${input.sourceArtifactPath}\``,
+    `- Source primary evidence path retained: ${input.sourcePrimaryEvidencePath ? `\`${input.sourcePrimaryEvidencePath}\`` : "not recorded"}`,
+    `- Source self-improvement category retained: ${input.sourceSelfImprovementCategory ? `\`${input.sourceSelfImprovementCategory}\`` : "not recorded"}`,
+    `- Source self-improvement verification method retained: \`${input.sourceSelfImprovementVerificationMethod}\``,
+    `- Source self-improvement verification result retained: \`${input.sourceSelfImprovementVerificationResult}\``,
+    "",
+    "### failed readiness checks retained",
+    failedReadinessChecks,
+    "",
+    "## completed tactical slice",
+    selectedBoundedSlice,
+    "",
+    "## actual result summary",
+    `- ${input.resultSummary}`,
+    "",
+    "## mechanical success criteria check",
+    mechanicalSuccessCriteria,
+    `- Recorded validation result: ${input.validationResult}`,
+    "",
+    "## explicit limitations carried forward",
+    explicitLimitations,
+    "",
+    "## completion decision",
+    `- Outcome: \`${input.outcome}\``,
+    `- Validation result: ${input.validationResult}`,
+    "",
+    "## deviations",
+    input.deviations ? `- ${input.deviations}` : "- none recorded",
+    "",
+    "## evidence",
+    input.evidence ? `- ${input.evidence}` : "- evidence remains in the linked implementation target and upstream Architecture artifacts",
+    "",
+    "## rollback note",
+    `- ${input.rollbackNote}`,
+    "",
+    "## artifact linkage",
+    `- This bounded implementation slice is now retained at \`${input.resultRelativePath}\`.`,
+    `- If further work is needed, continue from \`${input.targetRelativePath}\` instead of reconstructing the adoption chain by hand.`,
+    "",
+  ].join("\n");
+}
+
+export function createDirectiveArchitectureImplementationResult(
+  input: CreateDirectiveArchitectureImplementationResultInput,
+): DirectiveArchitectureImplementationResultCreateResult {
+  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const targetRelativePath = resolveDirectiveRelativePath(directiveRoot, input.targetPath);
+  const targetDetail = readDirectiveArchitectureImplementationTargetDetail({
+    directiveRoot,
+    targetPath: targetRelativePath,
+  });
+  const resultRelativePath = resolveImplementationResultRelativePath(targetRelativePath);
+  const resultAbsolutePath = normalizePath(path.join(directiveRoot, resultRelativePath));
+  const created = !fs.existsSync(resultAbsolutePath);
+  const snapshotAt = new Date().toISOString();
+  const completedBy = String(input.completedBy || "directive-frontend-operator").trim()
+    || "directive-frontend-operator";
+  const resultSummary = requiredString(input.resultSummary, "resultSummary");
+  const outcome = input.outcome === "failure" ? "failure" : "success";
+  const validationResult = optionalString(input.validationResult)
+    || (outcome === "success"
+      ? "The bounded implementation target was completed within scope and remained aligned with the adopted artifact and its retained decision envelope."
+      : "The bounded implementation target did not complete successfully and should stay at implementation-result status for review.");
+  const rollbackNote = optionalString(input.rollbackNote)
+    || "Return to the implementation target artifact and adjust the bounded slice before attempting another completion.";
+
+  const markdown = renderImplementationResultMarkdown({
+    snapshotAt,
+    completedBy,
+    targetRelativePath,
+    resultRelativePath,
+    adoptionRelativePath: targetDetail.adoptionRelativePath,
+    sourceResultRelativePath: targetDetail.sourceResultRelativePath,
+    candidateId: targetDetail.candidateId,
+    candidateName: targetDetail.candidateName,
+    usefulnessLevel: targetDetail.usefulnessLevel,
+    sourceDecisionFormat: targetDetail.sourceDecisionFormat,
+    sourceCompletionStatus: targetDetail.sourceCompletionStatus,
+    sourceVerificationMethod: targetDetail.sourceVerificationMethod,
+    sourceVerificationResult: targetDetail.sourceVerificationResult,
+    sourceRuntimeThresholdCheck: targetDetail.sourceRuntimeThresholdCheck,
+    sourceAdoptionVerdict: targetDetail.sourceAdoptionVerdict,
+    sourceReadinessPassed: targetDetail.sourceReadinessPassed,
+    sourceFailedReadinessChecks: targetDetail.sourceFailedReadinessChecks,
+    sourceRuntimeHandoffRequired: targetDetail.sourceRuntimeHandoffRequired,
+    sourceRuntimeHandoffRationale: targetDetail.sourceRuntimeHandoffRationale,
+    sourceArtifactPath: targetDetail.sourceArtifactPath,
+    sourcePrimaryEvidencePath: targetDetail.sourcePrimaryEvidencePath,
+    sourceSelfImprovementCategory: targetDetail.sourceSelfImprovementCategory,
+    sourceSelfImprovementVerificationMethod: targetDetail.sourceSelfImprovementVerificationMethod,
+    sourceSelfImprovementVerificationResult: targetDetail.sourceSelfImprovementVerificationResult,
+    objective: targetDetail.objective,
+    selectedBoundedSlice: targetDetail.selectedBoundedSlice,
+    mechanicalSuccessCriteria: targetDetail.mechanicalSuccessCriteria,
+    explicitLimitations: targetDetail.explicitLimitations,
+    outcome,
+    resultSummary,
+    deviations: optionalString(input.deviations),
+    evidence: optionalString(input.evidence),
+    validationResult,
+    rollbackNote,
+  });
+
+  fs.mkdirSync(path.dirname(resultAbsolutePath), { recursive: true });
+  fs.writeFileSync(resultAbsolutePath, markdown, "utf8");
+
+  return {
+    ok: true,
+    created,
+    snapshotAt,
+    directiveRoot,
+    targetRelativePath,
+    targetAbsolutePath: targetDetail.targetAbsolutePath,
+    resultRelativePath,
+    resultAbsolutePath,
+    candidateId: targetDetail.candidateId,
+    candidateName: targetDetail.candidateName,
+    usefulnessLevel: targetDetail.usefulnessLevel,
+    outcome,
+  };
+}
+
+export function readDirectiveArchitectureImplementationResultDetail(input: {
+  resultPath: string;
+  directiveRoot?: string;
+}): DirectiveArchitectureImplementationResultDetail {
+  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const resultRelativePath = resolveDirectiveRelativePath(directiveRoot, input.resultPath);
+  if (!resultRelativePath.startsWith("architecture/05-implementation-results/")) {
+    throw new Error("invalid_input: resultPath must point to architecture/05-implementation-results/");
+  }
+
+  const resultAbsolutePath = normalizePath(path.join(directiveRoot, resultRelativePath));
+  if (!fs.existsSync(resultAbsolutePath)) {
+    throw new Error(`invalid_input: resultPath not found: ${resultRelativePath}`);
+  }
+
+  const content = fs.readFileSync(resultAbsolutePath, "utf8");
+  const targetRelativePath = content.match(/- Source implementation target: `([^`]+)`/)?.[1] || "";
+  const targetDetail = readDirectiveArchitectureImplementationTargetDetail({
+    directiveRoot,
+    targetPath: targetRelativePath,
+  });
+
+  return {
+    directiveRoot,
+    resultRelativePath,
+    resultAbsolutePath,
+    targetRelativePath,
+    targetAbsolutePath: targetDetail.targetAbsolutePath,
+    adoptionRelativePath: targetDetail.adoptionRelativePath,
+    sourceResultRelativePath: targetDetail.sourceResultRelativePath,
+    candidateId: targetDetail.candidateId,
+    candidateName: targetDetail.candidateName,
+    usefulnessLevel: targetDetail.usefulnessLevel,
+    sourceDecisionFormat: content.match(/- Source decision format retained: `([^`]+)`/)?.[1] || "",
+    sourceCompletionStatus: content.match(/- Source completion status retained: `([^`]+)`/)?.[1] || "",
+    sourceVerificationMethod: content.match(/- Source verification method retained: `([^`]+)`/)?.[1] || "",
+    sourceVerificationResult: content.match(/- Source verification result retained: `([^`]+)`/)?.[1] || "",
+    sourceRuntimeThresholdCheck: content.match(/- Source runtime threshold check retained: (.+)$/m)?.[1]?.trim() || "",
+    sourceAdoptionVerdict: content.match(/- Source verdict retained: `([^`]+)`/)?.[1] || "",
+    sourceReadinessPassed: (content.match(/- Source readiness passed retained: (.+)$/m)?.[1]?.trim() || "") === "yes",
+    sourceFailedReadinessChecks: extractSectionBullets(content, "failed readiness checks retained"),
+    sourceRuntimeHandoffRequired: (content.match(/- Source Runtime handoff required retained: (.+)$/m)?.[1]?.trim() || "") === "yes",
+    sourceRuntimeHandoffRationale: content.match(/- Source Runtime handoff rationale retained: (.+)$/m)?.[1]?.trim() || "",
+    sourceArtifactPath: content.match(/- Source artifact path retained: `([^`]+)`/)?.[1] || "",
+    sourcePrimaryEvidencePath: content.match(/- Source primary evidence path retained: `([^`]+)`/)?.[1] || "",
+    sourceSelfImprovementCategory: content.match(/- Source self-improvement category retained: `([^`]+)`/)?.[1] || "",
+    sourceSelfImprovementVerificationMethod: content.match(/- Source self-improvement verification method retained: `([^`]+)`/)?.[1] || "",
+    sourceSelfImprovementVerificationResult: content.match(/- Source self-improvement verification result retained: `([^`]+)`/)?.[1] || "",
+    objective: content.match(/- Objective retained: (.+)$/m)?.[1]?.trim() || "",
+    selectedBoundedSlice: extractSectionBullets(content, "completed tactical slice"),
+    mechanicalSuccessCriteria: extractSectionBullets(content, "mechanical success criteria check")
+      .filter((line) => !line.startsWith("Recorded validation result:")),
+    explicitLimitations: extractSectionBullets(content, "explicit limitations carried forward"),
+    outcome: (content.match(/- Outcome: `([^`]+)`/)?.[1] || "success") as "success" | "failure",
+    resultSummary: content.match(/^## actual result summary\r?\n- (.+)$/m)?.[1]?.trim() || "",
+    validationResult: content.match(/- Validation result: (.+)$/m)?.[1]?.trim() || "",
+    rollbackNote: content.match(/^## rollback note\r?\n- (.+)$/m)?.[1]?.trim() || "",
+    content,
+  };
+}

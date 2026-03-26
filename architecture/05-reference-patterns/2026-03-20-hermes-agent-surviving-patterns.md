@@ -40,4 +40,4 @@ Type: reference pattern extraction
 
 ## Follow-up
 
-Only bounded utilities or contracts should survive into Forge.
+Only bounded utilities or contracts should survive into Runtime.

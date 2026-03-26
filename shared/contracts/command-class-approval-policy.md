@@ -1,7 +1,7 @@
 # Command Class Approval Policy
 
 Purpose:
-- map command classes to explicit approval outcomes before any Forge command-mediation experiment may reopen
+- map command classes to explicit approval outcomes before any Runtime command-mediation experiment may reopen
 
 Canonical policy id:
 - `command_class_approval_policy/v1`
@@ -17,7 +17,7 @@ Policy table:
 | Command class | Current approval state | Reason |
 |---|---|---|
 | `read_only_workspace_inspect` | `manual_approval_required` | Only class narrow enough for a future bounded rollback/no-op experiment |
-| `destructive_or_state_mutating` | `hard_deny` | Too much blast radius for current Forge stage |
+| `destructive_or_state_mutating` | `hard_deny` | Too much blast radius for current Runtime stage |
 | `network_or_external_side_effect` | `hard_deny` | Unsafe expansion beyond bounded host scope |
 | `privilege_or_security_sensitive` | `hard_deny` | Explicitly out of scope until a separate security review exists |
 
@@ -25,7 +25,7 @@ Rules:
 1. No class is pre-approved right now.
 2. `read_only_workspace_inspect` is the only class eligible for a future bounded experiment, and it still requires manual approval plus rollback/no-op evidence.
 3. Any undefined class must resolve to `hard_deny`.
-4. Approval policy changes require a new Forge decision slice, not an inline edit during runtime work.
+4. Approval policy changes require a new Runtime decision slice, not an inline edit during runtime work.
 
 Current re-entry meaning:
 - command-mediation contract exists

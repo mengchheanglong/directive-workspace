@@ -6,8 +6,8 @@ Source slice: `2026-03-21-orchestration-allowlist-contract-closure-slice-20.md`
 
 Materialized outputs:
 - `shared/contracts/source-pack-curation-allowlist.md`
-- `shared/templates/forge-follow-up-record.md`
-- `forge/source-packs/README.md`
+- `shared/templates/runtime-follow-up-record.md`
+- `runtime/source-packs/README.md`
 
 Retained mechanisms:
 - explicit curation/export allowlist
@@ -17,7 +17,7 @@ Retained mechanisms:
 
 Directive adaptation rule:
 - keep source-pack promotion bounded to declared export surfaces
-- keep governance-first value in shared contracts and notes instead of inflating Forge runtime scope
+- keep governance-first value in shared contracts and notes instead of inflating Runtime runtime scope
 - require explicit ownership and rollback before any source-pack activation
 - do not treat upstream folder mirrors as live runtime truth
 
@@ -28,4 +28,4 @@ Validation hooks:
 
 Completion note:
 - this closes the Wave 04 allowlist-boundary gap for the current slice
-- remaining future work, if any, would be Forge consumption of this rule, not Architecture extraction
+- remaining future work, if any, would be Runtime consumption of this rule, not Architecture extraction

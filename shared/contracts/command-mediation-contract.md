@@ -2,7 +2,7 @@
 
 Purpose:
 - define the minimum product-owned mediation boundary required before any bounded callable CLI execution experiment
-- prevent broad wrapper generation or direct command passthrough from becoming Forge runtime truth
+- prevent broad wrapper generation or direct command passthrough from becoming Runtime runtime truth
 
 Canonical contract id:
 - `command_mediation_contract/v1`
@@ -11,7 +11,7 @@ Current candidate:
 - `al-parked-cli-anything`
 
 Scope:
-- applies only to deferred or experimental Forge lanes that mediate external command execution
+- applies only to deferred or experimental Runtime lanes that mediate external command execution
 - does not authorize runtime execution by itself
 
 Required command classes:

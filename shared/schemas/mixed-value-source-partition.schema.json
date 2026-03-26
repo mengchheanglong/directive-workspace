@@ -12,11 +12,11 @@
     "packet_coverage_scope",
     "source_reanalysis_required",
     "architecture_retained_mechanisms",
-    "forge_candidate_mechanisms",
+    "runtime_candidate_mechanisms",
     "excluded_baggage",
     "split_rationale",
     "architecture_artifact_targets",
-    "forge_handoff_candidates",
+    "runtime_handoff_candidates",
     "defer_or_revisit_conditions"
   ],
   "properties": {
@@ -28,11 +28,11 @@
     "packet_coverage_scope": { "type": "array", "items": { "type": "string" } },
     "source_reanalysis_required": { "type": "array", "items": { "type": "string" } },
     "architecture_retained_mechanisms": { "type": "array", "items": { "type": "string" } },
-    "forge_candidate_mechanisms": { "type": "array", "items": { "type": "string" } },
+    "runtime_candidate_mechanisms": { "type": "array", "items": { "type": "string" } },
     "excluded_baggage": { "type": "array", "items": { "type": "string" } },
     "split_rationale": { "type": "string" },
     "architecture_artifact_targets": { "type": "array", "items": { "type": "string" } },
-    "forge_handoff_candidates": { "type": "array", "items": { "type": "string" } },
+    "runtime_handoff_candidates": { "type": "array", "items": { "type": "string" } },
     "defer_or_revisit_conditions": { "type": "array", "items": { "type": "string" } }
   }
 }

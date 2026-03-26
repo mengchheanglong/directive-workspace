@@ -21,7 +21,7 @@ Status:
 
 Objective:
 - create `discovery/` as the real front door
-- create track-owned `forge/`, `architecture/`, `hosts/`, and `shared/` surfaces
+- create track-owned `runtime/`, `architecture/`, `hosts/`, and `shared/` surfaces
 - establish shared contracts and templates
 
 Status:
@@ -56,16 +56,16 @@ Completed in this slice:
 ## Slice 5
 
 Objective:
-- decide whether host-agnostic Forge core logic should begin moving out of Mission Control
+- decide whether host-agnostic Runtime core logic should begin moving out of Mission Control
 - keep host-specific runtime code in Mission Control unless there is a concrete multi-host need
 
 Status:
 - complete
 
 Completed in this slice:
-- canonical Forge core modules now live under `directive-workspace/forge/core`
-- Mission Control keeps host-local mirrors for the current Forge core modules
-- `npm run check:directive-forge-sync` enforces mirror alignment
+- canonical Runtime core modules now live under `directive-workspace/runtime/core`
+- Mission Control keeps host-local mirrors for the current Runtime core modules
+- `npm run check:directive-runtime-sync` enforces mirror alignment
 - host-specific runtime code remains in Mission Control
 
 ## Current State
@@ -75,16 +75,16 @@ Migration status:
 - standalone product ownership is complete
 - Mission Control is operating as the first host
 - Architecture content has been moved into the standalone root
-- Forge core extraction is complete at the current safe boundary
+- Runtime core extraction is complete at the current safe boundary
 
 Remaining work is polish, not migration:
 - reduce the last small set of Turbopack broad-pattern warnings in Mission Control
-- keep Discovery/Forge/Architecture workflow hardening moving forward
-- revisit full Forge runtime extraction only if there is a real multi-host need
+- keep Discovery/Runtime/Architecture workflow hardening moving forward
+- revisit full Runtime runtime extraction only if there is a real multi-host need
 
 ## Rules
 
 - `agent-lab` stays untouched in this migration
 - Discovery is the front door for all new intake from this point forward
-- Forge belongs to Directive Workspace as a product track
-- Mission Control remains the current Forge runtime host
+- Runtime belongs to Directive Workspace as a product track
+- Mission Control remains the current Runtime runtime host

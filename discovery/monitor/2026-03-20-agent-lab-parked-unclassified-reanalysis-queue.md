@@ -45,11 +45,11 @@ Post-queue implementation bundle:
 - status: executed (`check:directive-v0` PASS, `check:ops-stack` PASS)
 
 Post-queue trigger contracts:
-- Forge re-entry contract: `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-cli-anything-reentry-contract.md`
+- Runtime re-entry contract: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-cli-anything-reentry-contract.md`
 - Discovery monitor trigger matrix: `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\monitor\2026-03-20-plane-monitor-trigger-matrix.md`
 
 Concrete records from trigger contracts:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-cli-anything-forge-follow-up-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-cli-anything-runtime-follow-up-record.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\monitor\2026-03-20-plane-monitor-record.md`
 - execution log:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-02.md`
@@ -58,38 +58,38 @@ Post-queue enforcement hardening:
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-directive-holding-contracts.ts`
 - execution log:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-03-holding-gate.md`
-- Forge planning gate:
-  - `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-directive-forge-records.ts`
+- Runtime planning gate:
+  - `C:\Users\User\.openclaw\workspace\mission-control\scripts\check-directive-runtime-records.ts`
   - execution log:
-    - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-04-forge-record-gate.md`
+    - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-04-runtime-record-gate.md`
   - promotion backlog coverage:
-    - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-forge-promotion-backlog.md`
+    - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-runtime-promotion-backlog.md`
     - execution log:
-      - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-05-forge-promotion-backlog.md`
+      - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-05-runtime-promotion-backlog.md`
 
 First promotion closure:
 - candidate: `autoresearch`
 - promotion record:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-autoresearch-promotion-record.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-autoresearch-promotion-record.md`
 - registry entry:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\registry\2026-03-20-autoresearch-registry-entry.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\registry\2026-03-20-autoresearch-registry-entry.md`
 - execution log:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-06-autoresearch-promotion.md`
 
 Second promotion closure:
 - candidate: `agentics`
 - promotion record:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-agentics-promotion-record.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-agentics-promotion-record.md`
 - registry entry:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\registry\2026-03-20-agentics-registry-entry.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\registry\2026-03-20-agentics-registry-entry.md`
 - execution log:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-07-agentics-promotion.md`
 
 Third promotion closure:
 - candidate: `mini-swe-agent`
 - promotion record:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-mini-swe-agent-promotion-record.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-mini-swe-agent-promotion-record.md`
 - registry entry:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\registry\2026-03-20-mini-swe-agent-registry-entry.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\registry\2026-03-20-mini-swe-agent-registry-entry.md`
 - execution log:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-20-accepted-implementation-bundle-08-mini-swe-agent-promotion.md`

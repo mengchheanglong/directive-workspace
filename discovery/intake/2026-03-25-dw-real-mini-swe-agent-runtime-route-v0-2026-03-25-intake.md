@@ -1,0 +1,23 @@
+# Discovery Intake Record: mini-swe-agent Runtime Route Proof
+
+- Candidate id: dw-real-mini-swe-agent-runtime-route-v0-2026-03-25
+- Candidate name: mini-swe-agent Runtime Route Proof
+- Intake date: 2026-03-25
+- Source type: github-repo
+- Source reference: https://github.com/SWE-agent/mini-swe-agent
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.
+- Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.
+- Suspected adoption target: reusable runtime transformation capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 6b3acde0-58a2-4405-b111-e3547aa87f5d selected runtime. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-triage.md

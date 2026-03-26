@@ -20,7 +20,7 @@ export function runDiscoveryOverviewStarterSmoke() {
           source_reference: "host://signals/completed",
           received_at: "2026-03-21",
           status: "completed",
-          routing_target: "forge",
+          routing_target: "runtime",
           mission_alignment: "Completed path example.",
           capability_gap_id: "gap-example",
           assigned_worker: null,
@@ -28,7 +28,7 @@ export function runDiscoveryOverviewStarterSmoke() {
           routing_record_path: "discovery/routing-log/2026-03-22-completed.md",
           routed_at: "2026-03-21",
           completed_at: "2026-03-22",
-          result_record_path: "forge/records/2026-03-22-completed.md",
+          result_record_path: "runtime/records/2026-03-22-completed.md",
           notes: "Completed entry.",
         },
         {
@@ -68,8 +68,8 @@ export function runDiscoveryOverviewStarterSmoke() {
     "overview must count pending entries",
   );
   assertCondition(
-    overview.routingCounts.forge === 1,
-    "overview must count routed forge entries",
+    overview.routingCounts.runtime === 1,
+    "overview must count routed runtime entries",
   );
   assertCondition(
     overview.routingCounts.unrouted === 1,

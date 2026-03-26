@@ -19,10 +19,10 @@ Runtime operationalization — maintainability and consistency of Mission Contro
 
 ## Routing decision
 
-- Target: Forge (behavior-preserving transformation)
+- Target: Runtime (behavior-preserving transformation)
 - Reason: Value is runtime code consolidation with measurable improvement, not operating-code extraction
 
 ## Outcome
 
 - Status: completed
-- Forge record: forge/records/2026-03-22-backend-test-boilerplate-transformation-record.md
+- Runtime record: runtime/records/2026-03-22-backend-test-boilerplate-transformation-record.md

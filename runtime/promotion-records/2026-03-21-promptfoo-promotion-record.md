@@ -1,0 +1,39 @@
+# Promptfoo Promotion Record
+
+- Candidate id: promptfoo
+- Candidate name: promptfoo
+- Promotion date: 2026-03-21
+- Linked Runtime record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-promptfoo-runtime-record.md`
+- Target host: Mission Control
+- Target runtime surface: bounded agent eval harness / promotion guard lane
+- Integration mode: adapt
+- Source intent artifact: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-promptfoo-runtime-followup.md`
+- Compile contract artifact: `C:\Users\User\.openclaw\workspace\mission-control\evals\promptfoo.agent-evals.yaml`
+- Runtime permissions profile: host-local eval execution with artifact writeback under `reports/evals/`
+- Safe output scope: `C:\Users\User\.openclaw\workspace\mission-control\reports\evals\`
+- Sanitize policy: eval outputs are JSON/markdown artifacts only; no source rewrite or downstream dispatch side effect is allowed by this slice
+- Proposed runtime status: callable (bounded-eval-lane)
+- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-promptfoo-runtime-slice-01-proof.md`
+- Quality gate profile: agent_eval_guard/v1
+- Promotion profile family: bounded_agent_eval
+- Proof shape: agent_eval_guard_snapshot/v1
+- Primary host checker: `npm run check:directive-promptfoo-runtime`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: self_validated
+- Quality gate fail reasons: none
+- Required gates:
+  - `npm run eval:agents`
+  - `npm run check:agent-evals`
+  - `npm run check:agent-eval-regression`
+  - `npm run check:directive-promptfoo-runtime`
+  - `npm run check:ops-stack`
+- Validation result: all required gates PASS on 2026-03-21
+- Rollback plan: remove promptfoo-specific Runtime artifacts and checker wiring if eval harness no longer meets bounded guard expectations.
+- Owner: operator
+- Promotion decision: approved for bounded callable eval follow-up

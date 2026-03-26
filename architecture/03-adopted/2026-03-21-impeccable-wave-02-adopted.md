@@ -46,7 +46,7 @@ Added by corpus normalization program. This record predates the source-adaptatio
 - Usefulness level: **`meta`** — the extracted review guardrails and anti-pattern scan directly improve Architecture's own evaluation quality
 - Meta-usefulness category: `evaluation_quality`
 - Status class: `product_materialized` — shared contract + shared template + reference pattern + host check
-- Forge threshold check: yes — review guardrails are valuable without a runtime surface
+- Runtime threshold check: yes — review guardrails are valuable without a runtime surface
 
 ### Self-improvement evidence (retroactive identification)
 

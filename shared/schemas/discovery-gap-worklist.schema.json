@@ -79,7 +79,7 @@
           },
           "next_slice_track": {
             "type": "string",
-            "enum": ["discovery", "architecture", "forge"]
+            "enum": ["discovery", "architecture", "runtime"]
           },
           "latest_candidate_id": { "type": ["string", "null"] },
           "latest_candidate_status": {

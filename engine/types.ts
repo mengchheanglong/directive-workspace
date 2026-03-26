@@ -164,7 +164,7 @@ export type DirectiveEngineProofPlan = {
 export type DirectiveEngineDecisionState =
   | "hold_in_discovery"
   | "accept_for_architecture"
-  | "route_to_forge_follow_up"
+  | "route_to_runtime_follow_up"
   | "needs_human_review";
 
 export type DirectiveEngineDecision = {

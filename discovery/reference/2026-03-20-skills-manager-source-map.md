@@ -24,9 +24,9 @@ Type: source reference
 
 ## Routing Guidance
 
-- skill-root policy -> `Directive Forge`
+- skill-root policy -> `Directive Runtime`
 - migration/conflict warnings -> `Directive Discovery`
-- inventory/update workflow -> `Directive Forge`
+- inventory/update workflow -> `Directive Runtime`
 
 ## Not To Preserve
 

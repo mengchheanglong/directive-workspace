@@ -1,17 +1,17 @@
 # Accepted Implementation Bundle 49: Agent-Orchestrator CLI Precondition Proof
 
 Date: 2026-03-21
-Decision state: `route_to_forge_follow_up`
-Adoption target: `Directive Forge follow-up`
+Decision state: `route_to_runtime_follow_up`
+Adoption target: `Directive Runtime follow-up`
 Status: accepted
 
 ## Included Artifact
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-21-agent-orchestrator-cli-precondition-proof.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-agent-orchestrator-cli-precondition-proof.md`
 
 ## Result
 
-The Forge-owned `agent-orchestrator` copy proved the missing CLI precondition:
+The Runtime-owned `agent-orchestrator` copy proved the missing CLI precondition:
 - local workspace install succeeds
 - required local packages build
 - `packages/cli/dist/index.js` is producible

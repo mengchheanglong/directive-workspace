@@ -31,4 +31,4 @@ Execute the third Wave 02 Architecture slice for `al-parked-impeccable`.
 
 ## Boundary
 
-This bundle does not authorize upstream skill-pack adoption, Forge runtime follow-up, or host UI redesign.
+This bundle does not authorize upstream skill-pack adoption, Runtime runtime follow-up, or host UI redesign.

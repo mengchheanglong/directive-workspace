@@ -46,5 +46,5 @@ Baseline policy:
 ## Adoption Boundary
 
 - This is an Architecture-owned contract pattern.
-- Forge applies it in promotion/proof artifacts.
+- Runtime applies it in promotion/proof artifacts.
 - Host checks enforce compliance (`check:directive-promotion-quality-contracts`).

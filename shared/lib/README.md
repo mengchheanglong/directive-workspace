@@ -4,7 +4,7 @@
 
 Use this folder for reusable product logic that:
 - belongs to Directive Workspace rather than a specific host
-- is shared across Discovery, Forge, or Architecture outputs
+- is shared across Discovery, Runtime, or Architecture outputs
 - should not be redefined by Mission Control
 
 Current canonical shared helpers:
@@ -23,13 +23,13 @@ Current canonical shared helpers:
 - `discovery-fast-path-record-writer.ts`
 - `discovery-submission-router.ts`
 - `discovery-mission-routing.ts`
-- `forge-follow-up-record-writer.ts`
-- `forge-record-writer.ts`
-- `forge-proof-bundle-writer.ts`
-- `forge-transformation-proof-writer.ts`
-- `forge-transformation-record-writer.ts`
-- `forge-promotion-record-writer.ts`
-- `forge-registry-entry-writer.ts`
+- `runtime-follow-up-record-writer.ts`
+- `runtime-record-writer.ts`
+- `runtime-proof-bundle-writer.ts`
+- `runtime-transformation-proof-writer.ts`
+- `runtime-transformation-record-writer.ts`
+- `runtime-promotion-record-writer.ts`
+- `runtime-registry-entry-writer.ts`
 - `literature-monitoring-artifacts.ts`
 - `lifecycle-review-feedback.ts`
 - `architecture-review-resolution.ts`
@@ -56,7 +56,7 @@ Mechanism-packet note:
 - no canonical shared-lib helper is required yet because the immediate need is preserving adapted Architecture value, not runtime packet tooling
 
 Literature-monitoring note:
-- the first bounded Forge literature-monitoring slice now has a canonical shared-lib helper for normal digest and degraded-state artifacts
+- the first bounded Runtime literature-monitoring slice now has a canonical shared-lib helper for normal digest and degraded-state artifacts
 - this helper remains host-neutral and product-owned until a later host promotion actually opens
 
 Lifecycle-review-feedback note:
@@ -69,7 +69,7 @@ Architecture-review-resolution note:
 
 Architecture-adoption-resolution note:
 - this helper turns the Architecture adoption criteria into an executable Decide-step lane
-- it consumes `architecture-review-resolution.ts` when available, combines review outcome with adoption-readiness and Forge-threshold logic, and resolves adopt vs stay-experimental vs Forge handoff
+- it consumes `architecture-review-resolution.ts` when available, combines review outcome with adoption-readiness and Runtime-threshold logic, and resolves adopt vs stay-experimental vs Runtime handoff
 
 Architecture-adoption-artifacts note:
 - this helper materializes the canonical `architecture-adoption-decision.schema.json` shape from the executable adoption lane
@@ -101,7 +101,7 @@ Architecture-cycle-decision-loader note:
 - it exists so cycle evaluation can consume real on-disk closeout output without maintaining separate manual lists of `*-adoption-decision.json` files
 
 Architecture-cycle-decision-summary note:
-- this helper consumes machine-readable Architecture adoption artifacts to summarize verdict, usefulness, artifact-type, completion-status, Forge-handoff, and meta-self-improvement composition
+- this helper consumes machine-readable Architecture adoption artifacts to summarize verdict, usefulness, artifact-type, completion-status, Runtime-handoff, and meta-self-improvement composition
 - it exists so cycle evaluation can use generated decision artifacts instead of re-deriving those counts from prose adopted records
 
 Discovery-front-door-coverage note:

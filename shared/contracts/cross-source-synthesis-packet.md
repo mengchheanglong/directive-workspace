@@ -22,7 +22,7 @@ Use this contract when:
 
 Do not use when:
 - the slice is effectively single-source
-- the output is a runtime/callable behavior that belongs in Forge
+- the output is a runtime/callable behavior that belongs in Runtime
 
 ## Core rule
 

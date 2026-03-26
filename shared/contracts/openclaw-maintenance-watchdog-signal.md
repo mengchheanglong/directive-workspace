@@ -53,7 +53,7 @@ Required payload characteristics:
 ## Boundaries
 
 - This helper only submits into Discovery
-- This helper does not route directly to Forge or Architecture
+- This helper does not route directly to Runtime or Architecture
 - This helper does not mutate existing Discovery records
 - This helper does not fabricate a candidate when the runtime state is healthy
 

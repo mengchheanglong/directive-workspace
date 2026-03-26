@@ -41,7 +41,7 @@ Materialize the adapted mechanism as engine-owned product logic before any host-
 
 - Origin: `source-driven`
 - Usefulness level: `meta`
-- Forge threshold check: Would this mechanism still be valuable without a runtime surface? `yes`
+- Runtime threshold check: Would this mechanism still be valuable without a runtime surface? `yes`
 
 ## Rollback
 

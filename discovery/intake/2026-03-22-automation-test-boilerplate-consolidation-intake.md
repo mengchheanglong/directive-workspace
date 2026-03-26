@@ -14,15 +14,15 @@
 ## Triage
 
 - Value type: behavior-preserving transformation
-- Adoption target: Forge
+- Adoption target: Runtime
 - Mission alignment: Runtime operationalization — maintainability and reliability of the automation verification surface
 - Addresses known capability gap: gap-discovery-front-door-coverage (native Discovery entry)
 - Compaction reason: n/a
 
 ## Routing
 
-- Decision state: route_to_forge_follow_up
-- Adoption target: Directive Forge
+- Decision state: route_to_runtime_follow_up
+- Adoption target: Directive Runtime
 - Route date: 2026-03-22
 
 ## Evidence

@@ -7,10 +7,10 @@ Batch: `bundle-03`
 ## Executed Candidates
 
 ### `al-parked-cli-anything`
-- Route target: `Directive Forge`
+- Route target: `Directive Runtime`
 - Result: `defer` (with explicit re-entry conditions)
 - Artifact:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\forge\follow-up\2026-03-20-cli-anything-reanalysis-bundle-03.md`
+  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-cli-anything-reanalysis-bundle-03.md`
 
 ### `al-unclassified-plane`
 - Route target: `Directive Discovery` (+ Architecture boundary reference)

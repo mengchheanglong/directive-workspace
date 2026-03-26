@@ -1,0 +1,24 @@
+# Discovery Triage Record: Agentics Issue Triage Workflow
+
+- Candidate id: dw-mission-agentics-issue-triage-discovery-restart-2026-03-26
+- Candidate name: Agentics Issue Triage Workflow
+- Triage date: 2026-03-26
+- First-pass summary: After the closed Architecture ratchet batch, Directive Workspace needs a real next source through Discovery. This issue-triage workflow could improve Discovery intake filtering, backlog prioritization, spam/off-topic rejection, and evidence-backed routing discipline without opening GitHub execution, Runtime execution, or host integration.
+- Problem it appears to solve: Make source selection and routing clearer and more reusable than the original source context.
+- Extractable value hypothesis: After the closed Architecture ratchet batch, Directive Workspace needs a real next source through Discovery. This issue-triage workflow could improve Discovery intake filtering, backlog prioritization, spam/off-topic rejection, and evidence-backed routing discipline without opening GitHub execution, Runtime execution, or host integration. | Focus on Discovery front-door value first: triage heuristics, issue classification, context gathering, duplicate detection, and explicit bounded operator notes. Out of scope: GitHub execution, label mutation, issue comments, or reusable Runtime workflow packaging in this step.
+- Routing recommendation: Shared Engine routing selected monitor with usefulness level meta.
+- Proposed adoption target: discovery-held candidate
+- Stack-shape summary: workflow-writeup source; host dependence engine_only; integration mode none.
+- Boilerplate vs product boundary: Directive-owned form: Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.. Excluded baggage: non-mission-relevant source detail, unadapted source terminology.
+- Suggested decision state: hold_in_discovery
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan discovery_review defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: routing_review, human_decision_required
+- Missing evidence: mission-fit rationale recorded, routing rationale recorded, next bounded action chosen
+- Monitor/Defer trigger conditions: Hold the source in Discovery until routing confidence or downstream adoption target becomes clearer.
+- Re-entry conditions: Respect rollback boundary: Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work.
+- Next action: Keep the candidate in Discovery until routing clarity improves.
+- Linked intake record: discovery/intake/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-intake.md

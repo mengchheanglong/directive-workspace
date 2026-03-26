@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes`
+- Runtime threshold check: `yes`
 - Decision: `adopted`
 - Status: `product_materialized`
 
@@ -31,7 +31,7 @@ The bounded retained Architecture corpus is now reproducible through code for th
 3. `architecture-adoption-resolution-lib`
 4. `architecture-adoption-artifacts-lib`
 5. `architecture-cycle-decision-summary-lib`
-6. `scientify-literature-monitoring-forge-handoff`
+6. `scientify-literature-monitoring-runtime-handoff`
 
 ## Why this improves the system
 

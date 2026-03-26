@@ -29,7 +29,7 @@ The correct hierarchy is:
   - the whole product
 - **Engine**
   - the shared core adaptation machinery inside Directive Workspace
-- **Discovery / Forge / Architecture**
+- **Discovery / Runtime / Architecture**
   - the three main operating lanes of the Engine
 
 Do not treat the lanes as separate peer products.
@@ -37,7 +37,7 @@ Do not collapse Engine into Architecture.
 
 The loop is decomposed into three Engine lanes separated by adoption target, not by source type:
 - **Discovery**: mission-aware intake queue, routing, and capability-gap detection
-- **Forge**: bounded runtime operationalization and behavior-preserving transformation
+- **Runtime**: bounded runtime operationalization and behavior-preserving transformation
 - **Architecture**: reusable internal operating logic (org-as-code) and engine self-improvement
 
 ## Engine-First Correction
@@ -70,7 +70,7 @@ This means:
   - intakes sources, interprets mission context, defines usefulness for the active objective, detects capability gaps, routes by adoption target, preserves deferred/rejected work, and maintains revisit loops
   - does not perform deep integration by default
 
-- `Directive Forge`
+- `Directive Runtime`
   - bounded runtime operationalization and behavior-preserving transformation lane
   - turns accepted patterns into bounded, measurable, callable, runtime-capable autonomous loops
   - owns follow-up records, execution records, promotion contracts, registry state, and host integration
@@ -80,13 +80,13 @@ This means:
   - reusable operating-code layer (program-MD / org-as-code)
   - extracts essential mechanisms from outside systems, strips implementation baggage, converts value into product-owned contracts, schemas, templates, policies, and reusable rules
   - improves doctrine over time and produces agent-readable internal assets
-  - hands off runtime-worthy work to Forge instead of leaking runtime work into Architecture
+  - hands off runtime-worthy work to Runtime instead of leaking runtime work into Architecture
   - should strengthen the engine itself, not become a substitute for executable engine behavior
   - is the lane closest to the current mission because the current mission is to improve the Engine itself
 
 - `Mission Control`
   - active runtime host and unified command surface
-  - currently hosts Forge runtime behavior but does not own Forge as a product concept
+  - currently hosts Runtime runtime behavior but does not own Runtime as a product concept
   - owns runtime reliability gates and production behavior
   - is a current host integration, not the canonical definition of Directive Workspace
   - should consume the engine through host adapters rather than define the engine by composition
@@ -147,7 +147,7 @@ External source handling:
 - Maintains revisit loops for monitor/defer items.
 - Does not own deep integration by default.
 
-### Forge boundary
+### Runtime boundary
 - Owns bounded runtime operationalization and behavior-preserving transformation.
 - Owns follow-up -> execution record -> promotion record -> registry lifecycle.
 - Owns promotion contract, runtime proof, and evaluator clarity.
@@ -157,7 +157,7 @@ External source handling:
 ### Architecture boundary
 - Owns reusable internal operating logic: contracts, schemas, templates, policies, rules, and doctrine.
 - Extracts essential mechanisms from outside systems and converts them into product-owned assets.
-- Hands off runtime-worthy work to Forge instead of leaking runtime into Architecture.
+- Hands off runtime-worthy work to Runtime instead of leaking runtime into Architecture.
 - Architecture completion is measured by product-owned Directive Workspace materialization, not by Mission Control host implementation alone.
 - Canonical completion reference: `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\architecture-completion-rubric.md`
 
@@ -197,14 +197,14 @@ Operator-facing labels:
 - source catalog for candidate repositories and capability references
 - not production runtime
 - temporary upstream extraction source while Directive Workspace absorbs any surviving value
-- slated for retirement after useful components are re-homed under Discovery, Forge, or Architecture
+- slated for retirement after useful components are re-homed under Discovery, Runtime, or Architecture
 
 ### `directive-workspace/architecture`
 - product-owned Architecture surface for experiments, adopted patterns, and deferred decisions
 - legacy redirect path remains at `C:\Users\User\.openclaw\workspace\architecture-lab`
 
-### `directive-workspace/forge`
-- product-owned Forge surface for follow-up records, execution records, promotion contracts, registry state, and host-agnostic core logic
+### `directive-workspace/runtime`
+- product-owned Runtime surface for follow-up records, execution records, promotion contracts, registry state, and host-agnostic core logic
 - Mission Control remains the current runtime host
 
 ### `directive-workspace/discovery`
@@ -232,7 +232,7 @@ Operator-facing labels:
 
 ## Practical Routing Rule
 
-- If primary value is callable/runtime capability or behavior-preserving transformation, route to Forge.
+- If primary value is callable/runtime capability or behavior-preserving transformation, route to Runtime.
 - If primary value is reusable internal operating logic (contracts, schemas, policies, workflow rules, doctrine), route to Architecture.
 - If useful but not yet actionable, keep in Discovery as defer/monitor/reference.
 
@@ -243,8 +243,8 @@ Prefer work that strengthens:
 - Discovery as the enforced front door with mission-aware routing
 - mission-conditioned usefulness logic and capability-gap detection
 - Architecture as operating code (org-as-code), not passive documentation
-- Forge as bounded runtime operationalization
-- Forge as behavior-preserving transformation engine
+- Runtime as bounded runtime operationalization
+- Runtime as behavior-preserving transformation engine
 - verifier lanes, evaluator contracts, and proof discipline
 - Mission Control as unified runtime host
 - OpenClaw as persistent orchestration layer

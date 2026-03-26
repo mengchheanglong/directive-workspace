@@ -32,7 +32,7 @@
   - future packet-based Architecture slices on non-arscontexta source families
 - Product-owned artifacts created:
   - `architecture/02-experiments/2026-03-23-paper2code-gpt-researcher-cross-source-synthesis-packet.md`
-- Forge threshold check: `yes` (still valuable without runtime -> Architecture)
+- Runtime threshold check: `yes` (still valuable without runtime -> Architecture)
 
 ## Self-improvement
 

@@ -10,16 +10,16 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - preserves the same workspace-readiness behavior while reducing the size of a high-leverage host evaluator
 - makes it easier to evolve collaboration/readiness signals without keeping signal collection, check construction, and score summarization inline in one function
-- strengthens the doctrine that Forge should handle behavior-preserving transformations on mission-relevant host surfaces, not only new runtime adoption
+- strengthens the doctrine that Runtime should handle behavior-preserving transformations on mission-relevant host surfaces, not only new runtime adoption
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving maintainability transformation on a mission-relevant runtime-host surface`
 
 ## Bounded Claim
@@ -38,4 +38,4 @@ Extract recent-report detection, required-context-file verification, readiness-d
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-22-workspace-readiness-check-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-22-workspace-readiness-check-transformation-record.md`

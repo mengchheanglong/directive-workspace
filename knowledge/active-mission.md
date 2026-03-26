@@ -21,7 +21,7 @@ Useful means anything that materially improves:
 
 1. Directive engine materialization - one reusable executable core that hosts can embed cleanly
    Architecture is currently the closest lane to this objective because the current mission is to improve the Engine itself.
-2. Runtime operationalization (Forge) - converting proven patterns into callable, bounded, measurable runtime behavior
+2. Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior
 3. Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions
 4. Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement
 5. Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)
@@ -31,8 +31,8 @@ Useful means anything that materially improves:
 ## Known Capability Gaps (Open)
 
 - gap: Canonical Directive engine surface only partially materialized
-  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Forge / Architecture logic centered inside the Engine
-  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Forge / Architecture operate as clear Engine lanes rather than loose top-level features
+  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Runtime / Architecture logic centered inside the Engine
+  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Runtime / Architecture operate as clear Engine lanes rather than loose top-level features
 
 ## Recently Resolved Gaps
 
@@ -42,7 +42,7 @@ Useful means anything that materially improves:
 - gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22
   resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.
 
-- gap: Architecture-to-Forge handoff - RESOLVED 2026-03-22
+- gap: Architecture-to-Runtime handoff - RESOLVED 2026-03-22
   resolution: Formal handoff record created for autoresearch bounded-run pattern. All contract fields exercised.
 
 - gap: Evaluator lane dimensional proof - RESOLVED 2026-03-22
@@ -52,4 +52,4 @@ Useful means anything that materially improves:
   resolution: 5 native primary-mode queue entries achieved (threshold: 5+). 14 total entries (5 native, 9 backfill). Three behavior-preserving transformation candidates processed end-to-end through native queue.
 
 - gap: agent-lab legacy dependency - RESOLVED 2026-03-22
-  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Forge-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state.
+  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Runtime-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state.

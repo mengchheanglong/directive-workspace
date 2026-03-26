@@ -19,7 +19,7 @@ export type DirectiveArchitectureCloseoutRecordState = "experiment" | "adopted";
 export type DirectiveArchitectureCloseoutState =
   | "stay_experimental"
   | "adopted"
-  | "forge_handoff";
+  | "runtime_handoff";
 
 export type DirectiveArchitectureCloseoutWriteRequest =
   Omit<
@@ -60,7 +60,10 @@ export function resolveDirectiveArchitectureCloseoutRecordState(
     throw new Error("recordRelativePath must end with .md");
   }
 
-  if (normalizedRelativePath.startsWith("architecture/02-experiments/")) {
+  if (
+    normalizedRelativePath.startsWith("architecture/02-experiments/")
+    || normalizedRelativePath.startsWith("architecture/01-bounded-starts/")
+  ) {
     return "experiment";
   }
   if (normalizedRelativePath.startsWith("architecture/03-adopted/")) {
@@ -68,7 +71,7 @@ export function resolveDirectiveArchitectureCloseoutRecordState(
   }
 
   throw new Error(
-    "recordRelativePath must point to architecture/02-experiments/ or architecture/03-adopted/",
+    "recordRelativePath must point to architecture/02-experiments/, architecture/01-bounded-starts/, or architecture/03-adopted/",
   );
 }
 
@@ -100,8 +103,8 @@ function resolveDirectiveArchitectureCloseoutState(
   if (verdict === "adopt") {
     return "adopted";
   }
-  if (verdict === "hand_off_to_forge") {
-    return "forge_handoff";
+  if (verdict === "hand_off_to_runtime") {
+    return "runtime_handoff";
   }
   return "stay_experimental";
 }
@@ -112,13 +115,17 @@ function assertDirectiveArchitectureCloseoutStateMatchesRecord(input: {
 }) {
   if (input.closeoutState === "stay_experimental" && input.recordState !== "experiment") {
     throw new Error(
-      "stay-experimental Architecture closeout must target a record under architecture/02-experiments/",
+      "stay-experimental Architecture closeout must target an experiment record under architecture/02-experiments/ or architecture/01-bounded-starts/",
     );
   }
 
-  if (input.closeoutState !== "stay_experimental" && input.recordState !== "adopted") {
+  if (input.closeoutState === "adopted") {
+    return;
+  }
+
+  if (input.closeoutState === "runtime_handoff" && input.recordState !== "adopted") {
     throw new Error(
-      "adopted or Forge-handoff Architecture closeout must target a record under architecture/03-adopted/",
+      "Runtime-handoff Architecture closeout must target a record under architecture/03-adopted/",
     );
   }
 }

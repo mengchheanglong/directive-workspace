@@ -1,0 +1,23 @@
+# Discovery Intake Record: Autoresearch Autonomous Loop Protocol
+
+- Candidate id: dw-pressure-autoresearch-loop-protocol-2026-03-26
+- Candidate name: Autoresearch Autonomous Loop Protocol
+- Intake date: 2026-03-26
+- Source type: workflow-writeup
+- Source reference: sources/intake/autoresearch/skills/autoresearch/references/autonomous-loop-protocol.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Assess this bounded autonomous iteration protocol for structural Engine value, especially explicit precondition, verification, rollback, decision, and results-logging boundaries that could improve Directive Workspace Architecture rather than become reusable runtime capability.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 48c91642-8130-40ca-9538-c4c125450dff selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-triage.md

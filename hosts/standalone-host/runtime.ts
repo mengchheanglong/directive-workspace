@@ -1,9 +1,16 @@
 import path from "node:path";
 
 import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
+import { submitDirectiveDiscoveryFrontDoor } from "../../shared/lib/discovery-front-door.ts";
+import { openDirectiveDiscoveryRoute } from "../../shared/lib/discovery-route-opener.ts";
+import { openDirectiveRuntimeFollowUp } from "../../shared/lib/runtime-follow-up-opener.ts";
+import { openDirectiveRuntimeRecordProof } from "../../shared/lib/runtime-record-proof-opener.ts";
+import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
+import { openDirectiveRuntimePromotionReadiness } from "../../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
 import {
   DirectiveEngine,
   createDirectiveWorkspaceEngineLanes,
+  normalizeDirectiveEngineSourceTypeInput,
   type DirectiveEngineMissionInput,
   type DirectiveEngineRunRecord,
   type DirectiveEngineSourceItem,
@@ -23,13 +30,13 @@ import {
   submitDiscoveryEntryWithHostBridge,
 } from "../integration-kit/starter/discovery-submission-adapter.template.ts";
 import { createStandaloneHostPersistenceLedger } from "./persistence.ts";
-import type { ForgeFollowUpRecordRequest } from "../../shared/lib/forge-follow-up-record-writer.ts";
-import type { ForgeProofBundleRequest } from "../../shared/lib/forge-proof-bundle-writer.ts";
-import type { ForgePromotionRecordRequest } from "../../shared/lib/forge-promotion-record-writer.ts";
-import type { ForgeRegistryEntryRequest } from "../../shared/lib/forge-registry-entry-writer.ts";
-import type { ForgeRecordRequest } from "../../shared/lib/forge-record-writer.ts";
-import type { ForgeTransformationProofRequest } from "../../shared/lib/forge-transformation-proof-writer.ts";
-import type { ForgeTransformationRecordRequest } from "../../shared/lib/forge-transformation-record-writer.ts";
+import type { RuntimeFollowUpRecordRequest } from "../../shared/lib/runtime-follow-up-record-writer.ts";
+import type { RuntimeProofBundleRequest } from "../../shared/lib/runtime-proof-bundle-writer.ts";
+import type { RuntimePromotionRecordRequest } from "../../shared/lib/runtime-promotion-record-writer.ts";
+import type { RuntimeRegistryEntryRequest } from "../../shared/lib/runtime-registry-entry-writer.ts";
+import type { RuntimeRecordRequest } from "../../shared/lib/runtime-record-writer.ts";
+import type { RuntimeTransformationProofRequest } from "../../shared/lib/runtime-transformation-proof-writer.ts";
+import type { RuntimeTransformationRecordRequest } from "../../shared/lib/runtime-transformation-record-writer.ts";
 
 type JsonValue = Record<string, unknown>;
 
@@ -79,6 +86,9 @@ function normalizeStandaloneHostReceivedAt(value: string | undefined) {
 function buildDirectiveEngineSourceFromDiscoverySubmission(
   request: DiscoverySubmissionRequest,
 ): DirectiveEngineSourceItem {
+  const sourceTypeNormalization = normalizeDirectiveEngineSourceTypeInput(
+    request.source_type ?? "internal-signal",
+  );
   const notes = [
     typeof request.notes === "string" ? request.notes : null,
     request.record_shape ? `record_shape:${request.record_shape}` : null,
@@ -89,7 +99,7 @@ function buildDirectiveEngineSourceFromDiscoverySubmission(
 
   return {
     sourceId: request.candidate_id,
-    sourceType: request.source_type ?? "internal-signal",
+    sourceType: sourceTypeNormalization.canonicalSourceType,
     sourceRef: request.source_reference,
     title: request.candidate_name,
     summary,
@@ -111,12 +121,12 @@ function buildDirectiveEngineMissionFromDiscoverySubmission(
     currentObjective,
     usefulnessSignals: [
       "mission-relevant usefulness",
-      "safe routing through Discovery, Forge, or Architecture",
+      "safe routing through Discovery, Runtime, or Architecture",
     ],
     capabilityLanes: [
       "Discovery lane intake and routing",
       "Architecture lane engine self-improvement",
-      "Forge lane runtime usefulness conversion",
+      "Runtime lane runtime usefulness conversion",
     ],
   };
 }
@@ -193,8 +203,8 @@ function renderStandaloneHostEngineRunReport(input: {
   ].join("\n");
 }
 
-async function loadStandaloneForgeModule() {
-  return import("./forge.ts");
+async function loadStandaloneRuntimeLaneModule() {
+  return import("./runtime-lane.ts");
 }
 
 async function loadStandaloneAcceptanceModule() {
@@ -244,6 +254,76 @@ export function createStandaloneFilesystemHost(
         request,
         storage,
         dryRun,
+      });
+    },
+    async submitDiscoveryFrontDoor(
+      request: DiscoverySubmissionRequest,
+    ) {
+      return submitDirectiveDiscoveryFrontDoor({
+        directiveRoot: harness.directiveRoot,
+        request,
+        runtimeArtifactsRoot,
+        receivedAt: options.receivedAt ?? harness.bridge.receivedAt,
+      });
+    },
+    async openDiscoveryRoute(input: {
+      routingPath: string;
+      approved?: boolean;
+      approvedBy?: string | null;
+    }) {
+      return openDirectiveDiscoveryRoute({
+        directiveRoot: harness.directiveRoot,
+        routingPath: input.routingPath,
+        approved: input.approved,
+        approvedBy: input.approvedBy,
+      });
+    },
+    async openRuntimeFollowUp(input: {
+      followUpPath: string;
+      approved?: boolean;
+      approvedBy?: string | null;
+    }) {
+      return openDirectiveRuntimeFollowUp({
+        directiveRoot: harness.directiveRoot,
+        followUpPath: input.followUpPath,
+        approved: input.approved,
+        approvedBy: input.approvedBy,
+      });
+    },
+    async openRuntimeRecordProof(input: {
+      runtimeRecordPath: string;
+      approved?: boolean;
+      approvedBy?: string | null;
+    }) {
+      return openDirectiveRuntimeRecordProof({
+        directiveRoot: harness.directiveRoot,
+        runtimeRecordPath: input.runtimeRecordPath,
+        approved: input.approved,
+        approvedBy: input.approvedBy,
+      });
+    },
+    async openRuntimeProofRuntimeCapabilityBoundary(input: {
+      runtimeProofPath: string;
+      approved?: boolean;
+      approvedBy?: string | null;
+    }) {
+      return openDirectiveRuntimeProofRuntimeCapabilityBoundary({
+        directiveRoot: harness.directiveRoot,
+        runtimeProofPath: input.runtimeProofPath,
+        approved: input.approved,
+        approvedBy: input.approvedBy,
+      });
+    },
+    async openRuntimePromotionReadiness(input: {
+      capabilityBoundaryPath: string;
+      approved?: boolean;
+      approvedBy?: string | null;
+    }) {
+      return openDirectiveRuntimePromotionReadiness({
+        directiveRoot: harness.directiveRoot,
+        capabilityBoundaryPath: input.capabilityBoundaryPath,
+        approved: input.approved,
+        approvedBy: input.approvedBy,
       });
     },
     async submitDiscoveryEntryWithEngine(
@@ -322,58 +402,66 @@ export function createStandaloneFilesystemHost(
         maxEntries,
       });
     },
-    async writeForgeFollowUp(request: ForgeFollowUpRecordRequest) {
-      const { writeStandaloneForgeFollowUp } = await loadStandaloneForgeModule();
-      return writeStandaloneForgeFollowUp({
+    async writeRuntimeFollowUp(request: RuntimeFollowUpRecordRequest) {
+      const { writeStandaloneRuntimeFollowUp } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimeFollowUp({
         storage,
         request,
       });
     },
-    async writeForgeRecord(request: ForgeRecordRequest) {
-      const { writeStandaloneForgeRecord } = await loadStandaloneForgeModule();
-      return writeStandaloneForgeRecord({
+    async writeRuntimeRecord(request: RuntimeRecordRequest) {
+      const { writeStandaloneRuntimeRecord } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimeRecord({
         storage,
         request,
       });
     },
-    async writeForgeProofBundle(request: ForgeProofBundleRequest) {
-      const { writeStandaloneForgeProofBundle } = await loadStandaloneForgeModule();
-      return writeStandaloneForgeProofBundle({
+    async writeRuntimeProofBundle(request: RuntimeProofBundleRequest) {
+      const { writeStandaloneRuntimeProofBundle } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimeProofBundle({
         storage,
         request,
       });
     },
-    async writeForgeTransformationProof(request: ForgeTransformationProofRequest) {
-      const { writeStandaloneForgeTransformationProof } = await loadStandaloneForgeModule();
-      return writeStandaloneForgeTransformationProof({
+    async writeRuntimeTransformationProof(request: RuntimeTransformationProofRequest) {
+      const { writeStandaloneRuntimeTransformationProof } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimeTransformationProof({
         storage,
         request,
       });
     },
-    async writeForgeTransformationRecord(request: ForgeTransformationRecordRequest) {
-      const { writeStandaloneForgeTransformationRecord } = await loadStandaloneForgeModule();
-      return writeStandaloneForgeTransformationRecord({
+    async writeRuntimeTransformationRecord(request: RuntimeTransformationRecordRequest) {
+      const { writeStandaloneRuntimeTransformationRecord } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimeTransformationRecord({
         storage,
         request,
       });
     },
-    async writeForgePromotionRecord(request: ForgePromotionRecordRequest) {
-      const { writeStandaloneForgePromotionRecord } = await loadStandaloneForgeModule();
-      return writeStandaloneForgePromotionRecord({
+    async writeRuntimePromotionRecord(request: RuntimePromotionRecordRequest) {
+      const { writeStandaloneRuntimePromotionRecord } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimePromotionRecord({
         storage,
         request,
       });
     },
-    async writeForgeRegistryEntry(request: ForgeRegistryEntryRequest) {
-      const { writeStandaloneForgeRegistryEntry } = await loadStandaloneForgeModule();
-      return writeStandaloneForgeRegistryEntry({
+    async writeRuntimeRegistryEntry(request: RuntimeRegistryEntryRequest) {
+      const { writeStandaloneRuntimeRegistryEntry } =
+        await loadStandaloneRuntimeLaneModule();
+      return writeStandaloneRuntimeRegistryEntry({
         storage,
         request,
       });
     },
-    async readForgeOverview(maxEntries?: number) {
-      const { readStandaloneForgeOverview } = await loadStandaloneForgeModule();
-      return readStandaloneForgeOverview({
+    async readRuntimeOverview(maxEntries?: number) {
+      const { readStandaloneRuntimeOverview } =
+        await loadStandaloneRuntimeLaneModule();
+      return readStandaloneRuntimeOverview({
         directiveRoot: harness.directiveRoot,
         maxEntries,
       });

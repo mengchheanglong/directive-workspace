@@ -16,7 +16,7 @@ Before substantive work in this folder:
 
 Directive Workspace is the product.
 Engine is the shared adaptation core inside it.
-Discovery, Forge, and Architecture are the three main operating lanes of the Engine.
+Discovery, Runtime, and Architecture are the three main operating lanes of the Engine.
 
 Do not treat those lanes as loose peer products.
 Do not collapse Engine into Architecture.
@@ -26,8 +26,8 @@ Do not collapse Engine into Architecture.
 Always prioritize:
 - Engine as the shared adaptation core
 - Discovery as goal-aware intake, filtering, and routing
-- Forge as reusable runtime usefulness conversion
-- Forge as behavior-preserving transformation
+- Runtime as reusable runtime usefulness conversion
+- Runtime as behavior-preserving transformation
 - Architecture as Engine self-improvement / operating code
 - mission-conditioned usefulness
 - proof, decision, integration, and reporting discipline
@@ -45,7 +45,7 @@ Prefer work that makes Directive Workspace more real as an operating system for 
 
 Avoid:
 - reducing the product to repo intake only
-- reducing Forge to tool adoption only
+- reducing Runtime to tool adoption only
 - reducing Architecture to passive notes
 - dropping Decide or Report from the workflow
 - broad speculative framework expansion without workflow pressure

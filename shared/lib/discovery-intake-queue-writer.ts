@@ -16,7 +16,7 @@ export type DiscoveryQueueStatus =
   | "held";
 
 export type DiscoveryRoutingTarget =
-  | "forge"
+  | "runtime"
   | "architecture"
   | "monitor"
   | "defer"

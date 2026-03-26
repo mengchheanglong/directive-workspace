@@ -11,7 +11,7 @@ Handoff mode: batch routing for paper/theory inputs
 - Adoption target: `Directive Architecture`
 - Route destination: `architecture/05-reference-patterns/`
 - Why this route: stage-contract pipeline patterns improve lifecycle handoff contracts.
-- Why not alternatives: Forge runtime route would overfit a theory input into callable surface prematurely.
+- Why not alternatives: Runtime runtime route would overfit a theory input into callable surface prematurely.
 - Handoff contract used: `discovery-to-architecture`
 - Receiving track owner: Directive Architecture
 - Required next artifact:
@@ -19,10 +19,10 @@ Handoff mode: batch routing for paper/theory inputs
 
 ### `dw-src-karpathy-autoresearch`
 - Decision state: `accept-for-architecture`
-- Adoption target: `Directive Architecture` (+ optional Forge policy references)
+- Adoption target: `Directive Architecture` (+ optional Runtime policy references)
 - Route destination: `architecture/05-reference-patterns/`
 - Why this route: formal loop constraints belong in Architecture doctrine and contract language.
-- Why not alternatives: direct Forge-only treatment would skip shared contract hardening.
+- Why not alternatives: direct Runtime-only treatment would skip shared contract hardening.
 - Handoff contract used: `discovery-to-architecture`
 - Receiving track owner: Directive Architecture
 - Required next artifact:
@@ -33,7 +33,7 @@ Handoff mode: batch routing for paper/theory inputs
 - Adoption target: `Directive Architecture`
 - Route destination: `architecture/05-reference-patterns/`
 - Why this route: retrieval/evidence/citation patterns are architecture-quality concerns.
-- Why not alternatives: Forge runtime route is unnecessary until a callable research surface is explicitly requested.
+- Why not alternatives: Runtime runtime route is unnecessary until a callable research surface is explicitly requested.
 - Handoff contract used: `discovery-to-architecture`
 - Receiving track owner: Directive Architecture
 - Required next artifact:

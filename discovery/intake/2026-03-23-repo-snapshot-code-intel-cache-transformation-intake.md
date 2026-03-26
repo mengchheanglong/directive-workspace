@@ -10,7 +10,7 @@
 
 ## Usefulness Judgment
 
-This is a valid Forge transformation candidate.
+This is a valid Runtime transformation candidate.
 
 Useful value:
 - removes repeated code-intelligence reconstruction from repo snapshot rebuilds after the outer repo snapshot cache is cleared
@@ -19,7 +19,7 @@ Useful value:
 
 ## Routing Decision
 
-- Primary adoption target: `Directive Forge`
+- Primary adoption target: `Directive Runtime`
 - Route reason: `behavior-preserving runtime-latency transformation on a mission-relevant host service`
 
 ## Bounded Claim
@@ -41,4 +41,4 @@ Bounded tradeoff:
 
 ## Result Link
 
-- Forge record: `forge/records/2026-03-23-repo-snapshot-code-intel-cache-transformation-record.md`
+- Runtime record: `runtime/records/2026-03-23-repo-snapshot-code-intel-cache-transformation-record.md`

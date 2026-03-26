@@ -1,0 +1,23 @@
+# Discovery Intake Record: Genetic Mutation Paradigm Pressure Run
+
+- Candidate id: dw-pressure-genetic-mutation-2026-03-25
+- Candidate name: Genetic Mutation Paradigm Pressure Run
+- Intake date: 2026-03-25
+- Source type: paper
+- Source reference: sources/intake/source-genetic-mutation-paradigm.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Assess whether the mutation-evaluation-selection loop is primarily Engine workflow structure for experiment optimization or should stay as source context until stronger adoption evidence exists for the current mission.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run b24977a3-af13-4620-9f2b-e2cc8acc7c7b selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-triage.md

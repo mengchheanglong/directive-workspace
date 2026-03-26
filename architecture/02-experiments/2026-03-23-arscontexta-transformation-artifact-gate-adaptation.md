@@ -51,8 +51,8 @@
   - `shared/templates/experiment-record.md`
   - `knowledge/architecture-completion-rubric.md`
   - `shared/templates/architecture-cycle-evaluation.md`
-- Forge handoff required: `no`
-- Forge handoff ref:
+- Runtime handoff required: `no`
+- Runtime handoff ref:
 
 ## Meta-usefulness check
 

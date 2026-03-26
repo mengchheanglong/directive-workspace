@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes`
+- Runtime threshold check: `yes`
 - Decision: `adopted`
 - Status: `product_materialized`
 
@@ -33,7 +33,7 @@ Bound the artifact lane to an executable checker:
 The new helper:
 1. composes `architecture-adoption-resolution.ts`
 2. emits the canonical `architecture-adoption-decision.schema.json` shape
-3. records stay-experimental reasons, Forge handoff details, and meta self-improvement evidence in one generated object
+3. records stay-experimental reasons, Runtime handoff details, and meta self-improvement evidence in one generated object
 4. keeps the Decide step host-neutral and machine-readable
 
 ## Why this improves the system

@@ -28,13 +28,13 @@ Rules:
 - the routing assessment is advisory unless a human explicitly accepts or edits the route
 - explicit operator route choices should be preserved as input, but conflicts with the computed route must be surfaced
 - mission-conditioned routing must use the active mission plus unresolved capability gaps, not source type alone
-- Forge and Architecture remain separated by adoption target, not by source type
+- Runtime and Architecture remain separated by adoption target, not by source type
 - `recommended_record_shape` is allowed to stay conservative (`queue_only`) when routing clarity is still weak
 
 Track guidance:
 - recommend `discovery` when the candidate is mainly front-door behavior, intake discipline, queue/routing hygiene, or review enforcement
 - recommend `architecture` when the candidate is mainly structural usefulness, operating logic, schemas, policies, workflow improvements, or adaptation quality
-- recommend `forge` when the candidate is mainly runtime usefulness, callable capability, importable operations, or behavior-preserving transformation
+- recommend `runtime` when the candidate is mainly runtime usefulness, callable capability, importable operations, or behavior-preserving transformation
 
 Host boundary:
 - Directive Workspace owns the routing assessment logic

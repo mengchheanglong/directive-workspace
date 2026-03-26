@@ -23,7 +23,7 @@ Use this contract when:
 
 Do not use when:
 - the slice only matters as one-time local reasoning with no expected reuse
-- the output is purely Forge runtime behavior rather than Architecture operating code
+- the output is purely Runtime runtime behavior rather than Architecture operating code
 
 ## Core rule
 
@@ -47,7 +47,7 @@ It is the reusable condensed artifact that those records produce.
 - `improved_form`
 - `reuse_targets`
 - `artifact_refs`
-- `forge_threshold_check`
+- `runtime_threshold_check`
 - `meta_usefulness`
 - `meta_usefulness_category`
 

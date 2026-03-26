@@ -12,7 +12,7 @@ Materialize Paper2Code Slice 2 by enforcing deterministic typed fallback parsing
 
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\structured-output-fallback.md` (new)
 - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns\2026-03-20-structured-output-fallback-parser-policy.md` (new)
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\README.md` (canonical reference list updated)
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\README.md` (canonical reference list updated)
 
 ## Mission Control Changes
 

@@ -1,25 +1,25 @@
 # Accepted Implementation Bundle 06 (Autoresearch Promotion)
 
 Date: 2026-03-20
-Owner: Directive Forge
+Owner: Directive Runtime
 Status: executed
 
 ## Bundle Intent
 
-Close the first Forge runtime slice end-to-end for `autoresearch`:
+Close the first Runtime runtime slice end-to-end for `autoresearch`:
 - bounded runtime methodology execution proof
 - promotion record
 - registry entry
 
 ## Produced Artifacts
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-20-autoresearch-runtime-slice-01-proof.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-autoresearch-promotion-record.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\registry\2026-03-20-autoresearch-registry-entry.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-20-autoresearch-runtime-slice-01-proof.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-autoresearch-promotion-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\registry\2026-03-20-autoresearch-registry-entry.md`
 
 Updated artifacts:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\records\2026-03-19-autoresearch-forge-record.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\promotion-records\2026-03-20-forge-promotion-backlog.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-19-autoresearch-runtime-record.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-runtime-promotion-backlog.md`
 
 ## Validation
 

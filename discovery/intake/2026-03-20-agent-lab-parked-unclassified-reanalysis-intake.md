@@ -17,7 +17,7 @@ Reason: operator-requested re-analysis pass for parked/unclassified candidates b
 - Why it entered the system: re-check post-cutover extraction value under current Directive direction
 - Claimed value: bounded autonomous loop and operational discipline
 - Initial relevance to the workspace: high (cross-track utility)
-- Suspected adoption target: `Directive Forge` + `Directive Architecture`
+- Suspected adoption target: `Directive Runtime` + `Directive Architecture`
 
 ### 2) al-parked-celtrix
 - Candidate id: `al-parked-celtrix`
@@ -43,7 +43,7 @@ Reason: operator-requested re-analysis pass for parked/unclassified candidates b
 - Why it entered the system: re-check command-mediation patterns under stricter runtime guardrails
 - Claimed value: safer command mediation wrappers
 - Initial relevance to the workspace: medium
-- Suspected adoption target: `Directive Forge`
+- Suspected adoption target: `Directive Runtime`
 
 ### 4) al-parked-codegraphcontext
 - Candidate id: `al-parked-codegraphcontext`
@@ -66,10 +66,10 @@ Reason: operator-requested re-analysis pass for parked/unclassified candidates b
 - Source reference: `directive-workspace/discovery/agent-lab-extraction/tooling-parked/desloppify`
 - Source location on disk: `C:\Users\User\.openclaw\workspace\agent-lab\tooling-parked\desloppify`
 - Submitted by: `operator`
-- Why it entered the system: re-check quality utility value as Forge support primitive
+- Why it entered the system: re-check quality utility value as Runtime support primitive
 - Claimed value: prompt/output quality cleanup utilities
 - Initial relevance to the workspace: high
-- Suspected adoption target: `Directive Forge`
+- Suspected adoption target: `Directive Runtime`
 
 ### 6) al-parked-hermes-agent
 - Candidate id: `al-parked-hermes-agent`
@@ -82,7 +82,7 @@ Reason: operator-requested re-analysis pass for parked/unclassified candidates b
 - Why it entered the system: re-check context and cache-contract extraction quality
 - Claimed value: context compaction contracts + utility generation
 - Initial relevance to the workspace: medium-high
-- Suspected adoption target: `Directive Architecture` + `Directive Forge`
+- Suspected adoption target: `Directive Architecture` + `Directive Runtime`
 
 ### 7) al-parked-impeccable
 - Candidate id: `al-parked-impeccable`
@@ -95,7 +95,7 @@ Reason: operator-requested re-analysis pass for parked/unclassified candidates b
 - Why it entered the system: re-check guardrail and frontend quality patterns
 - Claimed value: guardrail logic and quality shaping patterns
 - Initial relevance to the workspace: medium-high
-- Suspected adoption target: `Directive Architecture` (+ optional Forge follow-up)
+- Suspected adoption target: `Directive Architecture` (+ optional Runtime follow-up)
 
 ### 8) al-unclassified-plane
 - Candidate id: `al-unclassified-plane`

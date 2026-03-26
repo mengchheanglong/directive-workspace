@@ -47,7 +47,7 @@ Added by corpus normalization program. This record predates the source-adaptatio
 - Origin: `source-driven` (hermes-agent)
 - Usefulness level: `structural` — compaction-fidelity boundary improves Directive's handoff quality across Discovery and Architecture
 - Status class: `product_materialized` — shared contract + template bindings + reference pattern + host check
-- Forge threshold check: yes — compaction-fidelity rules are valuable without a runtime surface
+- Runtime threshold check: yes — compaction-fidelity rules are valuable without a runtime surface
 
 ### Contract coverage assessment
 

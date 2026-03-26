@@ -4,7 +4,7 @@
 - Track: `architecture`
 - Origin: `internally-generated`
 - Usefulness level: `meta`
-- Forge threshold check: `yes` - this improves Architecture evaluation and corpus review without requiring a runtime surface
+- Runtime threshold check: `yes` - this improves Architecture evaluation and corpus review without requiring a runtime surface
 
 ## Why this slice exists
 
@@ -22,7 +22,7 @@ Materialize a bounded on-disk decision corpus beside adopted records in `archite
 3. `2026-03-23-architecture-adoption-resolution-lib-adoption-decision.json`
 4. `2026-03-23-architecture-adoption-artifacts-lib-adoption-decision.json`
 5. `2026-03-23-architecture-cycle-decision-summary-lib-adoption-decision.json`
-6. `2026-03-23-scientify-literature-monitoring-forge-handoff-adoption-decision.json`
+6. `2026-03-23-scientify-literature-monitoring-runtime-handoff-adoption-decision.json`
 
 Add an executable corpus checker:
 - `mission-control/scripts/check-directive-architecture-adoption-decision-corpus.ts`
@@ -36,5 +36,5 @@ Architecture should be able to review real decision artifacts on disk, not just 
 - usefulness distribution
 - artifact-type distribution
 - completion-status distribution
-- Forge handoff demand
+- Runtime handoff demand
 - meta self-improvement coverage

@@ -45,7 +45,7 @@ A host may own:
 - runtime checks
 
 A host must not redefine:
-- Discovery / Forge / Architecture
+- Discovery / Runtime / Architecture
 - source-adaptation lifecycle
 - product decision vocabulary
 - product routing vocabulary
@@ -81,19 +81,19 @@ A host must not redefine:
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\openclaw-runtime-verification-signal.schema.json`
   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\openclaw-maintenance-watchdog-signal.schema.json`
 
-### Forge canonical core
+### Runtime canonical core
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\core\v0.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\core\decision-policy.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\core\workflow-contract.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\core\proof-contract.ts`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\v0.ts`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\decision-policy.ts`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\workflow-contract.ts`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\proof-contract.ts`
 
 ### Runtime host boundary references
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\forge-to-host.md`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-boundary.md`
 - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-acceptance.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\BOUNDARY_INVENTORY.json`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\BOUNDARY_INVENTORY.json`
 
 ## Example payloads
 

@@ -1,0 +1,23 @@
+# Discovery Intake Record: Agentics Shared Reporting Discipline
+
+- Candidate id: dw-pressure-agentics-reporting-boundary-2026-03-26
+- Candidate name: Agentics Shared Reporting Discipline
+- Intake date: 2026-03-26
+- Source type: workflow-writeup
+- Source reference: sources/intake/agentics/workflows/shared/reporting.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Assess this reporting-discipline source for Engine-owned Architecture value, especially structured references, bounded report shape, and whether current Architecture closeout/report contracts are already sufficient without new schema work.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run e077557d-6092-4cc3-9439-64982c157692 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-triage.md

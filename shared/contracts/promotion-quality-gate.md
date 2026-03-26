@@ -1,15 +1,15 @@
 # Promotion Quality Gate Contract
 
 Purpose:
-- enforce quality-gate evidence on Forge promotion records before runtime-callable claims
+- enforce quality-gate evidence on Runtime promotion records before runtime-callable claims
 - ensure promotion decisions capture deterministic thresholds, observed metrics, validation state, and fail reasons
 
 Scope:
-- applies only to Forge promotion records whose `Quality gate profile` is `promotion_quality_gate/v1`
+- applies only to Runtime promotion records whose `Quality gate profile` is `promotion_quality_gate/v1`
 - applies to linked proof artifacts referenced by `Proof path`
 
 Non-applicable profiles:
-- Forge promotion records may use other profile families when the runtime claim is not citation/coverage based
+- Runtime promotion records may use other profile families when the runtime claim is not citation/coverage based
 - those records must be governed by their own product-owned contract family and host enforcement path
 
 Canonical profile:
@@ -56,4 +56,4 @@ Validation hooks:
 - `npm run check:ops-stack`
 
 Canonical inventory:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\forge\PROMOTION_PROFILES.json`
+- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\PROMOTION_PROFILES.json`
