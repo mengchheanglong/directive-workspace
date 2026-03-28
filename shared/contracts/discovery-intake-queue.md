@@ -19,6 +19,7 @@
 - Split Discovery completion records should go through `shared/lib/discovery-completion-record-writer.ts` and the host completion-record writer wrapper so final result markdown and queue completion linkage stay synchronized
 - Split Discovery intake + triage + routing (+ optional completion) case records should go through `shared/lib/discovery-case-record-writer.ts` and the host case-record writer wrapper when one candidate needs the full split path from a single canonical payload
 - Split-case queue linkage should use `intake_record_path`; fast-path queue linkage should use `fast_path_record_path`
+- Queue entries SHOULD include an `operating_mode` field (`note`, `standard`, or `deep`) set at triage time — see `CLAUDE.md` Operating modes section for classification rules
 - Queue entries that reference a capability gap must use a valid `gap_id` from `discovery/capability-gaps.json`
 - Queue entries that declare mission alignment must reference an objective from `knowledge/active-mission.md`
 - Queue validation checker runs as a gate (exit 1 on failure)

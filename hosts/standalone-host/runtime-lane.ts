@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import type { DiscoveryHostStorageBridge } from "../integration-kit/starter/discovery-submission-adapter.template";
+import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
 import {
   renderRuntimeFollowUpRecord,
   resolveRuntimeFollowUpRecordPath,
@@ -121,6 +122,64 @@ export type StandaloneRuntimeOverviewSummary = {
   registryEntryCount: number;
   recentEntries: StandaloneRuntimeOverviewEntry[];
 };
+
+export type StandaloneScientifyToolDescriptor = {
+  tool: string;
+  functionName: string;
+  modulePath: string;
+};
+
+export type StandaloneScientifyBundleDescriptor = {
+  candidateId: string;
+  candidateName: string;
+  hostSurface: string;
+  currentStage: string;
+  nextLegalStep: string;
+  proposedHost: string | null;
+  executionState: string | null;
+  promotionReadinessBlockers: string[];
+  prePromotionSlicePath: string;
+  implementationSlicePath: string;
+  artifactPath: string;
+  linkedArtifacts: {
+    runtimeRecordPath: string | null;
+    runtimeProofPath: string | null;
+    runtimeCapabilityBoundaryPath: string | null;
+    runtimePromotionReadinessPath: string | null;
+  };
+  tools: StandaloneScientifyToolDescriptor[];
+  runtimeOwnedBoundary: string[];
+  standaloneHostOwnedBoundary: string[];
+};
+
+const SCIENTIFY_PROMOTION_READINESS_RELATIVE_PATH =
+  "runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md";
+const SCIENTIFY_PRE_PROMOTION_SLICE_RELATIVE_PATH =
+  "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-standalone-host-pre-promotion-implementation-slice-01.md";
+const SCIENTIFY_IMPLEMENTATION_SLICE_RELATIVE_PATH =
+  "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-standalone-host-runtime-implementation-slice-01.md";
+const SCIENTIFY_DESCRIPTOR_TOOLS: StandaloneScientifyToolDescriptor[] = [
+  {
+    tool: "arxiv-search",
+    functionName: "arxivSearch",
+    modulePath: "runtime/capabilities/literature-access/arxiv-search.ts",
+  },
+  {
+    tool: "arxiv-download",
+    functionName: "arxivDownload",
+    modulePath: "runtime/capabilities/literature-access/arxiv-download.ts",
+  },
+  {
+    tool: "openalex-search",
+    functionName: "openalexSearch",
+    modulePath: "runtime/capabilities/literature-access/openalex-search.ts",
+  },
+  {
+    tool: "unpaywall-download",
+    functionName: "unpaywallDownload",
+    modulePath: "runtime/capabilities/literature-access/unpaywall-download.ts",
+  },
+];
 
 export async function writeStandaloneRuntimeFollowUp(input: {
   storage: DiscoveryHostStorageBridge;
@@ -529,5 +588,50 @@ export function readStandaloneRuntimeOverview(input: {
     promotionRecordCount: promotionRecordFiles.length,
     registryEntryCount: registryEntryFiles.length,
     recentEntries,
+  };
+}
+
+export function readStandaloneScientifyLiteratureAccessBundle(input: {
+  directiveRoot: string;
+}): StandaloneScientifyBundleDescriptor {
+  const resolved = resolveDirectiveWorkspaceState({
+    directiveRoot: input.directiveRoot,
+    artifactPath: SCIENTIFY_PROMOTION_READINESS_RELATIVE_PATH,
+    includeAnchors: false,
+  }).focus;
+
+  if (!resolved || !resolved.runtime) {
+    throw new Error("scientify_runtime_descriptor_unavailable");
+  }
+
+  return {
+    candidateId: resolved.candidateId ?? "dw-source-scientify-research-workflow-plugin-2026-03-27",
+    candidateName: resolved.candidateName ?? "Scientify Literature-Access Tool Bundle",
+    hostSurface: "Directive Workspace standalone host CLI descriptor",
+    currentStage: resolved.currentStage,
+    nextLegalStep: resolved.nextLegalStep,
+    proposedHost: resolved.runtime.proposedHost,
+    executionState: resolved.runtime.executionState,
+    promotionReadinessBlockers: [...resolved.runtime.promotionReadinessBlockers],
+    prePromotionSlicePath: SCIENTIFY_PRE_PROMOTION_SLICE_RELATIVE_PATH,
+    implementationSlicePath: SCIENTIFY_IMPLEMENTATION_SLICE_RELATIVE_PATH,
+    artifactPath: SCIENTIFY_PROMOTION_READINESS_RELATIVE_PATH,
+    linkedArtifacts: {
+      runtimeRecordPath: resolved.linkedArtifacts.runtimeRecordPath,
+      runtimeProofPath: resolved.linkedArtifacts.runtimeProofPath,
+      runtimeCapabilityBoundaryPath: resolved.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
+      runtimePromotionReadinessPath: resolved.linkedArtifacts.runtimePromotionReadinessPath,
+    },
+    tools: [...SCIENTIFY_DESCRIPTOR_TOOLS],
+    runtimeOwnedBoundary: [
+      "lifecycle truth",
+      "blocker judgment",
+      "tool module ownership",
+      "promotion/execution/integration legality",
+    ],
+    standaloneHostOwnedBoundary: [
+      "read-only descriptor surface for the approved 4-tool bundle",
+      "host-visible summary of current Runtime truth and linked artifacts",
+    ],
   };
 }

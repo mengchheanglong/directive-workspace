@@ -1,6 +1,4 @@
-import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 import {
   readDirectiveArchitectureHandoffArtifact,
@@ -40,47 +38,40 @@ import {
   readDirectiveArchitecturePostConsumptionEvaluationDetail,
   type DirectiveArchitecturePostConsumptionEvaluationDetail,
 } from "./architecture-post-consumption-evaluation.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "./discovery-route-opener.ts";
 import {
-  readDirectiveDiscoveryRoutingArtifact,
-} from "./discovery-route-opener.ts";
+  buildRuntimeArtifactStage,
+  buildRuntimePromotionReadinessBlockers,
+  resolveRuntimeFocusFromAnyPath,
+} from "./dw-state/runtime.ts";
+import {
+  finalizeResolvedFocus,
+  findLatestEngineRunByCandidateId,
+  findQueueEntryByCandidateId,
+  getDefaultDirectiveWorkspaceRoot,
+  isDiscoveryHeldRouteDestination,
+  listFiles,
+  mergeNonNullLinkedArtifacts,
+  normalizePath,
+  readGenericDiscoveryMonitorArtifact,
+  readUtf8,
+  resolveDirectiveRelativePath,
+  zeroLinkedArtifacts,
+} from "./dw-state/shared.ts";
 import {
   readDirectiveEngineRunsOverview,
   type StoredDirectiveEngineRunRecord,
 } from "./engine-run-artifacts.ts";
-import {
-  readDirectiveRuntimeFollowUpArtifact,
-  type DirectiveRuntimeFollowUpArtifact,
-} from "./runtime-follow-up-opener.ts";
-import {
-  applyDirectiveWorkspaceIntegrityGate,
-  buildDirectiveWorkspaceProductTruth,
-} from "../../engine/workspace-truth.ts";
+import { buildDirectiveWorkspaceProductTruth } from "../../engine/workspace-truth.ts";
 import {
   fileExistsInDirectiveWorkspace,
+  isDirectiveWorkspaceArtifactReference,
   readLinkedArtifactIfPresent,
   recordExpectedArtifactIfMissing,
   recordInconsistentLink,
   recordMissingExpectedArtifact,
   recordMissingLinkedArtifactIfAbsent,
 } from "../../engine/artifact-link-validation.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  received_at: string;
-  status: string;
-  routing_target: string | null;
-  mission_alignment?: string | null;
-  capability_gap_id?: string | null;
-  intake_record_path?: string | null;
-  fast_path_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-};
-
 export type DirectiveWorkspaceFocusLane =
   | "discovery"
   | "engine"
@@ -90,6 +81,7 @@ export type DirectiveWorkspaceFocusLane =
 
 export type DirectiveWorkspaceArtifactKind =
   | "discovery_routing_record"
+  | "discovery_monitor_record"
   | "engine_run"
   | "architecture_handoff"
   | "architecture_bounded_start"
@@ -102,6 +94,23 @@ export type DirectiveWorkspaceArtifactKind =
   | "architecture_consumption_record"
   | "architecture_post_consumption_evaluation"
   | "runtime_follow_up"
+  | "runtime_follow_up_legacy"
+  | "runtime_handoff_legacy"
+  | "runtime_record_legacy"
+  | "runtime_slice_proof_legacy"
+  | "runtime_slice_execution_legacy"
+  | "runtime_proof_checklist_legacy"
+  | "runtime_live_fetch_proof_legacy"
+  | "runtime_live_fetch_gate_snapshot_legacy"
+  | "runtime_live_pool_artifact_legacy"
+  | "runtime_sample_pool_artifact_legacy"
+  | "runtime_system_bundle_note_legacy"
+  | "runtime_validation_note_legacy"
+  | "runtime_precondition_decision_note_legacy"
+  | "runtime_transformation_record_legacy"
+  | "runtime_transformation_proof_legacy"
+  | "runtime_registry_legacy"
+  | "runtime_promotion_record_legacy"
   | "runtime_record_follow_up_review"
   | "runtime_record_callable_integration"
   | "runtime_proof_follow_up_review"
@@ -115,6 +124,7 @@ export type DirectiveWorkspaceLinkedArtifacts = {
   discoveryIntakePath: string | null;
   discoveryTriagePath: string | null;
   discoveryRoutingPath: string | null;
+  discoveryMonitorPath: string | null;
   engineRunRecordPath: string | null;
   engineRunReportPath: string | null;
   architectureHandoffPath: string | null;
@@ -166,6 +176,7 @@ export type DirectiveWorkspaceResolvedFocus = {
   linkedArtifacts: DirectiveWorkspaceLinkedArtifacts;
   discovery: {
     queueStatus: string | null;
+    operatingMode: string | null;
     routingDecision: string | null;
     usefulnessLevel: string | null;
     usefulnessRationale: string | null;
@@ -231,766 +242,6 @@ export type DirectiveWorkspaceStateReport = {
   anchors: DirectiveWorkspaceAnchorSummary[];
   focus: DirectiveWorkspaceResolvedFocus | null;
 };
-
-type GenericRuntimeRecordArtifact =
-  | {
-      kind: "follow_up_review";
-      candidateId: string;
-      candidateName: string;
-      currentStatus: string;
-      runtimeRecordRelativePath: string;
-      linkedFollowUpRecord: string;
-      linkedRoutingPath: string | null;
-      runtimeProofRelativePath: string | null;
-      runtimeRuntimeCapabilityBoundaryPath: string | null;
-      callableStubPath: null;
-      sourceIntegrationRecordPath: null;
-    }
-  | {
-      kind: "callable_integration_record";
-      candidateId: string;
-      candidateName: string;
-      currentStatus: string;
-      runtimeRecordRelativePath: string;
-      linkedFollowUpRecord: null;
-      linkedRoutingPath: null;
-      runtimeProofRelativePath: string | null;
-      runtimeRuntimeCapabilityBoundaryPath: string | null;
-      callableStubPath: string | null;
-      sourceIntegrationRecordPath: string | null;
-    };
-
-type GenericRuntimeProofArtifact =
-  | {
-      kind: "follow_up_review";
-      candidateId: string;
-      candidateName: string;
-      runtimeProofRelativePath: string;
-      linkedRuntimeRecordPath: string;
-      linkedFollowUpPath: string;
-      linkedRoutingPath: string | null;
-      promotionStatus: null;
-      runtimeRuntimeCapabilityBoundaryPath: null;
-      callableStubPath: null;
-    }
-  | {
-      kind: "callable_integration";
-      candidateId: string;
-      candidateName: string;
-      runtimeProofRelativePath: string;
-      linkedRuntimeRecordPath: string;
-      linkedFollowUpPath: null;
-      linkedRoutingPath: null;
-      promotionStatus: string | null;
-      runtimeRuntimeCapabilityBoundaryPath: string | null;
-      callableStubPath: string | null;
-    };
-
-type GenericRuntimeRuntimeCapabilityBoundaryArtifact = {
-  candidateId: string;
-  title: string;
-  runtimeRuntimeCapabilityBoundaryPath: string;
-  linkedRuntimeProofPath: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedCallableStubPath: string | null;
-  currentProofStatus: string | null;
-};
-
-type GenericRuntimePromotionReadinessArtifact = {
-  candidateId: string;
-  candidateName: string;
-  promotionReadinessPath: string;
-  linkedCapabilityBoundaryPath: string;
-  linkedRuntimeProofPath: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedCallableStubPath: string | null;
-  proposedHost: string | null;
-  executionState: string | null;
-  currentStatus: string | null;
-};
-
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function normalizeRelativePath(filePath: string) {
-  return filePath.replace(/\\/g, "/");
-}
-
-function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
-}
-
-function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
-
-function optionalString(value: string | null | undefined) {
-  if (typeof value !== "string") {
-    return null;
-  }
-  const normalized = value.trim();
-  if (!normalized || normalized.toLowerCase() === "n/a" || normalized.toLowerCase() === "pending") {
-    return null;
-  }
-  return normalized.replace(/^`|`$/g, "");
-}
-
-function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string, fieldName: string) {
-  const normalizedInput = requiredString(inputPath, fieldName).replace(/\\/g, "/");
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error(`invalid_input: ${fieldName} must stay within directive-workspace`);
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
-}
-
-function readUtf8(filePath: string) {
-  return fs.readFileSync(filePath, "utf8");
-}
-
-function extractTitle(markdown: string) {
-  return markdown
-    .split(/\r?\n/)
-    .find((line) => line.startsWith("# "))
-    ?.replace(/^# /, "")
-    .trim()
-    || "";
-}
-
-function deriveRuntimeCandidateNameFromTitle(title: string) {
-  return title
-    .replace(/^Runtime V0 Record:\s*/u, "")
-    .replace(/^Runtime V0 Proof Artifact:\s*/u, "")
-    .replace(/^Runtime V0 Runtime Capability Boundary:\s*/u, "")
-    .replace(/\s+\(\d{4}-\d{2}-\d{2}\)\s*$/u, "")
-    .trim();
-}
-
-function extractBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    return null;
-  }
-  return optionalString(line.trim().replace(prefix, "").trim());
-}
-
-function zeroLinkedArtifacts(): DirectiveWorkspaceLinkedArtifacts {
-  return {
-    discoveryIntakePath: null,
-    discoveryTriagePath: null,
-    discoveryRoutingPath: null,
-    engineRunRecordPath: null,
-    engineRunReportPath: null,
-    architectureHandoffPath: null,
-    architectureBoundedStartPath: null,
-    architectureBoundedResultPath: null,
-    architectureContinuationStartPath: null,
-    architectureAdoptionPath: null,
-    architectureImplementationTargetPath: null,
-    architectureImplementationResultPath: null,
-    architectureRetainedPath: null,
-    architectureIntegrationRecordPath: null,
-    architectureConsumptionRecordPath: null,
-    architectureEvaluationPath: null,
-    architectureReopenedStartPath: null,
-    runtimeFollowUpPath: null,
-    runtimeRecordPath: null,
-    runtimeProofPath: null,
-    runtimeRuntimeCapabilityBoundaryPath: null,
-    runtimePromotionReadinessPath: null,
-    runtimeCallableStubPath: null,
-  };
-}
-
-function matchStagePrefix(currentStage: string, prefix: string, fallback: string) {
-  return currentStage.startsWith(prefix) ? currentStage : fallback;
-}
-
-function deriveDirectiveWorkspaceCurrentHead(
-  focus: Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">,
-): DirectiveWorkspaceCurrentHead {
-  const linked = focus.linkedArtifacts;
-  const currentStage = focus.currentStage;
-  const candidates: DirectiveWorkspaceCurrentHead[] = [];
-
-  if (linked.architectureReopenedStartPath) {
-    candidates.push({
-      artifactPath: linked.architectureReopenedStartPath,
-      artifactKind: "architecture_bounded_start",
-      lane: "architecture",
-      artifactStage: "architecture.bounded_start.opened",
-    });
-  }
-  if (linked.architectureEvaluationPath) {
-    candidates.push({
-      artifactPath: linked.architectureEvaluationPath,
-      artifactKind: "architecture_post_consumption_evaluation",
-      lane: "architecture",
-      artifactStage: matchStagePrefix(
-        currentStage,
-        "architecture.post_consumption_evaluation.",
-        "architecture.post_consumption_evaluation.unknown",
-      ),
-    });
-  }
-  if (linked.architectureConsumptionRecordPath) {
-    candidates.push({
-      artifactPath: linked.architectureConsumptionRecordPath,
-      artifactKind: "architecture_consumption_record",
-      lane: "architecture",
-      artifactStage: matchStagePrefix(
-        currentStage,
-        "architecture.consumption.",
-        "architecture.consumption.unknown",
-      ),
-    });
-  }
-  if (linked.architectureIntegrationRecordPath) {
-    candidates.push({
-      artifactPath: linked.architectureIntegrationRecordPath,
-      artifactKind: "architecture_integration_record",
-      lane: "architecture",
-      artifactStage: "architecture.integration_record.ready",
-    });
-  }
-  if (linked.architectureRetainedPath) {
-    candidates.push({
-      artifactPath: linked.architectureRetainedPath,
-      artifactKind: "architecture_retained",
-      lane: "architecture",
-      artifactStage: "architecture.retained.confirmed",
-    });
-  }
-  if (linked.architectureImplementationResultPath) {
-    candidates.push({
-      artifactPath: linked.architectureImplementationResultPath,
-      artifactKind: "architecture_implementation_result",
-      lane: "architecture",
-      artifactStage: matchStagePrefix(
-        currentStage,
-        "architecture.implementation_result.",
-        "architecture.implementation_result.unknown",
-      ),
-    });
-  }
-  if (linked.architectureImplementationTargetPath) {
-    candidates.push({
-      artifactPath: linked.architectureImplementationTargetPath,
-      artifactKind: "architecture_implementation_target",
-      lane: "architecture",
-      artifactStage: "architecture.implementation_target.opened",
-    });
-  }
-  if (linked.architectureAdoptionPath) {
-    candidates.push({
-      artifactPath: linked.architectureAdoptionPath,
-      artifactKind: "architecture_adoption",
-      lane: "architecture",
-      artifactStage: matchStagePrefix(
-        currentStage,
-        "architecture.adoption.",
-        "architecture.adoption.unknown",
-      ),
-    });
-  }
-  if (linked.architectureContinuationStartPath) {
-    candidates.push({
-      artifactPath: linked.architectureContinuationStartPath,
-      artifactKind: "architecture_bounded_start",
-      lane: "architecture",
-      artifactStage: "architecture.bounded_start.opened",
-    });
-  }
-  if (linked.architectureBoundedResultPath) {
-    candidates.push({
-      artifactPath: linked.architectureBoundedResultPath,
-      artifactKind: "architecture_bounded_result",
-      lane: "architecture",
-      artifactStage: matchStagePrefix(
-        currentStage,
-        "architecture.bounded_result.",
-        "architecture.bounded_result.unknown",
-      ),
-    });
-  }
-  if (linked.architectureBoundedStartPath) {
-    candidates.push({
-      artifactPath: linked.architectureBoundedStartPath,
-      artifactKind: "architecture_bounded_start",
-      lane: "architecture",
-      artifactStage: "architecture.bounded_start.opened",
-    });
-  }
-  if (linked.architectureHandoffPath) {
-    candidates.push({
-      artifactPath: linked.architectureHandoffPath,
-      artifactKind: "architecture_handoff",
-      lane: "architecture",
-      artifactStage: "architecture.handoff.pending_review",
-    });
-  }
-
-  if (linked.runtimePromotionReadinessPath) {
-    candidates.push({
-      artifactPath: linked.runtimePromotionReadinessPath,
-      artifactKind: "runtime_promotion_readiness",
-      lane: "runtime",
-      artifactStage: "runtime.promotion_readiness.opened",
-    });
-  }
-  if (linked.runtimeRuntimeCapabilityBoundaryPath) {
-    candidates.push({
-      artifactPath: linked.runtimeRuntimeCapabilityBoundaryPath,
-      artifactKind: "runtime_runtime_capability_boundary",
-      lane: "runtime",
-      artifactStage: "runtime.runtime_capability_boundary.opened",
-    });
-  }
-  if (linked.runtimeProofPath) {
-    candidates.push({
-      artifactPath: linked.runtimeProofPath,
-      artifactKind: focus.artifactKind === "runtime_proof_callable_integration"
-        ? "runtime_proof_callable_integration"
-        : "runtime_proof_follow_up_review",
-      lane: "runtime",
-      artifactStage: matchStagePrefix(currentStage, "runtime.proof.", "runtime.proof.opened"),
-    });
-  }
-  if (linked.runtimeRecordPath) {
-    candidates.push({
-      artifactPath: linked.runtimeRecordPath,
-      artifactKind: focus.artifactKind === "runtime_record_callable_integration"
-        ? "runtime_record_callable_integration"
-        : "runtime_record_follow_up_review",
-      lane: "runtime",
-      artifactStage: matchStagePrefix(currentStage, "runtime.record.", "runtime.record.pending_proof_boundary"),
-    });
-  }
-  if (linked.runtimeFollowUpPath) {
-    candidates.push({
-      artifactPath: linked.runtimeFollowUpPath,
-      artifactKind: "runtime_follow_up",
-      lane: "runtime",
-      artifactStage: "runtime.follow_up.pending_review",
-    });
-  }
-  if (linked.runtimeCallableStubPath) {
-    candidates.push({
-      artifactPath: linked.runtimeCallableStubPath,
-      artifactKind: "runtime_callable_integration",
-      lane: "runtime",
-      artifactStage: "runtime.callable_stub.not_implemented",
-    });
-  }
-
-  if (linked.discoveryRoutingPath) {
-    candidates.push({
-      artifactPath: linked.discoveryRoutingPath,
-      artifactKind: "discovery_routing_record",
-      lane: "discovery",
-      artifactStage: focus.routeTarget
-        ? `discovery.route.${focus.routeTarget}`
-        : "discovery.route.unknown",
-    });
-  }
-  if (linked.engineRunRecordPath) {
-    candidates.push({
-      artifactPath: linked.engineRunRecordPath,
-      artifactKind: "engine_run",
-      lane: "engine",
-      artifactStage: focus.engine.selectedLane
-        ? `engine.route.${focus.engine.selectedLane}`
-        : "engine.route.unknown",
-    });
-  }
-
-  return candidates[0] ?? {
-    artifactPath: focus.artifactPath,
-    artifactKind: focus.artifactKind,
-    lane: focus.lane,
-    artifactStage: focus.artifactStage,
-  };
-}
-
-function finalizeResolvedFocus(
-  focus: Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">,
-): DirectiveWorkspaceResolvedFocus {
-  return applyDirectiveWorkspaceIntegrityGate({
-    ...focus,
-    currentHead: deriveDirectiveWorkspaceCurrentHead(focus),
-  });
-}
-
-function mergeNonNullLinkedArtifacts(
-  target: DirectiveWorkspaceLinkedArtifacts,
-  source: DirectiveWorkspaceLinkedArtifacts | null | undefined,
-) {
-  if (!source) {
-    return;
-  }
-
-  for (const [key, value] of Object.entries(source)) {
-    if (value) {
-      target[key as keyof DirectiveWorkspaceLinkedArtifacts] = value;
-    }
-  }
-}
-
-function listFiles(input: {
-  directiveRoot: string;
-  relativeDir: string;
-  suffix: string;
-}) {
-  const root = path.join(input.directiveRoot, input.relativeDir);
-  if (!fs.existsSync(root)) {
-    return [] as string[];
-  }
-
-  return fs
-    .readdirSync(root, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith(input.suffix))
-    .map((entry) => normalizeRelativePath(path.join(input.relativeDir, entry.name)))
-    .sort((left, right) => right.localeCompare(left));
-}
-
-function loadQueueEntries(directiveRoot: string) {
-  const queuePath = path.join(directiveRoot, "discovery", "intake-queue.json");
-  if (!fs.existsSync(queuePath)) {
-    return [] as QueueEntry[];
-  }
-  const payload = JSON.parse(readUtf8(queuePath)) as { entries?: QueueEntry[] };
-  return Array.isArray(payload.entries) ? payload.entries : [];
-}
-
-function findQueueEntryByCandidateId(directiveRoot: string, candidateId: string | null | undefined) {
-  if (!candidateId) {
-    return null;
-  }
-  return loadQueueEntries(directiveRoot).find((entry) => entry.candidate_id === candidateId) ?? null;
-}
-
-function findLatestEngineRunByCandidateId(directiveRoot: string, candidateId: string | null | undefined) {
-  if (!candidateId) {
-    return null;
-  }
-
-  const engineRunsRoot = path.join(directiveRoot, "runtime", "standalone-host", "engine-runs");
-  if (!fs.existsSync(engineRunsRoot)) {
-    return null;
-  }
-
-  const matches = fs
-    .readdirSync(engineRunsRoot, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".json"))
-    .map((entry) => path.join(engineRunsRoot, entry.name))
-    .map((recordPath) => {
-      try {
-        const parsed = JSON.parse(readUtf8(recordPath)) as StoredDirectiveEngineRunRecord;
-        if (parsed.candidate?.candidateId !== candidateId) {
-          return null;
-        }
-        const reportPath = recordPath.replace(/\.json$/i, ".md");
-        return {
-          record: parsed,
-          recordRelativePath: normalizeRelativePath(path.relative(directiveRoot, recordPath)),
-          reportRelativePath: fs.existsSync(reportPath)
-            ? normalizeRelativePath(path.relative(directiveRoot, reportPath))
-            : null,
-        };
-      } catch {
-        return null;
-      }
-    })
-    .filter((entry): entry is NonNullable<typeof entry> => Boolean(entry))
-    .sort((left, right) => right.record.receivedAt.localeCompare(left.record.receivedAt));
-
-  return matches[0] ?? null;
-}
-
-function readGenericRuntimeRecordArtifact(input: {
-  directiveRoot: string;
-  runtimeRecordPath: string;
-}): GenericRuntimeRecordArtifact {
-  const runtimeRecordRelativePath = resolveDirectiveRelativePath(
-    input.directiveRoot,
-    input.runtimeRecordPath,
-    "runtimeRecordPath",
-  );
-  const absolutePath = path.join(input.directiveRoot, runtimeRecordRelativePath);
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: runtimeRecordPath not found: ${runtimeRecordRelativePath}`);
-  }
-
-  const content = readUtf8(absolutePath);
-  const title = extractTitle(content);
-  const candidateId = requiredString(extractBulletValue(content, "Candidate id"), "candidate id");
-  const candidateName = extractBulletValue(content, "Candidate name")
-    ?? requiredString(deriveRuntimeCandidateNameFromTitle(title), "candidate name");
-  const currentStatus = requiredString(extractBulletValue(content, "Current status"), "current status");
-
-  if (content.includes("## follow-up review decision")) {
-    return {
-      kind: "follow_up_review",
-      candidateId,
-      candidateName,
-      currentStatus,
-      runtimeRecordRelativePath,
-      linkedFollowUpRecord: requiredString(
-        extractBulletValue(content, "Source follow-up record"),
-        "source follow-up record",
-      ),
-      linkedRoutingPath: extractBulletValue(content, "Linked Discovery routing record"),
-      runtimeProofRelativePath: extractBulletValue(content, "Next Runtime proof artifact if later approved"),
-      runtimeRuntimeCapabilityBoundaryPath: null,
-      callableStubPath: null,
-      sourceIntegrationRecordPath: null,
-    };
-  }
-
-  return {
-    kind: "callable_integration_record",
-    candidateId,
-    candidateName,
-    currentStatus,
-    runtimeRecordRelativePath,
-    linkedFollowUpRecord: null,
-    linkedRoutingPath: null,
-    runtimeProofRelativePath: extractBulletValue(content, "Runtime proof artifact"),
-    runtimeRuntimeCapabilityBoundaryPath: extractBulletValue(content, "Runtime runtime capability boundary"),
-    callableStubPath: extractBulletValue(content, "Callable stub path"),
-    sourceIntegrationRecordPath: extractBulletValue(content, "Source integration record"),
-  };
-}
-
-function readGenericRuntimeProofArtifact(input: {
-  directiveRoot: string;
-  runtimeProofPath: string;
-}): GenericRuntimeProofArtifact {
-  const runtimeProofRelativePath = resolveDirectiveRelativePath(
-    input.directiveRoot,
-    input.runtimeProofPath,
-    "runtimeProofPath",
-  );
-  const absolutePath = path.join(input.directiveRoot, runtimeProofRelativePath);
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: runtimeProofPath not found: ${runtimeProofRelativePath}`);
-  }
-
-  const content = readUtf8(absolutePath);
-  const title = extractTitle(content);
-  const candidateId = requiredString(extractBulletValue(content, "Candidate id"), "candidate id");
-  const candidateName = extractBulletValue(content, "Candidate name")
-    ?? requiredString(deriveRuntimeCandidateNameFromTitle(title), "candidate name");
-
-  if (content.includes("## runtime record identity")) {
-    return {
-      kind: "follow_up_review",
-      candidateId,
-      candidateName,
-      runtimeProofRelativePath,
-      linkedRuntimeRecordPath: requiredString(
-        extractBulletValue(content, "Runtime v0 record path"),
-        "runtime v0 record path",
-      ),
-      linkedFollowUpPath: requiredString(
-        extractBulletValue(content, "Source follow-up record path"),
-        "source follow-up record path",
-      ),
-      linkedRoutingPath: extractBulletValue(content, "Linked Discovery routing record"),
-      promotionStatus: null,
-      runtimeRuntimeCapabilityBoundaryPath: null,
-      callableStubPath: null,
-    };
-  }
-
-  return {
-    kind: "callable_integration",
-    candidateId,
-    candidateName,
-    runtimeProofRelativePath,
-    linkedRuntimeRecordPath: requiredString(extractBulletValue(content, "Runtime record path"), "runtime record path"),
-    linkedFollowUpPath: null,
-    linkedRoutingPath: null,
-    promotionStatus: extractBulletValue(content, "Status"),
-    runtimeRuntimeCapabilityBoundaryPath: extractBulletValue(content, "Runtime runtime capability boundary"),
-    callableStubPath: extractBulletValue(content, "Callable stub path"),
-  };
-}
-
-function readGenericRuntimeRuntimeCapabilityBoundaryArtifact(input: {
-  directiveRoot: string;
-  capabilityBoundaryPath: string;
-}): GenericRuntimeRuntimeCapabilityBoundaryArtifact {
-  const runtimeRuntimeCapabilityBoundaryPath = resolveDirectiveRelativePath(
-    input.directiveRoot,
-    input.capabilityBoundaryPath,
-    "capabilityBoundaryPath",
-  );
-  const absolutePath = path.join(input.directiveRoot, runtimeRuntimeCapabilityBoundaryPath);
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: capabilityBoundaryPath not found: ${runtimeRuntimeCapabilityBoundaryPath}`);
-  }
-
-  const content = readUtf8(absolutePath);
-  const title = extractTitle(content);
-  const candidateId = path.basename(runtimeRuntimeCapabilityBoundaryPath)
-    .replace(/-runtime-capability-boundary\.md$/u, "");
-
-  return {
-    candidateId,
-    title,
-    runtimeRuntimeCapabilityBoundaryPath,
-    linkedRuntimeProofPath: extractBulletValue(content, "Proof artifact"),
-    linkedRuntimeRecordPath: extractBulletValue(content, "Runtime record"),
-    linkedCallableStubPath: extractBulletValue(content, "Callable stub"),
-    currentProofStatus: extractBulletValue(content, "Current Runtime proof status"),
-  };
-}
-
-function readGenericRuntimePromotionReadinessArtifact(input: {
-  directiveRoot: string;
-  promotionReadinessPath: string;
-}): GenericRuntimePromotionReadinessArtifact {
-  const promotionReadinessPath = resolveDirectiveRelativePath(
-    input.directiveRoot,
-    input.promotionReadinessPath,
-    "promotionReadinessPath",
-  );
-  const absolutePath = path.join(input.directiveRoot, promotionReadinessPath);
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: promotionReadinessPath not found: ${promotionReadinessPath}`);
-  }
-
-  const content = readUtf8(absolutePath);
-  return {
-    candidateId: requiredString(extractBulletValue(content, "Candidate id"), "candidate id"),
-    candidateName: requiredString(extractBulletValue(content, "Candidate name"), "candidate name"),
-    promotionReadinessPath,
-    linkedCapabilityBoundaryPath: requiredString(
-      extractBulletValue(content, "Runtime capability boundary"),
-      "runtime capability boundary",
-    ),
-    linkedRuntimeProofPath: extractBulletValue(content, "Runtime proof artifact"),
-    linkedRuntimeRecordPath: extractBulletValue(content, "Runtime v0 record"),
-    linkedCallableStubPath: extractBulletValue(content, "Linked callable stub"),
-    proposedHost: extractBulletValue(content, "Proposed host"),
-    executionState: extractBulletValue(content, "Execution state"),
-    currentStatus: extractBulletValue(content, "Current status"),
-  };
-}
-
-function buildRuntimePromotionReadinessBlockers(input: {
-  promotionReadiness: GenericRuntimePromotionReadinessArtifact | null;
-}) {
-  if (!input.promotionReadiness) {
-    return [];
-  }
-
-  const blockers: string[] = [];
-  if (input.promotionReadiness.proposedHost === "pending_host_selection") {
-    blockers.push("proposed_host_pending_selection");
-  }
-  if (input.promotionReadiness.executionState?.includes("not implemented")) {
-    blockers.push("runtime_implementation_unopened");
-  }
-  if (input.promotionReadiness.executionState?.includes("not promoted")) {
-    blockers.push("host_facing_promotion_unopened");
-  }
-
-  return blockers;
-}
-
-function inferRuntimeRuntimeCapabilityBoundaryPathFromProof(input: {
-  directiveRoot: string;
-  runtimeProofRelativePath: string | null | undefined;
-}) {
-  if (!input.runtimeProofRelativePath) {
-    return null;
-  }
-  if (
-    !input.runtimeProofRelativePath.startsWith("runtime/03-proof/")
-    || !input.runtimeProofRelativePath.endsWith("-proof.md")
-  ) {
-    return null;
-  }
-
-  const candidatePath = normalizeRelativePath(
-    input.runtimeProofRelativePath
-      .replace(/^runtime\/03-proof\//u, "runtime/04-capability-boundaries/")
-      .replace(/-proof\.md$/u, "-runtime-capability-boundary.md"),
-  );
-
-  return fileExistsInDirectiveWorkspace(input.directiveRoot, candidatePath) ? candidatePath : null;
-}
-
-function inferRuntimePromotionReadinessPathFromCapabilityBoundary(input: {
-  directiveRoot: string;
-  capabilityBoundaryPath: string | null | undefined;
-}) {
-  if (!input.capabilityBoundaryPath) {
-    return null;
-  }
-  if (
-    !input.capabilityBoundaryPath.startsWith("runtime/04-capability-boundaries/")
-    || !input.capabilityBoundaryPath.endsWith("-runtime-capability-boundary.md")
-  ) {
-    return null;
-  }
-
-  const candidatePath = normalizeRelativePath(
-    input.capabilityBoundaryPath
-      .replace(/^runtime\/04-capability-boundaries\//u, "runtime/05-promotion-readiness/")
-      .replace(/-runtime-capability-boundary\.md$/u, "-promotion-readiness.md"),
-  );
-
-  return fileExistsInDirectiveWorkspace(input.directiveRoot, candidatePath) ? candidatePath : null;
-}
-
-function readGenericCallableIntegrationArtifact(input: {
-  directiveRoot: string;
-  callablePath: string;
-}) {
-  const callableRelativePath = resolveDirectiveRelativePath(
-    input.directiveRoot,
-    input.callablePath,
-    "callablePath",
-  );
-  const absolutePath = path.join(input.directiveRoot, callableRelativePath);
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: callablePath not found: ${callableRelativePath}`);
-  }
-
-  const content = readUtf8(absolutePath);
-  const candidateId =
-    /capabilityId:\s*"([^"]+)"/.exec(content)?.[1]
-    ?? path.basename(callableRelativePath).replace(/-callable-integration\.ts$/u, "");
-
-  return {
-    candidateId,
-    callableRelativePath,
-    runtimeRecordRelativePath:
-      /runtimeRecordPath:\s*"([^"]+)"/.exec(content)?.[1] ?? null,
-    runtimeProofRelativePath:
-      /runtimeProofPath:\s*"([^"]+)"/.exec(content)?.[1] ?? null,
-    runtimeRuntimeCapabilityBoundaryPath:
-      /runtimeRuntimeCapabilityBoundaryPath:\s*"([^"]+)"/.exec(content)?.[1] ?? null,
-    integrationRecordPath:
-      /integrationRecordPath:\s*"([^"]+)"/.exec(content)?.[1] ?? null,
-  };
-}
 
 function findArchitectureAdoptionForResult(directiveRoot: string, resultPath: string) {
   if (typeof resultPath !== "string" || resultPath.trim().length === 0) {
@@ -1855,550 +1106,6 @@ function resolveArchitectureFocusFromAnyPath(input: {
   };
 }
 
-function buildRuntimeState(input: {
-  directiveRoot: string;
-  followUp: DirectiveRuntimeFollowUpArtifact | null;
-  runtimeRecord: GenericRuntimeRecordArtifact | null;
-  runtimeProof: GenericRuntimeProofArtifact | null;
-  capabilityBoundary: GenericRuntimeRuntimeCapabilityBoundaryArtifact | null;
-  promotionReadiness: GenericRuntimePromotionReadinessArtifact | null;
-  callableIntegration: ReturnType<typeof readGenericCallableIntegrationArtifact> | null;
-}) {
-  const linked = zeroLinkedArtifacts();
-  const missingExpectedArtifacts: string[] = [];
-  const inconsistentLinks: string[] = [];
-
-  linked.runtimeFollowUpPath = input.followUp?.followUpRelativePath ?? input.runtimeRecord?.linkedFollowUpRecord ?? null;
-  linked.runtimeRecordPath = input.runtimeRecord?.runtimeRecordRelativePath ?? input.runtimeProof?.linkedRuntimeRecordPath ?? null;
-  linked.runtimeProofPath = input.runtimeProof?.runtimeProofRelativePath ?? input.runtimeRecord?.runtimeProofRelativePath ?? null;
-  linked.runtimeRuntimeCapabilityBoundaryPath =
-    input.capabilityBoundary?.runtimeRuntimeCapabilityBoundaryPath
-    ?? input.runtimeProof?.runtimeRuntimeCapabilityBoundaryPath
-    ?? input.runtimeRecord?.runtimeRuntimeCapabilityBoundaryPath
-    ?? input.callableIntegration?.runtimeRuntimeCapabilityBoundaryPath
-    ?? null;
-  linked.runtimePromotionReadinessPath =
-    input.promotionReadiness?.promotionReadinessPath
-    ?? inferRuntimePromotionReadinessPathFromCapabilityBoundary({
-      directiveRoot: input.directiveRoot,
-      capabilityBoundaryPath:
-        input.capabilityBoundary?.runtimeRuntimeCapabilityBoundaryPath
-        ?? input.runtimeProof?.runtimeRuntimeCapabilityBoundaryPath
-        ?? input.runtimeRecord?.runtimeRuntimeCapabilityBoundaryPath
-        ?? input.callableIntegration?.runtimeRuntimeCapabilityBoundaryPath
-        ?? null,
-    })
-    ?? null;
-  linked.runtimeCallableStubPath =
-    input.callableIntegration?.callableRelativePath
-    ?? input.runtimeRecord?.callableStubPath
-    ?? input.runtimeProof?.callableStubPath
-    ?? input.capabilityBoundary?.linkedCallableStubPath
-    ?? input.promotionReadiness?.linkedCallableStubPath
-    ?? null;
-  linked.discoveryRoutingPath =
-    input.followUp?.linkedHandoffPath
-    ?? input.runtimeRecord?.linkedRoutingPath
-    ?? input.runtimeProof?.linkedRoutingPath
-    ?? null;
-  linked.architectureIntegrationRecordPath =
-    input.callableIntegration?.integrationRecordPath
-    ?? input.runtimeRecord?.sourceIntegrationRecordPath
-    ?? null;
-
-  recordMissingLinkedArtifactIfAbsent({
-    directiveRoot: input.directiveRoot,
-    state: { missingExpectedArtifacts, inconsistentLinks },
-    relativePath: linked.discoveryRoutingPath,
-    label: "Discovery routing record",
-  });
-  recordMissingLinkedArtifactIfAbsent({
-    directiveRoot: input.directiveRoot,
-    state: { missingExpectedArtifacts, inconsistentLinks },
-    relativePath: input.followUp?.linkedHandoffPath,
-    label: "Discovery routing record",
-  });
-  if (input.followUp && !input.runtimeRecord && input.followUp.currentStatus === "pending_review") {
-    recordMissingExpectedArtifact(
-      { missingExpectedArtifacts, inconsistentLinks },
-      input.followUp.runtimeRecordRelativePath,
-    );
-  }
-  if (input.runtimeRecord?.kind === "follow_up_review" && !input.runtimeProof && input.runtimeRecord.currentStatus === "pending_proof_boundary") {
-    if (input.runtimeRecord.runtimeProofRelativePath) {
-      recordMissingExpectedArtifact(
-        { missingExpectedArtifacts, inconsistentLinks },
-        input.runtimeRecord.runtimeProofRelativePath,
-      );
-    }
-  }
-  if (
-    input.runtimeProof?.kind === "callable_integration"
-    && input.runtimeProof.promotionStatus === "ready_for_bounded_runtime_conversion"
-    && !input.capabilityBoundary
-  ) {
-    recordMissingExpectedArtifact({ missingExpectedArtifacts, inconsistentLinks }, "runtime/04-capability-boundaries/*.md");
-  }
-  if (input.runtimeRecord?.kind === "follow_up_review" && !input.followUp) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      "Runtime follow-up review record is missing its linked follow-up artifact",
-    );
-  }
-  if (
-    input.runtimeRecord?.kind === "callable_integration_record"
-    && input.runtimeRecord.callableStubPath
-    && !fileExistsInDirectiveWorkspace(input.directiveRoot, input.runtimeRecord.callableStubPath)
-  ) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked callable stub: ${input.runtimeRecord.callableStubPath}`,
-    );
-  }
-  if (
-    input.runtimeRecord?.kind === "callable_integration_record"
-    && input.runtimeRecord.sourceIntegrationRecordPath
-    && !fileExistsInDirectiveWorkspace(input.directiveRoot, input.runtimeRecord.sourceIntegrationRecordPath)
-  ) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Architecture integration record: ${input.runtimeRecord.sourceIntegrationRecordPath}`,
-    );
-  }
-  if (input.runtimeProof?.kind === "follow_up_review" && !input.runtimeRecord) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      "Runtime proof artifact is missing its linked Runtime v0 record",
-    );
-  }
-  if (input.runtimeProof?.kind === "callable_integration" && !input.runtimeRecord) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      "Runtime proof artifact is missing its linked Runtime v0 record",
-    );
-  }
-  if (input.capabilityBoundary?.linkedRuntimeProofPath && !input.runtimeProof) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Runtime proof artifact: ${input.capabilityBoundary.linkedRuntimeProofPath}`,
-    );
-  }
-  if (input.capabilityBoundary?.linkedRuntimeRecordPath && !input.runtimeRecord) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Runtime record: ${input.capabilityBoundary.linkedRuntimeRecordPath}`,
-    );
-  }
-  if (input.promotionReadiness?.linkedCapabilityBoundaryPath && !input.capabilityBoundary) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Runtime runtime capability boundary: ${input.promotionReadiness.linkedCapabilityBoundaryPath}`,
-    );
-  }
-  if (input.promotionReadiness?.linkedRuntimeProofPath && !input.runtimeProof) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Runtime proof artifact: ${input.promotionReadiness.linkedRuntimeProofPath}`,
-    );
-  }
-  if (input.promotionReadiness?.linkedRuntimeRecordPath && !input.runtimeRecord) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Runtime record: ${input.promotionReadiness.linkedRuntimeRecordPath}`,
-    );
-  }
-  if (
-    input.promotionReadiness?.linkedCallableStubPath
-    && !fileExistsInDirectiveWorkspace(input.directiveRoot, input.promotionReadiness.linkedCallableStubPath)
-  ) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked callable stub: ${input.promotionReadiness.linkedCallableStubPath}`,
-    );
-  }
-  if (input.callableIntegration?.runtimeRecordRelativePath && !input.runtimeRecord) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked Runtime record: ${input.callableIntegration.runtimeRecordRelativePath}`,
-    );
-  }
-  if (
-    input.capabilityBoundary?.linkedCallableStubPath
-    && !fileExistsInDirectiveWorkspace(input.directiveRoot, input.capabilityBoundary.linkedCallableStubPath)
-  ) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `missing linked callable stub: ${input.capabilityBoundary.linkedCallableStubPath}`,
-    );
-  }
-
-  let currentStage = "runtime.follow_up.pending_review";
-  let nextLegalStep = "Explicitly review the Runtime follow-up and approve one bounded Runtime record if justified.";
-
-  if (input.runtimeRecord) {
-    currentStage =
-      input.runtimeRecord.kind === "follow_up_review"
-        ? "runtime.record.pending_proof_boundary"
-        : "runtime.record.callable_boundary_defined";
-    nextLegalStep =
-      input.runtimeRecord.kind === "follow_up_review"
-        ? "Explicitly review the Runtime v0 record and approve one bounded Runtime proof artifact if justified."
-        : "No automatic Runtime step is open; callable implementation, promotion, and host work remain intentionally unopened.";
-  }
-  if (input.runtimeProof) {
-    currentStage =
-      input.runtimeProof.kind === "follow_up_review"
-        ? "runtime.proof.opened"
-        : `runtime.proof.${input.runtimeProof.promotionStatus ?? "opened"}`;
-    nextLegalStep =
-      input.runtimeProof.kind === "follow_up_review"
-        ? "Explicitly review and, if justified, open one bounded runtime capability boundary; execution and host integration remain closed."
-        : "Explicitly review the bounded runtime capability boundary only if later Runtime conversion work is intentionally reopened.";
-  }
-  if (input.capabilityBoundary) {
-    const promotionReadinessEligible = !input.callableIntegration && !input.capabilityBoundary.linkedCallableStubPath;
-    currentStage = "runtime.runtime_capability_boundary.opened";
-    nextLegalStep =
-      promotionReadinessEligible
-        ? "Explicitly review the bounded runtime capability boundary and, if justified, open one non-executing promotion-readiness artifact; host-facing promotion and runtime execution remain closed."
-        : "No automatic Runtime step is open; callable implementation, host integration, and runtime execution remain intentionally unopened.";
-  }
-  if (input.promotionReadiness) {
-    currentStage = "runtime.promotion_readiness.opened";
-    nextLegalStep =
-      "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.";
-  }
-
-  return {
-    currentStage,
-    nextLegalStep,
-    missingExpectedArtifacts,
-    inconsistentLinks,
-    linked,
-    intentionallyUnbuiltDownstreamStages: [
-      "runtime execution",
-      "host integration",
-      "callable implementation",
-      "host-facing promotion",
-      "promotion automation",
-    ],
-  };
-}
-
-function buildRuntimeArtifactStage(input: {
-  artifactKind: DirectiveWorkspaceArtifactKind;
-  runtimeRecord: GenericRuntimeRecordArtifact | null;
-  runtimeProof: GenericRuntimeProofArtifact | null;
-  capabilityBoundary: GenericRuntimeRuntimeCapabilityBoundaryArtifact | null;
-  callableIntegration: ReturnType<typeof readGenericCallableIntegrationArtifact> | null;
-}) {
-  switch (input.artifactKind) {
-    case "runtime_follow_up":
-      return {
-        artifactStage: "runtime.follow_up.pending_review",
-        artifactNextLegalStep: "Explicitly review the Runtime follow-up and approve one bounded Runtime record if justified.",
-      };
-    case "runtime_record_follow_up_review":
-      return {
-        artifactStage: "runtime.record.pending_proof_boundary",
-        artifactNextLegalStep: "Explicitly review the Runtime v0 record and approve one bounded Runtime proof artifact if justified.",
-      };
-    case "runtime_record_callable_integration":
-      return {
-        artifactStage: "runtime.record.callable_boundary_defined",
-        artifactNextLegalStep: "No automatic Runtime step is open; callable implementation, promotion, and host work remain intentionally unopened.",
-      };
-    case "runtime_proof_follow_up_review":
-      return {
-        artifactStage: "runtime.proof.opened",
-        artifactNextLegalStep: "Explicitly review and, if justified, open one bounded runtime capability boundary; execution and host integration remain closed.",
-      };
-    case "runtime_proof_callable_integration":
-      return {
-        artifactStage: `runtime.proof.${input.runtimeProof?.promotionStatus ?? "opened"}`,
-        artifactNextLegalStep: "Explicitly review the bounded runtime capability boundary only if later Runtime conversion work is intentionally reopened.",
-      };
-    case "runtime_runtime_capability_boundary":
-      return {
-        artifactStage: "runtime.runtime_capability_boundary.opened",
-        artifactNextLegalStep:
-          (!input.callableIntegration && !input.capabilityBoundary?.linkedCallableStubPath)
-            ? "Explicitly review the bounded runtime capability boundary and, if justified, open one non-executing promotion-readiness artifact; host-facing promotion and runtime execution remain closed."
-            : "No automatic Runtime step is open; callable implementation, host integration, and runtime execution remain intentionally unopened.",
-      };
-    case "runtime_promotion_readiness":
-      return {
-        artifactStage: "runtime.promotion_readiness.opened",
-        artifactNextLegalStep: "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.",
-      };
-    case "runtime_callable_integration":
-      return {
-        artifactStage: "runtime.callable_stub.not_implemented",
-        artifactNextLegalStep: "No automatic Runtime step is open; bounded runtime conversion remains explicit and non-executing.",
-      };
-    default:
-      return {
-        artifactStage: "runtime.unknown",
-        artifactNextLegalStep: "Inspect the Runtime artifact chain directly.",
-      };
-  }
-}
-
-function resolveRuntimeFocusFromAnyPath(input: {
-  directiveRoot: string;
-  artifactPath: string;
-}) {
-  const relativePath = resolveDirectiveRelativePath(input.directiveRoot, input.artifactPath, "artifactPath");
-
-  let followUp: DirectiveRuntimeFollowUpArtifact | null = null;
-  let runtimeRecord: GenericRuntimeRecordArtifact | null = null;
-  let runtimeProof: GenericRuntimeProofArtifact | null = null;
-  let capabilityBoundary: GenericRuntimeRuntimeCapabilityBoundaryArtifact | null = null;
-  let promotionReadiness: GenericRuntimePromotionReadinessArtifact | null = null;
-  let callableIntegration: ReturnType<typeof readGenericCallableIntegrationArtifact> | null = null;
-  let artifactKind: DirectiveWorkspaceArtifactKind = "unknown";
-
-  if (relativePath.startsWith("runtime/follow-up/")) {
-    followUp = readDirectiveRuntimeFollowUpArtifact({
-      directiveRoot: input.directiveRoot,
-      followUpPath: relativePath,
-    });
-    artifactKind = "runtime_follow_up";
-    if (followUp.runtimeRecordExists) {
-      runtimeRecord = readGenericRuntimeRecordArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeRecordPath: followUp.runtimeRecordRelativePath,
-      });
-    }
-  } else if (relativePath.startsWith("runtime/02-records/")) {
-    runtimeRecord = readGenericRuntimeRecordArtifact({
-      directiveRoot: input.directiveRoot,
-      runtimeRecordPath: relativePath,
-    });
-    artifactKind =
-      runtimeRecord.kind === "follow_up_review"
-        ? "runtime_record_follow_up_review"
-        : "runtime_record_callable_integration";
-    followUp = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: runtimeRecord.linkedFollowUpRecord,
-      read: (followUpPath) => readDirectiveRuntimeFollowUpArtifact({
-        directiveRoot: input.directiveRoot,
-        followUpPath,
-      }),
-    });
-  } else if (relativePath.startsWith("runtime/03-proof/")) {
-    runtimeProof = readGenericRuntimeProofArtifact({
-      directiveRoot: input.directiveRoot,
-      runtimeProofPath: relativePath,
-    });
-    artifactKind =
-      runtimeProof.kind === "follow_up_review"
-        ? "runtime_proof_follow_up_review"
-        : "runtime_proof_callable_integration";
-    runtimeRecord = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: runtimeProof.linkedRuntimeRecordPath,
-      read: (runtimeRecordPath) => readGenericRuntimeRecordArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeRecordPath,
-      }),
-    });
-    followUp = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: runtimeProof.linkedFollowUpPath,
-      read: (followUpPath) => readDirectiveRuntimeFollowUpArtifact({
-        directiveRoot: input.directiveRoot,
-        followUpPath,
-      }),
-    });
-  } else if (relativePath.startsWith("runtime/04-capability-boundaries/")) {
-    capabilityBoundary = readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
-      directiveRoot: input.directiveRoot,
-      capabilityBoundaryPath: relativePath,
-    });
-    artifactKind = "runtime_runtime_capability_boundary";
-    runtimeProof = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: capabilityBoundary.linkedRuntimeProofPath,
-      read: (runtimeProofPath) => readGenericRuntimeProofArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeProofPath,
-      }),
-    });
-    runtimeRecord = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: capabilityBoundary.linkedRuntimeRecordPath,
-      read: (runtimeRecordPath) => readGenericRuntimeRecordArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeRecordPath,
-      }),
-    });
-    if (capabilityBoundary.linkedCallableStubPath && fileExistsInDirectiveWorkspace(input.directiveRoot, capabilityBoundary.linkedCallableStubPath)) {
-      callableIntegration = readGenericCallableIntegrationArtifact({
-        directiveRoot: input.directiveRoot,
-        callablePath: capabilityBoundary.linkedCallableStubPath,
-      });
-    }
-  } else if (relativePath.startsWith("runtime/05-promotion-readiness/")) {
-    promotionReadiness = readGenericRuntimePromotionReadinessArtifact({
-      directiveRoot: input.directiveRoot,
-      promotionReadinessPath: relativePath,
-    });
-    artifactKind = "runtime_promotion_readiness";
-    capabilityBoundary = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: promotionReadiness.linkedCapabilityBoundaryPath,
-      read: (capabilityBoundaryPath) => readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
-        directiveRoot: input.directiveRoot,
-        capabilityBoundaryPath,
-      }),
-    });
-    runtimeProof = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: promotionReadiness.linkedRuntimeProofPath,
-      read: (runtimeProofPath) => readGenericRuntimeProofArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeProofPath,
-      }),
-    });
-    runtimeRecord = readLinkedArtifactIfPresent({
-      directiveRoot: input.directiveRoot,
-      relativePath: promotionReadiness.linkedRuntimeRecordPath,
-      read: (runtimeRecordPath) => readGenericRuntimeRecordArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeRecordPath,
-      }),
-    });
-    if (
-      promotionReadiness.linkedCallableStubPath
-      && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedCallableStubPath)
-    ) {
-      callableIntegration = readGenericCallableIntegrationArtifact({
-        directiveRoot: input.directiveRoot,
-        callablePath: promotionReadiness.linkedCallableStubPath,
-      });
-    }
-  } else if (relativePath.startsWith("runtime/01-callable-integrations/")) {
-    callableIntegration = readGenericCallableIntegrationArtifact({
-      directiveRoot: input.directiveRoot,
-      callablePath: relativePath,
-    });
-    artifactKind = "runtime_callable_integration";
-    if (callableIntegration.runtimeRecordRelativePath && fileExistsInDirectiveWorkspace(input.directiveRoot, callableIntegration.runtimeRecordRelativePath)) {
-      runtimeRecord = readGenericRuntimeRecordArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeRecordPath: callableIntegration.runtimeRecordRelativePath,
-      });
-    }
-    if (callableIntegration.runtimeProofRelativePath && fileExistsInDirectiveWorkspace(input.directiveRoot, callableIntegration.runtimeProofRelativePath)) {
-      runtimeProof = readGenericRuntimeProofArtifact({
-        directiveRoot: input.directiveRoot,
-        runtimeProofPath: callableIntegration.runtimeProofRelativePath,
-      });
-    }
-    if (
-      callableIntegration.runtimeRuntimeCapabilityBoundaryPath
-      && fileExistsInDirectiveWorkspace(input.directiveRoot, callableIntegration.runtimeRuntimeCapabilityBoundaryPath)
-    ) {
-      capabilityBoundary = readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
-        directiveRoot: input.directiveRoot,
-        capabilityBoundaryPath: callableIntegration.runtimeRuntimeCapabilityBoundaryPath,
-      });
-    }
-  } else {
-    throw new Error(`unsupported Runtime artifact path: ${relativePath}`);
-  }
-
-  if (runtimeRecord?.linkedFollowUpRecord && !followUp && fileExistsInDirectiveWorkspace(input.directiveRoot, runtimeRecord.linkedFollowUpRecord)) {
-    followUp = readDirectiveRuntimeFollowUpArtifact({
-      directiveRoot: input.directiveRoot,
-      followUpPath: runtimeRecord.linkedFollowUpRecord,
-    });
-  }
-  if (runtimeRecord?.runtimeProofRelativePath && !runtimeProof && fileExistsInDirectiveWorkspace(input.directiveRoot, runtimeRecord.runtimeProofRelativePath)) {
-    runtimeProof = readGenericRuntimeProofArtifact({
-      directiveRoot: input.directiveRoot,
-      runtimeProofPath: runtimeRecord.runtimeProofRelativePath,
-    });
-  }
-  if (
-    runtimeProof?.runtimeRuntimeCapabilityBoundaryPath
-    && !capabilityBoundary
-    && fileExistsInDirectiveWorkspace(input.directiveRoot, runtimeProof.runtimeRuntimeCapabilityBoundaryPath)
-  ) {
-    capabilityBoundary = readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
-      directiveRoot: input.directiveRoot,
-      capabilityBoundaryPath: runtimeProof.runtimeRuntimeCapabilityBoundaryPath,
-    });
-  }
-  if (!capabilityBoundary) {
-    const inferredCapabilityBoundaryPath = inferRuntimeRuntimeCapabilityBoundaryPathFromProof({
-      directiveRoot: input.directiveRoot,
-      runtimeProofRelativePath: runtimeProof?.runtimeProofRelativePath ?? runtimeRecord?.runtimeProofRelativePath ?? null,
-    });
-    if (inferredCapabilityBoundaryPath) {
-      capabilityBoundary = readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
-        directiveRoot: input.directiveRoot,
-        capabilityBoundaryPath: inferredCapabilityBoundaryPath,
-      });
-    }
-  }
-  if (!promotionReadiness) {
-    const inferredPromotionReadinessPath = inferRuntimePromotionReadinessPathFromCapabilityBoundary({
-      directiveRoot: input.directiveRoot,
-      capabilityBoundaryPath: capabilityBoundary?.runtimeRuntimeCapabilityBoundaryPath ?? null,
-    });
-    if (inferredPromotionReadinessPath) {
-      promotionReadiness = readGenericRuntimePromotionReadinessArtifact({
-        directiveRoot: input.directiveRoot,
-        promotionReadinessPath: inferredPromotionReadinessPath,
-      });
-    }
-  }
-
-  const candidateId =
-    promotionReadiness?.candidateId
-    ?? capabilityBoundary?.candidateId
-    ?? runtimeProof?.candidateId
-    ?? runtimeRecord?.candidateId
-    ?? followUp?.candidateId
-    ?? callableIntegration?.candidateId
-    ?? null;
-  const candidateName =
-    promotionReadiness?.candidateName
-    ?? runtimeProof?.candidateName
-    ?? runtimeRecord?.candidateName
-    ?? followUp?.candidateName
-    ?? (capabilityBoundary?.title
-      ? capabilityBoundary.title
-        .replace(/^Runtime V0 Runtime Capability Boundary:\s*/u, "")
-        .replace(/\s+\(\d{4}-\d{2}-\d{2}\)\s*$/u, "")
-        .trim()
-      : null)
-    ?? null;
-
-  return {
-    artifactKind,
-    candidateId,
-    candidateName,
-    runtimeRecord,
-    runtimeProof,
-    capabilityBoundary,
-    promotionReadiness,
-    callableIntegration,
-    ...buildRuntimeState({
-      directiveRoot: input.directiveRoot,
-      followUp,
-      runtimeRecord,
-      runtimeProof,
-      capabilityBoundary,
-      promotionReadiness,
-      callableIntegration,
-    }),
-  };
-}
-
 function buildOverviewAnchors(directiveRoot: string): DirectiveWorkspaceAnchorSummary[] {
   const candidates: string[] = [];
 
@@ -2536,15 +1243,33 @@ function resolveDiscoveryFocus(input: {
     state: { missingExpectedArtifacts, inconsistentLinks },
     relativePath: routing.requiredNextArtifact,
   });
+  const requiredNextArtifactIsConcrete = isDirectiveWorkspaceArtifactReference(routing.requiredNextArtifact);
+  const requiredNextArtifactExists =
+    requiredNextArtifactIsConcrete
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, routing.requiredNextArtifact);
+  if (requiredNextArtifactIsConcrete && !routing.downstreamStubRelativePath && !requiredNextArtifactExists) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `missing required downstream artifact for legal next step: ${routing.requiredNextArtifact}`,
+    );
+  }
   if (queueEntry?.routing_target && queueEntry.routing_target !== routing.routeDestination) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
       `queue routing target "${queueEntry.routing_target}" does not match Discovery route "${routing.routeDestination}"`,
     );
   }
+  const documentsOperatorOverride =
+    /operator override/i.test(routing.whyThisRoute)
+    && queueEntry?.routing_target === routing.routeDestination;
+  const engineSelectionMatchesDiscoveryHeldRoute =
+    engineRun?.record.selectedLane?.laneId === "discovery"
+    && isDiscoveryHeldRouteDestination(routing.routeDestination);
   if (
     engineRun?.record.selectedLane?.laneId
     && engineRun.record.selectedLane.laneId !== routing.routeDestination
+    && !engineSelectionMatchesDiscoveryHeldRoute
+    && !documentsOperatorOverride
   ) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
@@ -2553,11 +1278,18 @@ function resolveDiscoveryFocus(input: {
   }
 
   let downstream: DirectiveWorkspaceResolvedFocus | null = null;
-  if (routing.downstreamStubRelativePath) {
+  const discoveryHeldDownstreamPath =
+    !routing.downstreamStubRelativePath
+      && routing.routeDestination === "monitor"
+      && queueEntry?.result_record_path?.startsWith("discovery/monitor/")
+      ? queueEntry.result_record_path
+      : null;
+  const downstreamResolutionPath = routing.downstreamStubRelativePath ?? discoveryHeldDownstreamPath;
+  if (downstreamResolutionPath) {
     try {
       downstream = resolveDirectiveWorkspaceState({
         directiveRoot: input.directiveRoot,
-        artifactPath: routing.downstreamStubRelativePath,
+        artifactPath: downstreamResolutionPath,
         includeAnchors: false,
       }).focus;
     } catch (error) {
@@ -2565,14 +1297,27 @@ function resolveDiscoveryFocus(input: {
       const message = error instanceof Error ? error.message : "unknown downstream resolution failure";
       recordInconsistentLink(
         { missingExpectedArtifacts, inconsistentLinks },
-        `unable to resolve downstream artifact "${routing.downstreamStubRelativePath}": ${message}`,
+        `unable to resolve downstream artifact "${downstreamResolutionPath}": ${message}`,
       );
     }
   }
-  if (downstream && downstream.lane !== routing.routeDestination) {
+  const downstreamMatchesDiscoveryHeldRoute =
+    downstream?.lane === "discovery"
+    && isDiscoveryHeldRouteDestination(routing.routeDestination);
+  if (downstream && downstream.lane !== routing.routeDestination && !downstreamMatchesDiscoveryHeldRoute) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
       `downstream artifact lane "${downstream.lane}" does not match Discovery route "${routing.routeDestination}"`,
+    );
+  }
+  if (
+    requiredNextArtifactIsConcrete
+    && routing.downstreamStubRelativePath
+    && routing.requiredNextArtifact !== routing.downstreamStubRelativePath
+  ) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `required downstream artifact "${routing.requiredNextArtifact}" does not match resolved downstream stub "${routing.downstreamStubRelativePath}"`,
     );
   }
 
@@ -2615,6 +1360,7 @@ function resolveDiscoveryFocus(input: {
     linkedArtifacts,
     discovery: {
       queueStatus: queueEntry?.status ?? null,
+      operatingMode: queueEntry?.operating_mode ?? null,
       routingDecision: routing.decisionState,
       usefulnessLevel: routing.usefulnessLevel,
       usefulnessRationale: routing.usefulnessRationale,
@@ -2627,7 +1373,127 @@ function resolveDiscoveryFocus(input: {
       proofKind: engineRun?.record.proofPlan?.proofKind ?? null,
       nextAction: engineRun?.record.integrationProposal?.nextAction ?? null,
     },
-  } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState">);
+  } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">);
+}
+
+function resolveDiscoveryMonitorFocus(input: {
+  directiveRoot: string;
+  artifactPath: string;
+}) {
+  const monitor = readGenericDiscoveryMonitorArtifact({
+    directiveRoot: input.directiveRoot,
+    monitorPath: input.artifactPath,
+  });
+  const queueEntry = findQueueEntryByCandidateId(input.directiveRoot, monitor.candidateId);
+  const engineRun = findLatestEngineRunByCandidateId(input.directiveRoot, monitor.candidateId);
+  const routingArtifact = readLinkedArtifactIfPresent({
+    directiveRoot: input.directiveRoot,
+    relativePath: monitor.linkedRoutingRecord,
+    read: (routingPath) => readDirectiveDiscoveryRoutingArtifact({
+      directiveRoot: input.directiveRoot,
+      routingPath,
+    }),
+  });
+
+  const linkedArtifacts = zeroLinkedArtifacts();
+  linkedArtifacts.discoveryMonitorPath = monitor.monitorRelativePath;
+  linkedArtifacts.discoveryIntakePath = monitor.linkedIntakeRecord;
+  linkedArtifacts.discoveryTriagePath = monitor.linkedTriageRecord;
+  linkedArtifacts.discoveryRoutingPath = monitor.linkedRoutingRecord;
+  linkedArtifacts.engineRunRecordPath = engineRun?.recordRelativePath ?? null;
+  linkedArtifacts.engineRunReportPath = engineRun?.reportRelativePath ?? null;
+
+  const missingExpectedArtifacts: string[] = [];
+  const inconsistentLinks: string[] = [];
+  recordMissingLinkedArtifactIfAbsent({
+    directiveRoot: input.directiveRoot,
+    state: { missingExpectedArtifacts, inconsistentLinks },
+    relativePath: monitor.linkedIntakeRecord,
+    label: "Discovery intake record",
+  });
+  if (monitor.linkedTriageRecord) {
+    recordMissingLinkedArtifactIfAbsent({
+      directiveRoot: input.directiveRoot,
+      state: { missingExpectedArtifacts, inconsistentLinks },
+      relativePath: monitor.linkedTriageRecord,
+      label: "Discovery triage record",
+    });
+  }
+  recordMissingLinkedArtifactIfAbsent({
+    directiveRoot: input.directiveRoot,
+    state: { missingExpectedArtifacts, inconsistentLinks },
+    relativePath: monitor.linkedRoutingRecord,
+    label: "Discovery routing record",
+  });
+
+  if (queueEntry?.routing_target && queueEntry.routing_target !== "monitor") {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `queue routing target "${queueEntry.routing_target}" does not match Discovery monitor state`,
+    );
+  }
+  if (queueEntry?.result_record_path && queueEntry.result_record_path !== monitor.monitorRelativePath) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `queue result record "${queueEntry.result_record_path}" does not match Discovery monitor artifact "${monitor.monitorRelativePath}"`,
+    );
+  }
+  if (engineRun?.record.selectedLane?.laneId && engineRun.record.selectedLane.laneId !== "discovery") {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `Engine selected lane "${engineRun.record.selectedLane.laneId}" does not match Discovery monitor state`,
+    );
+  }
+  if (routingArtifact?.routeDestination && routingArtifact.routeDestination !== "monitor") {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `linked Discovery route "${routingArtifact.routeDestination}" does not match monitor artifact`,
+    );
+  }
+
+  return finalizeResolvedFocus({
+    ok: true,
+    directiveRoot: input.directiveRoot,
+    artifactPath: monitor.monitorRelativePath,
+    artifactKind: "discovery_monitor_record" as const,
+    lane: "discovery" as const,
+    candidateId: monitor.candidateId,
+    candidateName: monitor.candidateName,
+    artifactStage: "discovery.monitor.active",
+    artifactNextLegalStep:
+      "Keep the source in Discovery monitor until a later explicit reroute decision is justified.",
+    currentStage: "discovery.monitor.active",
+    nextLegalStep:
+      "Keep the source in Discovery monitor until a later explicit reroute decision is justified.",
+    routeTarget: "monitor",
+    statusGate: monitor.currentDecisionState,
+    missingExpectedArtifacts,
+    inconsistentLinks,
+    intentionallyUnbuiltDownstreamStages: [
+      "automatic downstream advancement",
+      "runtime execution",
+      "lifecycle orchestration",
+    ],
+    linkedArtifacts,
+    discovery: {
+      queueStatus: queueEntry?.status ?? null,
+      operatingMode: queueEntry?.operating_mode ?? null,
+      routingDecision: routingArtifact?.decisionState ?? "monitor",
+      usefulnessLevel: routingArtifact?.usefulnessLevel ?? engineRun?.record.candidate.usefulnessLevel ?? null,
+      usefulnessRationale:
+        routingArtifact?.usefulnessRationale
+        ?? engineRun?.record.analysis.usefulnessRationale
+        ?? monitor.whyKeptInMonitor,
+      requiredNextArtifact: queueEntry?.result_record_path ?? monitor.monitorRelativePath,
+    },
+    engine: {
+      runId: engineRun?.record.runId ?? null,
+      selectedLane: engineRun?.record.selectedLane?.laneId ?? null,
+      decisionState: engineRun?.record.decision?.decisionState ?? null,
+      proofKind: engineRun?.record.proofPlan?.proofKind ?? null,
+      nextAction: engineRun?.record.integrationProposal?.nextAction ?? null,
+    },
+  } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">);
 }
 
 function resolveEngineFocus(input: {
@@ -2670,6 +1536,7 @@ function resolveEngineFocus(input: {
     linkedArtifacts,
     discovery: {
       queueStatus: queueEntry?.status ?? null,
+      operatingMode: queueEntry?.operating_mode ?? null,
       routingDecision: queueEntry?.routing_target ?? null,
       usefulnessLevel: record.candidate.usefulnessLevel,
       usefulnessRationale: record.analysis.usefulnessRationale,
@@ -2682,7 +1549,7 @@ function resolveEngineFocus(input: {
       proofKind: record.proofPlan.proofKind,
       nextAction: record.integrationProposal.nextAction,
     },
-  } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState">);
+  } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">);
 }
 
 export function resolveDirectiveWorkspaceState(input: {
@@ -2703,6 +1570,11 @@ export function resolveDirectiveWorkspaceState(input: {
     const artifactPath = resolveDirectiveRelativePath(directiveRoot, input.artifactPath, "artifactPath");
     if (artifactPath.startsWith("discovery/routing-log/")) {
       focus = resolveDiscoveryFocus({
+        directiveRoot,
+        artifactPath,
+      });
+    } else if (artifactPath.startsWith("discovery/monitor/")) {
+      focus = resolveDiscoveryMonitorFocus({
         directiveRoot,
         artifactPath,
       });
@@ -2729,6 +1601,23 @@ export function resolveDirectiveWorkspaceState(input: {
       const linkedArtifacts = architecture.linked;
       linkedArtifacts.discoveryIntakePath = queueEntry?.intake_record_path ?? null;
       linkedArtifacts.discoveryRoutingPath = queueEntry?.routing_record_path ?? linkedArtifacts.discoveryRoutingPath;
+      const routingArtifact = linkedArtifacts.discoveryRoutingPath
+        ? readLinkedArtifactIfPresent({
+            directiveRoot,
+            relativePath: linkedArtifacts.discoveryRoutingPath,
+            read: (routingPath) => readDirectiveDiscoveryRoutingArtifact({
+              directiveRoot,
+              routingPath,
+            }),
+          })
+        : null;
+      linkedArtifacts.discoveryIntakePath =
+        linkedArtifacts.discoveryIntakePath
+        ?? routingArtifact?.linkedIntakeRecord
+        ?? null;
+      linkedArtifacts.discoveryTriagePath =
+        routingArtifact?.linkedTriageRecord
+        ?? linkedArtifacts.discoveryTriagePath;
       linkedArtifacts.engineRunRecordPath = engineRun?.recordRelativePath ?? null;
       linkedArtifacts.engineRunReportPath = engineRun?.reportRelativePath ?? null;
 
@@ -2752,10 +1641,14 @@ export function resolveDirectiveWorkspaceState(input: {
         linkedArtifacts,
         discovery: {
           queueStatus: queueEntry?.status ?? null,
-          routingDecision: queueEntry?.routing_target ?? null,
-          usefulnessLevel: engineRun?.record.candidate.usefulnessLevel ?? null,
-          usefulnessRationale: engineRun?.record.analysis.usefulnessRationale ?? null,
-          requiredNextArtifact: queueEntry?.result_record_path ?? null,
+          operatingMode: queueEntry?.operating_mode ?? null,
+          routingDecision: routingArtifact?.routeDestination ?? queueEntry?.routing_target ?? null,
+          usefulnessLevel: routingArtifact?.usefulnessLevel ?? engineRun?.record.candidate.usefulnessLevel ?? null,
+          usefulnessRationale:
+            routingArtifact?.usefulnessRationale
+            ?? engineRun?.record.analysis.usefulnessRationale
+            ?? null,
+          requiredNextArtifact: routingArtifact?.requiredNextArtifact ?? queueEntry?.result_record_path ?? null,
         },
         engine: {
           runId: engineRun?.record.runId ?? null,
@@ -2772,6 +1665,23 @@ export function resolveDirectiveWorkspaceState(input: {
       });
       const runtimeArtifactStage = buildRuntimeArtifactStage({
         artifactKind: runtime.artifactKind,
+        legacyFollowUp: runtime.legacyFollowUp ?? null,
+        legacyHandoff: runtime.legacyHandoff ?? null,
+        legacyRuntimeRecord: runtime.legacyRuntimeRecord ?? null,
+        legacyRuntimeSliceProof: runtime.legacyRuntimeSliceProof ?? null,
+        legacyRuntimeSliceExecution: runtime.legacyRuntimeSliceExecution ?? null,
+        legacyRuntimeProofChecklist: runtime.legacyRuntimeProofChecklist ?? null,
+        legacyRuntimeLiveFetchProof: runtime.legacyRuntimeLiveFetchProof ?? null,
+        legacyRuntimeLiveFetchGateSnapshot: runtime.legacyRuntimeLiveFetchGateSnapshot ?? null,
+        legacyRuntimeLivePoolArtifact: runtime.legacyRuntimeLivePoolArtifact ?? null,
+        legacyRuntimeSamplePoolArtifact: runtime.legacyRuntimeSamplePoolArtifact ?? null,
+        legacyRuntimeSystemBundleArtifact: runtime.legacyRuntimeSystemBundleArtifact ?? null,
+        legacyRuntimeValidationNoteArtifact: runtime.legacyRuntimeValidationNoteArtifact ?? null,
+        legacyRuntimePreconditionDecisionNoteArtifact: runtime.legacyRuntimePreconditionDecisionNoteArtifact ?? null,
+        legacyRuntimeTransformationRecord: runtime.legacyRuntimeTransformationRecord ?? null,
+        legacyRuntimeTransformationProof: runtime.legacyRuntimeTransformationProof ?? null,
+        legacyRuntimeRegistry: runtime.legacyRuntimeRegistry ?? null,
+        legacyRuntimePromotionRecord: runtime.legacyRuntimePromotionRecord ?? null,
         runtimeRecord: runtime.runtimeRecord ?? null,
         runtimeProof: runtime.runtimeProof ?? null,
         capabilityBoundary: runtime.capabilityBoundary ?? null,
@@ -2805,6 +1715,7 @@ export function resolveDirectiveWorkspaceState(input: {
         linkedArtifacts,
         discovery: {
           queueStatus: queueEntry?.status ?? null,
+          operatingMode: queueEntry?.operating_mode ?? null,
           routingDecision: queueEntry?.routing_target ?? null,
           usefulnessLevel: engineRun?.record.candidate.usefulnessLevel ?? null,
           usefulnessRationale: engineRun?.record.analysis.usefulnessRationale ?? null,
@@ -2818,7 +1729,7 @@ export function resolveDirectiveWorkspaceState(input: {
           nextAction: engineRun?.record.integrationProposal?.nextAction ?? null,
         },
         runtime: {
-          proposedHost: runtime.promotionReadiness?.proposedHost ?? null,
+          proposedHost: runtime.promotionReadiness?.proposedHost ?? runtime.legacyProposedHost ?? null,
           executionState: runtime.promotionReadiness?.executionState ?? null,
           promotionReadinessBlockers: buildRuntimePromotionReadinessBlockers({
             promotionReadiness: runtime.promotionReadiness ?? null,
@@ -2855,3 +1766,4 @@ export function resolveDirectiveWorkspaceState(input: {
     focus,
   };
 }
+

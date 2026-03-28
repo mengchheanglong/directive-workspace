@@ -1,0 +1,14 @@
+{
+  "decisionFormat": "directive-architecture-adoption-decision-1.0",
+  "candidateId": "dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28",
+  "candidateName": "Legacy Runtime Mini-SWE Fallback Rehearsal Focus Compatibility",
+  "verdict": "adopt",
+  "completionStatus": "product_partial",
+  "readinessPassed": true,
+  "runtimeHandoffRequired": false,
+  "runtimeHandoffRationale": "none recorded",
+  "primaryEvidencePath": "shared/lib/dw-state.ts",
+  "selfImprovementCategory": "evaluation_quality",
+  "verificationMethod": "structural_inspection",
+  "verificationResult": "confirmed"
+}

@@ -3,6 +3,7 @@ import path from "node:path";
 
 import {
   normalizeDirectiveApprovalActor,
+  requireDirectiveCurrentStageForOpening,
   normalizeDirectiveWorkspaceRoot,
   requireDirectiveEligibleStatus,
   requireDirectiveExplicitApproval,
@@ -273,6 +274,12 @@ export function openDirectiveRuntimeRecordProof(input: {
     runtimeRecordPath: input.runtimeRecordPath,
   });
 
+  requireDirectiveCurrentStageForOpening({
+    directiveRoot,
+    artifactPath: artifact.runtimeRecordRelativePath,
+    subject: "Runtime v0 record",
+    allowedCurrentStages: ["runtime.record."],
+  });
   requireDirectiveEligibleStatus({
     subject: "Runtime v0 record",
     currentStatus: artifact.currentStatus,

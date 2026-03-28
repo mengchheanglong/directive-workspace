@@ -1,0 +1,24 @@
+# Discovery Triage Record: ts-edge Type-Safe Graph Workflow Engine
+
+- Candidate id: dw-source-ts-edge-2026-03-27
+- Candidate name: ts-edge Type-Safe Graph Workflow Engine
+- Triage date: 2026-03-27
+- First-pass summary: Lightweight TypeScript graph-based workflow engine with compile-time type-safe node chaining. Directly addresses the Engine pipeline gap where planning stages receive the same flat input instead of chaining outputs. The typed-graph pattern (addNode/edge/compile/run) maps to the Engine processSource stages with output-to-input type enforcement between connected nodes.
+- Problem it appears to solve: Improve Engine orchestration so planning stages can chain typed outputs into later stages instead of reusing one flat planning input.
+- Extractable value hypothesis: Lightweight TypeScript graph-based workflow engine with compile-time type-safe node chaining. Directly addresses the Engine pipeline gap where planning stages receive the same flat input instead of chaining outputs. The typed-graph pattern (addNode/edge/compile/run) maps to the Engine processSource stages with output-to-input type enforcement between connected nodes. | TypeScript-native, MIT license, zero runtime deps (only ts-safe). ~8 core source files. Builder pattern: createGraph().addNode().edge().compile().run(). Supports branching, parallel execution, merge nodes, middleware, streaming, state management. The extracted value is the typed-graph-with-chaining pattern for Engine stage orchestration, not the library as a dependency.
+- Routing recommendation: Shared Engine routing initially selected runtime with usefulness level direct, but operator review overrides the case to Architecture because the retained value is Engine-owned pipeline orchestration, not reusable runtime capability.
+- Proposed adoption target: engine-owned pipeline orchestration pattern
+- Stack-shape summary: github-repo source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib. Excluded baggage: source-specific implementation baggage, host-local assumptions from the original source.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Structural usefulness: the candidate's retained value is an Engine-owned orchestration pattern for typed stage-to-stage chaining inside `processSource()`, not a reusable runtime capability.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: medium
+- Can current gates validate it safely: partially - a bounded Architecture experiment can validate the structural value without opening DEEP implementation, but human review still decides whether to advance.
+- Immediate risks: adaptation_complete, engine_boundary_preserved, decision_review
+- Missing evidence: executed Engine delta proof, bounded refactor shape, explicit excluded-baggage boundary for a later DEEP implementation
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the result experimental and do not open DEEP implementation until a later explicit decision upgrades the case.
+- Next action: Open a bounded Architecture experiment to clarify whether typed stage chaining warrants a later DEEP Engine refactor target.
+- Linked intake record: discovery/intake/2026-03-27-dw-source-ts-edge-2026-03-27-intake.md

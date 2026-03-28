@@ -37,6 +37,12 @@ Materialize the adapted mechanism as engine-owned product logic before any host-
   - `engine_boundary_preserved`
   - `decision_review`
 
+## Lifecycle classification
+
+- Origin: `source-driven`
+- Usefulness level: `meta`
+- Runtime threshold check: Would this mechanism still be valuable without a runtime surface? `yes`
+
 ## Rollback
 
 Keep the result at experiment status and do not integrate it into the engine until the adaptation boundary is clearer.

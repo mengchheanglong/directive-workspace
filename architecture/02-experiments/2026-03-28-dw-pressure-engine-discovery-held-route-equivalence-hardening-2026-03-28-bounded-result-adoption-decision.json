@@ -1,0 +1,18 @@
+{
+  "candidate_id": "dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28",
+  "candidate_name": "Engine Discovery-Held Route Equivalence Hardening",
+  "decision": "adopt",
+  "final_status": "adopt_planned_next",
+  "usefulness_level": "meta",
+  "artifact_type": "shared-lib",
+  "readiness": {
+    "bounded_scope_kept": true,
+    "mechanical_success_criteria_met": true,
+    "delta_evidence_present": true,
+    "adaptation_decision_complete": true
+  },
+  "notes": [
+    "Discovery-held route destinations now resolve as compatible with Engine lane discovery.",
+    "The slice stays limited to Discovery route integrity validation."
+  ]
+}

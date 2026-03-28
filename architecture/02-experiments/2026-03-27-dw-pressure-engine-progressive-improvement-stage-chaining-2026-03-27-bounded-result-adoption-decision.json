@@ -1,0 +1,34 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-progressive-improvement-stage-chaining-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-27-dw-pressure-engine-progressive-improvement-stage-chaining-2026-03-27-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-experiments/2026-03-27-dw-pressure-engine-progressive-improvement-stage-chaining-2026-03-27-bounded-result.md",
+  "primary_evidence_path": "engine/directive-engine.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "adaptation_quality",
+    "claim": "Directive Workspace can improve Engine planning quality by making improvement planning consume typed extraction and adaptation output instead of flattening that stage onto the same base planning input.",
+    "mechanism": "This DEEP bounded result turns the already-landed extraction-to-adaptation seam into a second bounded Architecture implementation target for improvement-stage chaining.",
+    "baseline_observation": "Before this DEEP case, the Engine improvement plan still used only planningInput even though extraction and adaptation already produced typed output inside processSource().",
+    "expected_effect": "The Engine can now carry forward earlier stage boundaries into improvement planning without touching proof or integration planning in the same slice.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The current Engine shape justifies one bounded improvement-stage chaining slice as the next product-owned Architecture implementation target.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

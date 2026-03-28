@@ -1,0 +1,23 @@
+# Discovery Intake Record: Paper2Code Multi-Agent Code Generation System
+
+- Candidate id: dw-source-paper2code-2026-03-27
+- Candidate name: Paper2Code Multi-Agent Code Generation System
+- Intake date: 2026-03-27
+- Source type: github-repo
+- Source reference: sources/intake/Paper2Code
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Multi-agent system that transforms academic papers into functional code repositories using a 3-stage pipeline (planning, analysis, code generation). Relevant to Directive Workspace's core mission of automated source-to-usefulness conversion — the pipeline architecture, agent coordination patterns, and structured extraction workflow are directly applicable to improving Engine's source consumption and adaptation capabilities.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 3480346a-2057-473e-ad5a-ec1552c065c1 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-27-dw-source-paper2code-2026-03-27-triage.md

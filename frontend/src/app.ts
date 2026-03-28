@@ -12,6 +12,8 @@ type FrontendQueueEntry = {
   candidate_id: string;
   candidate_name: string;
   status: string;
+  status_effective: string;
+  status_warning: string | null;
   routing_target: string | null;
   routing_record_path?: string | null;
   result_record_path: string | null;
@@ -31,7 +33,12 @@ type FrontendQueueOverview = {
 };
 
 type FrontendHandoffStub = {
-  kind: "architecture_handoff" | "architecture_handoff_invalid" | "runtime_follow_up";
+  kind:
+    | "architecture_handoff"
+    | "architecture_handoff_invalid"
+    | "runtime_follow_up"
+    | "runtime_follow_up_legacy"
+    | "runtime_handoff_legacy";
   lane: "architecture" | "runtime";
   relativePath: string;
   candidateId: string;
@@ -88,6 +95,50 @@ type FrontendRuntimeFollowUpDetail = {
   runtimeRecordRelativePath?: string;
   runtimeRecordExists?: boolean;
   approvalAllowed?: boolean;
+};
+
+type FrontendLegacyRuntimeFollowUpDetail = {
+  ok: boolean;
+  error?: string;
+  kind?: "runtime_follow_up_legacy";
+  relativePath?: string;
+  content?: string;
+  title?: string;
+  candidateId?: string;
+  candidateName?: string;
+  currentDecisionState?: string | null;
+  runtimeValueToOperationalize?: string;
+  proposedHost?: string;
+  proposedIntegrationMode?: string | null;
+  reentryContractPath?: string | null;
+  currentStatus?: string | null;
+  reviewCadence?: string | null;
+  requiredProof?: string[];
+  requiredGates?: string[];
+  rollbackNote?: string | null;
+};
+
+type FrontendLegacyRuntimeHandoffDetail = {
+  ok: boolean;
+  error?: string;
+  kind?: "runtime_handoff_legacy";
+  relativePath?: string;
+  content?: string;
+  title?: string;
+  candidateId?: string;
+  candidateName?: string;
+  handoffType?: string | null;
+  runtimeValueToOperationalize?: string;
+  proposedHost?: string;
+  proposedRuntimeSurface?: string;
+  originatingArchitectureRecordPath?: string | null;
+  mixedValuePartitionRef?: string | null;
+  runtimeFollowUpPath?: string | null;
+  runtimeRecordPath?: string | null;
+  runtimeProofPath?: string | null;
+  promotionRecordPath?: string | null;
+  registryEntryPath?: string | null;
+  qualityGateResult?: string | null;
 };
 
 type FrontendRuntimeRecordDetail = {
@@ -170,6 +221,12 @@ type FrontendRuntimePromotionReadinessDetail = {
   promotionReadinessDecision?: string;
   hostFacingPromotionDecision?: string;
   frontendCapabilityDecision?: string;
+  openedRuntimeImplementationSlicePath?: string | null;
+  prePromotionImplementationSlicePath?: string | null;
+  promotionInputPackagePath?: string | null;
+  profileCheckerDecisionPath?: string | null;
+  compileContractPath?: string | null;
+  promotionGoNoGoDecisionPath?: string | null;
   linkedCapabilityBoundaryPath?: string;
   linkedRuntimeProofPath?: string;
   linkedRuntimeRecordPath?: string;
@@ -879,6 +936,7 @@ class DirectiveFrontendApp extends LitElement {
       : entry.routing_target === "architecture"
         ? "architecture"
         : "default";
+    const statusTone = entry.status_effective !== entry.status ? "warning" : "default";
     const integrityTone = entry.integrity_state === "broken" ? "warning" : "default";
     const head = entry.current_head;
     const engineRunHref = run ? `/engine-runs/${encodeURIComponent(run.runId)}` : null;
@@ -897,7 +955,7 @@ class DirectiveFrontendApp extends LitElement {
             <div class="queue-card-subtitle mono">${entry.candidate_id}</div>
           </div>
           <div class="queue-tag-row">
-            ${this.renderQueueTag(entry.status)}
+            ${this.renderQueueTag(entry.status_effective, statusTone)}
             ${entry.routing_target ? this.renderQueueTag(entry.routing_target, routingTone as any) : nothing}
             ${this.renderQueueTag(`integrity:${entry.integrity_state ?? "n/a"}`, integrityTone)}
           </div>
@@ -930,6 +988,10 @@ class DirectiveFrontendApp extends LitElement {
               : nothing}
           </section>
         </div>
+
+        ${entry.status_warning
+          ? html`<p class="muted" style="margin-top:12px;">${entry.status_warning}</p>`
+          : nothing}
 
         <div class="queue-actions">
           <div class="queue-link-list">
@@ -1842,7 +1904,7 @@ class DirectiveFrontendApp extends LitElement {
     }
 
     if (this.page.kind === "handoff-detail") {
-      const detail = this.page.data as FrontendRuntimeFollowUpDetail | any;
+      const detail = this.page.data as FrontendRuntimeFollowUpDetail | FrontendLegacyRuntimeFollowUpDetail | FrontendLegacyRuntimeHandoffDetail | any;
       if (!detail.ok) return html`<section class="panel warning"><h2>Handoff not found</h2><pre>${detail.error}</pre></section>`;
       if (detail.kind === "runtime_follow_up") {
         return html`
@@ -1876,6 +1938,56 @@ class DirectiveFrontendApp extends LitElement {
           <section class="panel"><h3>Raw follow-up artifact</h3><pre>${detail.content}</pre></section>
         `;
       }
+      if (detail.kind === "runtime_follow_up_legacy") {
+        return html`
+          <section class="panel"><h2>Legacy Runtime follow-up</h2><div class="muted mono">${detail.relativePath}</div><table><tbody>
+            <tr><th>title</th><td>${detail.title}</td></tr>
+            <tr><th>candidate id</th><td>${detail.candidateId}</td></tr>
+            <tr><th>candidate name</th><td>${detail.candidateName}</td></tr>
+            <tr><th>current decision state</th><td>${detail.currentDecisionState ?? html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>runtime value</th><td>${detail.runtimeValueToOperationalize}</td></tr>
+            <tr><th>proposed host</th><td>${detail.proposedHost}</td></tr>
+            <tr><th>proposed integration mode</th><td>${detail.proposedIntegrationMode ?? html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>re-entry contract</th><td>${this.artifactLink(detail.reentryContractPath)}</td></tr>
+            <tr><th>current status</th><td>${detail.currentStatus ?? html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>review cadence</th><td>${detail.reviewCadence ?? html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>required proof</th><td>${detail.requiredProof?.length ? html`<ul>${detail.requiredProof.map((entry) => html`<li>${entry}</li>`)}</ul>` : html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>required gates</th><td>${detail.requiredGates?.length ? html`<ul>${detail.requiredGates.map((entry) => html`<li>${entry}</li>`)}</ul>` : html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>rollback note</th><td>${detail.rollbackNote ?? html`<span class="muted">n/a</span>`}</td></tr>
+          </tbody></table></section>
+          <section class="panel message">
+            <h3>Boundary note</h3>
+            <p>This is a historical deferred Runtime follow-up artifact. It is inspectable through the host surface, but it does not claim membership in the current non-executing Runtime v0 chain.</p>
+          </section>
+          <section class="panel"><h3>Raw follow-up artifact</h3><pre>${detail.content}</pre></section>
+        `;
+      }
+      if (detail.kind === "runtime_handoff_legacy") {
+        return html`
+          <section class="panel"><h2>Legacy Runtime handoff</h2><div class="muted mono">${detail.relativePath}</div><table><tbody>
+            <tr><th>title</th><td>${detail.title}</td></tr>
+            <tr><th>candidate id</th><td>${detail.candidateId}</td></tr>
+            <tr><th>candidate name</th><td>${detail.candidateName}</td></tr>
+            <tr><th>handoff type</th><td>${detail.handoffType ?? html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>runtime value</th><td>${detail.runtimeValueToOperationalize}</td></tr>
+            <tr><th>proposed host</th><td>${detail.proposedHost}</td></tr>
+            <tr><th>proposed runtime surface</th><td>${detail.proposedRuntimeSurface}</td></tr>
+            <tr><th>originating Architecture record</th><td>${this.artifactLink(detail.originatingArchitectureRecordPath)}</td></tr>
+            <tr><th>mixed-value partition ref</th><td>${this.artifactLink(detail.mixedValuePartitionRef)}</td></tr>
+            <tr><th>Runtime follow-up</th><td>${this.artifactLink(detail.runtimeFollowUpPath)}</td></tr>
+            <tr><th>Runtime record</th><td>${this.artifactLink(detail.runtimeRecordPath)}</td></tr>
+            <tr><th>proof artifact</th><td>${this.artifactLink(detail.runtimeProofPath)}</td></tr>
+            <tr><th>promotion record</th><td>${this.artifactLink(detail.promotionRecordPath)}</td></tr>
+            <tr><th>registry entry</th><td>${this.artifactLink(detail.registryEntryPath)}</td></tr>
+            <tr><th>quality gate result</th><td>${detail.qualityGateResult ?? html`<span class="muted">n/a</span>`}</td></tr>
+          </tbody></table></section>
+          <section class="panel message">
+            <h3>Boundary note</h3>
+            <p>This is a historical Runtime handoff artifact. It is inspectable through the host surface, but it does not claim membership in the current non-executing Runtime v0 chain.</p>
+          </section>
+          <section class="panel"><h3>Raw handoff artifact</h3><pre>${detail.content}</pre></section>
+        `;
+      }
       const artifact = detail.artifact;
       return html`
         <section class="panel"><h2>Architecture handoff detail</h2><div class="muted mono">${artifact.handoffRelativePath}</div><table><tbody>
@@ -1885,9 +1997,9 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>usefulness level</th><td>${artifact.usefulnessLevel}</td></tr>
           <tr><th>usefulness rationale</th><td>${artifact.usefulnessRationale}</td></tr>
           <tr><th>objective</th><td>${artifact.objective}</td></tr>
-          <tr><th>Engine run record</th><td>${this.artifactLink(artifact.engineRunRecordPath)}</td></tr>
-          <tr><th>Engine run report</th><td>${this.artifactLink(artifact.engineRunReportPath)}</td></tr>
-          <tr><th>Discovery routing record</th><td>${this.artifactLink(artifact.discoveryRoutingRecordPath)}</td></tr>
+          <tr><th>Engine run record</th><td>${artifact.engineRunRecordPath ? this.artifactLink(artifact.engineRunRecordPath) : html`<span class="muted">not resolved</span>`}</td></tr>
+          <tr><th>Engine run report</th><td>${artifact.engineRunReportPath ? this.artifactLink(artifact.engineRunReportPath) : html`<span class="muted">not resolved</span>`}</td></tr>
+          <tr><th>Discovery routing record</th><td>${artifact.discoveryRoutingRecordPath ? this.artifactLink(artifact.discoveryRoutingRecordPath) : html`<span class="muted">not resolved</span>`}</td></tr>
           <tr><th>rollback</th><td>${artifact.rollback}</td></tr>
         </tbody></table></section>
         <section class="grid">
@@ -2075,6 +2187,20 @@ class DirectiveFrontendApp extends LitElement {
             <ul>${closedSeams.map((item) => html`<li>${item}</li>`)}</ul>
             <p class="muted" style="margin-top:12px;">This page is for operator seam review, not for activating downstream Runtime behavior.</p>
           </section>
+        </section>
+
+        <section class="panel good">
+          <h3>Opened implementation slice</h3>
+          <p>The first bounded Runtime-implementation slice is now explicit on the Directive Workspace web host: the host owns one implementation-bundle section for the OpenMOSS seam-review surface, while Runtime and Engine continue to own stage truth, blockers, legality, and downstream progression.</p>
+          <div class="link-stack">
+            <div><strong>Opened runtime-implementation slice:</strong> ${this.artifactLink(detail.openedRuntimeImplementationSlicePath)}</div>
+            <div><strong>Pre-promotion implementation slice:</strong> ${this.artifactLink(detail.prePromotionImplementationSlicePath)}</div>
+            <div><strong>Compile contract:</strong> ${this.artifactLink(detail.compileContractPath)}</div>
+            <div><strong>Promotion-input package:</strong> ${this.artifactLink(detail.promotionInputPackagePath)}</div>
+            <div><strong>Profile/checker decision:</strong> ${this.artifactLink(detail.profileCheckerDecisionPath)}</div>
+            <div><strong>Promotion go/no-go decision:</strong> ${this.artifactLink(detail.promotionGoNoGoDecisionPath)}</div>
+          </div>
+          <p class="muted" style="margin-top:12px;">This remains non-promoting and non-executing. It makes the host-owned implementation boundary real without opening host-facing promotion, host integration, callable implementation, or runtime execution.</p>
         </section>
 
         <section class="panel">

@@ -8,6 +8,11 @@ import { fileURLToPath } from "node:url";
 import puppeteer, { type Page } from "puppeteer";
 
 import { startDirectiveFrontendServer } from "../hosts/web-host/server.ts";
+import {
+  readDirectiveFrontendSnapshot,
+  readDirectiveWorkbenchHandoffDetail,
+  readDirectiveWorkbenchSnapshot,
+} from "../hosts/web-host/data.ts";
 import { evaluateDirectiveArchitectureConsumption } from "../shared/lib/architecture-post-consumption-evaluation.ts";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -326,7 +331,218 @@ async function assertShadowTextDoesNotContain(page: Page, text: string) {
   assert.equal(rendered.includes(text), false, `unexpected_text_present:${text}`);
 }
 
+function assertLegacyRuntimeHandoffRepoDetails() {
+  const scientify = readDirectiveWorkbenchHandoffDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: "runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md",
+  });
+  assert.equal(scientify.ok, true, "Legacy Scientify Runtime handoff should be readable through the workbench handoff detail surface");
+  if (!scientify.ok || scientify.kind !== "runtime_handoff_legacy") {
+    throw new Error("legacy_scientify_runtime_handoff_unreadable");
+  }
+  assert.equal(scientify.candidateId, "scientify-literature-monitoring");
+  assert.equal(
+    scientify.runtimeFollowUpPath,
+    "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md",
+  );
+  assert.equal(
+    scientify.originatingArchitectureRecordPath,
+    "architecture/03-adopted/2026-03-23-scientify-mixed-value-partition-adopted.md",
+  );
+
+  const autoresearch = readDirectiveWorkbenchHandoffDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: "runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md",
+  });
+  assert.equal(autoresearch.ok, true, "Legacy autoresearch Runtime handoff should be readable through the workbench handoff detail surface");
+  if (!autoresearch.ok || autoresearch.kind !== "runtime_handoff_legacy") {
+    throw new Error("legacy_autoresearch_runtime_handoff_unreadable");
+  }
+  assert.equal(autoresearch.candidateId, "autoresearch");
+  assert.equal(
+    autoresearch.originatingArchitectureRecordPath,
+    "architecture/03-adopted/2026-03-19-autoresearch-slice-1-adopted-planned-next.md",
+  );
+  assert.equal(
+    autoresearch.runtimeRecordPath,
+    "runtime/records/2026-03-19-autoresearch-runtime-record.md",
+  );
+}
+
+function assertLegacyRuntimeHandoffRepoStubs() {
+  const snapshot = readDirectiveWorkbenchSnapshot({
+    directiveRoot: DIRECTIVE_ROOT,
+  });
+  const legacyHandoffs = snapshot.handoffStubs.filter((stub) => stub.kind === "runtime_handoff_legacy");
+  assert.equal(
+    legacyHandoffs.length,
+    2,
+    "The workbench handoff list should surface the two repo-backed historical Runtime handoffs as explicit read-only stubs.",
+  );
+
+  const scientify = legacyHandoffs.find((stub) =>
+    stub.relativePath === "runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md"
+  );
+  assert.ok(scientify, "Expected the historical Scientify Runtime handoff stub to be present in the workbench handoff list.");
+  assert.equal(scientify?.status, "historical_handoff");
+  assert.match(scientify?.warning || "", /Historical Runtime handoff/i);
+
+  const autoresearch = legacyHandoffs.find((stub) =>
+    stub.relativePath === "runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md"
+  );
+  assert.ok(autoresearch, "Expected the historical autoresearch Runtime handoff stub to be present in the workbench handoff list.");
+  assert.equal(autoresearch?.status, "historical_handoff");
+  assert.match(autoresearch?.warning || "", /Historical Runtime handoff/i);
+}
+
+function assertLegacyRuntimeFollowUpRepoCompatibility() {
+  const cliAnything = readDirectiveWorkbenchHandoffDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: "runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md",
+  });
+  assert.equal(
+    cliAnything.ok,
+    true,
+    "The legacy CLI-anything Runtime follow-up should be readable as a historical follow-up artifact instead of surfacing only as invalid state.",
+  );
+  if (!cliAnything.ok || cliAnything.kind !== "runtime_follow_up_legacy") {
+    throw new Error("legacy_cli_anything_runtime_follow_up_unreadable");
+  }
+  assert.equal(cliAnything.candidateId, "al-parked-cli-anything");
+  assert.equal(
+    cliAnything.reentryContractPath,
+    "runtime/follow-up/2026-03-20-cli-anything-reentry-contract.md",
+  );
+  assert.equal(
+    cliAnything.currentStatus,
+    "deferred with formal re-entry contract",
+  );
+
+  const snapshot = readDirectiveWorkbenchSnapshot({
+    directiveRoot: DIRECTIVE_ROOT,
+  });
+  const stub = snapshot.handoffStubs.find((entry) =>
+    entry.relativePath === "runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md"
+  );
+  assert.ok(stub, "The legacy CLI-anything Runtime follow-up should be present in the handoff list.");
+  assert.equal(stub?.kind, "runtime_follow_up_legacy");
+  assert.equal(stub?.status, "historical_follow_up");
+  assert.match(stub?.warning || "", /Historical Runtime follow-up/i);
+}
+
+function assertLegacyRuntimeActiveFollowUpRepoCompatibility() {
+  const scientify = readDirectiveWorkbenchHandoffDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md",
+  });
+  assert.equal(
+    scientify.ok,
+    true,
+    "The active bounded legacy Scientify Runtime follow-up should be readable as a historical follow-up artifact instead of surfacing only as invalid state.",
+  );
+  if (!scientify.ok || scientify.kind !== "runtime_follow_up_legacy") {
+    throw new Error("legacy_scientify_runtime_active_follow_up_unreadable");
+  }
+  assert.equal(scientify.candidateId, "scientify-literature-monitoring");
+  assert.equal(scientify.currentStatus, "active bounded follow-up");
+  assert.equal(scientify.reentryContractPath, null);
+  assert.equal(scientify.proposedHost, "OpenClaw");
+
+  const snapshot = readDirectiveWorkbenchSnapshot({
+    directiveRoot: DIRECTIVE_ROOT,
+  });
+  const stub = snapshot.handoffStubs.find((entry) =>
+    entry.relativePath === "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md"
+  );
+  assert.ok(stub, "The active bounded legacy Scientify Runtime follow-up should be present in the handoff list.");
+  assert.equal(stub?.kind, "runtime_follow_up_legacy");
+  assert.equal(stub?.status, "historical_follow_up");
+  assert.match(stub?.warning || "", /Historical Runtime follow-up/i);
+}
+
+function assertLegacyNarrativeRuntimeFollowUpRepoCompatibility() {
+  const cases = [
+    {
+      relativePath: "runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md",
+      candidateId: "agent-orchestrator",
+      candidateName: "Agent-Orchestrator",
+      currentStatus: "active",
+    },
+    {
+      relativePath: "runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md",
+      candidateId: "promptfoo",
+      candidateName: "Promptfoo",
+      currentStatus: "planned",
+    },
+    {
+      relativePath: "runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md",
+      candidateId: "puppeteer-browser",
+      candidateName: "Puppeteer Browser",
+      currentStatus: "completed (bounded browser smoke lane promoted 2026-03-21)",
+    },
+  ] as const;
+
+  const snapshot = readDirectiveWorkbenchSnapshot({
+    directiveRoot: DIRECTIVE_ROOT,
+  });
+
+  for (const runtimeCase of cases) {
+    const detail = readDirectiveWorkbenchHandoffDetail({
+      directiveRoot: DIRECTIVE_ROOT,
+      relativePath: runtimeCase.relativePath,
+    });
+    assert.equal(
+      detail.ok,
+      true,
+      `The legacy narrative Runtime follow-up should be readable through the workbench handoff detail surface: ${runtimeCase.relativePath}`,
+    );
+    if (!detail.ok || detail.kind !== "runtime_follow_up_legacy") {
+      throw new Error(`legacy_narrative_runtime_follow_up_unreadable:${runtimeCase.relativePath}`);
+    }
+    assert.equal(detail.candidateId, runtimeCase.candidateId);
+    assert.equal(detail.candidateName, runtimeCase.candidateName);
+    assert.equal(detail.currentStatus, runtimeCase.currentStatus);
+    assert.equal(detail.reentryContractPath, null);
+
+    const stub = snapshot.handoffStubs.find((entry) => entry.relativePath === runtimeCase.relativePath);
+    assert.ok(stub, `The legacy narrative Runtime follow-up should appear in the handoff list: ${runtimeCase.relativePath}`);
+    assert.equal(stub?.kind, "runtime_follow_up_legacy");
+    assert.equal(stub?.status, "historical_follow_up");
+    assert.match(stub?.warning || "", /Historical Runtime follow-up/i);
+  }
+}
+
+function assertCurrentArchitectureHandoffWarningsStayClean() {
+  const snapshot = readDirectiveFrontendSnapshot({
+    directiveRoot: DIRECTIVE_ROOT,
+  });
+  assert.deepEqual(
+    snapshot.handoffWarnings,
+    [],
+    "Current repo-generated Architecture handoff stubs should parse cleanly without frontend handoff warnings.",
+  );
+
+  const guardedPaths = [
+    "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md",
+    "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md",
+  ];
+
+  for (const relativePath of guardedPaths) {
+    const stub = snapshot.handoffStubs.find((entry) => entry.relativePath === relativePath);
+    assert.ok(stub, `Expected the current Architecture handoff stub to appear in the frontend snapshot: ${relativePath}`);
+    assert.equal(stub?.kind, "architecture_handoff");
+    assert.equal(stub?.status, "pending_review");
+    assert.equal(stub?.warning, null);
+  }
+}
+
 async function main() {
+  assertLegacyRuntimeHandoffRepoDetails();
+  assertLegacyRuntimeHandoffRepoStubs();
+  assertLegacyRuntimeFollowUpRepoCompatibility();
+  assertLegacyRuntimeActiveFollowUpRepoCompatibility();
+  assertLegacyNarrativeRuntimeFollowUpRepoCompatibility();
+  assertCurrentArchitectureHandoffWarningsStayClean();
   buildFrontend();
 
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "dw-frontend-host-"));

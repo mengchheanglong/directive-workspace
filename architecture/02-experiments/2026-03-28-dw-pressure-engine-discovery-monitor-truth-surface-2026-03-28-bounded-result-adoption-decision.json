@@ -1,0 +1,18 @@
+{
+  "candidate_id": "dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28",
+  "candidate_name": "Engine Discovery Monitor Truth Surface",
+  "decision": "adopt",
+  "final_status": "adopt_planned_next",
+  "usefulness_level": "meta",
+  "artifact_type": "shared-lib",
+  "readiness": {
+    "bounded_scope_kept": true,
+    "mechanical_success_criteria_met": true,
+    "delta_evidence_present": true,
+    "adaptation_decision_complete": true
+  },
+  "notes": [
+    "Discovery monitor artifacts now resolve directly through the canonical state reader.",
+    "The slice stays limited to the monitor truth surface."
+  ]
+}

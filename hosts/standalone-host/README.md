@@ -44,6 +44,7 @@ Available commands:
 - `runtime-transformation-record-write`
 - `runtime-promotion-write`
 - `runtime-registry-write`
+- `runtime-scientify-bundle`
 - `runtime-overview`
 - `serve`
 
@@ -115,6 +116,7 @@ Current bounded Runtime-side local workflow support:
 - write a Runtime transformation record artifact from JSON input
 - write a Runtime promotion record from JSON input
 - write a Runtime registry entry from JSON input
+- read a non-executing Scientify literature-access bundle descriptor from canonical Runtime truth
 - read a Runtime overview across local follow-up, record, proof, transformation proof, transformation record, promotion, and registry artifacts
 - require a real linked proof artifact before promotion and registry writes can advance
 - keep this lane bounded to local/shareable workflow artifacts, not full Runtime runtime parity

@@ -6,6 +6,9 @@ export type DirectiveArtifactLinkValidationState = {
   inconsistentLinks: string[];
 };
 
+const DIRECTIVE_WORKSPACE_ARTIFACT_REFERENCE_PATTERN =
+  /^(architecture|discovery|engine|frontend|hosts|runtime|scripts|shared|sources)\//u;
+
 function pushUnique(target: string[], value: string) {
   if (value && !target.includes(value)) {
     target.push(value);
@@ -20,6 +23,17 @@ export function fileExistsInDirectiveWorkspace(
     return false;
   }
   return fs.existsSync(path.join(directiveRoot, relativePath));
+}
+
+export function isDirectiveWorkspaceArtifactReference(relativePath: string | null | undefined) {
+  if (typeof relativePath !== "string") {
+    return false;
+  }
+  const normalized = relativePath.trim().replace(/\\/g, "/");
+  if (!normalized) {
+    return false;
+  }
+  return DIRECTIVE_WORKSPACE_ARTIFACT_REFERENCE_PATTERN.test(normalized);
 }
 
 export function readLinkedArtifactIfPresent<T>(input: {
@@ -73,6 +87,9 @@ export function recordExpectedArtifactIfMissing(input: {
   relativePath: string | null | undefined;
 }) {
   if (!input.relativePath) {
+    return;
+  }
+  if (!isDirectiveWorkspaceArtifactReference(input.relativePath)) {
     return;
   }
   if (!fileExistsInDirectiveWorkspace(input.directiveRoot, input.relativePath)) {

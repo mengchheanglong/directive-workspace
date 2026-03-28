@@ -18,7 +18,7 @@
 - Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
 - Capability form: non-executing promotion-readiness artifact
-- Execution state: not executing, not host-integrated, not implemented, not promoted
+- Execution state: bounded DW web-host seam-review implementation opened, not executing, not host-integrated, not promoted
 
 ## what is now explicit
 - The bounded runtime capability boundary has been explicitly reviewed as a possible future promotion candidate.
@@ -43,14 +43,35 @@
   - the target host is now explicit: `Directive Workspace web host (frontend/ + hosts/web-host/)`
   - the candidate remains bounded and non-executing
 - Remaining blockers:
-  - `runtime_implementation_unopened`
   - `host_facing_promotion_unopened`
-- Missing host-facing promotion inputs:
-  - concrete host-owned implementation slice
-  - compile contract artifact or equivalent host-owned integration artifact
-  - runtime permissions profile for the proposed host-facing slice
-  - safe output scope for a host-facing promotion contract
-  - quality gate profile and primary host checker selection for a real promotion record
+- Explicit opened runtime-implementation slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
+- Explicit implementation result for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-result.md`
+- Explicit pre-promotion implementation slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-pre-promotion-implementation-slice-01.md`
+- Explicit promotion-input package for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-input-package-01.md`
+- Explicit profile/checker decision for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-profile-checker-decision-01.md`
+- Explicit compile-contract artifact for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-seam-review-compile-contract-01.md`
+- Explicit bounded pre-promotion profile/checker family for that slice:
+  - `Quality gate profile = dw_web_host_seam_review_guard/v1`
+  - `Promotion profile family = bounded_dw_web_host_seam_review`
+  - `Proof shape = dw_web_host_seam_review_snapshot/v1`
+  - `Primary host checker = npm run check:directive-dw-web-host-runtime-seam-review`
+  - `Contract path = shared/contracts/dw-web-host-seam-review-guard.md`
+- Explicit bounded pre-promotion host constraints for that slice:
+  - `Runtime permissions profile = read_only_lane = canonical Directive Workspace state plus linked Runtime artifacts through the existing DW thin-host reader; write_lane = none`
+  - `Safe output scope = OpenMOSS seam-review page plus thin-host detail payloads only; no execution, no host integration writes, no callable activation`
+- Explicit go / no-go decision after the pre-promotion bundle:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
+- Explicit keep confirmation for the completed implementation slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-keep-confirmation.md`
+- Remaining unopened seams after that explicit bundle:
+  - host-facing promotion record remains unopened
+  - host integration, callable implementation, and runtime execution remain unopened
 - Bounded conclusion: keep the case at `promotion_readiness_opened`, with `Directive Workspace web host (frontend/ + hosts/web-host/)` recorded as the proposed host, and do not open a host-facing promotion record yet.
 
 ## Directive Workspace frontend seam decision
@@ -82,6 +103,35 @@
   - callable implementation buildout
   - Mission Control dashboard or frontend work
   - automatic advancement from frontend inspection into downstream Runtime stages
+
+## Directive Workspace web-host pre-promotion implementation slice
+- Slice decision: `dw_web_host_pre_promotion_slice_explicit`
+- Slice artifact: `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-pre-promotion-implementation-slice-01.md`
+- Opened runtime-implementation slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
+- Why this slice is the correct pre-promotion seam:
+  - it makes the existing DW web-host seam-review surface explicit as the smallest truthful host-owned implementation slice
+  - it keeps Runtime and Engine as the owners of blocker judgment, legality, and downstream progression
+  - it keeps the implementation boundary bounded to one non-executing host-owned product surface without opening promotion or execution
+- Runtime-owned output exposed through this slice:
+  - candidate identity and Runtime objective
+  - currentStage and nextLegalStep
+  - proposedHost, executionState, and promotionReadinessBlockers
+  - linked Runtime artifact paths
+- DW web-host ownership in this slice:
+  - one thin-host data read over canonical Runtime truth
+  - one operator-facing seam-review surface in Directive Workspace frontend/web-host
+- Explicit promotion-input package for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-input-package-01.md`
+- Explicit profile/checker decision for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-profile-checker-decision-01.md`
+- Explicit compile-contract artifact for that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-seam-review-compile-contract-01.md`
+- Explicit promotion go / no-go decision after opening that slice:
+  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
+- Still out of scope after making this slice explicit:
+  - host-facing promotion record creation
+  - runtime execution, host integration, or callable implementation rollout
 
 ## validation boundary
 - Validate against the bounded runtime capability boundary, Runtime proof artifact, Runtime v0 record, source follow-up record, and linked Discovery routing record only.

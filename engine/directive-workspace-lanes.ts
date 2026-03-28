@@ -1,8 +1,11 @@
 import type {
   DirectiveEngineLaneDefinition,
+  DirectiveEngineLaneIntegrationPlanningInput,
   DirectiveEngineLanePlanningInput,
+  DirectiveEngineLaneProofPlanningInput,
   DirectiveEngineLaneSet,
 } from "./lane.ts";
+import type { DirectiveEngineIntegrationProposal } from "./types.ts";
 
 type DirectiveWorkspaceLaneId = "discovery" | "architecture" | "runtime";
 
@@ -24,11 +27,11 @@ type DirectiveWorkspaceLaneOverrides = Partial<
 >;
 
 function buildDiscoveryProofPlan(
-  input: DirectiveEngineLanePlanningInput,
+  input: DirectiveEngineLaneProofPlanningInput,
 ) {
   return {
     proofKind: "discovery_review",
-    objective: `Confirm the source is captured and routed correctly against mission "${input.mission.currentObjective}".`,
+    objective: `Confirm the source is captured and routed correctly against mission "${input.planningInput.mission.currentObjective}".`,
     requiredEvidence: [
       "mission-fit rationale recorded",
       "routing rationale recorded",
@@ -44,31 +47,37 @@ function buildDiscoveryProofPlan(
 }
 
 function buildArchitectureProofPlan(
-  input: DirectiveEngineLanePlanningInput,
+  input: DirectiveEngineLaneProofPlanningInput,
 ) {
+  const primaryImprovementGoal =
+    input.improvementPlan.improvementGoals[0]
+    ?? "improvement delta recorded";
   return {
     proofKind: "architecture_validation",
     objective:
-      "Prove the extracted mechanism is adapted into product-owned operating code or engine logic without carrying source baggage forward blindly.",
+      "Prove the extracted mechanism is adapted into product-owned operating code or engine logic without carrying source baggage forward blindly, "
+      + `and that the proof boundary stays grounded in the staged improvement delta "${primaryImprovementGoal}".`,
     requiredEvidence: [
       "adapted mechanism described",
       "excluded baggage described",
       "engine or product boundary improvement explained",
+      "improvement delta stays anchored to prior extraction, adaptation, and improvement stages",
     ],
     requiredGates: [
       "adaptation_complete",
+      "improvement_complete",
       "engine_boundary_preserved",
       "decision_review",
     ],
     rollbackPrompt:
-      "Keep the result at experiment status and do not integrate it into the engine until the adaptation boundary is clearer.",
+      "Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer.",
   };
 }
 
 function buildRuntimeProofPlan(
-  input: DirectiveEngineLanePlanningInput,
+  input: DirectiveEngineLaneProofPlanningInput,
 ) {
-  if (input.routingAssessment.scoreBreakdown.transformationSignal > 0) {
+  if (input.planningInput.routingAssessment.scoreBreakdown.transformationSignal > 0) {
     return {
       proofKind: "runtime_transformation_proof",
       objective:
@@ -109,6 +118,22 @@ function buildRuntimeProofPlan(
   };
 }
 
+function buildArchitectureIntegrationProposal(
+  input: DirectiveEngineLaneIntegrationPlanningInput,
+): Partial<DirectiveEngineIntegrationProposal> {
+  const primaryImprovementGoal =
+    input.improvementPlan.improvementGoals[0]
+    ?? "bounded improvement delta recorded";
+  const primaryProofGate =
+    input.proofPlan.requiredGates[0]
+    ?? "proof boundary review";
+  return {
+    nextAction:
+      `Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary `
+      + `for "${primaryImprovementGoal}" remains explicit through ${primaryProofGate}.`,
+  };
+}
+
 function createBaseLanes(): DirectiveEngineLaneDefinition[] {
   return [
     {
@@ -131,6 +156,7 @@ function createBaseLanes(): DirectiveEngineLaneDefinition[] {
       nextAction:
         "Materialize the adapted mechanism as engine-owned product logic before any host-specific integration work.",
       planProof: buildArchitectureProofPlan,
+      planIntegration: buildArchitectureIntegrationProposal,
     },
     {
       laneId: "runtime",

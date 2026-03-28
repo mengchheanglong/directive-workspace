@@ -1,0 +1,6 @@
+{
+  "candidateId": "dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28",
+  "candidateName": "Engine Stale Current-Head Architecture Closure Legality Hardening",
+  "decision": "adopt_planned_next",
+  "reason": "The shared resolver now downgrades stale artifact-local next-step wording on the remaining Architecture closure surfaces without changing live case-level continuation truth."
+}

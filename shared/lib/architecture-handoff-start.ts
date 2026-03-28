@@ -31,9 +31,9 @@ export type DirectiveArchitectureHandoffArtifact = {
   status: string;
   candidateId: string;
   sourceReference: string;
-  engineRunRecordPath: string;
-  engineRunReportPath: string;
-  discoveryRoutingRecordPath: string;
+  engineRunRecordPath: string | null;
+  engineRunReportPath: string | null;
+  discoveryRoutingRecordPath: string | null;
   usefulnessLevel: string;
   usefulnessRationale: string;
   objective: string;
@@ -95,6 +95,24 @@ function extractSingleValue(section: string, label: string) {
   return stripBackticks(line.replace(/^- /, "").split(":").slice(1).join(":"));
 }
 
+function extractOptionalSingleValue(section: string, label: string) {
+  const line = section
+    .split(/\r?\n/)
+    .find((entry) => entry.trim().startsWith(`- ${label}:`));
+  if (!line) {
+    return null;
+  }
+  const value = stripBackticks(line.replace(/^- /, "").split(":").slice(1).join(":"));
+  if (!value || /^n\/a$/i.test(value) || /^not resolved$/i.test(value)) {
+    return null;
+  }
+  return value;
+}
+
+function extractLifecycleOrigin(section: string) {
+  return extractSingleValue(section, "Origin");
+}
+
 function extractList(section: string) {
   return section
     .split(/\r?\n/)
@@ -124,6 +142,17 @@ function parseArchitectureHandoffMarkdown(markdown: string): ParsedArchitectureH
 
   const sourceSection = extractSection(markdown, "Source");
   const lifecycleSection = extractSection(markdown, "Lifecycle classification");
+  const origin = extractLifecycleOrigin(lifecycleSection);
+  const internallyGenerated = origin === "internally-generated";
+  const engineRunRecordPath = internallyGenerated
+    ? extractOptionalSingleValue(sourceSection, "Engine run record")
+    : extractSingleValue(sourceSection, "Engine run record");
+  const engineRunReportPath = internallyGenerated
+    ? extractOptionalSingleValue(sourceSection, "Engine run report")
+    : extractSingleValue(sourceSection, "Engine run report");
+  const discoveryRoutingRecordPath = internallyGenerated
+    ? extractOptionalSingleValue(sourceSection, "Discovery routing record")
+    : extractSingleValue(sourceSection, "Discovery routing record");
 
   return {
     title: titleLine.replace(/^# /, "").replace(/ Engine-Routed Architecture Experiment$/, "").trim(),
@@ -131,9 +160,9 @@ function parseArchitectureHandoffMarkdown(markdown: string): ParsedArchitectureH
     status: requireDirectiveString(statusLine.replace(/^Status:\s*/, ""), "handoff status"),
     candidateId: extractSingleValue(sourceSection, "Candidate id"),
     sourceReference: extractSingleValue(sourceSection, "Source reference"),
-    engineRunRecordPath: extractSingleValue(sourceSection, "Engine run record"),
-    engineRunReportPath: extractSingleValue(sourceSection, "Engine run report"),
-    discoveryRoutingRecordPath: extractSingleValue(sourceSection, "Discovery routing record"),
+    engineRunRecordPath,
+    engineRunReportPath,
+    discoveryRoutingRecordPath,
     usefulnessLevel: extractSingleValue(sourceSection, "Usefulness level"),
     usefulnessRationale: requireDirectiveString(
       sourceSection
@@ -212,6 +241,14 @@ function renderArchitectureBoundedStart(input: {
     ? input.parsed.validationGates.map((item) => `- \`${item}\``).join("\n")
     : "- n/a";
   const nextDecision = input.parsed.nextDecision[0] || "needs-more-evidence";
+  const evidencePath = [
+    "- Evidence path:",
+    `- Handoff stub: \`${input.handoffRelativePath}\``,
+    `- Engine run record: ${input.parsed.engineRunRecordPath ? `\`${input.parsed.engineRunRecordPath}\`` : "n/a"}`,
+    `- Engine run report: ${input.parsed.engineRunReportPath ? `\`${input.parsed.engineRunReportPath}\`` : "n/a"}`,
+    `- Discovery routing record: ${input.parsed.discoveryRoutingRecordPath ? `\`${input.parsed.discoveryRoutingRecordPath}\`` : "n/a"}`,
+    `- Next decision: \`${nextDecision}\``,
+  ].join("\n");
 
   return [
     `# ${input.parsed.title} Bounded Architecture Start`,
@@ -238,12 +275,7 @@ function renderArchitectureBoundedStart(input: {
     "- Failure criteria: No Directive-owned mechanism or bounded adaptation target becomes clear from the approved handoff scope.",
     `- Rollback: ${input.parsed.rollback}`,
     "- Result summary: pending_execution",
-    "- Evidence path:",
-    `- Handoff stub: \`${input.handoffRelativePath}\``,
-    `- Engine run record: \`${input.parsed.engineRunRecordPath}\``,
-    `- Engine run report: \`${input.parsed.engineRunReportPath}\``,
-    `- Discovery routing record: \`${input.parsed.discoveryRoutingRecordPath}\``,
-    `- Next decision: \`${nextDecision}\``,
+    evidencePath,
     "",
     "## Lifecycle classification (per `architecture-artifact-lifecycle` contract)",
     "",

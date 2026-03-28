@@ -1,0 +1,24 @@
+# Discovery Triage Record: Paper2Code Multi-Agent Code Generation System
+
+- Candidate id: dw-source-paper2code-2026-03-27
+- Candidate name: Paper2Code Multi-Agent Code Generation System
+- Triage date: 2026-03-27
+- First-pass summary: Multi-agent system that transforms academic papers into functional code repositories using a 3-stage pipeline (planning, analysis, code generation). Relevant to Directive Workspace's core mission of automated source-to-usefulness conversion — the pipeline architecture, agent coordination patterns, and structured extraction workflow are directly applicable to improving Engine's source consumption and adaptation capabilities.
+- Problem it appears to solve: Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.
+- Extractable value hypothesis: Multi-agent system that transforms academic papers into functional code repositories using a 3-stage pipeline (planning, analysis, code generation). Relevant to Directive Workspace's core mission of automated source-to-usefulness conversion — the pipeline architecture, agent coordination patterns, and structured extraction workflow are directly applicable to improving Engine's source consumption and adaptation capabilities. | Python/OpenAI-based. 3 stages: PlanningAgent, AnalysisAgent, CodeGenerationAgent. Uses structured prompts and inter-agent handoff. Could inform Engine workflow design or become a runtime capability for automated paper-to-implementation.
+- Routing recommendation: Shared Engine routing selected architecture with usefulness level meta.
+- Proposed adoption target: engine-owned product logic
+- Stack-shape summary: github-repo source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: adaptation_complete, engine_boundary_preserved, decision_review
+- Missing evidence: adapted mechanism described, excluded baggage described, engine or product boundary improvement explained
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the adaptation boundary is clearer.
+- Next action: Materialize the adapted mechanism as engine-owned product logic before any host-specific integration work.
+- Linked intake record: discovery/intake/2026-03-27-dw-source-paper2code-2026-03-27-intake.md

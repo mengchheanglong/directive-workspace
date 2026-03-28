@@ -466,6 +466,13 @@ export function createStandaloneFilesystemHost(
         maxEntries,
       });
     },
+    async readScientifyLiteratureAccessBundle() {
+      const { readStandaloneScientifyLiteratureAccessBundle } =
+        await loadStandaloneRuntimeLaneModule();
+      return readStandaloneScientifyLiteratureAccessBundle({
+        directiveRoot: harness.directiveRoot,
+      });
+    },
     readQueue() {
       return harness.readQueue();
     },

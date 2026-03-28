@@ -13,6 +13,7 @@ import {
   renderRuntimeFollowUpRecord,
   type RuntimeFollowUpRecordRequest,
 } from "./runtime-follow-up-record-writer.ts";
+import { type DiscoveryIntakeQueueDocument } from "./discovery-intake-queue-writer.ts";
 import { syncDiscoveryIntakeLifecycle } from "./discovery-intake-lifecycle-sync.ts";
 
 type DiscoveryRouteDestination = "architecture" | "runtime" | "monitor" | "defer" | "reject" | "reference";
@@ -148,6 +149,21 @@ function extractBulletValue(markdown: string, label: string) {
     .replace(/^`|`$/g, "");
 }
 
+function extractOptionalBulletValue(markdown: string, label: string) {
+  const prefix = `- ${label}:`;
+  const line = markdown
+    .split(/\r?\n/)
+    .find((entry) => entry.trim().startsWith(prefix));
+  if (!line) {
+    return null;
+  }
+  return line
+    .trim()
+    .replace(prefix, "")
+    .trim()
+    .replace(/^`|`$/g, "");
+}
+
 function parseDiscoveryRoutingMarkdown(markdown: string) {
   const dateLine = markdown
     .split(/\r?\n/)
@@ -164,6 +180,8 @@ function parseDiscoveryRoutingMarkdown(markdown: string) {
     decisionState: extractBulletValue(markdown, "Decision state"),
     adoptionTarget: extractBulletValue(markdown, "Adoption target"),
     routeDestination: extractBulletValue(markdown, "Route destination") as DiscoveryRouteDestination,
+    usefulnessLevel: optionalString(extractOptionalBulletValue(markdown, "Usefulness level")),
+    usefulnessRationale: optionalString(extractOptionalBulletValue(markdown, "Usefulness rationale")),
     whyThisRoute: extractBulletValue(markdown, "Why this route"),
     whyNotAlternatives: extractBulletValue(markdown, "Why not the alternatives"),
     handoffContractUsed: optionalString(extractBulletValue(markdown, "Handoff contract used")),
@@ -264,17 +282,7 @@ function readQueueDocument(directiveRoot: string) {
   }
   return {
     queuePath: path.resolve(queuePath).replace(/\\/g, "/"),
-    queue: JSON.parse(readUtf8(queuePath)) as {
-      status: string;
-      updatedAt: string;
-      entries: Array<{
-        candidate_id: string;
-        intake_record_path?: string | null;
-        routing_record_path?: string | null;
-        routing_target?: string | null;
-        result_record_path?: string | null;
-      }>;
-    },
+    queue: JSON.parse(readUtf8(queuePath)) as DiscoveryIntakeQueueDocument,
   };
 }
 
@@ -435,8 +443,8 @@ function readRoutingArtifact(input: {
     engineRunRecordPath: engineRun?.recordRelativePath ?? null,
     engineRunReportPath: engineRun?.reportRelativePath ?? null,
     engineRunId: engineRun?.record.runId ?? null,
-    usefulnessLevel: engineRun?.record.candidate.usefulnessLevel ?? null,
-    usefulnessRationale: engineRun?.record.analysis.usefulnessRationale ?? null,
+    usefulnessLevel: parsed.usefulnessLevel ?? engineRun?.record.candidate.usefulnessLevel ?? null,
+    usefulnessRationale: parsed.usefulnessRationale ?? engineRun?.record.analysis.usefulnessRationale ?? null,
     matchedGapId:
       engineRun?.record.candidate.matchedGapId
       ?? engineRun?.record.routingAssessment?.matchedGapId

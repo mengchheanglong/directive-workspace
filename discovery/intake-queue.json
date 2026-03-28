@@ -1,6 +1,6 @@
 {
   "status": "primary",
-  "updatedAt": "2026-03-26",
+  "updatedAt": "2026-03-27",
   "transitionedAt": "2026-03-22",
   "previousMode": "shadow",
   "policy": {
@@ -25,7 +25,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-context-pack-async-latency-transformation-record.md",
-      "notes": "Native Discovery-first Runtime latency slice. Runs bounded codegraph summary and n8n automation snapshot collection concurrently in buildContextPack; benchmarked control-plane average fell from 0.32ms to 0.18ms in the current environment."
+      "notes": "Native Discovery-first Runtime latency slice. Runs bounded codegraph summary and n8n automation snapshot collection concurrently in buildContextPack; benchmarked control-plane average fell from 0.32ms to 0.18ms in the current environment.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-code-intel-snapshot-consolidation",
@@ -42,7 +43,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-code-intel-snapshot-transformation-record.md",
-      "notes": "Native Discovery-first Runtime transformation slice. Extracts repeated language-probe helpers from workspace-intel-service while preserving RepoCodeIntelSnapshot behavior and reducing collectCodeIntelSnapshot from 193 to 51 lines."
+      "notes": "Native Discovery-first Runtime transformation slice. Extracts repeated language-probe helpers from workspace-intel-service while preserving RepoCodeIntelSnapshot behavior and reducing collectCodeIntelSnapshot from 193 to 51 lines.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-workspace-readiness-check-consolidation",
@@ -59,7 +61,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-workspace-readiness-check-transformation-record.md",
-      "notes": "Native Discovery-first Runtime transformation slice. Extracts readiness signal and check helpers from workspace-intel-service while preserving WorkspaceReadiness behavior and reducing buildWorkspaceReadiness from 171 to 26 lines."
+      "notes": "Native Discovery-first Runtime transformation slice. Extracts readiness signal and check helpers from workspace-intel-service while preserving WorkspaceReadiness behavior and reducing buildWorkspaceReadiness from 171 to 26 lines.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-context-pack-focus-resolution",
@@ -76,7 +79,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-context-pack-focus-resolution-transformation-record.md",
-      "notes": "Native Discovery-first Runtime transformation slice. Extracts focus-resolution helpers from context-pack-service while preserving ContextPack behavior and reducing buildContextPack from 264 to 130 lines."
+      "notes": "Native Discovery-first Runtime transformation slice. Extracts focus-resolution helpers from context-pack-service while preserving ContextPack behavior and reducing buildContextPack from 264 to 130 lines.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-openclaw-maintenance-watchdog-signal-lane",
@@ -93,7 +97,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "architecture/03-adopted/2026-03-22-openclaw-maintenance-watchdog-signal-lane-adopted.md",
-      "notes": "Architecture slice materializing the third OpenClaw -> Discovery upstream lane. Current live maintenance/watchdog state is healthy, so the lane is checker-backed but not exercised against a real degraded event yet."
+      "notes": "Architecture slice materializing the third OpenClaw -> Discovery upstream lane. Current live maintenance/watchdog state is healthy, so the lane is checker-backed but not exercised against a real degraded event yet.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-discovery-gap-driven-priority-loop",
@@ -110,7 +115,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "architecture/03-adopted/2026-03-22-discovery-gap-priority-worklist-adopted.md",
-      "notes": "Creates the canonical gap worklist so Discovery chooses the next internal-signal slice from unresolved mission gaps instead of from recent file activity."
+      "notes": "Creates the canonical gap worklist so Discovery chooses the next internal-signal slice from unresolved mission gaps instead of from recent file activity.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-v0-normalizer-consolidation",
@@ -127,7 +133,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-v0-normalizer-transformation-record.md",
-      "notes": "First real transformation pilot. Proves the full new workflow: intake queue Ã¢â€ â€™ capability-gap linkage Ã¢â€ â€™ runtime transformation Ã¢â€ â€™ evaluator/proof Ã¢â€ â€™ promotion."
+      "notes": "First real transformation pilot. Proves the full new workflow: intake queue Ã¢â€ â€™ capability-gap linkage Ã¢â€ â€™ runtime transformation Ã¢â€ â€™ evaluator/proof Ã¢â€ â€™ promotion.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-parked-cli-anything",
@@ -144,7 +151,8 @@
       "routed_at": "2026-03-22",
       "completed_at": null,
       "result_record_path": null,
-      "notes": "Backfill from routing-log bundle-53. Two preconditions now product-owned (command mediation contract, command class approval policy). Still missing bounded rollback/no-op test. Deferred until evidence complete."
+      "notes": "Backfill from routing-log bundle-53. Two preconditions now product-owned (command mediation contract, command class approval policy). Still missing bounded rollback/no-op test. Deferred until evidence complete.",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "al-tooling-agent-orchestrator-cli",
@@ -161,7 +169,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-50. Proved temp-copy build, local runtime config, ao status --json. Remains follow_up_only."
+      "notes": "Backfill from routing-log bundle-50. Proved temp-copy build, local runtime config, ao status --json. Remains follow_up_only.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-arscontexta",
@@ -178,7 +187,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-arscontexta-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-45. Promoted to live_runtime with context_operator_import_guard/v1 profile."
+      "notes": "Backfill from routing-log bundle-45. Promoted to live_runtime with context_operator_import_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-design-philosophy",
@@ -195,7 +205,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-design-philosophy-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-46. Promoted to live_runtime with design_review_skill_guard/v1 profile."
+      "notes": "Backfill from routing-log bundle-46. Promoted to live_runtime with design_review_skill_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-superpowers",
@@ -212,7 +223,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-superpowers-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-47. Promoted to live_runtime with workflow_operator_import_guard/v1 profile."
+      "notes": "Backfill from routing-log bundle-47. Promoted to live_runtime with workflow_operator_import_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-promptfoo",
@@ -229,7 +241,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-promptfoo-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-34. Promoted to live_runtime with agent_eval_guard/v1 profile."
+      "notes": "Backfill from routing-log bundle-34. Promoted to live_runtime with agent_eval_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-puppeteer",
@@ -246,7 +259,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-puppeteer-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-39. Promoted to live_runtime with browser_smoke_guard/v1 profile."
+      "notes": "Backfill from routing-log bundle-39. Promoted to live_runtime with browser_smoke_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-skills-manager",
@@ -263,7 +277,8 @@
       "routed_at": "2026-03-21",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-skills-manager-runtime-slice-01-proof.md",
-      "notes": "Backfill from routing-log bundle-40. Promoted to live_runtime with skill_lifecycle_guard/v1 profile."
+      "notes": "Backfill from routing-log bundle-40. Promoted to live_runtime with skill_lifecycle_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "al-tooling-desloppify",
@@ -280,7 +295,8 @@
       "routed_at": "2026-03-20",
       "completed_at": "2026-03-21",
       "result_record_path": "runtime/records/2026-03-21-desloppify-runtime-slice-01-proof.md",
-      "notes": "Backfill. Legacy live pack normalized under legacy_live_runtime_guard/v1 profile."
+      "notes": "Backfill. Legacy live pack normalized under legacy_live_runtime_guard/v1 profile.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-handoff-autoresearch-arch-to-runtime",
@@ -297,7 +313,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md",
-      "notes": "First primary-mode native queue entry. Formal retroactive handoff exercising architecture-to-runtime contract. Real work completed 2026-03-19 through 2026-03-20."
+      "notes": "First primary-mode native queue entry. Formal retroactive handoff exercising architecture-to-runtime contract. Real work completed 2026-03-19 through 2026-03-20.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-backend-test-boilerplate",
@@ -314,7 +331,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-backend-test-boilerplate-transformation-record.md",
-      "notes": "Primary-mode native entry. Consolidates 6 backend test scripts sharing ~58 lines identical boilerplate into shared helper. First candidate with dimensional evaluator proof (before/after lines and bytes)."
+      "notes": "Primary-mode native entry. Consolidates 6 backend test scripts sharing ~58 lines identical boilerplate into shared helper. First candidate with dimensional evaluator proof (before/after lines and bytes).",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-automation-test-boilerplate",
@@ -331,7 +349,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-automation-test-boilerplate-transformation-record.md",
-      "notes": "Primary-mode native entry. Consolidates 9 automation backend test scripts reusing existing withBackendTestEnv helper. Dimensional evaluator: 1,678Ã¢â€ â€™1,205 lines (-28.2%), 57,602Ã¢â€ â€™43,332 bytes (-24.8%)."
+      "notes": "Primary-mode native entry. Consolidates 9 automation backend test scripts reusing existing withBackendTestEnv helper. Dimensional evaluator: 1,678Ã¢â€ â€™1,205 lines (-28.2%), 57,602Ã¢â€ â€™43,332 bytes (-24.8%).",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-transform-remaining-backend-test-boilerplate",
@@ -348,7 +367,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "runtime/records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md",
-      "notes": "Primary-mode native entry (5th). Consolidates 5 remaining backend test scripts reusing existing withBackendTestEnv helper. Dimensional evaluator: 1,009Ã¢â€ â€™754 lines (-25.3%), 36,938Ã¢â€ â€™29,041 bytes (-21.4%). Closes native queue usage gap."
+      "notes": "Primary-mode native entry (5th). Consolidates 5 remaining backend test scripts reusing existing withBackendTestEnv helper. Dimensional evaluator: 1,009Ã¢â€ â€™754 lines (-25.3%), 36,938Ã¢â€ â€™29,041 bytes (-21.4%). Closes native queue usage gap.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-openclaw-discovery-submission-flow",
@@ -365,7 +385,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md",
-      "notes": "First real OpenClaw-root submission using the bounded helper against the primary Discovery intake queue. Processed through Discovery first and closed as an Architecture operating slice."
+      "notes": "First real OpenClaw-root submission using the bounded helper against the primary Discovery intake queue. Processed through Discovery first and closed as an Architecture operating slice.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-openclaw-runtime-verification-freshness-2026-03-22",
@@ -382,7 +403,8 @@
       "routed_at": "2026-03-22",
       "completed_at": "2026-03-22",
       "result_record_path": "architecture/03-adopted/2026-03-22-openclaw-runtime-verification-freshness-adopted.md",
-      "notes": "runtime regression report stale at 122.3h; telegram soak summary stale at 140.7h. Processed through Discovery first and closed as an Architecture signal-adapter slice."
+      "notes": "runtime regression report stale at 122.3h; telegram soak summary stale at 140.7h. Processed through Discovery first and closed as an Architecture signal-adapter slice.",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-live-gpt-researcher-engine-pressure-2026-03-24",
@@ -401,7 +423,8 @@
       "routed_at": "2026-03-24",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
-      "notes": "Real GitHub source under sources/intake/gpt-researcher. Signals: engine, adaptation, evaluation, report persistence, routing, self-improvement, workflow structure, research planner, publisher. Expected pressure: Architecture follow-through after Engine acceptance may still be manual. | backfilled engine handoff materialization from persisted run cc5eed01-d35d-4c05-ae9d-03d6a906d973"
+      "notes": "Real GitHub source under sources/intake/gpt-researcher. Signals: engine, adaptation, evaluation, report persistence, routing, self-improvement, workflow structure, research planner, publisher. Expected pressure: Architecture follow-through after Engine acceptance may still be manual. | backfilled engine handoff materialization from persisted run cc5eed01-d35d-4c05-ae9d-03d6a906d973",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
@@ -420,7 +443,8 @@
       "routed_at": "2026-03-24",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md",
-      "notes": "Real GitHub source under sources/intake/mini-swe-agent. Signals: runtime, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Runtime follow-through may remain manual after Engine routing. | backfilled engine handoff materialization from persisted run 058854ee-9a0a-4f9a-93ec-5b742f7814f0"
+      "notes": "Real GitHub source under sources/intake/mini-swe-agent. Signals: runtime, runtime, callable, automation, reliability, local execution, behavior-preserving transformation, better implementation with same behavior. Expected pressure: Runtime follow-through may remain manual after Engine routing. | backfilled engine handoff materialization from persisted run 058854ee-9a0a-4f9a-93ec-5b742f7814f0",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-live-scientify-engine-pressure-2026-03-24",
@@ -439,7 +463,8 @@
       "routed_at": "2026-03-24",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
-      "notes": "Real GitHub source under sources/intake/scientify. Signals: workflow, automation, runtime capability, orchestration, handoff, engine improvement, routing ambiguity, scheduled delivery. Expected pressure: borderline Discovery versus Runtime versus Architecture case. | backfilled engine handoff materialization from persisted run d24a7bbd-2ea7-4014-a8cc-d1fdb59e7850"
+      "notes": "Real GitHub source under sources/intake/scientify. Signals: workflow, automation, runtime capability, orchestration, handoff, engine improvement, routing ambiguity, scheduled delivery. Expected pressure: borderline Discovery versus Runtime versus Architecture case. | backfilled engine handoff materialization from persisted run d24a7bbd-2ea7-4014-a8cc-d1fdb59e7850",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-real-gpt-researcher-engine-handoff-2026-03-24",
@@ -458,7 +483,8 @@
       "routed_at": "2026-03-24",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
-      "notes": "Real Mission Control submission used to verify post-Engine Architecture handoff materialization. | engine handoff materialized: discovery/routing-log/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-routing-record.md -> architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md"
+      "notes": "Real Mission Control submission used to verify post-Engine Architecture handoff materialization. | engine handoff materialized: discovery/routing-log/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-routing-record.md -> architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
+      "operating_mode": "deep"
     },
     {
       "candidate_id": "dw-real-karpathy-autoresearch-discovery-v0-2026-03-25",
@@ -477,7 +503,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md",
-      "notes": "Real Discovery v0 verification from a tracked source note under sources/intake. | discovery front door materialized: discovery/intake/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md | route approval by codex-route-approval-proof opened architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md"
+      "notes": "Real Discovery v0 verification from a tracked source note under sources/intake. | discovery front door materialized: discovery/intake/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md | route approval by codex-route-approval-proof opened architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
@@ -496,7 +523,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
-      "notes": "Real Runtime-route proof from the tracked mini-swe-agent source under sources/intake/mini-swe-agent. | discovery front door materialized: discovery/intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md | route approval by codex-runtime-route-proof opened runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
+      "notes": "Real Runtime-route proof from the tracked mini-swe-agent source under sources/intake/mini-swe-agent. | discovery front door materialized: discovery/intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md | route approval by codex-runtime-route-proof opened runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+      "operating_mode": "deep"
     },
     {
       "candidate_id": "dw-pressure-karpathy-autoresearch-2026-03-25",
@@ -515,7 +543,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-engine-handoff.md",
-      "notes": "pressure_run_role:architecture_likely | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-routing-record.md | route approval by codex-pressure-run-2026-03-25 opened architecture/02-experiments/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-engine-handoff.md"
+      "notes": "pressure_run_role:architecture_likely | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-routing-record.md | route approval by codex-pressure-run-2026-03-25 opened architecture/02-experiments/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-mini-swe-agent-2026-03-25",
@@ -534,7 +563,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md",
-      "notes": "pressure_run_role:runtime_likely | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md | route approval by codex-pressure-run-2026-03-25 opened runtime/follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md"
+      "notes": "pressure_run_role:runtime_likely | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md | route approval by codex-pressure-run-2026-03-25 opened runtime/follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-papercoder-2026-03-25",
@@ -553,7 +583,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-papercoder-2026-03-25-engine-handoff.md",
-      "notes": "pressure_run_role:ambiguous_mixed | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-papercoder-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-papercoder-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-papercoder-2026-03-25-routing-record.md | route approval by codex-pressure-run-2026-03-25 opened architecture/02-experiments/2026-03-25-dw-pressure-papercoder-2026-03-25-engine-handoff.md"
+      "notes": "pressure_run_role:ambiguous_mixed | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-papercoder-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-papercoder-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-papercoder-2026-03-25-routing-record.md | route approval by codex-pressure-run-2026-03-25 opened architecture/02-experiments/2026-03-25-dw-pressure-papercoder-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-genetic-mutation-2026-03-25",
@@ -572,7 +603,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-engine-handoff.md",
-      "notes": "pressure_run_role:structural_generalization_test | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-routing-record.md | route approval by codex opened architecture/02-experiments/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-engine-handoff.md | route approval by codex opened architecture/02-experiments/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-engine-handoff.md"
+      "notes": "pressure_run_role:structural_generalization_test | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-routing-record.md | route approval by codex opened architecture/02-experiments/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-engine-handoff.md | route approval by codex opened architecture/02-experiments/2026-03-25-dw-pressure-genetic-mutation-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-rag-architecture-2026-03-25",
@@ -591,7 +623,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-rag-architecture-2026-03-25-engine-handoff.md",
-      "notes": "pressure_run_role:non_stageful_structural_boundary_test | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-rag-architecture-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-rag-architecture-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-rag-architecture-2026-03-25-routing-record.md | route approval by codex opened architecture/02-experiments/2026-03-25-dw-pressure-rag-architecture-2026-03-25-engine-handoff.md"
+      "notes": "pressure_run_role:non_stageful_structural_boundary_test | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-rag-architecture-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-rag-architecture-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-rag-architecture-2026-03-25-routing-record.md | route approval by codex opened architecture/02-experiments/2026-03-25-dw-pressure-rag-architecture-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-scientify-2026-03-25",
@@ -610,7 +643,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-25-dw-pressure-scientify-2026-03-25-runtime-follow-up-record.md",
-      "notes": "real_second_runtime_generalization_run | local source mirror under sources/intake/scientify | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-scientify-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-scientify-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-scientify-2026-03-25-routing-record.md | route approval by codex-runtime-generalization-run opened runtime/follow-up/2026-03-25-dw-pressure-scientify-2026-03-25-runtime-follow-up-record.md"
+      "notes": "real_second_runtime_generalization_run | local source mirror under sources/intake/scientify | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-scientify-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-scientify-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-scientify-2026-03-25-routing-record.md | route approval by codex-runtime-generalization-run opened runtime/follow-up/2026-03-25-dw-pressure-scientify-2026-03-25-runtime-follow-up-record.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-puppeteer-bounded-tool-2026-03-25",
@@ -629,7 +663,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-runtime-follow-up-record.md",
-      "notes": "real_bounded_tool_runtime_generalization_run | local mirror under workspace/agent-lab/tooling/puppeteer | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-routing-record.md | route approval by codex-runtime-bounded-tool-run opened runtime/follow-up/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-runtime-follow-up-record.md | route approval by codex-runtime-bounded-tool-run opened runtime/follow-up/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-runtime-follow-up-record.md"
+      "notes": "real_bounded_tool_runtime_generalization_run | local mirror under workspace/agent-lab/tooling/puppeteer | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-routing-record.md | route approval by codex-runtime-bounded-tool-run opened runtime/follow-up/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-runtime-follow-up-record.md | route approval by codex-runtime-bounded-tool-run opened runtime/follow-up/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-runtime-follow-up-record.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-gpt-researcher-evaluator-quality-2026-03-25",
@@ -648,7 +683,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-engine-handoff.md",
-      "notes": "real_architecture_evaluator_quality_run | local mirror under sources/intake/gpt-researcher | focus: reviewer criteria, simple evals, hallucination evals | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-routing-record.md | route approval by codex-architecture-evaluator-run opened architecture/02-experiments/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-engine-handoff.md"
+      "notes": "real_architecture_evaluator_quality_run | local mirror under sources/intake/gpt-researcher | focus: reviewer criteria, simple evals, hallucination evals | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-routing-record.md | route approval by codex-architecture-evaluator-run opened architecture/02-experiments/2026-03-25-dw-pressure-gpt-researcher-evaluator-quality-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-autoresearch-proof-boundary-2026-03-25",
@@ -667,7 +703,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-engine-handoff.md",
-      "notes": "real_architecture_proof_rule_boundary_run | local mirror under sources/intake/autoresearch | focus: verification patterns are mixed with broader workflow structure | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-routing-record.md | route approval by codex-architecture-proof-boundary-run opened architecture/02-experiments/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-engine-handoff.md"
+      "notes": "real_architecture_proof_rule_boundary_run | local mirror under sources/intake/autoresearch | focus: verification patterns are mixed with broader workflow structure | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-routing-record.md | route approval by codex-architecture-proof-boundary-run opened architecture/02-experiments/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25",
@@ -686,7 +723,8 @@
       "routed_at": "2026-03-25",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-engine-handoff.md",
-      "notes": "real_architecture_quiet_proof_rule_boundary_run | local source: agentics daily-qa | incidental QA and test language only | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-routing-record.md | route approval by codex-architecture-quiet-proof-boundary-run opened architecture/02-experiments/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-engine-handoff.md"
+      "notes": "real_architecture_quiet_proof_rule_boundary_run | local source: agentics daily-qa | incidental QA and test language only | discovery front door materialized: discovery/intake/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-intake.md, discovery/triage/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-triage.md, discovery/routing-log/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-routing-record.md | route approval by codex-architecture-quiet-proof-boundary-run opened architecture/02-experiments/2026-03-25-dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-openmoss-architecture-loop-2026-03-26",
@@ -705,7 +743,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md",
-      "notes": "Local source mirror available at sources/intake/OpenMOSS/README.md. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-routing-record.md | route approval by codex-single-lead-implementer opened runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md"
+      "notes": "Local source mirror available at sources/intake/OpenMOSS/README.md. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-routing-record.md | route approval by codex-single-lead-implementer opened runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-autoresearch-loop-protocol-2026-03-26",
@@ -724,7 +763,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-engine-handoff.md",
-      "notes": "Repo-backed local source; pair with commands/autoresearch.md only if the loop contract needs supporting command context. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-routing-record.md | route approval by codex-single-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-engine-handoff.md"
+      "notes": "Repo-backed local source; pair with commands/autoresearch.md only if the loop contract needs supporting command context. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-routing-record.md | route approval by codex-single-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-autoresearch-ship-control-boundary-2026-03-26",
@@ -743,7 +783,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-engine-handoff.md",
-      "notes": "Repo-backed local source; treat shipping execution behavior as out of scope and keep attention on bounded control, evidence, and decision structure. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-routing-record.md | route approval by codex-single-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-engine-handoff.md | route approval by codex-single-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-engine-handoff.md"
+      "notes": "Repo-backed local source; treat shipping execution behavior as out of scope and keep attention on bounded control, evidence, and decision structure. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-routing-record.md | route approval by codex-single-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-engine-handoff.md | route approval by codex-single-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-ship-control-boundary-2026-03-26-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-results-logging-contract-quality-2026-03-26",
@@ -762,7 +803,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-engine-handoff.md",
-      "notes": "Local repo-backed source. Focus on explicit record fields, primary evidence discipline, and reusable Architecture artifact-contract quality. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-engine-handoff.md"
+      "notes": "Local repo-backed source. Focus on explicit record fields, primary evidence discipline, and reusable Architecture artifact-contract quality. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-pressure-agentics-reporting-boundary-2026-03-26",
@@ -781,7 +823,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-engine-handoff.md",
-      "notes": "Real local source. Prefer no new contract work unless the same produced-artifact reporting seam appears again during a real bounded case. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-engine-handoff.md"
+      "notes": "Real local source. Prefer no new contract work unless the same produced-artifact reporting seam appears again during a real bounded case. | discovery front door materialized: discovery/intake/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-pressure-agentics-reporting-boundary-2026-03-26-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-mission-autoloop-persistent-orchestration-2026-03-26",
@@ -800,7 +843,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-engine-handoff.md",
-      "notes": "discovery front door materialized: discovery/intake/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-engine-handoff.md"
+      "notes": "discovery front door materialized: discovery/intake/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-mission-openmoss-runtime-orchestration-2026-03-26",
@@ -819,7 +863,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md",
-      "notes": "discovery front door materialized: discovery/intake/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md"
+      "notes": "discovery front door materialized: discovery/intake/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md",
+      "operating_mode": "standard"
     },
     {
       "candidate_id": "dw-mission-core-principles-operating-discipline-2026-03-26",
@@ -838,7 +883,8 @@
       "routed_at": "2026-03-26",
       "completed_at": null,
       "result_record_path": "architecture/02-experiments/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-engine-handoff.md",
-      "notes": "discovery front door materialized: discovery/intake/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-engine-handoff.md"
+      "notes": "discovery front door materialized: discovery/intake/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-engine-handoff.md",
+      "operating_mode": "note"
     },
     {
       "candidate_id": "dw-mission-agentics-issue-triage-discovery-restart-2026-03-26",
@@ -857,7 +903,68 @@
       "routed_at": "2026-03-26",
       "completed_at": "2026-03-26",
       "result_record_path": "discovery/monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md",
-      "notes": "Focus on Discovery front-door value first: triage heuristics, issue classification, context gathering, duplicate detection, and explicit bounded operator notes. Out of scope: GitHub execution, label mutation, issue comments, or reusable Runtime workflow packaging in this step. | discovery front door materialized: discovery/intake/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md | Monitor record materialized: discovery/monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md"
+      "notes": "Focus on Discovery front-door value first: triage heuristics, issue classification, context gathering, duplicate detection, and explicit bounded operator notes. Out of scope: GitHub execution, label mutation, issue comments, or reusable Runtime workflow packaging in this step. | discovery front door materialized: discovery/intake/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-intake.md, discovery/triage/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-triage.md, discovery/routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md | Monitor record materialized: discovery/monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md",
+      "operating_mode": "note"
+    },
+    {
+      "candidate_id": "dw-source-scientify-research-workflow-plugin-2026-03-27",
+      "candidate_name": "Scientify Research Workflow Plugin",
+      "source_type": "github-repo",
+      "source_reference": "sources/intake/scientify",
+      "received_at": "2026-03-27",
+      "status": "routed",
+      "routing_target": "runtime",
+      "mission_alignment": "Scientify is a real OpenClaw plugin that automates academic research workflows through LLM-driven sub-agents. It contains 10+ research skills (literature survey, deep analysis, implementation plan, code implementation, review, experiment, idea generation, subscription management), 6+ tools (arxiv search/download, openalex, unpaywall, github search, paper browser), hooks (cron injection, research mode, skill injection), and a knowledge-state system. This source has direct value as reusable research workflow capability and structural/meta value for how it organizes multi-phase orchestrated skill pipelines with verification between steps. It is the strongest available external source that has not yet been processed through the modern Engine path.",
+      "capability_gap_id": "gap-directive-engine-materialization",
+      "assigned_worker": null,
+      "intake_record_path": "discovery/intake/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-intake.md",
+      "fast_path_record_path": null,
+      "routing_record_path": "discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
+      "routed_at": "2026-03-27",
+      "completed_at": null,
+      "result_record_path": "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md",
+      "notes": "Full cloned repo at sources/intake/scientify. Published npm package (v1.12.1). MIT licensed. Previously tagged as a candidate for gap-directive-engine-materialization but never processed through the modern Discovery front door. | discovery front door materialized: discovery/intake/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-intake.md, discovery/triage/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-triage.md, discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md | route approval by directive-lead-implementer opened runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md",
+      "operating_mode": "deep"
+    },
+    {
+      "candidate_id": "dw-source-paper2code-2026-03-27",
+      "candidate_name": "Paper2Code Multi-Agent Code Generation System",
+      "source_type": "github-repo",
+      "source_reference": "sources/intake/Paper2Code",
+      "received_at": "2026-03-27",
+      "status": "routed",
+      "routing_target": "architecture",
+      "mission_alignment": "Multi-agent system that transforms academic papers into functional code repositories using a 3-stage pipeline (planning, analysis, code generation). Relevant to Directive Workspace's core mission of automated source-to-usefulness conversion — the pipeline architecture, agent coordination patterns, and structured extraction workflow are directly applicable to improving Engine's source consumption and adaptation capabilities.",
+      "capability_gap_id": "gap-directive-engine-materialization",
+      "assigned_worker": null,
+      "intake_record_path": "discovery/intake/2026-03-27-dw-source-paper2code-2026-03-27-intake.md",
+      "fast_path_record_path": null,
+      "routing_record_path": "discovery/routing-log/2026-03-27-dw-source-paper2code-2026-03-27-routing-record.md",
+      "routed_at": "2026-03-27",
+      "completed_at": null,
+      "result_record_path": "architecture/02-experiments/2026-03-27-dw-source-paper2code-2026-03-27-engine-handoff.md",
+      "notes": "Python/OpenAI-based. 3 stages: PlanningAgent, AnalysisAgent, CodeGenerationAgent. Uses structured prompts and inter-agent handoff. Could inform Engine workflow design or become a runtime capability for automated paper-to-implementation. | discovery front door materialized: discovery/intake/2026-03-27-dw-source-paper2code-2026-03-27-intake.md, discovery/triage/2026-03-27-dw-source-paper2code-2026-03-27-triage.md, discovery/routing-log/2026-03-27-dw-source-paper2code-2026-03-27-routing-record.md | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-27-dw-source-paper2code-2026-03-27-engine-handoff.md",
+      "operating_mode": "standard"
+    },
+    {
+      "candidate_id": "dw-source-ts-edge-2026-03-27",
+      "candidate_name": "ts-edge Type-Safe Graph Workflow Engine",
+      "source_type": "github-repo",
+      "source_reference": "sources/intake/ts-edge",
+      "received_at": "2026-03-27",
+      "status": "routed",
+      "routing_target": "architecture",
+      "mission_alignment": "Lightweight TypeScript graph-based workflow engine with compile-time type-safe node chaining. Directly addresses the Engine pipeline gap where planning stages receive the same flat input instead of chaining outputs. The typed-graph pattern (addNode/edge/compile/run) maps to the Engine processSource stages with output-to-input type enforcement between connected nodes.",
+      "capability_gap_id": "gap-directive-engine-materialization",
+      "assigned_worker": null,
+      "intake_record_path": "discovery/intake/2026-03-27-dw-source-ts-edge-2026-03-27-intake.md",
+      "fast_path_record_path": null,
+      "routing_record_path": "discovery/routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md",
+      "routed_at": "2026-03-27",
+      "completed_at": null,
+      "result_record_path": "architecture/02-experiments/2026-03-27-dw-source-ts-edge-2026-03-27-engine-handoff.md",
+      "notes": "TypeScript-native, MIT license, zero runtime deps (only ts-safe). ~8 core source files. Builder pattern: createGraph().addNode().edge().compile().run(). Supports branching, parallel execution, merge nodes, middleware, streaming, state management. The extracted value is the typed-graph-with-chaining pattern for Engine stage orchestration, not the library as a dependency. | discovery front door materialized: discovery/intake/2026-03-27-dw-source-ts-edge-2026-03-27-intake.md, discovery/triage/2026-03-27-dw-source-ts-edge-2026-03-27-triage.md, discovery/routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md | operator routing override: Engine scored runtime (19) but primary adoption target is Engine pipeline orchestration (Architecture), not reusable runtime capability. Override to architecture per doctrine. | route approval by directive-lead-implementer opened architecture/02-experiments/2026-03-27-dw-source-ts-edge-2026-03-27-engine-handoff.md",
+      "operating_mode": "standard"
     }
   ]
 }

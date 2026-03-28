@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { isDirectiveWorkspaceArtifactReference } from "../../engine/artifact-link-validation.ts";
 import {
   type DiscoveryIntakeQueueDocument,
   type DiscoveryIntakeQueueEntry,
@@ -47,6 +48,25 @@ function mergeNotes(existing: string | null, appended: string | null) {
   return `${existing} | ${appended}`;
 }
 
+function readUtf8(filePath: string) {
+  return fs.readFileSync(filePath, "utf8");
+}
+
+function extractBulletValue(markdown: string, label: string) {
+  const prefix = `- ${label}:`;
+  const line = markdown
+    .split(/\r?\n/)
+    .find((entry) => entry.trim().startsWith(prefix));
+  if (!line) {
+    throw new Error(`routing_record_path is missing "${label}"`);
+  }
+  return line
+    .trim()
+    .replace(prefix, "")
+    .trim()
+    .replace(/^`|`$/g, "");
+}
+
 function resolveArtifactPath(input: {
   directiveRoot: string;
   relativePath: string | null;
@@ -82,6 +102,38 @@ function resolveOptionalArtifactPath(input: {
   fieldName: string;
 }) {
   return input.relativePath ? resolveArtifactPath(input) : null;
+}
+
+function validateRoutedLifecycleSyncAgainstRoutingRecord(input: {
+  directiveRoot: string;
+  routingRecordPath: string | null;
+  routingTarget: DiscoveryRoutingTarget;
+  resultRecordPath: string | null;
+}) {
+  if (!input.routingRecordPath) {
+    return;
+  }
+
+  const routingAbsolutePath = path.resolve(input.directiveRoot, input.routingRecordPath);
+  const markdown = readUtf8(routingAbsolutePath);
+  const routeDestination = extractBulletValue(markdown, "Route destination");
+  if (routeDestination !== input.routingTarget) {
+    throw new Error(
+      `routing_target does not match routing_record_path route destination: ${routeDestination}`,
+    );
+  }
+
+  const requiredNextArtifact = extractBulletValue(markdown, "Required next artifact")
+    .replace(/\\/g, "/");
+  if (
+    input.resultRecordPath
+    && isDirectiveWorkspaceArtifactReference(requiredNextArtifact)
+    && requiredNextArtifact !== input.resultRecordPath
+  ) {
+    throw new Error(
+      `result_record_path must match the routing record's required next artifact: ${requiredNextArtifact}`,
+    );
+  }
 }
 
 function getEntry(queue: DiscoveryIntakeQueueDocument, candidateId: string) {
@@ -202,12 +254,25 @@ export function syncDiscoveryIntakeLifecycle(input: {
 
   const normalizedResultPath =
     input.request.target_phase === "completed"
+      || (
+        input.request.target_phase === "routed"
+        && isDirectiveWorkspaceArtifactReference(resultRecordPath)
+      )
       ? resolveArtifactPath({
           directiveRoot: input.directiveRoot,
           relativePath: resultRecordPath,
           fieldName: "result_record_path",
         })
       : resultRecordPath;
+
+  if (input.request.target_phase === "routed") {
+    validateRoutedLifecycleSyncAgainstRoutingRecord({
+      directiveRoot: input.directiveRoot,
+      routingRecordPath: normalizedRoutingRecord,
+      routingTarget,
+      resultRecordPath: normalizedResultPath,
+    });
+  }
 
   if (input.request.target_phase === "routed" && currentEntry.status === "routed") {
     const result = updateEntryWithoutTransition({

@@ -42,6 +42,16 @@ npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-
 
 Do not collapse those pairs into one meaning.
 
+## Operating modes
+
+Every case has an `operating_mode` classification (NOTE / STANDARD / DEEP) set at triage time. The queue field `operating_mode` records this. See `CLAUDE.md` → Operating modes for the full decision rules.
+
+- **NOTE** — 1 session, 1 artifact beyond Discovery, default stop. Most pressure-test and exploratory cases.
+- **STANDARD** — 2-4 sessions, batch tightly coupled steps, stop at bounded-result or capability-boundary. Most real adaptation cases.
+- **DEEP** — full chain, step-per-session for seam work. Only for real implementation or Engine changes.
+
+Before continuing any case, check its `operating_mode` in the queue and respect its stop-line.
+
 ## Proven
 
 - Discovery front door artifactization
@@ -124,24 +134,33 @@ Do not collapse those pairs into one meaning.
 - Use the existing Discovery front door on real sources and keep route approval explicit.
 - Tighten Discovery truth only through queue/routing/evidence consistency and capability-gap linkage clarity.
 - Do not add automatic downstream advancement or duplicate Engine routing/usefulness logic inside Discovery.
+- New cases should be classified as NOTE/STANDARD/DEEP at triage time.
 
 ### Runtime
 
 - The non-executing promotion-readiness artifact is now the current Runtime stop for the real March 25 route-proof chain.
 - Further Runtime work must remain explicit, bounded, and non-executing unless a later task intentionally opens the next seam.
 - Do not treat follow-up/proof records as runtime surfaces.
+- NOTE-mode Runtime cases: mark follow-up as reviewed and park. Do not open a record.
 
 ### Architecture
 
 - No required new structural seam is open for the current Architecture phase; use the existing chain for new bounded cases instead of redesigning it.
 - Architecture infrastructure work should stay limited to truth/checking hardening or new real-case coverage through the existing path.
 - Do not reopen Architecture flow design unless product truth is broken.
+- NOTE-mode Architecture cases: handoff → single bounded-result with verdict `noted`. Skip bounded-start.
 
 ### Shared Engine / Whole Product
 
 - Use shared/lib/dw-state.ts as the canonical read surface instead of building new ad hoc state readers.
 - The highest-value whole-product seam is negative-path validation hardening around broken links, stale statuses, and overstated next steps.
 - Do not turn the anchor into a workflow engine, dashboard, or automation layer.
+
+### Stop-line enforcement
+
+- Do not continue a case past its operating mode stop-line without explicit operator justification.
+- Parked cases (`stay_experimental` or `needs-more-evidence` for 2+ sessions) do not generate "next best move" suggestions.
+- "More formalization" is not the same as "more value."
 
 ## If you are working in a specific lane
 

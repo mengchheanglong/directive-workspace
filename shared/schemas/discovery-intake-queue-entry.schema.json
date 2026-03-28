@@ -47,6 +47,11 @@
     "routed_at": { "type": ["string", "null"], "format": "date" },
     "completed_at": { "type": ["string", "null"], "format": "date" },
     "result_record_path": { "type": ["string", "null"] },
-    "notes": { "type": ["string", "null"] }
+    "notes": { "type": ["string", "null"] },
+    "operating_mode": {
+      "type": ["string", "null"],
+      "enum": ["note", "standard", "deep", null],
+      "description": "Operating mode classification (NOTE/STANDARD/DEEP). Set at triage time. See CLAUDE.md Operating modes."
+    }
   }
 }

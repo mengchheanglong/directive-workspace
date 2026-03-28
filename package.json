@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "node --experimental-strip-types ./scripts/run-frontend-dev.ts",
     "build": "npm run frontend:build",
-    "check": "npm run check:frontend-host && npm run check:directive-workspace-composition",
+    "check": "npm run check:frontend-host && npm run check:directive-workspace-composition && npm run check:directive-engine-stage-chaining",
     "check:architecture-composition": "node --experimental-strip-types ./scripts/check-architecture-composition.ts",
+    "check:directive-dw-web-host-runtime-seam-review": "node --experimental-strip-types ./scripts/check-directive-dw-web-host-runtime-seam-review.ts",
+    "check:directive-engine-stage-chaining": "node --experimental-strip-types ./scripts/check-directive-engine-stage-chaining.ts",
     "check:directive-workspace-composition": "node --experimental-strip-types ./scripts/check-directive-workspace-composition.ts",
     "frontend:build": "npm --prefix ./frontend run build",
     "check:frontend-host": "node --experimental-strip-types ./scripts/check-frontend-host.ts",

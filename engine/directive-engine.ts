@@ -7,8 +7,10 @@ import {
   explainDirectiveEngineUsefulness,
 } from "./usefulness.ts";
 import {
+  type DirectiveEngineLaneIntegrationPlanningInput,
   resolveDirectiveEngineLane,
   type DirectiveEngineLanePlanningInput,
+  type DirectiveEngineLaneProofPlanningInput,
   type DirectiveEngineLaneSet,
 } from "./lane.ts";
 import { normalizeDirectiveEngineSourceType } from "./source-type-normalization.ts";
@@ -169,15 +171,21 @@ function deriveIntegrationMode(input: {
 }
 
 function buildDefaultProofPlan(
-  input: DirectiveEngineLanePlanningInput,
+  input: DirectiveEngineLaneProofPlanningInput,
 ): DirectiveEngineProofPlan {
+  const primaryImprovementGoal =
+    input.improvementPlan.improvementGoals[0]
+    ?? "bounded improvement delta recorded";
   return {
-    proofKind: `${input.lane.laneId}_proof`,
-    objective: `Prove the ${input.lane.label} path is safe, bounded, and useful under the current mission.`,
+    proofKind: `${input.planningInput.lane.laneId}_proof`,
+    objective:
+      `Prove the ${input.planningInput.lane.label} path is safe, bounded, and useful under the current mission, `
+      + `while keeping the proof boundary grounded in the staged improvement goal "${primaryImprovementGoal}".`,
     requiredEvidence: [
       "lane rationale recorded",
       "bounded next action recorded",
       "proof owner identified",
+      "improvement delta stays anchored to prior stage output",
     ],
     requiredGates: [
       "scope_review",
@@ -412,17 +420,65 @@ function buildExtractionPlan(
   };
 }
 
-function buildAdaptationPlan(
-  input: DirectiveEngineLanePlanningInput,
-): DirectiveEngineAdaptationPlan {
-  const structuralProcessStages = resolveStructuralProcessStages(input.source);
-  const controlSignalProfile = resolveControlSignalProfile(input.source);
-  const hasStageAwareStructuralPattern = input.lane.laneId === "architecture"
-    && structuralProcessStages.length >= 2;
-  const hasControlSignalPattern = input.lane.laneId === "architecture"
-    && Boolean(controlSignalProfile);
+type DirectiveEngineAdaptationStageInput = {
+  planningInput: DirectiveEngineLanePlanningInput;
+  extractionPlan: DirectiveEngineExtractionPlan;
+};
 
-  switch (input.lane.laneId) {
+type DirectiveEngineImprovementStageInput = {
+  planningInput: DirectiveEngineLanePlanningInput;
+  extractionPlan: DirectiveEngineExtractionPlan;
+  adaptationPlan: DirectiveEngineAdaptationPlan;
+};
+
+function readExtractionPlanSummary(
+  extractionPlan: DirectiveEngineExtractionPlan,
+  prefix: string,
+) {
+  return extractionPlan.extractedValue
+    .find((value) => value.startsWith(prefix))
+    ?.replace(prefix, "")
+    .trim()
+    ?? null;
+}
+
+function adaptationPlanIncludes(
+  adaptationPlan: DirectiveEngineAdaptationPlan,
+  pattern: string,
+) {
+  const loweredPattern = pattern.toLowerCase();
+  return adaptationPlan.directiveOwnedForm.toLowerCase().includes(loweredPattern)
+    || adaptationPlan.adaptedValue.some((value) =>
+      value.toLowerCase().includes(loweredPattern)
+    );
+}
+
+function buildAdaptationPlan(
+  input: DirectiveEngineAdaptationStageInput,
+): DirectiveEngineAdaptationPlan {
+  const { planningInput, extractionPlan } = input;
+  const extractedStagePattern = readExtractionPlanSummary(
+    extractionPlan,
+    "Stage-aware structural pattern:",
+  )?.replace(/\.$/u, "");
+  const extractedLoopControlPattern = readExtractionPlanSummary(
+    extractionPlan,
+    "Bounded loop-control pattern:",
+  )?.replace(/\.$/u, "");
+  const extractedControlEvidencePattern = readExtractionPlanSummary(
+    extractionPlan,
+    "Bounded control/evidence pattern:",
+  )?.replace(/\.$/u, "");
+  const primaryExcludedBaggage = extractionPlan.excludedBaggage[0]
+    ?? "source baggage that does not belong in the Engine";
+  const hasStageAwareStructuralPattern = planningInput.lane.laneId === "architecture"
+    && Boolean(extractedStagePattern);
+  const hasLoopControlPattern = planningInput.lane.laneId === "architecture"
+    && Boolean(extractedLoopControlPattern);
+  const hasControlEvidencePattern = planningInput.lane.laneId === "architecture"
+    && Boolean(extractedControlEvidencePattern);
+
+  switch (planningInput.lane.laneId) {
     case "discovery":
       return {
         directiveOwnedForm:
@@ -438,28 +494,28 @@ function buildAdaptationPlan(
           directiveOwnedForm:
             "Directive-owned Engine logic that preserves explicit stage boundaries for structural source adaptation instead of collapsing them into one generic Architecture mechanism.",
           adaptedValue: [
-            `Keep ${formatStructuralProcessStages(structuralProcessStages)} as separate Engine-owned reasoning stages.`,
-            "Use those stage boundaries to decide what belongs in Discovery, Architecture, and Runtime before any downstream implementation claim is made.",
+            `Keep ${extractedStagePattern} as separate Engine-owned reasoning stages.`,
+            `Carry forward the extraction boundary by excluding ${primaryExcludedBaggage} before any broader Architecture or Runtime claim is made.`,
           ],
         };
       }
-      if (hasControlSignalPattern && controlSignalProfile?.framing === "iterative_loop") {
+      if (hasLoopControlPattern) {
         return {
           directiveOwnedForm:
             "Directive-owned Engine logic that preserves explicit bounded loop-control boundaries for iterative structural sources instead of collapsing them into one generic Architecture heuristic.",
           adaptedValue: [
-            `Keep ${formatIterativeControlSignals(controlSignalProfile.signals)} as separate Engine-owned control boundaries for repeated improvement loops.`,
-            "Use those boundaries to preserve fail-fast setup, proof discipline, rollback safety, and iteration memory without adopting source-specific execution behavior.",
+            `Keep ${extractedLoopControlPattern} as separate Engine-owned control boundaries for repeated improvement loops.`,
+            `Carry forward the extraction boundary by excluding ${primaryExcludedBaggage} before any repeated-loop implementation claim is made.`,
           ],
         };
       }
-      if (hasControlSignalPattern && controlSignalProfile?.framing === "bounded_protocol") {
+      if (hasControlEvidencePattern) {
         return {
           directiveOwnedForm:
             "Directive-owned Engine logic that preserves explicit bounded control and evidence boundaries for structural protocols instead of collapsing them into one generic Architecture heuristic.",
           adaptedValue: [
-            `Keep ${formatIterativeControlSignals(controlSignalProfile.signals)} as separate Engine-owned control and evidence boundaries.`,
-            "Use those boundaries to preserve checklist discipline, approval gates, verification, rollback clarity, and reporting structure without adopting source-specific shipping behavior.",
+            `Keep ${extractedControlEvidencePattern} as separate Engine-owned control and evidence boundaries.`,
+            `Carry forward the extraction boundary by excluding ${primaryExcludedBaggage} before any protocol-level shipping or execution claim is made.`,
           ],
         };
       }
@@ -484,12 +540,43 @@ function buildAdaptationPlan(
 }
 
 function buildImprovementPlan(
-  input: DirectiveEngineLanePlanningInput,
+  input: DirectiveEngineImprovementStageInput,
 ): DirectiveEngineImprovementPlan {
-  const structuralProcessStages = resolveStructuralProcessStages(input.source);
-  const controlSignalProfile = resolveControlSignalProfile(input.source);
+  const { planningInput, extractionPlan, adaptationPlan } = input;
+  const structuralProcessStages = resolveStructuralProcessStages(planningInput.source);
+  const controlSignalProfile = resolveControlSignalProfile(planningInput.source);
+  const extractedStagePattern = readExtractionPlanSummary(
+    extractionPlan,
+    "Stage-aware structural pattern:",
+  )?.replace(/\.$/u, "");
+  const extractedLoopControlPattern = readExtractionPlanSummary(
+    extractionPlan,
+    "Bounded loop-control pattern:",
+  )?.replace(/\.$/u, "");
+  const extractedControlEvidencePattern = readExtractionPlanSummary(
+    extractionPlan,
+    "Bounded control/evidence pattern:",
+  )?.replace(/\.$/u, "");
+  const stageAwareAdaptationReady = Boolean(extractedStagePattern)
+    && (
+      adaptationPlanIncludes(adaptationPlan, "stage boundaries")
+      || adaptationPlanIncludes(adaptationPlan, "engine-owned reasoning stages")
+    );
+  const loopControlAdaptationReady = Boolean(extractedLoopControlPattern)
+    && (
+      adaptationPlanIncludes(adaptationPlan, "loop-control")
+      || adaptationPlanIncludes(adaptationPlan, "control boundaries")
+    );
+  const controlEvidenceAdaptationReady = Boolean(extractedControlEvidencePattern)
+    && (
+      adaptationPlanIncludes(adaptationPlan, "control and evidence boundaries")
+      || adaptationPlanIncludes(adaptationPlan, "control and evidence")
+      || adaptationPlanIncludes(adaptationPlan, "control boundaries")
+    );
+  const primaryAdaptedValue =
+    adaptationPlan.adaptedValue[0] ?? adaptationPlan.directiveOwnedForm;
 
-  switch (input.lane.laneId) {
+  switch (planningInput.lane.laneId) {
     case "discovery":
       return {
         improvementGoals: [
@@ -500,6 +587,36 @@ function buildImprovementPlan(
           "Make source selection and routing clearer and more reusable than the original source context.",
       };
     case "architecture":
+      if (stageAwareAdaptationReady) {
+        return {
+          improvementGoals: [
+            "improve stage-aware engine analysis for structural sources",
+            "improve future source adaptation quality for ambiguous multi-stage candidates",
+          ],
+          intendedDelta:
+            `Turn the preserved ${extractedStagePattern} stage pattern into explicit Engine-owned improvement plans so later planning stages can build on the adaptation boundary (${primaryAdaptedValue}) instead of recomputing everything from the same flat input.`,
+        };
+      }
+      if (loopControlAdaptationReady) {
+        return {
+          improvementGoals: [
+            "improve bounded iteration-control analysis for structural workflow sources",
+            "improve future Architecture adaptation quality for loop protocols with explicit safety boundaries",
+          ],
+          intendedDelta:
+            `Turn the preserved ${extractedLoopControlPattern} loop-control boundary into explicit Engine-owned improvement plans so later planning stages can compound the adaptation boundary (${primaryAdaptedValue}) instead of recomputing loop discipline from raw source text.`,
+        };
+      }
+      if (controlEvidenceAdaptationReady) {
+        return {
+          improvementGoals: [
+            "improve bounded control and evidence analysis for structural protocols",
+            "improve future Architecture adaptation quality for approval, verification, rollback, and reporting structures",
+          ],
+          intendedDelta:
+            `Turn the preserved ${extractedControlEvidencePattern} control/evidence boundary into Engine-owned improvement plans so later planning stages can build on the adaptation boundary (${primaryAdaptedValue}) without inventing runtime shipping behavior.`,
+        };
+      }
       if (structuralProcessStages.length >= 2) {
         return {
           improvementGoals: [
@@ -551,26 +668,26 @@ function buildImprovementPlan(
 }
 
 function buildIntegrationProposal(
-  input: DirectiveEngineLanePlanningInput,
+  input: DirectiveEngineLaneIntegrationPlanningInput,
 ): DirectiveEngineIntegrationProposal {
   const integrationMode = deriveIntegrationMode({
-    source: input.source,
-    defaultIntegrationMode: input.lane.defaultIntegrationMode,
-    valuableWithoutHostRuntime: input.lane.valuableWithoutHostRuntime,
+    source: input.planningInput.source,
+    defaultIntegrationMode: input.planningInput.lane.defaultIntegrationMode,
+    valuableWithoutHostRuntime: input.planningInput.lane.valuableWithoutHostRuntime,
   });
 
   const base: DirectiveEngineIntegrationProposal = {
-    targetLaneId: input.lane.laneId,
-    targetLaneLabel: input.lane.label,
+    targetLaneId: input.planningInput.lane.laneId,
+    targetLaneLabel: input.planningInput.lane.label,
     integrationMode,
-    hostDependence: input.lane.hostDependence,
-    valuableWithoutHostRuntime: input.lane.valuableWithoutHostRuntime,
-    handoffArtifactFamily: input.lane.handoffArtifactFamily,
-    nextAction: input.lane.nextAction,
-    requiresHumanReview: input.routingAssessment.needsHumanReview,
+    hostDependence: input.planningInput.lane.hostDependence,
+    valuableWithoutHostRuntime: input.planningInput.lane.valuableWithoutHostRuntime,
+    handoffArtifactFamily: input.planningInput.lane.handoffArtifactFamily,
+    nextAction: input.planningInput.lane.nextAction,
+    requiresHumanReview: input.planningInput.routingAssessment.needsHumanReview,
   };
 
-  const overrides = input.lane.planIntegration?.(input) ?? {};
+  const overrides = input.planningInput.lane.planIntegration?.(input) ?? {};
   return {
     ...base,
     ...overrides,
@@ -793,12 +910,36 @@ export class DirectiveEngine {
       usefulnessRationale,
     });
     const extractionPlan = buildExtractionPlan(planningInput);
-    const adaptationPlan = buildAdaptationPlan(planningInput);
-    const improvementPlan = buildImprovementPlan(planningInput);
+    // First bounded chaining slice: adaptation now consumes extraction output.
+    const adaptationPlan = buildAdaptationPlan({
+      planningInput,
+      extractionPlan,
+    });
+    const improvementPlan = buildImprovementPlan({
+      planningInput,
+      extractionPlan,
+      adaptationPlan,
+    });
     const proofPlan = lane.planProof
-      ? lane.planProof(planningInput)
-      : buildDefaultProofPlan(planningInput);
-    const integrationProposal = buildIntegrationProposal(planningInput);
+      ? lane.planProof({
+        planningInput,
+        extractionPlan,
+        adaptationPlan,
+        improvementPlan,
+      })
+      : buildDefaultProofPlan({
+        planningInput,
+        extractionPlan,
+        adaptationPlan,
+        improvementPlan,
+      });
+    const integrationProposal = buildIntegrationProposal({
+      planningInput,
+      extractionPlan,
+      adaptationPlan,
+      improvementPlan,
+      proofPlan,
+    });
     const decision = buildDecision({
       lane: selectedLane,
       candidate,

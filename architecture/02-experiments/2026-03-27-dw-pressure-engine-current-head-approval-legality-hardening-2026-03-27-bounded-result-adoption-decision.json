@@ -1,0 +1,34 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-current-head-approval-legality-hardening-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-27-dw-pressure-engine-current-head-approval-legality-hardening-2026-03-27-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-experiments/2026-03-27-dw-pressure-engine-current-head-approval-legality-hardening-2026-03-27-bounded-result.md",
+  "primary_evidence_path": "engine/approval-boundary.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can present and enforce downstream Runtime approvals more truthfully when opening legality depends on the live current head, not only on artifact-local status text.",
+    "mechanism": "This DEEP bounded result adds one shared current-head legality guard for Runtime approval surfaces and downstream openers.",
+    "baseline_observation": "Before this slice, historical Runtime follow-up, record, proof, and capability-boundary artifacts could still advertise approval and some openers could still rely on local status fields even after the live current head had moved to a later stage.",
+    "expected_effect": "The host detail layer and approval boundary now block this stale-status overstatement class without redesigning broader stale-status handling.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "This bounded legality slice adds immediate shared truth value without broadening into generic stale-status repair.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

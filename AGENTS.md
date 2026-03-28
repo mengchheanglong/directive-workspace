@@ -61,3 +61,19 @@ For major changes, state:
 
 Run the relevant checks after meaningful change groups.
 Keep changes reversible and architecture-first.
+
+## Autonomous run rule
+
+When operating autonomously, work in repeated bounded cycles:
+
+1. refresh current repo truth
+2. choose the highest-ROI bounded next step
+3. state the affected layer, owning lane, mission usefulness, proof path, rollback path, and stop-line
+4. implement only that bounded slice
+5. run the most relevant checks
+6. update the active runbook / handoff file
+7. reassess from the updated repo state
+
+Do not bundle unrelated work into one cycle.
+Do not reopen intentionally parked work unless current repo truth clearly makes it the highest-ROI next move.
+Stop at a safe verified boundary.

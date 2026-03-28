@@ -373,6 +373,90 @@ Avoid:
 - optimizing for novelty instead of mission usefulness
 - broad speculative abstraction without workflow pressure
 
+## Operating modes
+
+Replace the one-size-fits-all chain with three named modes, decided at triage time.
+
+### Mode 1: NOTE (Quick record, default stop)
+
+- **When:** Source is interesting but not product-actionable. Confirmatory findings. Low confidence routing. Exploratory assessment.
+- **Artifacts:** Discovery front door (intake + triage + routing) → one analysis note → done.
+- **Architecture version:** Handoff → single bounded-result with verdict `noted`. No bounded-start needed.
+- **Runtime version:** Follow-up stub → `parked_after_review`. No record opened.
+- **Total artifacts:** 4-6 (Discovery set + 1 note)
+- **Max sessions:** 1
+
+### Mode 2: STANDARD (Bounded chain, circuit breaker at result)
+
+- **When:** Source has concrete extractable value. Clear adoption target. Moderate confidence.
+- **Artifacts:** Full Discovery front door → lane-appropriate chain up to bounded-result (Architecture) or capability-boundary (Runtime). **Default stop at result/boundary** — extension requires explicit justification.
+- **Architecture version:** Handoff → bounded-start → bounded-result → stop unless adoption criteria are met.
+- **Runtime version:** Follow-up → record → proof → capability-boundary → stop unless promotion criteria are met.
+- **Batching allowed:** Tightly coupled steps (e.g., handoff + start, or record + proof) can be done in one session.
+- **Max sessions:** 2-4
+
+### Mode 3: DEEP (Full chain, explicit extension at each gate)
+
+- **When:** Source is being implemented into real code or real Engine changes. High-value, high-risk. Seam-opening work.
+- **Artifacts:** Full chain including implementation, retention, integration, consumption, evaluation.
+- **Architecture version:** Full 11-stage chain where each stage adds real value.
+- **Runtime version:** Full chain through promotion-readiness and eventually host integration.
+- **Step-per-session rule applies** for seam-opening work only.
+- **Max sessions:** 5+
+
+### Mode decision rule
+
+At Discovery routing (or at the start of any downstream session), classify using this 3-question filter:
+
+1. **Does this source produce concrete code, contracts, or Engine changes?** → If no → **NOTE**.
+2. **Is the adoption target clear and the confidence moderate-to-high?** → If yes → **STANDARD**.
+3. **Does this open a new seam, introduce real runtime capability, or change Engine operating code?** → If yes → **DEEP**.
+
+If unsure between NOTE and STANDARD, default to NOTE. You can always upgrade later, but you cannot undo the artifact overhead of an unnecessary STANDARD chain.
+
+### Stop-line rules
+
+- **NOTE mode:** Stop after the analysis note. No continuation unless the operator explicitly decides the case has become product-actionable.
+- **STANDARD mode:** Stop at bounded-result (Architecture) or capability-boundary (Runtime). Extension to the next stage requires answering: "What concrete product artifact does the next step produce that does not exist yet?"
+- **DEEP mode:** Stop at each gate. Each extension requires: "Is the remaining work downhill (no unknowns)?"
+- **Universal rule:** If a case has been `stay_experimental` or `needs-more-evidence` for 2+ sessions without new evidence, it is **parked**, not continued.
+
+### Batching rules
+
+- **Tightly coupled steps may be batched into one session** when:
+  - The output of step N is a mechanical prerequisite for step N+1 (e.g., handoff → start)
+  - No human judgment decision separates them
+  - Both steps are in the same lane
+- **Steps that should NOT be batched:**
+  - Routing decision + downstream execution (the routing decision is a judgment call)
+  - Implementation + proof (implementation may reveal issues that change the proof)
+  - Anything that opens a new seam
+
+### Parking rules
+
+- A case is **parked** when it reaches a natural stop-line and no immediate next move is justified.
+- Parked cases stay in the queue with their current status. No cleanup needed.
+- A parked case can be **reopened** only by explicit operator decision with a stated reason.
+- Reopened cases re-enter at their current stage, not from Discovery.
+- Parked cases do not generate "next best move" suggestions.
+
+### Quick decision checklist (before every task)
+
+1. What case am I working on?
+2. What mode? (NOTE / STANDARD / DEEP)
+3. What is the stop-line for this session?
+4. Am I producing value or artifacts?
+5. Can I batch the next 2-3 steps?
+6. Has this case been parked before? Why am I reopening it?
+
+### House rule: Proportional ceremony
+
+- Classify every case as NOTE, STANDARD, or DEEP before starting.
+- Do not continue a case past its stop-line without explicit justification.
+- "More formalization" is not the same as "more value."
+- Trust automated checks (`npm run check`). Skip manual truth-refresh narrative for NOTE mode.
+- Default to NOTE. Upgrade when justified.
+
 ## Final doctrine sentence
 
 Directive Workspace is a self-improving goal-driven product whose Engine consumes external sources, judges their mission-relevant usefulness, extracts and refines that usefulness, and upgrades either reusable runtime capability through Runtime or the system’s own operating intelligence through Architecture.

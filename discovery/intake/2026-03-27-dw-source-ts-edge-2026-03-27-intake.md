@@ -1,0 +1,23 @@
+# Discovery Intake Record: ts-edge Type-Safe Graph Workflow Engine
+
+- Candidate id: dw-source-ts-edge-2026-03-27
+- Candidate name: ts-edge Type-Safe Graph Workflow Engine
+- Intake date: 2026-03-27
+- Source type: github-repo
+- Source reference: sources/intake/ts-edge
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Lightweight TypeScript graph-based workflow engine with compile-time type-safe node chaining. Directly addresses the Engine pipeline gap where planning stages receive the same flat input instead of chaining outputs. The typed-graph pattern (addNode/edge/compile/run) maps to the Engine processSource stages with output-to-input type enforcement between connected nodes.
+- Initial relevance to the workspace: Structural usefulness: the candidate's retained value is an Engine-owned orchestration pattern for typed stage-to-stage chaining inside `processSource()`, not a reusable runtime capability.
+- Suspected adoption target: engine-owned pipeline orchestration pattern
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 0aacdf59-2dee-4382-974d-e2ebf2b6cc19 initially selected runtime. Operator review overrode the downstream route to Architecture because the real adoption target is Engine pipeline orchestration, not a reusable runtime capability. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-27-dw-source-ts-edge-2026-03-27-triage.md

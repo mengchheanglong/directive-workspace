@@ -3,6 +3,7 @@ import path from "node:path";
 
 import {
   normalizeDirectiveApprovalActor,
+  requireDirectiveCurrentStageForOpening,
   normalizeDirectiveWorkspaceRoot,
   requireDirectiveEligibleStatus,
   requireDirectiveExplicitApproval,
@@ -332,6 +333,12 @@ export function openDirectiveRuntimeFollowUp(input: {
     followUpPath: input.followUpPath,
   });
 
+  requireDirectiveCurrentStageForOpening({
+    directiveRoot,
+    artifactPath: artifact.followUpRelativePath,
+    subject: "Runtime follow-up",
+    allowedCurrentStages: ["runtime.follow_up."],
+  });
   requireDirectiveEligibleStatus({
     subject: "Runtime follow-up",
     currentStatus: artifact.currentStatus,

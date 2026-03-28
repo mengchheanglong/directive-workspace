@@ -1,0 +1,34 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-engine-handoff.md",
+  "adaptation_decision_ref": "n/a",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can improve whole-product truth quality by letting the canonical report inspect the historical Runtime live-fetch gate snapshot directly.",
+    "mechanism": "This DEEP Architecture case materializes legacy Runtime live-fetch gate snapshot compatibility inside the shared state resolver.",
+    "baseline_observation": "Before this DEEP opener, direct report focus on the historical Runtime live-fetch gate snapshot still threw unsupported-path errors.",
+    "expected_effect": "Historical Runtime live-fetch gate snapshot inspection becomes explicit, bounded, and reportable without inventing new Runtime v0 advancement.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The canonical truth anchor should resolve the historical Runtime live-fetch gate snapshot as read-only history.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

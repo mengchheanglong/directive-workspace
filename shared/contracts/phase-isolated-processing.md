@@ -25,6 +25,7 @@ Use this contract when any of the following are true:
 Do not use when:
 - the slice is trivial and can be completed in one bounded pass without semantic drift
 - the work is a purely mechanical update with no meaningful phase boundary
+- the case is classified as NOTE operating mode (single-session, single-artifact cases do not need phase isolation)
 
 ## Core rule
 

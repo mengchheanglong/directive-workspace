@@ -1,0 +1,34 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result.md",
+  "primary_evidence_path": "shared/lib/dw-state.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can keep the canonical truth anchor useful by resolving a known historical Runtime follow-up directly instead of crashing reports.",
+    "mechanism": "This DEEP bounded result adds a read-only legacy Runtime follow-up focus path to the shared state resolver.",
+    "baseline_observation": "Before this DEEP case, the canonical report crashed on the deferred CLI-anything Runtime follow-up even though the host already treated it as readable legacy history.",
+    "expected_effect": "Future report and composition work can inspect that deferred Runtime artifact directly without reconstructing its state by hand.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The shared truth anchor should resolve known historical Runtime follow-ups as read-only artifacts instead of crashing.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

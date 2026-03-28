@@ -32,7 +32,10 @@ export type DiscoveryIntakeSubmission = {
   mission_alignment?: string | null;
   capability_gap_id?: string | null;
   notes?: string | null;
+  operating_mode?: DiscoveryOperatingMode;
 };
+
+export type DiscoveryOperatingMode = "note" | "standard" | "deep" | null;
 
 export type DiscoveryIntakeQueueEntry = {
   candidate_id: string;
@@ -52,6 +55,7 @@ export type DiscoveryIntakeQueueEntry = {
   completed_at: string | null;
   result_record_path: string | null;
   notes: string | null;
+  operating_mode?: DiscoveryOperatingMode;
 };
 
 export type DiscoveryIntakeQueueDocument = {
@@ -120,6 +124,7 @@ export function createDiscoveryIntakeQueueEntry(input: {
     completed_at: null,
     result_record_path: null,
     notes: optionalString(input.submission.notes),
+    operating_mode: input.submission.operating_mode ?? null,
   };
 }
 

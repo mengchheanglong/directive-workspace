@@ -1,0 +1,6 @@
+{
+  "candidateId": "dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28",
+  "candidateName": "Engine Stale Current-Head Architecture Closure Legality Hardening",
+  "decision": "open_implementation_target",
+  "reason": "The bounded stale-current-head downgrade is implementation-ready and fully inside shared Engine truth behavior."
+}

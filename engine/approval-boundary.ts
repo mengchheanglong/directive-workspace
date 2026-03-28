@@ -84,6 +84,49 @@ export function requireDirectiveIntegrityForOpening(input: {
   return resolved;
 }
 
+function directiveStageSelectorMatches(currentStage: string, selector: string) {
+  return selector.endsWith(".")
+    ? currentStage.startsWith(selector)
+    : currentStage === selector;
+}
+
+export function isDirectiveCurrentStageEligibleForOpening(input: {
+  directiveRoot: string;
+  artifactPath: string;
+  allowedCurrentStages: string[];
+}) {
+  try {
+    const resolved = requireDirectiveIntegrityForOpening({
+      directiveRoot: input.directiveRoot,
+      artifactPath: input.artifactPath,
+      subject: "opening candidate artifact",
+    });
+    return input.allowedCurrentStages.some((selector) =>
+      directiveStageSelectorMatches(resolved.currentStage, selector)
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function requireDirectiveCurrentStageForOpening(input: {
+  directiveRoot: string;
+  artifactPath: string;
+  subject: string;
+  allowedCurrentStages: string[];
+}) {
+  const resolved = requireDirectiveIntegrityForOpening(input);
+  const allowed = input.allowedCurrentStages.some((selector) =>
+    directiveStageSelectorMatches(resolved.currentStage, selector)
+  );
+  if (!allowed) {
+    throw new Error(
+      `invalid_input: ${input.subject} cannot open downstream work from a stale artifact because the live current stage is "${resolved.currentStage}" and the current head is "${resolved.currentHead.artifactPath}" (${resolved.currentHead.artifactStage})`,
+    );
+  }
+  return resolved;
+}
+
 export function writeDirectiveArtifactIfMissing(input: {
   absolutePath: string;
   content: string;

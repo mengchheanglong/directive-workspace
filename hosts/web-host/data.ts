@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { isDirectiveCurrentStageEligibleForOpening } from "../../engine/approval-boundary.ts";
 import {
   readDirectiveArchitectureBoundedCloseoutAssist,
   readDirectiveArchitectureResultEvidenceForResult,
@@ -101,6 +102,8 @@ export type FrontendCurrentHead = {
 
 export type FrontendQueueEntry = StoredFrontendQueueEntry & {
   integrity_state: "ok" | "broken" | null;
+  status_effective: string;
+  status_warning: string | null;
   current_case_stage: string | null;
   current_case_next_legal_step: string | null;
   current_head: FrontendCurrentHead | null;
@@ -120,7 +123,12 @@ export type FrontendQueueOverview = {
 };
 
 export type FrontendHandoffStub = {
-  kind: "architecture_handoff" | "architecture_handoff_invalid" | "runtime_follow_up";
+  kind:
+    | "architecture_handoff"
+    | "architecture_handoff_invalid"
+    | "runtime_follow_up"
+    | "runtime_follow_up_legacy"
+    | "runtime_handoff_legacy";
   lane: "architecture" | "runtime";
   relativePath: string;
   candidateId: string;
@@ -202,6 +210,46 @@ export type DirectiveFrontendHandoffDetail =
       runtimeRecordExists: boolean;
       approvalAllowed: boolean;
       artifact: DirectiveRuntimeFollowUpArtifact;
+    }
+  | {
+      ok: true;
+      kind: "runtime_follow_up_legacy";
+      relativePath: string;
+      content: string;
+      title: string;
+      candidateId: string;
+      candidateName: string;
+      currentDecisionState: string | null;
+      runtimeValueToOperationalize: string;
+      proposedHost: string;
+      proposedIntegrationMode: string | null;
+      reentryContractPath: string | null;
+      currentStatus: string | null;
+      reviewCadence: string | null;
+      requiredProof: string[];
+      requiredGates: string[];
+      rollbackNote: string | null;
+    }
+  | {
+      ok: true;
+      kind: "runtime_handoff_legacy";
+      relativePath: string;
+      content: string;
+      title: string;
+      candidateId: string;
+      candidateName: string;
+      handoffType: string | null;
+      runtimeValueToOperationalize: string;
+      proposedHost: string;
+      proposedRuntimeSurface: string;
+      originatingArchitectureRecordPath: string | null;
+      mixedValuePartitionRef: string | null;
+      runtimeFollowUpPath: string | null;
+      runtimeRecordPath: string | null;
+      runtimeProofPath: string | null;
+      promotionRecordPath: string | null;
+      registryEntryPath: string | null;
+      qualityGateResult: string | null;
     }
   | {
       ok: false;
@@ -366,6 +414,12 @@ export type DirectiveFrontendRuntimePromotionReadinessDetail =
       promotionReadinessDecision: string;
       hostFacingPromotionDecision: string;
       frontendCapabilityDecision: string;
+      openedRuntimeImplementationSlicePath: string | null;
+      prePromotionImplementationSlicePath: string | null;
+      promotionInputPackagePath: string | null;
+      profileCheckerDecisionPath: string | null;
+      compileContractPath: string | null;
+      promotionGoNoGoDecisionPath: string | null;
       linkedCapabilityBoundaryPath: string;
       linkedRuntimeProofPath: string;
       linkedRuntimeRecordPath: string;
@@ -678,6 +732,70 @@ function buildDirectiveFrontendArtifactViewPath(input: {
   }
 }
 
+function readRuntimeApprovalAllowedFromCurrentHead(input: {
+  directiveRoot: string;
+  relativePath: string;
+  allowedCurrentStages: string[];
+}) {
+  return isDirectiveCurrentStageEligibleForOpening({
+    directiveRoot: input.directiveRoot,
+    artifactPath: input.relativePath,
+    allowedCurrentStages: input.allowedCurrentStages,
+  });
+}
+
+function deriveFrontendQueueStatus(input: {
+  entry: StoredFrontendQueueEntry;
+  resolutionPath: string | null;
+  integrityState: "ok" | "broken" | null;
+  currentStage: string | null;
+  currentHeadPath: string | null;
+}) {
+  if (input.entry.status === "completed" && input.integrityState === "broken") {
+    const resolutionReference = input.entry.result_record_path ?? input.resolutionPath ?? "the recorded completion artifact";
+    return {
+      status_effective: "completed_inconsistent",
+      status_warning:
+        `Queue still marks this case completed, but canonical truth cannot resolve "${resolutionReference}" cleanly. `
+        + "Do not treat this queue status as a truthful completion signal.",
+    };
+  }
+
+  if (input.entry.status === "routed" && input.integrityState === "broken") {
+    const resolutionReference =
+      input.entry.routing_record_path
+      ?? input.entry.result_record_path
+      ?? input.resolutionPath
+      ?? "the recorded routed artifact";
+    return {
+      status_effective: "routed_inconsistent",
+      status_warning:
+        `Queue still marks this case routed, but canonical truth cannot resolve "${resolutionReference}" cleanly. `
+        + "Do not treat this queue status as a clean active-routing signal.",
+    };
+  }
+
+  if (
+    input.entry.status === "routed"
+    && input.entry.result_record_path
+    && input.currentHeadPath
+    && input.currentHeadPath !== input.entry.result_record_path
+  ) {
+    return {
+      status_effective: "routed_progressed",
+      status_warning:
+        `Queue still marks this case routed, but the live case head has already progressed to `
+        + `${input.currentStage ?? "a later stage"} at "${input.currentHeadPath}". `
+        + "Do not treat the original downstream stub as the live continuation point.",
+    };
+  }
+
+  return {
+    status_effective: input.entry.status,
+    status_warning: null,
+  };
+}
+
 function buildFrontendQueueEntry(input: {
   directiveRoot: string;
   entry: StoredFrontendQueueEntry;
@@ -687,6 +805,8 @@ function buildFrontendQueueEntry(input: {
     return {
       ...input.entry,
       integrity_state: null,
+      status_effective: input.entry.status,
+      status_warning: null,
       current_case_stage: null,
       current_case_next_legal_step: null,
       current_head: null,
@@ -702,9 +822,17 @@ function buildFrontendQueueEntry(input: {
     }).focus;
 
     if (!focus) {
+      const status = deriveFrontendQueueStatus({
+        entry: input.entry,
+        resolutionPath,
+        integrityState: "broken",
+        currentStage: null,
+        currentHeadPath: null,
+      });
       return {
         ...input.entry,
         integrity_state: "broken",
+        ...status,
         current_case_stage: null,
         current_case_next_legal_step: "Current case head could not be resolved from the canonical resolver.",
         current_head: {
@@ -717,6 +845,14 @@ function buildFrontendQueueEntry(input: {
         runtime_summary: null,
       };
     }
+
+    const status = deriveFrontendQueueStatus({
+      entry: input.entry,
+      resolutionPath,
+      integrityState: focus.integrityState,
+      currentStage: focus.currentStage,
+      currentHeadPath: focus.currentHead.artifactPath,
+    });
 
     return {
       ...(() => {
@@ -738,6 +874,7 @@ function buildFrontendQueueEntry(input: {
       })(),
       ...input.entry,
       integrity_state: focus.integrityState,
+      ...status,
       current_case_stage: focus.currentStage,
       current_case_next_legal_step: focus.nextLegalStep,
       current_head: {
@@ -752,9 +889,17 @@ function buildFrontendQueueEntry(input: {
       },
     };
   } catch (error) {
+    const status = deriveFrontendQueueStatus({
+      entry: input.entry,
+      resolutionPath,
+      integrityState: "broken",
+      currentStage: null,
+      currentHeadPath: null,
+    });
     return {
       ...input.entry,
       integrity_state: "broken",
+      ...status,
       current_case_stage: null,
       current_case_next_legal_step:
         `Current case head could not be resolved from "${resolutionPath}": ${String((error as Error).message || error)}`,
@@ -781,18 +926,182 @@ function extractMarkdownTitle(markdown: string) {
 
 function extractBulletValue(markdown: string, label: string) {
   const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
+  const lines = markdown.split(/\r?\n/);
+  const line = lines.find((entry) => entry.trim().startsWith(prefix));
   if (!line) {
     return "";
   }
 
-  return line
+  const inlineValue = line
     .trim()
     .replace(prefix, "")
     .trim()
     .replace(/^`|`$/g, "");
+  if (inlineValue) {
+    return inlineValue;
+  }
+
+  const index = lines.indexOf(line);
+  for (let offset = index + 1; offset < lines.length; offset += 1) {
+    const candidate = lines[offset];
+    const trimmed = candidate.trim();
+    if (!trimmed) {
+      continue;
+    }
+    if (/^- /.test(trimmed) && !/^\s+- /.test(candidate)) {
+      break;
+    }
+    if (/^- /.test(trimmed) || /^\s+- /.test(candidate)) {
+      return trimmed.replace(/^- /, "").trim().replace(/^`|`$/g, "");
+    }
+    break;
+  }
+
+  return "";
+}
+
+function optionalDisplayValue(value: string | null | undefined) {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+  const normalized = trimmed.replace(/`/g, "");
+  const lower = normalized.toLowerCase();
+  if (lower === "n/a" || lower === "pending") {
+    return null;
+  }
+  return normalized;
+}
+
+function extractLabeledValue(markdown: string, labels: string[]) {
+  const lines = markdown.split(/\r?\n/);
+  for (const label of labels) {
+    const bulletValue = extractBulletValue(markdown, label);
+    if (bulletValue) {
+      return bulletValue;
+    }
+
+    const prefix = `${label}:`;
+    const line = lines.find((entry) => entry.trim().startsWith(prefix));
+    if (line) {
+      return line.trim().replace(prefix, "").trim();
+    }
+  }
+  return "";
+}
+
+function extractBulletList(markdown: string, label: string) {
+  const lines = markdown.split(/\r?\n/);
+  const startIndex = lines.findIndex((entry) => entry.trim() === `- ${label}:`);
+  if (startIndex === -1) {
+    return [] as string[];
+  }
+
+  const values: string[] = [];
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!line.startsWith("  - ")) {
+      break;
+    }
+
+    const normalized = line.replace(/^  - /u, "").trim().replace(/^`|`$/gu, "");
+    if (normalized) {
+      values.push(normalized);
+    }
+  }
+  return values;
+}
+
+function normalizeDirectiveWorkspaceArtifactReference(input: {
+  directiveRoot: string;
+  value: string | null | undefined;
+}) {
+  const rawValue = optionalDisplayValue(input.value);
+  if (!rawValue) {
+    return null;
+  }
+
+  const directiveRoot = normalizePath(input.directiveRoot);
+  const normalizedValue = normalizeRelativePath(rawValue);
+  const absolutePath = path.isAbsolute(normalizedValue)
+    ? normalizePath(normalizedValue)
+    : normalizePath(path.join(directiveRoot, normalizedValue));
+  const rootPrefix = `${directiveRoot}/`;
+
+  if (absolutePath === directiveRoot || absolutePath.startsWith(rootPrefix)) {
+    return normalizeRelativePath(path.relative(directiveRoot, absolutePath));
+  }
+
+  return normalizedValue;
+}
+
+function normalizeLegacyRuntimeReentryContractReference(input: {
+  directiveRoot: string;
+  value: string | null | undefined;
+}) {
+  const rawValue = optionalDisplayValue(input.value);
+  if (!rawValue || /^(n\/a|pending)\b/i.test(rawValue)) {
+    return null;
+  }
+  return normalizeDirectiveWorkspaceArtifactReference({
+    directiveRoot: input.directiveRoot,
+    value: rawValue,
+  });
+}
+
+function deriveLegacyRuntimeFollowUpCandidateName(title: string) {
+  return title
+    .replace(/^CLI-Anything Runtime Follow-up Record:\s*/u, "")
+    .replace(/^Runtime Follow-up Record:\s*/u, "")
+    .replace(/\s+Runtime Follow-up\s*$/u, "")
+    .trim();
+}
+
+function isLegacyRuntimeFollowUpRelativePath(relativePath: string) {
+  return relativePath.startsWith("runtime/follow-up/")
+    && (
+      relativePath.endsWith("-runtime-follow-up-record.md")
+      || relativePath.endsWith("-runtime-followup.md")
+    );
+}
+
+function deriveLegacyRuntimeFollowUpCandidateId(fileNameOrPath: string) {
+  return fileNameOrPath
+    .replace(/-(runtime-follow-up-record|runtime-followup)\.md$/u, "")
+    .replace(/^\d{4}-\d{2}-\d{2}-/u, "");
+}
+
+function extractMarkdownSectionSummary(markdown: string, heading: string) {
+  const lines = markdown.split(/\r?\n/);
+  const headingLine = `## ${heading}`;
+  const startIndex = lines.findIndex((line) => line.trim() === headingLine);
+  if (startIndex === -1) {
+    return "";
+  }
+
+  const values: string[] = [];
+  for (let index = startIndex + 1; index < lines.length; index += 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+    if (trimmed.startsWith("## ")) {
+      break;
+    }
+    if (!trimmed) {
+      continue;
+    }
+    values.push(trimmed.replace(/^- /u, "").trim());
+  }
+
+  return values.join(" ").trim();
+}
+
+function deriveLegacyRuntimeHandoffCandidateName(title: string) {
+  return title
+    .replace(/^Architecture to Runtime Handoff:\s*/u, "")
+    .trim();
 }
 
 export function readFrontendQueueOverview(input: {
@@ -858,30 +1167,121 @@ function readRuntimeFollowUpStubs(input: {
 
   return fs
     .readdirSync(followUpRoot, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith("-runtime-follow-up-record.md"))
+    .filter((entry) => entry.isFile() && isLegacyRuntimeFollowUpRelativePath(
+      normalizeRelativePath(path.join("runtime", "follow-up", entry.name)),
+    ))
     .sort((left, right) => right.name.localeCompare(left.name))
     .slice(0, Math.max(1, input.maxEntries ?? 20))
     .map((entry) => {
       const relativePath = normalizeRelativePath(path.join("runtime", "follow-up", entry.name));
-      const content = fs.readFileSync(path.join(followUpRoot, entry.name), "utf8");
-      const title = content
-        .split(/\r?\n/)
-        .find((line) => line.startsWith("# "))
-        ?.replace(/^# /, "")
-        .trim()
-        || entry.name;
-      const candidateId = entry.name.replace(/-runtime-follow-up-record\.md$/u, "");
+      try {
+        const detail = readDirectiveFrontendHandoffDetail({
+          directiveRoot: input.directiveRoot,
+          relativePath,
+        });
 
-      return {
-        kind: "runtime_follow_up" as const,
+        if (detail.ok && detail.kind === "runtime_follow_up") {
+          const focus = resolveDirectiveWorkspaceState({
+            directiveRoot: input.directiveRoot,
+            artifactPath: relativePath,
+            includeAnchors: false,
+          }).focus;
+          const liveFollowUpPending =
+            focus
+            && focus.lane === "runtime"
+            && focus.currentStage.startsWith("runtime.follow_up.")
+            && focus.currentHead.artifactPath === relativePath;
+
+          return {
+            kind: "runtime_follow_up" as const,
+            lane: "runtime" as const,
+            relativePath,
+            candidateId: detail.candidateId,
+            title: detail.title || entry.name,
+            status: liveFollowUpPending ? "pending_review" : "progressed_downstream",
+            startRelativePath: null,
+            warning: liveFollowUpPending
+              ? null
+              : focus
+                ? `Live current head is ${focus.currentHead.artifactStage} at ${focus.currentHead.artifactPath}; do not treat this follow-up artifact as a pending review stub.`
+                : "Canonical resolver could not confirm this Runtime follow-up as the live pending-review head.",
+          };
+        }
+
+        if (detail.ok && detail.kind === "runtime_follow_up_legacy") {
+          return {
+            kind: "runtime_follow_up_legacy" as const,
+            lane: "runtime" as const,
+            relativePath,
+            candidateId: detail.candidateId,
+            title: detail.title,
+            status: "historical_follow_up",
+            startRelativePath: null,
+            warning: "Historical Runtime follow-up; inspectable only and not part of the current non-executing Runtime v0 chain.",
+          };
+        }
+
+        return {
+          kind: "runtime_follow_up" as const,
+          lane: "runtime" as const,
+          relativePath,
+          candidateId: deriveLegacyRuntimeFollowUpCandidateId(entry.name),
+          title: entry.name,
+          status: "invalid_artifact_state",
+          startRelativePath: null,
+          warning: detail.ok
+            ? "Unsupported Runtime follow-up artifact shape."
+            : detail.error,
+        };
+      } catch (error) {
+        return {
+          kind: "runtime_follow_up" as const,
+          lane: "runtime" as const,
+          relativePath,
+          candidateId: deriveLegacyRuntimeFollowUpCandidateId(entry.name),
+          title: entry.name,
+          status: "invalid_artifact_state",
+          startRelativePath: null,
+          warning: String((error as Error).message || error),
+        };
+      }
+    });
+}
+
+function readLegacyRuntimeHandoffStubs(input: {
+  directiveRoot: string;
+  maxEntries?: number;
+}): FrontendHandoffStub[] {
+  const handoffRoot = path.join(input.directiveRoot, "runtime", "handoff");
+  if (!fs.existsSync(handoffRoot)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(handoffRoot, { withFileTypes: true })
+    .filter((entry) => entry.isFile() && entry.name.endsWith("-architecture-to-runtime-handoff.md"))
+    .sort((left, right) => right.name.localeCompare(left.name))
+    .slice(0, Math.max(1, input.maxEntries ?? 20))
+    .flatMap((entry) => {
+      const relativePath = normalizeRelativePath(path.join("runtime", "handoff", entry.name));
+      const detail = readDirectiveFrontendHandoffDetail({
+        directiveRoot: input.directiveRoot,
+        relativePath,
+      });
+      if (!detail.ok || detail.kind !== "runtime_handoff_legacy") {
+        return [];
+      }
+
+      return [{
+        kind: "runtime_handoff_legacy" as const,
         lane: "runtime" as const,
         relativePath,
-        candidateId,
-        title,
-        status: "pending_review",
+        candidateId: detail.candidateId,
+        title: detail.title,
+        status: "historical_handoff",
         startRelativePath: null,
-        warning: null,
-      };
+        warning: "Historical Runtime handoff; inspectable only and not part of the current non-executing Runtime v0 chain.",
+      }];
     });
 }
 
@@ -961,6 +1361,10 @@ export function readDirectiveFrontendSnapshot(input: {
   const handoffStubs: FrontendHandoffStub[] = [
     ...architecture.stubs,
     ...readRuntimeFollowUpStubs({
+      directiveRoot: input.directiveRoot,
+      maxEntries: input.maxHandoffs ?? 20,
+    }),
+    ...readLegacyRuntimeHandoffStubs({
       directiveRoot: input.directiveRoot,
       maxEntries: input.maxHandoffs ?? 20,
     }),
@@ -1219,32 +1623,150 @@ export function readDirectiveFrontendHandoffDetail(input: {
     }
 
     if (
-      relativePath.startsWith("runtime/follow-up/")
-      && relativePath.endsWith("-runtime-follow-up-record.md")
+      relativePath.startsWith("runtime/handoff/")
+      && relativePath.endsWith("-architecture-to-runtime-handoff.md")
     ) {
-      const artifact = readDirectiveRuntimeFollowUpArtifact({
-        directiveRoot: input.directiveRoot,
-        followUpPath: relativePath,
-      });
+      const title = extractMarkdownTitle(artifactText.content);
       return {
         ok: true,
-        kind: "runtime_follow_up",
+        kind: "runtime_handoff_legacy",
         relativePath,
         content: artifactText.content,
-        title: artifact.title || path.basename(relativePath),
-        candidateId: artifact.candidateId,
-        candidateName: artifact.candidateName,
-        status: artifact.currentStatus || "unknown",
-        runtimeValueToOperationalize: artifact.runtimeValueToOperationalize,
-        proposedHost: artifact.proposedHost,
-        proposedIntegrationMode: artifact.proposedIntegrationMode,
-        reviewCadence: artifact.reviewCadence,
-        linkedRoutingPath: artifact.linkedHandoffPath,
-        runtimeRecordRelativePath: artifact.runtimeRecordRelativePath,
-        runtimeRecordExists: artifact.runtimeRecordExists,
-        approvalAllowed: artifact.approvalAllowed,
-        artifact,
+        title,
+        candidateId: extractBulletValue(artifactText.content, "Candidate id"),
+        candidateName:
+          optionalDisplayValue(extractBulletValue(artifactText.content, "Candidate name"))
+          ?? deriveLegacyRuntimeHandoffCandidateName(title),
+        handoffType: optionalDisplayValue(extractLabeledValue(artifactText.content, ["Handoff type"])),
+        runtimeValueToOperationalize: extractLabeledValue(artifactText.content, [
+          "Runtime value to operationalize in Runtime",
+          "Runtime value to operationalize",
+        ]),
+        proposedHost: optionalDisplayValue(extractLabeledValue(artifactText.content, ["Proposed host"])) ?? "",
+        proposedRuntimeSurface: extractLabeledValue(artifactText.content, ["Proposed runtime surface"]),
+        originatingArchitectureRecordPath: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Originating Architecture record"]),
+        }),
+        mixedValuePartitionRef: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Mixed-value partition ref"]),
+        }),
+        runtimeFollowUpPath: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Runtime follow-up"]),
+        }),
+        runtimeRecordPath: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Runtime record"]),
+        }),
+        runtimeProofPath: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Proof artifact"]),
+        }),
+        promotionRecordPath: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, [
+            "Promotion record (if promoted)",
+            "Promotion record",
+          ]),
+        }),
+        registryEntryPath: normalizeDirectiveWorkspaceArtifactReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Registry entry"]),
+        }),
+        qualityGateResult: optionalDisplayValue(extractLabeledValue(artifactText.content, ["Quality gate result"])),
       };
+    }
+
+    if (isLegacyRuntimeFollowUpRelativePath(relativePath)) {
+      try {
+        const artifact = readDirectiveRuntimeFollowUpArtifact({
+          directiveRoot: input.directiveRoot,
+          followUpPath: relativePath,
+        });
+        return {
+          ok: true,
+          kind: "runtime_follow_up",
+          relativePath,
+          content: artifactText.content,
+          title: artifact.title || path.basename(relativePath),
+          candidateId: artifact.candidateId,
+          candidateName: artifact.candidateName,
+          status: artifact.currentStatus || "unknown",
+          runtimeValueToOperationalize: artifact.runtimeValueToOperationalize,
+          proposedHost: artifact.proposedHost,
+          proposedIntegrationMode: artifact.proposedIntegrationMode,
+          reviewCadence: artifact.reviewCadence,
+          linkedRoutingPath: artifact.linkedHandoffPath,
+          runtimeRecordRelativePath: artifact.runtimeRecordRelativePath,
+          runtimeRecordExists: artifact.runtimeRecordExists,
+          approvalAllowed:
+            artifact.approvalAllowed
+            && readRuntimeApprovalAllowedFromCurrentHead({
+              directiveRoot: input.directiveRoot,
+              relativePath,
+              allowedCurrentStages: ["runtime.follow_up."],
+            }),
+          artifact,
+        };
+      } catch (runtimeFollowUpError) {
+        const candidateId =
+          optionalDisplayValue(extractBulletValue(artifactText.content, "Candidate id"))
+          ?? deriveLegacyRuntimeFollowUpCandidateId(path.basename(relativePath));
+        const candidateName =
+          optionalDisplayValue(extractBulletValue(artifactText.content, "Candidate name"))
+          ?? deriveLegacyRuntimeFollowUpCandidateName(
+            extractMarkdownTitle(artifactText.content) || path.basename(relativePath),
+          )
+          ?? candidateId;
+        const runtimeValueToOperationalize =
+          extractLabeledValue(artifactText.content, ["Runtime value to operationalize"])
+          || extractMarkdownSectionSummary(artifactText.content, "Runtime Value To Evaluate");
+        const currentDecisionState = optionalDisplayValue(extractLabeledValue(artifactText.content, [
+          "Current decision state",
+        ]));
+        const currentStatus = optionalDisplayValue(extractLabeledValue(artifactText.content, [
+          "Current status",
+          "Status",
+        ]));
+        const reentryContractPath = normalizeLegacyRuntimeReentryContractReference({
+          directiveRoot: input.directiveRoot,
+          value: extractLabeledValue(artifactText.content, ["Re-entry contract path (if deferred)"]),
+        });
+        const legacyDeferred =
+          /defer/i.test(currentDecisionState ?? "") || /deferred/i.test(currentStatus ?? "");
+
+        if (!runtimeValueToOperationalize || !currentStatus || (legacyDeferred && !reentryContractPath)) {
+          throw runtimeFollowUpError;
+        }
+
+        return {
+          ok: true,
+          kind: "runtime_follow_up_legacy",
+          relativePath,
+          content: artifactText.content,
+          title: extractMarkdownTitle(artifactText.content) || path.basename(relativePath),
+          candidateId,
+          candidateName,
+          currentDecisionState,
+          runtimeValueToOperationalize,
+          proposedHost:
+            optionalDisplayValue(extractLabeledValue(artifactText.content, ["Proposed host"]))
+            ?? "",
+          proposedIntegrationMode: optionalDisplayValue(extractLabeledValue(artifactText.content, [
+            "Proposed integration mode",
+          ])),
+          reentryContractPath,
+          currentStatus,
+          reviewCadence: optionalDisplayValue(extractLabeledValue(artifactText.content, [
+            "Review cadence",
+          ])),
+          requiredProof: extractBulletList(artifactText.content, "Required proof"),
+          requiredGates: extractBulletList(artifactText.content, "Required gates"),
+          rollbackNote: optionalDisplayValue(extractLabeledValue(artifactText.content, ["Rollback"])),
+        };
+      }
     }
 
     return {
@@ -1376,7 +1898,13 @@ export function readDirectiveFrontendRuntimeRecordDetail(input: {
       linkedRoutingPath: artifact.followUpArtifact.linkedHandoffPath,
       runtimeProofRelativePath: artifact.runtimeProofRelativePath,
       proofExists: artifact.proofExists,
-      approvalAllowed: artifact.approvalAllowed,
+      approvalAllowed:
+        artifact.approvalAllowed
+        && readRuntimeApprovalAllowedFromCurrentHead({
+          directiveRoot: input.directiveRoot,
+          relativePath,
+          allowedCurrentStages: ["runtime.record."],
+        }),
       content: artifact.content,
       artifact,
     };
@@ -1435,7 +1963,13 @@ export function readDirectiveFrontendRuntimeProofDetail(input: {
       linkedRoutingPath: artifact.linkedRoutingPath,
       runtimeCapabilityBoundaryRelativePath: artifact.runtimeCapabilityBoundaryRelativePath,
       runtimeCapabilityBoundaryExists: artifact.runtimeCapabilityBoundaryExists,
-      approvalAllowed: artifact.approvalAllowed,
+      approvalAllowed:
+        artifact.approvalAllowed
+        && readRuntimeApprovalAllowedFromCurrentHead({
+          directiveRoot: input.directiveRoot,
+          relativePath,
+          allowedCurrentStages: ["runtime.proof."],
+        }),
       content: artifact.content,
       artifact,
     };
@@ -1495,7 +2029,13 @@ export function readDirectiveFrontendRuntimeRuntimeCapabilityBoundaryDetail(inpu
       linkedRoutingPath: artifact.linkedRoutingPath,
       promotionReadinessRelativePath: artifact.promotionReadinessRelativePath,
       promotionReadinessExists: artifact.promotionReadinessExists,
-      approvalAllowed: artifact.approvalAllowed,
+      approvalAllowed:
+        artifact.approvalAllowed
+        && readRuntimeApprovalAllowedFromCurrentHead({
+          directiveRoot: input.directiveRoot,
+          relativePath,
+          allowedCurrentStages: ["runtime.runtime_capability_boundary.opened"],
+        }),
       content: artifact.content,
       artifact,
     };
@@ -1562,6 +2102,14 @@ export function readDirectiveFrontendRuntimePromotionReadinessDetail(input: {
       promotionReadinessDecision: extractBulletValue(artifact.content, "Promotion-readiness decision"),
       hostFacingPromotionDecision: extractBulletValue(artifact.content, "Reviewed decision"),
       frontendCapabilityDecision: extractBulletValue(artifact.content, "Frontend capability decision"),
+      openedRuntimeImplementationSlicePath: extractBulletValue(artifact.content, "Explicit opened runtime-implementation slice")
+        || extractBulletValue(artifact.content, "Opened runtime-implementation slice"),
+      prePromotionImplementationSlicePath: extractBulletValue(artifact.content, "Explicit pre-promotion implementation slice"),
+      promotionInputPackagePath: extractBulletValue(artifact.content, "Explicit promotion-input package for that slice"),
+      profileCheckerDecisionPath: extractBulletValue(artifact.content, "Explicit profile/checker decision for that slice"),
+      compileContractPath: extractBulletValue(artifact.content, "Explicit compile-contract artifact for that slice"),
+      promotionGoNoGoDecisionPath: extractBulletValue(artifact.content, "Explicit go / no-go decision after the pre-promotion bundle")
+        || extractBulletValue(artifact.content, "Explicit promotion go / no-go decision after opening that slice"),
       linkedCapabilityBoundaryPath: extractBulletValue(artifact.content, "Runtime capability boundary path")
         || extractBulletValue(artifact.content, "Runtime capability boundary"),
       linkedRuntimeProofPath: extractBulletValue(artifact.content, "Source Runtime proof artifact")

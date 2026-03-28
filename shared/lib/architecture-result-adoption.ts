@@ -91,6 +91,14 @@ function normalizeRelativePath(inputPath: string) {
   return requiredString(inputPath, "path").replace(/\\/g, "/");
 }
 
+function optionalString(value: string | null | undefined) {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
 function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
   const normalizedInput = normalizeRelativePath(inputPath);
   const root = path.resolve(directiveRoot);
@@ -462,35 +470,73 @@ export function readDirectiveArchitectureAdoptionDetail(input: {
   const content = fs.readFileSync(adoptedAbsolutePath, "utf8");
   const title = content.split(/\r?\n/).find((line) => line.startsWith("# "))?.replace(/^# /, "").trim()
     || path.posix.basename(adoptedRelativePath);
-  const sourceResultRelativePath = content.match(/- Source bounded result: `([^`]+)`\./)?.[1]
+  const sourceResultRelativePath =
+    content.match(/- Source bounded result(?: artifact)?: `([^`]+)`\.?/u)?.[1]
     || "";
   const candidateNameFromTitle = title
-    .replace(/^Adopted(?: \/ Planned-Next)?:\s*/u, "")
+    .replace(/^Adopted(?:\s*\/\s*Planned-Next|\s+Planned\s+Next)?:\s*/u, "")
+    .replace(/\s+Adopted$/u, "")
     .replace(/\s+\(\d{4}-\d{2}-\d{2}\)$/u, "")
     .trim();
-  const decision = loadDirectiveArchitectureAdoptionDecisionArtifact({
-    directiveRoot,
-    recordRelativePath: adoptedRelativePath,
-  });
-  const finalStatus = content.match(/- Final status: `([^`]+)`\./)?.[1]
-    || (decision.artifact.decision.verdict === "adopt" ? "adopted" : "");
+  const candidateId =
+    optionalString(content.match(/- Candidate id: `([^`]+)`/u)?.[1])
+    ?? optionalString(content.match(/Candidate id: `([^`]+)`/u)?.[1])
+    ?? optionalString(content.match(/Candidate: `([^`]+)`/u)?.[1]);
 
-  return {
-    directiveRoot,
-    adoptedRelativePath,
-    adoptedAbsolutePath,
-    decisionRelativePath: decision.decisionRelativePath,
-    decisionAbsolutePath: decision.decisionAbsolutePath,
-    decisionExists: true,
-    sourceResultRelativePath,
-    sourceDecisionRelativePath: sourceResultRelativePath
-      ? sourceResultRelativePath.replace(/\.md$/u, "-adoption-decision.json")
-      : "",
-    candidateId: decision.artifact.source_id,
-    candidateName: candidateNameFromTitle || decision.artifact.source_id,
-    usefulnessLevel: decision.artifact.usefulness_level,
-    title,
-    finalStatus,
-    content,
-  };
+  try {
+    const decision = loadDirectiveArchitectureAdoptionDecisionArtifact({
+      directiveRoot,
+      recordRelativePath: adoptedRelativePath,
+    });
+    const finalStatus =
+      optionalString(content.match(/- Final status: `([^`]+)`\./u)?.[1])
+      ?? optionalString(content.match(/- Final adoption status: `([^`]+)`/u)?.[1])
+      ?? optionalString(content.match(/- Status: `([^`]+)`/u)?.[1])
+      ?? (decision.artifact.decision.verdict === "adopt" ? "adopted" : "");
+
+    return {
+      directiveRoot,
+      adoptedRelativePath,
+      adoptedAbsolutePath,
+      decisionRelativePath: decision.decisionRelativePath,
+      decisionAbsolutePath: decision.decisionAbsolutePath,
+      decisionExists: true,
+      sourceResultRelativePath,
+      sourceDecisionRelativePath: sourceResultRelativePath
+        ? sourceResultRelativePath.replace(/\.md$/u, "-adoption-decision.json")
+        : "",
+      candidateId: decision.artifact.source_id,
+      candidateName: candidateNameFromTitle || decision.artifact.source_id,
+      usefulnessLevel: decision.artifact.usefulness_level,
+      title,
+      finalStatus,
+      content,
+    };
+  } catch (error) {
+    const finalStatus = optionalString(content.match(/- Final status: `([^`]+)`\./u)?.[1])
+      ?? optionalString(content.match(/- Final adoption status: `([^`]+)`/u)?.[1])
+      ?? (() => {
+        const statusLine =
+          optionalString(content.match(/- Status: `([^`]+)`/u)?.[1])
+          ?? optionalString(content.match(/Status: `([^`]+)`/u)?.[1]);
+        return statusLine === "product_partial" ? "adopt_planned_next" : "adopted";
+      })();
+
+    return {
+      directiveRoot,
+      adoptedRelativePath,
+      adoptedAbsolutePath,
+      decisionRelativePath: "",
+      decisionAbsolutePath: "",
+      decisionExists: false,
+      sourceResultRelativePath,
+      sourceDecisionRelativePath: "",
+      candidateId: requiredString(candidateId, "legacy adoption candidate id"),
+      candidateName: candidateNameFromTitle || requiredString(candidateId, "legacy adoption candidate id"),
+      usefulnessLevel: "meta",
+      title,
+      finalStatus,
+      content,
+    };
+  }
 }

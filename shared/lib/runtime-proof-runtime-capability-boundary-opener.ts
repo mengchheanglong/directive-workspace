@@ -4,9 +4,9 @@ import path from "node:path";
 import {
   normalizeDirectiveApprovalActor,
   normalizeDirectiveWorkspaceRoot,
+  requireDirectiveCurrentStageForOpening,
   requireDirectiveEligibleStatus,
   requireDirectiveExplicitApproval,
-  requireDirectiveIntegrityForOpening,
   requireDirectiveString,
   resolveDirectiveWorkspaceRelativePath,
   writeDirectiveArtifactIfMissing,
@@ -258,10 +258,11 @@ export function openDirectiveRuntimeProofRuntimeCapabilityBoundary(input: {
     runtimeProofPath: input.runtimeProofPath,
   });
 
-  requireDirectiveIntegrityForOpening({
+  requireDirectiveCurrentStageForOpening({
     directiveRoot,
     artifactPath: artifact.runtimeProofRelativePath,
     subject: "Runtime proof artifact",
+    allowedCurrentStages: ["runtime.proof."],
   });
   requireDirectiveEligibleStatus({
     subject: "Runtime proof artifact",

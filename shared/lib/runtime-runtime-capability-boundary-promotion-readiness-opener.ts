@@ -4,9 +4,9 @@ import path from "node:path";
 import {
   normalizeDirectiveApprovalActor,
   normalizeDirectiveWorkspaceRoot,
+  requireDirectiveCurrentStageForOpening,
   requireDirectiveEligibleStatus,
   requireDirectiveExplicitApproval,
-  requireDirectiveIntegrityForOpening,
   requireDirectiveString,
   resolveDirectiveWorkspaceRelativePath,
   writeDirectiveArtifactIfMissing,
@@ -267,10 +267,11 @@ export function openDirectiveRuntimePromotionReadiness(input: {
     capabilityBoundaryPath: input.capabilityBoundaryPath,
   });
 
-  requireDirectiveIntegrityForOpening({
+  requireDirectiveCurrentStageForOpening({
     directiveRoot,
     artifactPath: artifact.capabilityBoundaryRelativePath,
     subject: "Runtime runtime capability boundary artifact",
+    allowedCurrentStages: ["runtime.runtime_capability_boundary.opened"],
   });
   requireDirectiveEligibleStatus({
     subject: "Runtime runtime capability boundary artifact",

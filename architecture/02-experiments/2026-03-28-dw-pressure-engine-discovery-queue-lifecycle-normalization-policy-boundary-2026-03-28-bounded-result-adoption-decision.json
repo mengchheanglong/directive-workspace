@@ -1,0 +1,25 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": false,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": false
+  },
+  "artifact_type": "policy_boundary",
+  "artifact_path": "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md",
+  "adaptation_quality": "skipped",
+  "improvement_quality": "skipped",
+  "decision": {
+    "verdict": "stay_experimental",
+    "rationale": "The bounded policy result shows historical queue lifecycle normalization should remain interpretive and partial. Clean completed and still-live routed entries can map to modern meaning, but progressed or deferred historical routed rows should remain stored evidence rather than being rewritten or treated as active routing.",
+    "completion_status": "doc_only_or_planned",
+    "stay_experimental_reason": "A full stored-queue migration is not justified without stronger product pressure, and broad queue rewrite would add risk without changing the real current-head continuation model.",
+    "runtime_threshold_check": "yes - clarifying the queue truth boundary is still valuable as shared Engine policy even without a runtime surface"
+  }
+}

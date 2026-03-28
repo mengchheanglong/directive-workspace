@@ -1,6 +1,9 @@
 import type {
+  DirectiveEngineAdaptationPlan,
   DirectiveEngineCapabilityGap,
+  DirectiveEngineExtractionPlan,
   DirectiveEngineHostDependence,
+  DirectiveEngineImprovementPlan,
   DirectiveEngineIntegrationMode,
   DirectiveEngineIntegrationProposal,
   DirectiveEngineLaneId,
@@ -20,10 +23,10 @@ export type DirectiveEngineLaneDefinition = {
   handoffArtifactFamily: string;
   nextAction: string;
   planProof?: (
-    input: DirectiveEngineLanePlanningInput,
+    input: DirectiveEngineLaneProofPlanningInput,
   ) => DirectiveEngineProofPlan;
   planIntegration?: (
-    input: DirectiveEngineLanePlanningInput,
+    input: DirectiveEngineLaneIntegrationPlanningInput,
   ) => Partial<DirectiveEngineIntegrationProposal>;
 };
 
@@ -35,6 +38,21 @@ export type DirectiveEngineLanePlanningInput = {
   receivedAt: string;
   routingAssessment: DirectiveEngineRoutingAssessment;
   lane: DirectiveEngineLaneDefinition;
+};
+
+export type DirectiveEngineLaneProofPlanningInput = {
+  planningInput: DirectiveEngineLanePlanningInput;
+  extractionPlan: DirectiveEngineExtractionPlan;
+  adaptationPlan: DirectiveEngineAdaptationPlan;
+  improvementPlan: DirectiveEngineImprovementPlan;
+};
+
+export type DirectiveEngineLaneIntegrationPlanningInput = {
+  planningInput: DirectiveEngineLanePlanningInput;
+  extractionPlan: DirectiveEngineExtractionPlan;
+  adaptationPlan: DirectiveEngineAdaptationPlan;
+  improvementPlan: DirectiveEngineImprovementPlan;
+  proofPlan: DirectiveEngineProofPlan;
 };
 
 export type DirectiveEngineLaneSet = {

@@ -184,6 +184,27 @@
       "notes": "Use for bounded browser smoke lanes where pass/fail depends on smoke report integrity, expected flows, and screenshot artifacts."
     },
     {
+      "id": "dw_web_host_seam_review_guard/v1",
+      "family": "bounded_dw_web_host_seam_review",
+      "proofShape": "dw_web_host_seam_review_snapshot/v1",
+      "contractPath": "shared/contracts/dw-web-host-seam-review-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-dw-web-host-runtime-seam-review",
+      "primaryHostCheckScriptPath": "scripts/check-directive-dw-web-host-runtime-seam-review.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for bounded non-executing Directive Workspace web-host seam-review surfaces where the host proves truthful read-only presentation of canonical Runtime state without opening promotion, execution, or host integration."
+    },
+    {
       "id": "skill_lifecycle_guard/v1",
       "family": "bounded_skill_lifecycle",
       "proofShape": "agent_pack_import_snapshot/v1",

@@ -1,0 +1,25 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": false,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": false
+  },
+  "artifact_type": "policy_boundary",
+  "artifact_path": "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md",
+  "adaptation_quality": "skipped",
+  "improvement_quality": "skipped",
+  "decision": {
+    "verdict": "stay_experimental",
+    "rationale": "The bounded policy result shows the daily-status digest is already preserved truthfully as output evidence under a supported Runtime record/proof chain, so direct canonical support is not justified through current case semantics.",
+    "completion_status": "doc_only_or_planned",
+    "stay_experimental_reason": "Direct support would require new non-case digest semantics or synthetic candidate mapping; future similar digest content should be normalized into supported record/proof/report artifacts instead of widening the current truth anchor.",
+    "runtime_threshold_check": "yes - clarifying the truth-anchor boundary is still valuable as shared Engine policy even without a runtime surface"
+  }
+}
