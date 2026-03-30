@@ -77,5 +77,4 @@ This guard applies only to read-only seam review. It does not open:
 
 ## Canonical Inventory
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\PROMOTION_PROFILES.json`
-
+- `runtime/PROMOTION_PROFILES.json`

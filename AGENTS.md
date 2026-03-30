@@ -68,9 +68,16 @@ When operating autonomously, work in repeated bounded cycles:
 3. state the affected layer, owning lane, mission usefulness, proof path, rollback path, and stop-line
 4. implement only that bounded slice
 5. run the most relevant checks
-6. update the active runbook / handoff file
+6. update the active control surfaces or historical log in `control/` as appropriate for the slice
 7. reassess from the updated repo state
 
 Do not bundle unrelated work into one cycle.
 Do not reopen intentionally parked work unless current repo truth clearly makes it the highest-ROI next move.
 Stop at a safe verified boundary.
+
+For repeated same-class wording or authority-alignment micro-repairs, prefer batched loop-run logging over one full cycle entry per micro-fix:
+- one run header
+- one compact bullet per verified micro-fix
+- one final stop summary
+
+Reserve full standalone cycle entries for slices that change structural rules, add a new contract or check, or require non-trivial product interpretation.

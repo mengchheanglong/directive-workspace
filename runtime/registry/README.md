@@ -3,7 +3,7 @@
 This folder holds accepted Runtime runtime entries.
 
 Use:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\registry-entry.md`
+- `shared/templates/registry-entry.md`
 
 An entry belongs here only after:
 - a promotion record exists

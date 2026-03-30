@@ -17,7 +17,7 @@ Mission Control also exposes the same bounded host API surface:
 
 The authoritative Discovery target remains:
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\intake-queue.json`
+- `discovery/intake-queue.json`
 
 ## Submission Interface
 
@@ -110,7 +110,7 @@ As of `2026-03-22`, OpenClaw can submit a bounded Discovery candidate through:
 
 1. `C:\Users\User\.openclaw\scripts\submit-openclaw-discovery-candidate.ps1`
 2. `C:\Users\User\.openclaw\workspace\mission-control\src\app\api\directive-workspace\discovery\submissions\route.ts`
-3. `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\intake-queue.json`
+3. `discovery/intake-queue.json`
 4. `npm run check:openclaw-discovery-submission`
 
 That path is active, checked, and exercised.

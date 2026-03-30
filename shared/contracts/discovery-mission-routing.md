@@ -8,10 +8,10 @@ Purpose:
 - keep routing guidance product-owned and host-agnostic
 
 Canonical surfaces:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-mission-routing.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-gap-worklist-generator.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\active-mission.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\capability-gaps.json`
+- `shared/lib/discovery-mission-routing.ts`
+- `shared/lib/discovery-gap-worklist-generator.ts`
+- `knowledge/active-mission.md`
+- `discovery/capability-gaps.json`
 
 Assessment outputs:
 - `recommended_track`

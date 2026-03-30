@@ -20,7 +20,7 @@ This lane exists so orchestration health drift becomes a Discovery candidate bef
 
 ## Submission Target
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\intake-queue.json`
+- `discovery/intake-queue.json`
 
 ## Signal Rules
 

@@ -49,41 +49,41 @@ Citation schema notes:
 
 Boundary:
 - Mission Control runtime types still execute host behavior.
-- These schemas are the architecture contract truth for artifact shape checks.
+- These schemas are the Engine-owned shared contract truth for artifact shape checks.
 - Any runtime binding must be an explicit follow-up decision and remain fail-closed.
 
 Host-neutral integration reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\README.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\host-integration-acceptance-report.schema.json`
+- `hosts/integration-kit/README.md`
+- `hosts/integration-kit/examples/`
+- `shared/schemas/host-integration-acceptance-report.schema.json`
 
 Phase-isolation reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\phase-isolated-processing.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\phase-handoff-packet.md`
+- `shared/contracts/phase-isolated-processing.md`
+- `shared/templates/phase-handoff-packet.md`
 
 Mechanism-packet reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\architecture-mechanism-packet.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\architecture-mechanism-packet.md`
+- `shared/contracts/architecture-mechanism-packet.md`
+- `shared/templates/architecture-mechanism-packet.md`
 
 Cross-source synthesis reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\cross-source-synthesis-packet.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\cross-source-synthesis-packet.md`
+- `shared/contracts/cross-source-synthesis-packet.md`
+- `shared/templates/cross-source-synthesis-packet.md`
 
 Generation-boundary reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\self-improvement-generation-boundary.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\generation-boundary-note.md`
+- `shared/contracts/self-improvement-generation-boundary.md`
+- `shared/templates/generation-boundary-note.md`
 
 Literature-monitoring runtime reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\bounded-literature-monitoring-workflow.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-digest.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-degraded-state.md`
+- `shared/contracts/bounded-literature-monitoring-workflow.md`
+- `shared/templates/literature-monitoring-digest.md`
+- `shared/templates/literature-monitoring-degraded-state.md`
 
 Standalone-host runtime reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\standalone-host-runtime-profile.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\standalone-host-api-auth-guard.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\standalone-host-sqlite-persistence-profile.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\standalone-host\standalone-host.config.example.json`
+- `shared/contracts/standalone-host-runtime-profile.md`
+- `shared/contracts/standalone-host-api-auth-guard.md`
+- `shared/contracts/standalone-host-sqlite-persistence-profile.md`
+- `hosts/standalone-host/standalone-host.config.example.json`
 
 Architecture adoption reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\architecture-adoption-criteria.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\architecture-adoption-artifacts.ts`
+- `shared/contracts/architecture-adoption-criteria.md`
+- `shared/lib/architecture-adoption-artifacts.ts`

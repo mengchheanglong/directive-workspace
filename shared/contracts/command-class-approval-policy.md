@@ -7,7 +7,7 @@ Canonical policy id:
 - `command_class_approval_policy/v1`
 
 Linked contract:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\command-mediation-contract.md`
+- `shared/contracts/command-mediation-contract.md`
 
 Current candidate:
 - `al-parked-cli-anything`

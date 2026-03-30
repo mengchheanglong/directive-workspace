@@ -70,11 +70,11 @@ If the guard fails:
 ## Relationship To Other Contracts
 
 - Uses workflow boundary from:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\bounded-literature-monitoring-workflow.md`
+  - `shared/contracts/bounded-literature-monitoring-workflow.md`
 - Complements:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\evaluator-contract.md`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-digest.md`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-degraded-state.md`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\literature-monitoring-digest.schema.json`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\literature-monitoring-degraded-state.schema.json`
+  - `shared/contracts/evaluator-contract.md`
+  - `shared/contracts/runtime-to-host.md`
+  - `shared/templates/literature-monitoring-digest.md`
+  - `shared/templates/literature-monitoring-degraded-state.md`
+  - `shared/schemas/literature-monitoring-digest.schema.json`
+  - `shared/schemas/literature-monitoring-degraded-state.schema.json`

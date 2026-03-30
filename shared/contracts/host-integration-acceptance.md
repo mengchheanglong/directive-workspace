@@ -56,7 +56,7 @@ It only means:
 
 - the host can consume Directive Workspace correctly
 - the host can adapt storage/API/UI boundaries safely
-- the host respects the product-owned Discovery lifecycle
+- the host respects the canonical Discovery lifecycle
 
 ## Integration-kit relationship
 

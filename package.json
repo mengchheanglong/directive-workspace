@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --experimental-strip-types ./scripts/run-frontend-dev.ts",
     "build": "npm run frontend:build",
-    "check": "npm run check:frontend-host && npm run check:directive-workspace-composition && npm run check:case-planner-parity && npm run check:architecture-materialization-due-check && npm run check:directive-engine-stage-chaining",
+    "check": "npm run check:frontend-host && npm run check:directive-workspace-composition && npm run check:control-authority && npm run check:case-planner-parity && npm run check:architecture-materialization-due-check && npm run check:directive-engine-stage-chaining",
     "check:architecture-composition": "node --experimental-strip-types ./scripts/check-architecture-composition.ts",
     "check:architecture-materialization-due-check": "node --experimental-strip-types ./scripts/check-architecture-materialization-due-check.ts",
     "check:discovery-gap-worklist-selector": "node --experimental-strip-types ./scripts/check-discovery-gap-worklist-selector.ts",
@@ -15,6 +15,7 @@
     "check:openclaw-discovery-submission-adapter": "node --experimental-strip-types ./scripts/check-openclaw-discovery-submission-adapter.ts",
     "check:directive-dw-web-host-runtime-seam-review": "node --experimental-strip-types ./scripts/check-directive-dw-web-host-runtime-seam-review.ts",
     "check:directive-engine-stage-chaining": "node --experimental-strip-types ./scripts/check-directive-engine-stage-chaining.ts",
+    "check:control-authority": "node --experimental-strip-types ./scripts/check-control-authority.ts",
     "check:case-event-parity": "node --experimental-strip-types ./scripts/check-case-event-parity.ts",
     "check:case-planner-parity": "node --experimental-strip-types ./scripts/check-case-planner-parity.ts",
     "check:case-snapshot-parity": "node --experimental-strip-types ./scripts/check-case-snapshot-parity.ts",

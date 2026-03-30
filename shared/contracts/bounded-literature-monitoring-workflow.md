@@ -100,10 +100,10 @@ This workflow is ready for Runtime runtime execution only when:
 - rollback is bounded and reversible
 
 Related artifacts:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\architecture-to-runtime.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\literature-monitoring-degraded-state-guard.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-digest.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\literature-monitoring-degraded-state.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\literature-monitoring-digest.schema.json`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\literature-monitoring-degraded-state.schema.json`
+- `shared/contracts/architecture-to-runtime.md`
+- `shared/contracts/runtime-to-host.md`
+- `shared/contracts/literature-monitoring-degraded-state-guard.md`
+- `shared/templates/literature-monitoring-digest.md`
+- `shared/templates/literature-monitoring-degraded-state.md`
+- `shared/schemas/literature-monitoring-digest.schema.json`
+- `shared/schemas/literature-monitoring-degraded-state.schema.json`

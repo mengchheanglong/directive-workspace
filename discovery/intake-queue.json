@@ -1105,6 +1105,26 @@
       "result_record_path": "discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md",
       "notes": "Fresh repo-local product doc under sources/intake/gpt-researcher. Retained value is Discovery-held pressure around deep research as a source-gathering and evidence-support input. Out of scope: MCP server installation, runtime integration, live execution surfaces, or adopting the product as a reusable runtime capability. | discovery front door materialized: discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md, discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md, discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md | Monitor record materialized: discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md",
       "operating_mode": "note"
+    },
+    {
+      "candidate_id": "dw-source-dropbox-data-checking-2026-03-30",
+      "candidate_name": "Data Checking at Dropbox",
+      "source_type": "workflow-writeup",
+      "source_reference": "https://www.usenix.org/conference/srecon17asia/program/presentation/mah",
+      "received_at": "2026-03-30",
+      "status": "completed",
+      "routing_target": "architecture",
+      "mission_alignment": "Selected from awesome-scalability as the strongest outside source for current Engine-building pressure: checker-system design, validation coverage, violation reporting, and operator-simple triage that could improve Directive Workspace proof and evaluator quality without reopening runtime execution, planner, or host seams.",
+      "capability_gap_id": "gap-directive-engine-materialization",
+      "assigned_worker": null,
+      "intake_record_path": "discovery/intake/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-intake.md",
+      "fast_path_record_path": null,
+      "routing_record_path": "discovery/routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md",
+      "routed_at": "2026-03-30",
+      "completed_at": "2026-03-30",
+      "result_record_path": "architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result.md",
+      "notes": "selected_from:awesome-scalability | stronger_than:boundary-layer-execution-seam,api-best-practices-genericity,secret-detector-repo-hygiene | primary_source:usenix | discovery front door materialized: discovery/intake/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-intake.md, discovery/triage/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-triage.md, discovery/routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md | route approval by codex-awesome-scalability-pass opened architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-engine-handoff.md | NOTE-mode Architecture closeout by codex-awesome-scalability-pass recorded architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result.md directly from architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-engine-handoff.md",
+      "operating_mode": "note"
     }
   ]
 }

@@ -22,7 +22,7 @@ const SCIENTIFY_SIDECAR_PATH = path.join(
   "02-experiments",
   "2026-03-29-dw-source-scientify-research-workflow-plugin-2026-03-27-structural-mapping-sidecar.md",
 );
-const IMPLEMENT_PATH = path.join(DIRECTIVE_ROOT, "implement.md");
+const STOP_LINES_PATH = path.join(DIRECTIVE_ROOT, "control", "policies", "stop-lines.md");
 
 function readText(filePath: string) {
   assert.ok(fs.existsSync(filePath), `Missing structural-mapping experiment file: ${filePath}`);
@@ -98,7 +98,7 @@ function main() {
   const schemaText = readText(SIDECAR_SCHEMA_PATH);
   const tsEdgeText = readText(TS_EDGE_SIDECAR_PATH);
   const scientifyText = readText(SCIENTIFY_SIDECAR_PATH);
-  const implementText = readText(IMPLEMENT_PATH);
+  const stopLinesText = readText(STOP_LINES_PATH);
 
   assertContainsAll({
     label: "Schema note",
@@ -136,7 +136,7 @@ function main() {
 
   assertContainsAll({
     label: "Planning boundary note",
-    text: implementText,
+    text: stopLinesText,
     requiredSnippets: [
       "## Current Structural Mapping Experiment Boundary",
       "structural usefulness cases only",
@@ -160,7 +160,7 @@ function main() {
         relativeFromRoot(TS_EDGE_SIDECAR_PATH),
         relativeFromRoot(SCIENTIFY_SIDECAR_PATH),
       ],
-      boundaryNote: relativeFromRoot(IMPLEMENT_PATH),
+      boundaryNote: relativeFromRoot(STOP_LINES_PATH),
       containment: "no_live_ts_references",
     },
   }, null, 2)}\n`);

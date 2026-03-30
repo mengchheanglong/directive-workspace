@@ -8,11 +8,11 @@ Purpose:
 - preserve the distinction between an open gap and the latest slice that improved it
 
 Canonical surfaces:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\capability-gaps.json`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\gap-worklist.json`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\intake-queue.json`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\active-mission.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-gap-worklist-generator.ts`
+- `discovery/capability-gaps.json`
+- `discovery/gap-worklist.json`
+- `discovery/intake-queue.json`
+- `knowledge/active-mission.md`
+- `shared/lib/discovery-gap-worklist-generator.ts`
 
 Required item fields:
 - `gap_id`

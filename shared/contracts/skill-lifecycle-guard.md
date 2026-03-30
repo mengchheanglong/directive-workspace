@@ -59,4 +59,4 @@ Validation hooks:
 - `npm run check:ops-stack`
 
 Canonical inventory:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\PROMOTION_PROFILES.json`
+- `runtime/PROMOTION_PROFILES.json`

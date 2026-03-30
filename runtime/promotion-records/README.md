@@ -3,9 +3,9 @@
 This folder holds host-facing promotion contracts for Runtime candidates.
 
 Use:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates\promotion-record.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\PROMOTION_PROFILES.json`
+- `shared/templates/promotion-record.md`
+- `shared/contracts/runtime-to-host.md`
+- `runtime/PROMOTION_PROFILES.json`
 
 Create a promotion record when a Runtime runtime slice is ready to propose host activation or host-owned integration work.
 
@@ -16,4 +16,4 @@ Rule:
 - `Promotion profile family`, `Proof shape`, and `Primary host checker` must match the selected entry in `PROMOTION_PROFILES.json`.
 
 Current backlog:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-20-runtime-promotion-backlog.md`
+- `runtime/promotion-records/2026-03-20-runtime-promotion-backlog.md`

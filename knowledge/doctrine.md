@@ -200,15 +200,15 @@ Operator-facing labels:
 - slated for retirement after useful components are re-homed under Discovery, Runtime, or Architecture
 
 ### `architecture/`
-- product-owned Architecture surface for experiments, adopted patterns, and deferred decisions
+- Architecture lane workflow/corpus surface for experiments, adopted patterns, and deferred decisions
 - current adjacent workspace example legacy redirect path: `C:\Users\User\.openclaw\workspace\architecture-lab`
 
 ### `runtime/`
-- product-owned Runtime surface for follow-up records, execution records, promotion contracts, registry state, and host-agnostic core logic
+- Runtime lane workflow/corpus surface for follow-up records, execution records, promotion contracts, registry state, and lane-local Runtime support
 - Mission Control remains the current runtime host
 
 ### `discovery/`
-- product-owned Discovery front door for intake, triage, routing, and holding states
+- Discovery lane workflow/corpus surface for intake, triage, routing, and holding states
 
 ### `knowledge`
 - canonical doctrine, boundary rules, and operating policy

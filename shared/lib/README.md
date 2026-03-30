@@ -49,7 +49,7 @@ Current canonical shared helpers:
 Mission Control may keep temporary host-local mirrors of these files until direct standalone package consumption is stable in production builds.
 
 Host-neutral adapter guidance and example payloads live under:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\README.md`
+- `hosts/integration-kit/README.md`
 
 Phase-isolated processing note:
 - the current phase-isolation upgrade lands as contract + template + schema first
