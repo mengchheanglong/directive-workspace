@@ -1,7 +1,19 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { DirectiveEngine } from "../engine/directive-engine.ts";
 import { createDirectiveWorkspaceEngineLanes } from "../engine/directive-workspace-lanes.ts";
+import type { DirectiveEngineRunRecord } from "../engine/types.ts";
+
+const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+function readStoredRun(relativePath: string) {
+  return JSON.parse(
+    fs.readFileSync(path.resolve(DIRECTIVE_ROOT, relativePath), "utf8"),
+  ) as DirectiveEngineRunRecord;
+}
 
 async function main() {
   const engine = new DirectiveEngine({
@@ -164,6 +176,75 @@ async function main() {
     "Runtime control proof gates should remain unchanged by the staged Architecture refactor.",
   );
 
+  const architectureProofCases = [
+    {
+      label: "Inspect AI",
+      runPath:
+        "runtime/standalone-host/engine-runs/2026-03-28T00-00-00-000Z-dw-source-inspect-ai-2026-03-28-402b52cf.json",
+    },
+    {
+      label: "ts-edge Type-Safe Graph Workflow Engine",
+      runPath:
+        "runtime/standalone-host/engine-runs/2026-03-27T00-00-00-000Z-dw-source-ts-edge-2026-03-27-0aacdf59.json",
+    },
+  ] as const;
+
+  for (const proofCase of architectureProofCases) {
+    const storedRun = readStoredRun(proofCase.runPath);
+    const replayResult = await engine.processSource({
+      mission: {
+        currentObjective: storedRun.mission.currentObjective,
+        usefulnessSignals: storedRun.mission.usefulnessSignals,
+        capabilityLanes: storedRun.mission.capabilityLanes,
+        activeMissionMarkdown: storedRun.mission.activeMissionMarkdown,
+      },
+      source: storedRun.source,
+      gaps: storedRun.openGaps,
+    });
+
+    assert.equal(
+      replayResult.ok,
+      true,
+      `DirectiveEngine.processSource should succeed for the ${proofCase.label} routing proof case.`,
+    );
+    const replayRecord = replayResult.record;
+    assert.equal(
+      replayRecord.selectedLane.laneId,
+      "architecture",
+      `${proofCase.label} should now route to Architecture instead of Runtime.`,
+    );
+    assert.equal(
+      replayRecord.candidate.usefulnessLevel,
+      "meta",
+      `${proofCase.label} should now classify as meta-useful Engine pattern extraction.`,
+    );
+    assert.equal(
+      replayRecord.decision.decisionState,
+      "accept_for_architecture",
+      `${proofCase.label} should now produce an Architecture adoption decision.`,
+    );
+    assert.equal(
+      replayRecord.integrationProposal.handoffArtifactFamily,
+      "architecture_adoption",
+      `${proofCase.label} should now hand off through the Architecture adoption family.`,
+    );
+    assert.equal(
+      replayRecord.proofPlan.proofKind,
+      "architecture_validation",
+      `${proofCase.label} should now use the Architecture proof path.`,
+    );
+    assert.ok(
+      replayRecord.routingAssessment.scoreBreakdown.patternExtractionSignal > 0,
+      `${proofCase.label} should trigger the bounded pattern-extraction correction signal.`,
+    );
+    assert.ok(
+      replayRecord.routingAssessment.rationale.some((line) =>
+        /Pattern-extraction signal is present/i.test(line)
+      ),
+      `${proofCase.label} should explain the bounded Architecture correction in the routing rationale.`,
+    );
+  }
+
   const discoveryResult = await engine.processSource({
     mission: {
       currentObjective: "Improve the Directive Workspace engine.",
@@ -243,6 +324,10 @@ async function main() {
           proofKind: runtimeRecord.proofPlan.proofKind,
           integrationNextAction: runtimeRecord.integrationProposal.nextAction,
         },
+        architectureProofCases: architectureProofCases.map((proofCase) => ({
+          label: proofCase.label,
+          runPath: proofCase.runPath,
+        })),
         discoveryControl: {
           candidateId: discoveryRecord.candidate.candidateId,
           selectedLane: discoveryRecord.selectedLane.laneId,

@@ -5,6 +5,8 @@ This kit exists for hosts other than Mission Control.
 Directive Workspace is the standalone product.
 Hosts integrate it by consuming canonical Directive Workspace assets rather than redefining them locally.
 
+Path references below are relative to the Directive Workspace product root unless explicitly labeled as an external example. The current `.openclaw/workspace` location is only one incubation environment, not the canonical home of the product.
+
 Use this kit when integrating Directive Workspace into:
 - another workspace
 - another dashboard or control plane
@@ -17,7 +19,7 @@ Use this kit when integrating Directive Workspace into:
 Use this order:
 
 1. read the product boundary:
-   - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-boundary.md`
+   - `shared/contracts/host-integration-boundary.md`
 2. consume canonical product contracts/schemas/shared libs
 3. add only a thin host adapter for runtime/API/UI behavior
 
@@ -27,11 +29,11 @@ When possible, consume the package-ready module surface at:
   - `@directive-workspace/product/integration-kit/starter`
   - `@directive-workspace/product/integration-kit/cli`
 - in-repo root package surface:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\package.json`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\index.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\package.json`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\index.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\cli\host-integration-kit-cli.ts`
+  - `package.json`
+  - `index.ts`
+- `hosts/integration-kit/package.json`
+- `hosts/integration-kit/index.ts`
+- `hosts/integration-kit/cli/host-integration-kit-cli.ts`
 
 Do not start by inventing host-local payloads or host-local Engine lane definitions.
 
@@ -56,74 +58,74 @@ A host must not redefine:
 ### Discovery front door
 
 - schema:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\discovery-submission-request.schema.json`
+  - `shared/schemas/discovery-submission-request.schema.json`
 - shared libs:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-submission-router.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-intake-queue-writer.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-fast-path-record-writer.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-case-record-writer.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-routing-record-writer.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-completion-record-writer.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-intake-queue-transition.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-intake-lifecycle-sync.ts`
+  - `shared/lib/discovery-submission-router.ts`
+  - `shared/lib/discovery-intake-queue-writer.ts`
+  - `shared/lib/discovery-fast-path-record-writer.ts`
+  - `shared/lib/discovery-case-record-writer.ts`
+  - `shared/lib/discovery-routing-record-writer.ts`
+  - `shared/lib/discovery-completion-record-writer.ts`
+  - `shared/lib/discovery-intake-queue-transition.ts`
+  - `shared/lib/discovery-intake-lifecycle-sync.ts`
 
 ### Discovery prioritization
 
 - schema:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\discovery-gap-worklist.schema.json`
+  - `shared/schemas/discovery-gap-worklist.schema.json`
 - shared libs:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-gap-priority.ts`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\discovery-gap-worklist-generator.ts`
+  - `shared/lib/discovery-gap-priority.ts`
+  - `shared/lib/discovery-gap-worklist-generator.ts`
 
 ### OpenClaw-compatible upstream signals
 
 - schemas:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\openclaw-runtime-verification-signal.schema.json`
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\openclaw-maintenance-watchdog-signal.schema.json`
+  - `shared/schemas/openclaw-runtime-verification-signal.schema.json`
+  - `shared/schemas/openclaw-maintenance-watchdog-signal.schema.json`
 
 ### Runtime canonical core
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\v0.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\decision-policy.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\workflow-contract.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\core\proof-contract.ts`
+- `runtime/core/v0.ts`
+- `runtime/core/decision-policy.ts`
+- `runtime/core/workflow-contract.ts`
+- `runtime/core/proof-contract.ts`
 
 ### Runtime host boundary references
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\runtime-to-host.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-boundary.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-acceptance.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\BOUNDARY_INVENTORY.json`
+- `shared/contracts/runtime-to-host.md`
+- `shared/contracts/host-integration-boundary.md`
+- `shared/contracts/host-integration-acceptance.md`
+- `runtime/BOUNDARY_INVENTORY.json`
 
 ## Example payloads
 
 These examples are host-neutral seed payloads, not Mission Control-specific forms.
 
 - queue-only Discovery submission:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\discovery-submission-queue-only.json`
+  - `hosts/integration-kit/examples/discovery-submission-queue-only.json`
 - fast-path Discovery submission:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\discovery-submission-fast-path.json`
+  - `hosts/integration-kit/examples/discovery-submission-fast-path.json`
 - split-case Discovery submission:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\discovery-submission-split-case.json`
+  - `hosts/integration-kit/examples/discovery-submission-split-case.json`
 - runtime verification signal:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\openclaw-runtime-verification-signal.json`
+  - `hosts/integration-kit/examples/openclaw-runtime-verification-signal.json`
 - maintenance watchdog signal:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\openclaw-maintenance-watchdog-signal.json`
+  - `hosts/integration-kit/examples/openclaw-maintenance-watchdog-signal.json`
 - host integration acceptance report:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\host-integration-acceptance-report.json`
+  - `hosts/integration-kit/examples/host-integration-acceptance-report.json`
 
 ## Starter code
 
 - package manifest:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\package.json`
+  - `hosts/integration-kit/package.json`
 - package export barrel:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\index.ts`
+  - `hosts/integration-kit/index.ts`
 - starter export barrel:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\starter\index.ts`
+  - `hosts/integration-kit/starter/index.ts`
 - starter readme:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\starter\README.md`
+  - `hosts/integration-kit/starter/README.md`
 - starter adapter template:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\starter\discovery-submission-adapter.template.ts`
+  - `hosts/integration-kit/starter/discovery-submission-adapter.template.ts`
 
 The starter template shows one concrete host-bridge shape that composes the canonical shared libs while leaving storage, API framework, and path policy to the integrating host.
 The starter folder also includes a memory bridge template and a smoke template so a new host can validate its adapter shape before wiring real storage.
@@ -142,7 +144,7 @@ Use copied starter files only when your host cannot depend on the Directive Work
 
 The integration kit also exposes a host-neutral CLI example at:
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\cli\host-integration-kit-cli.ts`
+- `hosts/integration-kit/cli/host-integration-kit-cli.ts`
 
 Use it when you want to:
 - run the host acceptance quickstart from the command line
@@ -152,9 +154,9 @@ Use it when you want to:
 Example commands:
 
 ```powershell
-npx tsx C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\cli\host-integration-kit-cli.ts acceptance-quickstart --host-name "Example Host" --module-surface package_import --output-root C:\temp
-npx tsx C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\cli\host-integration-kit-cli.ts submission-memory-dry-run --input-json-path C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\examples\discovery-submission-fast-path.json
-npx tsx C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\cli\host-integration-kit-cli.ts print-submission-example --shape fast_path
+npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts acceptance-quickstart --host-name "Example Host" --module-surface package_import --output-root C:\temp
+npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts submission-memory-dry-run --input-json-path <directive-workspace-root>\hosts\integration-kit\examples\discovery-submission-fast-path.json
+npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-submission-example --shape fast_path
 ```
 
 ## Host adapter patterns
@@ -189,11 +191,11 @@ Recommended adapter shapes:
 
 Hosts should validate themselves against:
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-acceptance.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas\host-integration-acceptance-report.schema.json`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\starter\host-integration-acceptance.template.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\starter\write-host-integration-acceptance-report.template.ts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\starter\run-host-integration-acceptance-quickstart.template.ts`
+- `shared/contracts/host-integration-acceptance.md`
+- `shared/schemas/host-integration-acceptance-report.schema.json`
+- `hosts/integration-kit/starter/host-integration-acceptance.template.ts`
+- `hosts/integration-kit/starter/write-host-integration-acceptance-report.template.ts`
+- `hosts/integration-kit/starter/run-host-integration-acceptance-quickstart.template.ts`
 
 This keeps `integrated correctly` tied to one product-owned standard instead of host-local guesses.
 Use the example acceptance report in `hosts/integration-kit/examples/` as the reference shape for a successful host integration run.

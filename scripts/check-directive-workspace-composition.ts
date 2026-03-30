@@ -188,21 +188,37 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
     candidateId: "dw-openclaw-runtime-verification-freshness-2026-03-22",
     candidateName: "OpenClaw Runtime Verification Freshness",
     artifactPath: "architecture/03-adopted/2026-03-22-openclaw-runtime-verification-freshness-adopted.md",
+    expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
+    expectedCurrentHeadPath:
+      "architecture/09-post-consumption-evaluations/2026-03-22-openclaw-runtime-verification-freshness-evaluation.md",
+    expectedMissingArtifact: null,
   },
   {
     candidateId: "dw-openclaw-maintenance-watchdog-signal-lane",
     candidateName: "OpenClaw Maintenance Watchdog Signal Lane",
     artifactPath: "architecture/03-adopted/2026-03-22-openclaw-maintenance-watchdog-signal-lane-adopted.md",
+    expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
+    expectedCurrentHeadPath:
+      "architecture/09-post-consumption-evaluations/2026-03-22-openclaw-maintenance-watchdog-signal-lane-evaluation.md",
+    expectedMissingArtifact: null,
   },
   {
     candidateId: "dw-openclaw-discovery-submission-flow",
     candidateName: "OpenClaw Discovery Submission Flow",
     artifactPath: "architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md",
+    expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
+    expectedCurrentHeadPath:
+      "architecture/09-post-consumption-evaluations/2026-03-22-openclaw-discovery-submission-flow-evaluation.md",
+    expectedMissingArtifact: null,
   },
   {
     candidateId: "dw-discovery-gap-driven-priority-loop",
     candidateName: "Discovery Gap Priority Worklist",
     artifactPath: "architecture/03-adopted/2026-03-22-discovery-gap-priority-worklist-adopted.md",
+    expectedCurrentStage: "architecture.retained.confirmed",
+    expectedCurrentHeadPath:
+      "architecture/06-retained/2026-03-22-discovery-gap-priority-worklist-retained.md",
+    expectedMissingArtifact: "architecture/07-integration-records/*.md",
   },
 ] as const;
 const INTERNAL_ARCHITECTURE_2026_03_28_START_CASES = [
@@ -316,6 +332,26 @@ const LEGACY_RUNTIME_LABEL_ROUTE_PATH =
   "discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md";
 const LEGACY_ARCHITECTURE_ADOPTION_COMPATIBILITY_HANDOFF_PATH =
   "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md";
+const NOTE_MODE_ARCHITECTURE_PROOF_CASES = [
+  {
+    label: "Inspect AI",
+    routingPath: "discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md",
+    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md",
+  },
+  {
+    label: "OpenEvals",
+    routingPath: "discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md",
+    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md",
+  },
+  {
+    label: "PromptWizard",
+    routingPath: "discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md",
+    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md",
+  },
+] as const;
 
 function uniqueRelativePaths(paths: Array<string | null | undefined>) {
   return [...new Set(paths.filter((value): value is string => Boolean(value)))];
@@ -351,8 +387,12 @@ function expectNoDrift(relativePath: string, focus: ReturnType<typeof expectFocu
 function expectPendingNextArtifactGap(
   relativePath: string,
   focus: ReturnType<typeof expectFocus>,
-  expectedMissingArtifact: string,
+  expectedMissingArtifact: string | null,
 ) {
+  if (expectedMissingArtifact === null) {
+    expectNoDrift(relativePath, focus);
+    return;
+  }
   assert.equal(
     focus.integrityState,
     "ok",
@@ -940,6 +980,123 @@ function main() {
     "Explicitly continue the experimental Architecture slice or stop without auto-advancing.",
   );
   expectNoDrift(TS_EDGE_ROUTE_PATH, tsEdgeRoute);
+
+  for (const proofCase of NOTE_MODE_ARCHITECTURE_PROOF_CASES) {
+    const routingFocus = expectFocus(proofCase.routingPath);
+    assert.equal(routingFocus.lane, "discovery", `${proofCase.label} route should stay in Discovery lane`);
+    assert.equal(
+      routingFocus.currentStage,
+      proofCase.resultPath ? "architecture.bounded_result.stay_experimental" : "architecture.handoff.pending_review",
+      `${proofCase.label} route should resolve to the truthful NOTE-mode Architecture boundary`,
+    );
+    assert.equal(routingFocus.discovery.operatingMode, "note", `${proofCase.label} route should remain NOTE mode`);
+    if (proofCase.resultPath) {
+      assert.ok(
+        routingFocus.nextLegalStep.includes("NOTE-mode bounded result is an explicit stop"),
+        `${proofCase.label} route should stop at the NOTE bounded-result boundary: ${routingFocus.nextLegalStep}`,
+      );
+      assert.equal(
+        routingFocus.discovery.queueStatus,
+        "completed",
+        `${proofCase.label} route should mark the Discovery queue entry completed after direct NOTE closeout`,
+      );
+      assert.equal(
+        routingFocus.currentHead.artifactPath,
+        proofCase.resultPath,
+        `${proofCase.label} route should resolve the bounded result as the current head`,
+      );
+    } else {
+      assert.ok(
+        routingFocus.artifactNextLegalStep.includes("NOTE-mode bounded result"),
+        `${proofCase.label} route should advertise a NOTE-mode bounded result boundary: ${routingFocus.artifactNextLegalStep}`,
+      );
+      assert.ok(
+        routingFocus.artifactNextLegalStep.includes("no bounded start is required"),
+        `${proofCase.label} route should stop advertising a bounded start: ${routingFocus.artifactNextLegalStep}`,
+      );
+      assert.ok(
+        routingFocus.nextLegalStep.includes("NOTE-mode bounded result"),
+        `${proofCase.label} route should inherit the NOTE handoff result boundary: ${routingFocus.nextLegalStep}`,
+      );
+    }
+    expectNoDrift(proofCase.routingPath, routingFocus);
+
+    const handoffFocus = expectFocus(proofCase.handoffPath);
+    assert.equal(handoffFocus.lane, "architecture", `${proofCase.label} handoff should resolve in Architecture lane`);
+    assert.equal(
+      handoffFocus.currentStage,
+      proofCase.resultPath ? "architecture.bounded_result.stay_experimental" : "architecture.handoff.pending_review",
+      `${proofCase.label} handoff should resolve to the truthful NOTE-mode Architecture boundary`,
+    );
+    assert.equal(
+      handoffFocus.discovery.operatingMode,
+      "note",
+      `${proofCase.label} handoff should preserve NOTE operating mode`,
+    );
+    if (proofCase.resultPath) {
+      assert.ok(
+        handoffFocus.artifactNextLegalStep.includes("no longer the live continuation point"),
+        `${proofCase.label} handoff should downgrade to the current head after NOTE closeout: ${handoffFocus.artifactNextLegalStep}`,
+      );
+      assert.ok(
+        handoffFocus.artifactNextLegalStep.includes(proofCase.resultPath),
+        `${proofCase.label} handoff should point to the direct NOTE bounded result current head: ${handoffFocus.artifactNextLegalStep}`,
+      );
+      assert.ok(
+        handoffFocus.nextLegalStep.includes("NOTE-mode bounded result is an explicit stop"),
+        `${proofCase.label} handoff should resolve to the NOTE bounded-result stop boundary: ${handoffFocus.nextLegalStep}`,
+      );
+      assert.equal(
+        handoffFocus.linkedArtifacts.architectureBoundedResultPath,
+        proofCase.resultPath,
+        `${proofCase.label} handoff should link directly to the NOTE-mode bounded result`,
+      );
+      assert.equal(
+        handoffFocus.linkedArtifacts.architectureBoundedStartPath,
+        null,
+        `${proofCase.label} handoff should not materialize a bounded start in NOTE mode`,
+      );
+    } else {
+      assert.ok(
+        handoffFocus.artifactNextLegalStep.includes("NOTE-mode bounded result"),
+        `${proofCase.label} handoff should advertise a NOTE-mode bounded result boundary: ${handoffFocus.artifactNextLegalStep}`,
+      );
+      assert.ok(
+        handoffFocus.artifactNextLegalStep.includes("no bounded start is required"),
+        `${proofCase.label} handoff should stop advertising a bounded start: ${handoffFocus.artifactNextLegalStep}`,
+      );
+      assert.ok(
+        handoffFocus.nextLegalStep.includes("NOTE-mode bounded result"),
+        `${proofCase.label} handoff should resolve to a NOTE-mode bounded result boundary: ${handoffFocus.nextLegalStep}`,
+      );
+    }
+    expectNoDrift(proofCase.handoffPath, handoffFocus);
+
+    if (proofCase.resultPath) {
+      const resultFocus = expectFocus(proofCase.resultPath);
+      assert.equal(resultFocus.lane, "architecture", `${proofCase.label} result should resolve in Architecture lane`);
+      assert.equal(
+        resultFocus.artifactStage,
+        "architecture.bounded_result.stay_experimental",
+        `${proofCase.label} result should stay experimental after NOTE closeout`,
+      );
+      assert.equal(
+        resultFocus.currentStage,
+        "architecture.bounded_result.stay_experimental",
+        `${proofCase.label} result should be the current case head`,
+      );
+      assert.ok(
+        resultFocus.artifactNextLegalStep.includes("NOTE-mode bounded result is an explicit stop"),
+        `${proofCase.label} result should stop without auto-continuation: ${resultFocus.artifactNextLegalStep}`,
+      );
+      assert.equal(
+        resultFocus.linkedArtifacts.architectureBoundedStartPath,
+        null,
+        `${proofCase.label} result should not require a bounded start in NOTE mode`,
+      );
+      expectNoDrift(proofCase.resultPath, resultFocus);
+    }
+  }
 
   const legacyRuntimeLabelRoute = expectFocus(LEGACY_RUNTIME_LABEL_ROUTE_PATH);
   assert.equal(legacyRuntimeLabelRoute.lane, "discovery");
@@ -2031,18 +2188,20 @@ function main() {
     assert.equal(legacyAdoptionFocus.candidateName, legacyAdoptionCase.candidateName);
     assert.equal(
       legacyAdoptionFocus.currentStage,
-      "architecture.adoption.adopted",
+      legacyAdoptionCase.expectedCurrentStage ?? "architecture.adoption.adopted",
       `Legacy adopted Architecture artifact should resolve as an adopted current head: ${legacyAdoptionCase.artifactPath}`,
     );
     assert.equal(
       legacyAdoptionFocus.currentHead.artifactPath,
-      legacyAdoptionCase.artifactPath,
+      legacyAdoptionCase.expectedCurrentHeadPath ?? legacyAdoptionCase.artifactPath,
       `Legacy adopted Architecture artifact should become its own live current head: ${legacyAdoptionCase.artifactPath}`,
     );
     expectPendingNextArtifactGap(
       legacyAdoptionCase.artifactPath,
       legacyAdoptionFocus,
-      LEGACY_ARCHITECTURE_IMPLEMENTATION_TARGET_GAP,
+      Object.prototype.hasOwnProperty.call(legacyAdoptionCase, "expectedMissingArtifact")
+        ? legacyAdoptionCase.expectedMissingArtifact
+        : LEGACY_ARCHITECTURE_IMPLEMENTATION_TARGET_GAP,
     );
   }
 

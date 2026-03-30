@@ -109,6 +109,12 @@ Sources may include:
 - external systems
 - other source material with extractable value
 
+`External source` means either:
+- a source already present inside the current system or context that has not yet been processed or still provides useful pressure
+- a source outside the current system or context, including a newly found online source, when the currently available sources no longer provide useful pressure or the system has hit a bottleneck
+
+In both cases, source selection remains mission-conditioned, and Discovery is still the required front door before any downstream lane work.
+
 Raw source material belongs under `sources/`.
 
 Do not treat transformed derivative work as raw source material.

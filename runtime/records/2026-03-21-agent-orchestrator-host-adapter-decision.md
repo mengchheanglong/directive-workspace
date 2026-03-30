@@ -3,10 +3,10 @@
 - Candidate id: `agent-orchestrator`
 - Candidate name: `agent-orchestrator`
 - Runtime record date: 2026-03-21
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-agent-orchestrator-runtime-followup.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
 - Decision type: `host-adapter decision`
 - Decision result: `keep_follow_up_only`
-- Contract path: `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\ao-host-adapter-scope.md`
+- Contract path: `shared/contracts/ao-host-adapter-scope.md`
 
 ## Why
 

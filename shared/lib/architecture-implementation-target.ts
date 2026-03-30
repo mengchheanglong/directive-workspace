@@ -23,7 +23,7 @@ type ImplementationTargetSourceContext = {
   inputs: string[];
   validationGates: string[];
   sourceResultRelativePath: string;
-  sourceStartRelativePath: string;
+  sourceStartRelativePath: string | null;
   handoffStubPath: string;
   engineRunRecordPath: string;
   engineRunReportPath: string;
@@ -442,7 +442,7 @@ function renderImplementationTargetMarkdown(input: {
   explicitLimitations: string[];
   rollback: string;
   sourceResultRelativePath: string;
-  sourceStartRelativePath: string;
+  sourceStartRelativePath: string | null;
   handoffStubPath: string;
   engineRunRecordPath: string;
   engineRunReportPath: string;

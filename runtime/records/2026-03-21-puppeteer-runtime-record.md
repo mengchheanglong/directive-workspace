@@ -3,8 +3,8 @@
 - Candidate id: puppeteer
 - Candidate name: puppeteer
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-puppeteer-browser-runtime-followup.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-puppeteer-browser-runtime-followup.md`
+- Origin path: `runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md`
 - Runtime objective: execute one bounded browser smoke run against the Mission Control dashboard and prove that Runtime can promote a browser-backed host validation lane without adopting the entire upstream Puppeteer surface.
 - Proposed host: Mission Control
 - Proposed runtime surface: bounded browser smoke lane

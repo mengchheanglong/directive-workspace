@@ -8,7 +8,7 @@ Slice type: bounded runtime evaluation execution
 ## Run Contract
 
 Source follow-up:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-promptfoo-runtime-followup.md`
+- `runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md`
 
 Execution scope:
 - one Promptfoo-backed bounded agent eval run through Mission Control

@@ -30,8 +30,8 @@ Primary operating reference:
 - `C:\Users\User\.openclaw\workspace\CLAUDE.md`
 - `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-doctrine\SKILL.md`
 - `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-audit\SKILL.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\doctrine.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\active-mission.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\doctrine.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\active-mission.md`
 
 ## Success Metrics
 - `decision_lead_time_hours` is stable and trending down.

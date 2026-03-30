@@ -1,0 +1,23 @@
+# Discovery Intake Record: GH-AW Safe Outputs Gateway Specification
+
+- Candidate id: dw-source-gh-aw-safe-outputs-spec-2026-03-30
+- Candidate name: GH-AW Safe Outputs Gateway Specification
+- Intake date: 2026-03-30
+- Source type: product-doc
+- Source reference: sources/intake/gh-aw/docs/src/content/docs/reference/safe-outputs-specification.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Engine-building mission pressure: extract contract/schema, proof-boundary, sanitization, gate-ordering, provenance, and rollback patterns that could improve Directive Workspace Architecture without opening GitHub execution or host-admin seams.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run d7ec1192-bba6-42c7-855c-2f7e51bd37b3 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md

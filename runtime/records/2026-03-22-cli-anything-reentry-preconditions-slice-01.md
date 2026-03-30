@@ -4,7 +4,7 @@
 - Candidate name: `CLI-Anything`
 - Runtime record date: `2026-03-22`
 - Origin path: `C:\Users\User\.openclaw\workspace\agent-lab\tooling-parked\CLI-Anything`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-cli-anything-runtime-follow-up-record.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
 - Runtime objective: close the non-execution preconditions required before any bounded mediated-command experiment
 - Proposed host: `Mission Control`
 - Proposed runtime surface: `none yet` (precondition slice only)

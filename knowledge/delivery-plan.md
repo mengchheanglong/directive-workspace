@@ -90,7 +90,7 @@ This delivery plan assumes:
 
 ## Core Product Decision
 Directive Workspace is now a standalone product root inside:
-- `C:\Users\User\.openclaw\workspace\directive-workspace`
+- `C:\Users\User\projects\directive-workspace`
 
 Mission Control remains the first runtime host.
 

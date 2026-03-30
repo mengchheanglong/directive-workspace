@@ -5,10 +5,11 @@ Candidate id: `agent-orchestrator`
 Track: `Directive Runtime`
 Slice type: bounded precondition build proof
 Status: completed
+- Linked follow-up record: `runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
 
 ## Source Follow-up
 
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-agent-orchestrator-runtime-followup.md`
+- `runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
 
 ## Purpose
 
@@ -43,7 +44,7 @@ Not allowed:
 
 ## CLI Proof Snapshot
 
-- CLI entrypoint: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\source-packs\agent-orchestrator\packages\cli\dist\index.js`
+- CLI entrypoint: `runtime/source-packs/agent-orchestrator/packages/cli/dist/index.js`
 - Proof command: `pnpm --filter @composio/ao-cli exec node dist/index.js --help`
 - Result: PASS
 - Visible commands include:

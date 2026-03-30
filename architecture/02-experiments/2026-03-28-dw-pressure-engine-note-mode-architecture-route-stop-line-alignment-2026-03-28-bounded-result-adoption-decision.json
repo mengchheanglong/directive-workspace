@@ -1,0 +1,18 @@
+{
+  "candidate_id": "dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28",
+  "candidate_name": "Engine NOTE-Mode Architecture Route Stop-Line Alignment",
+  "decision": "adopt",
+  "final_status": "adopt_planned_next",
+  "usefulness_level": "meta",
+  "artifact_type": "shared-lib",
+  "readiness": {
+    "bounded_scope_kept": true,
+    "mechanical_success_criteria_met": true,
+    "delta_evidence_present": true,
+    "adaptation_decision_complete": true
+  },
+  "notes": [
+    "Discovery-routed Architecture cases in NOTE mode no longer advertise a bounded-start continuation.",
+    "Inspect AI, OpenEvals, and PromptWizard now resolve to the truthful NOTE result boundary."
+  ]
+}

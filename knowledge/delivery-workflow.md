@@ -11,11 +11,11 @@ tags:
 # Delivery Workflow
 
 System-boundary reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\doctrine.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\doctrine.md`
 
 ## Standard Loop
 Primary workflow reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\workflow.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\workflow.md`
 
 Default loop (canonical 5-step fast path):
 1. Capture once in Discovery.

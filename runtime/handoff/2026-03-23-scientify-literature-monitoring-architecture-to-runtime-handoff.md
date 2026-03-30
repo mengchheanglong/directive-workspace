@@ -6,8 +6,8 @@ Handoff type: formal forward handoff
 ## Required Fields (per shared/contracts/architecture-to-runtime.md)
 
 - Candidate id: `scientify-literature-monitoring`
-- Originating Architecture record: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-23-scientify-mixed-value-partition-adopted.md`
-- Mixed-value partition ref: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-23-scientify-mixed-value-partition-adopted.md`
+- Originating Architecture record: `architecture/03-adopted/2026-03-23-scientify-mixed-value-partition-adopted.md`
+- Mixed-value partition ref: `architecture/03-adopted/2026-03-23-scientify-mixed-value-partition-adopted.md`
 - Extracted mechanism kept in Architecture: mixed-value partition logic, promotion-quality gate logic, and evidence-backed stage/evidence packet logic
 - Runtime value to operationalize in Runtime: one bounded recurring literature-monitoring workflow that queries a small candidate pool, ranks and filters it against a bounded topic signal, and emits an inspectable digest artifact through a delivery-adapter boundary
 - Proposed host: `OpenClaw` as first reference host
@@ -32,8 +32,8 @@ Handoff type: formal forward handoff
 
 ## Adaptation And Improvement Evidence
 
-- Source-analysis record ref: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-23-scientify-mixed-value-partition-source-analysis.md`
-- Adaptation-decision record ref: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-23-scientify-mixed-value-partition-adaptation.md`
+- Source-analysis record ref: `architecture/02-experiments/2026-03-23-scientify-mixed-value-partition-source-analysis.md`
+- Adaptation-decision record ref: `architecture/02-experiments/2026-03-23-scientify-mixed-value-partition-adaptation.md`
 - Adaptation summary: Directive separated the raw Scientify source into Architecture-owned split logic and one bounded runtime candidate, instead of carrying the whole plugin/runtime surface into Runtime.
 - Improvement summary: Runtime now receives a narrower reusable literature-monitoring workflow candidate backed by explicit partition logic and promotion-quality guardrails, rather than an ad hoc "maybe plugin later" runtime idea.
 - Value handed to Runtime: adapted and improved bounded literature-monitoring workflow design, constrained by Directive-owned quality, partition, and evidence-visibility logic
@@ -45,7 +45,7 @@ Handoff type: formal forward handoff
 
 ## Execution Status
 
-- Runtime follow-up: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-23-scientify-literature-monitoring-runtime-followup.md`
+- Runtime follow-up: `runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`
 - Runtime slice executed: pending
 - Proof artifact: pending
 - Promotion record: pending

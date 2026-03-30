@@ -8,13 +8,13 @@ Slice type: bounded product-side artifact proof
 ## Run Contract
 
 Linked Runtime record:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-runtime-record.md`
+- `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-record.md`
 
 Linked proof checklist:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
+- `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
 
 Helper used:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\literature-monitoring-artifacts.ts`
+- `shared/lib/literature-monitoring-artifacts.ts`
 
 Fixed scope:
 - normalize one qualified-pool digest artifact
@@ -24,9 +24,9 @@ Fixed scope:
 ## Produced Artifacts
 
 - Qualified-pool sample:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json`
+  - `runtime/records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json`
 - Degraded-quality sample:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json`
+  - `runtime/records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json`
 
 ## Proof Result
 

@@ -21,12 +21,12 @@ Architecture work counts as complete only when the extracted mechanism exists in
 - a canonical doctrine or policy document when doctrine is the intended output
 
 Default product-owned surfaces:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\schemas`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\templates`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\05-reference-patterns`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge`
+- `C:\Users\User\projects\directive-workspace\shared\contracts`
+- `C:\Users\User\projects\directive-workspace\shared\schemas`
+- `C:\Users\User\projects\directive-workspace\shared\lib`
+- `C:\Users\User\projects\directive-workspace\shared\templates`
+- `C:\Users\User\projects\directive-workspace\architecture\05-reference-patterns`
+- `C:\Users\User\projects\directive-workspace\knowledge`
 
 ## What Does Not Count By Itself
 

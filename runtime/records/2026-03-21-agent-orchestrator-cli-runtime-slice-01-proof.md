@@ -3,7 +3,7 @@
 - Candidate id: `agent-orchestrator`
 - Candidate name: `agent-orchestrator`
 - Proof date: 2026-03-21
-- Linked execution record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
+- Linked execution record: `runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
 - Quality gate profile: `ao_cli_runtime_guard/v1`
 - Promotion profile family: `bounded_ao_cli`
 - Proof shape: `ao_cli_status_snapshot/v1`

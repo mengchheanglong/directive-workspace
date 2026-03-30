@@ -7,9 +7,9 @@ Last updated: 2026-03-24
 This file is the canonical Directive Workspace operating model, but it is not the topmost doctrine source for the repo.
 
 Repo-governing doctrine lives in:
-- `C:\Users\User\.openclaw\workspace\CLAUDE.md`
-- `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-doctrine\SKILL.md`
-- `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-audit\SKILL.md`
+- `../CLAUDE.md`
+- `../OWNERSHIP.md`
+- `./workflow.md`
 
 This document should remain aligned with those governing sources and operationalize them for the Directive Workspace product surface.
 If a conflict appears, correct this document rather than treating it as a competing doctrine.
@@ -99,7 +99,7 @@ This means:
 ## Operational Loop (Canonical)
 
 Default workflow reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\workflow.md`
+- `workflow.md`
 
 Canonical loop:
 1. Capture the source in Discovery.
@@ -159,7 +159,7 @@ External source handling:
 - Extracts essential mechanisms from outside systems and converts them into product-owned assets.
 - Hands off runtime-worthy work to Runtime instead of leaking runtime into Architecture.
 - Architecture completion is measured by product-owned Directive Workspace materialization, not by Mission Control host implementation alone.
-- Canonical completion reference: `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\architecture-completion-rubric.md`
+- Canonical completion reference: `architecture-completion-rubric.md`
 
 ### Mission Control boundary
 - Active runtime host and unified command surface.
@@ -168,13 +168,13 @@ External source handling:
 - Must remain an adapter host over product-owned Directive Workspace assets rather than a competing product definition.
 
 Canonical boundary reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\host-integration-boundary.md`
+- `../shared/contracts/host-integration-boundary.md`
 
 ## Technology Rule
 
 - Directive Workspace uses TypeScript as the default implementation language.
 - Introduce Rust only for measured narrow hot paths after the TypeScript design is already stable.
-- Canonical reference: `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\technology-policy.md`
+- Canonical reference: `technology-policy.md`
 
 ## Status Semantics
 
@@ -199,15 +199,15 @@ Operator-facing labels:
 - temporary upstream extraction source while Directive Workspace absorbs any surviving value
 - slated for retirement after useful components are re-homed under Discovery, Runtime, or Architecture
 
-### `directive-workspace/architecture`
+### `architecture/`
 - product-owned Architecture surface for experiments, adopted patterns, and deferred decisions
-- legacy redirect path remains at `C:\Users\User\.openclaw\workspace\architecture-lab`
+- current adjacent workspace example legacy redirect path: `C:\Users\User\.openclaw\workspace\architecture-lab`
 
-### `directive-workspace/runtime`
+### `runtime/`
 - product-owned Runtime surface for follow-up records, execution records, promotion contracts, registry state, and host-agnostic core logic
 - Mission Control remains the current runtime host
 
-### `directive-workspace/discovery`
+### `discovery/`
 - product-owned Discovery front door for intake, triage, routing, and holding states
 
 ### `knowledge`

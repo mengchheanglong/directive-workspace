@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
 import {
   closeDirectiveArchitectureBoundedStart,
+  closeDirectiveArchitectureNoteHandoff,
   continueDirectiveArchitectureFromBoundedResult,
 } from "../../shared/lib/architecture-bounded-closeout.ts";
 import {
@@ -168,10 +169,11 @@ function writeStaticFile(res: ServerResponse, filePath: string) {
   fs.createReadStream(filePath).pipe(res);
 }
 
-function renderMissingBuildPage() {
-  return `<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Directive Workspace Frontend Build Missing</title><style>body{font-family:ui-monospace,Consolas,monospace;margin:32px;background:#f6f4ee;color:#1f1c16}main{max-width:960px;margin:0 auto}section{background:#fffdf7;border:1px solid #d9d0bf;border-radius:10px;padding:16px}pre{background:#faf7ef;border:1px solid #e1d8c7;border-radius:8px;padding:12px;white-space:pre-wrap}</style></head><body><main><section><h1>Directive Workspace Frontend Build Missing</h1><p>The standalone frontend host is running, but the Vite frontend has not been built yet.</p><pre>cd C:\\Users\\User\\.openclaw\\workspace\\directive-workspace
+function renderMissingBuildPage(directiveRoot: string) {
+  const escapedRoot = escapeHtml(normalizePath(directiveRoot));
+  return `<html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Directive Workspace Frontend Build Missing</title><style>body{font-family:ui-monospace,Consolas,monospace;margin:32px;background:#f6f4ee;color:#1f1c16}main{max-width:960px;margin:0 auto}section{background:#fffdf7;border:1px solid #d9d0bf;border-radius:10px;padding:16px}pre{background:#faf7ef;border:1px solid #e1d8c7;border-radius:8px;padding:12px;white-space:pre-wrap}</style></head><body><main><section><h1>Directive Workspace Frontend Build Missing</h1><p>The standalone frontend host is running, but the Vite frontend has not been built yet.</p><p>Run these commands from the current Directive Workspace product root. Do not assume the repo still lives under <code>.openclaw/workspace</code>.</p><pre>cd ${escapedRoot}
 npm --prefix ./frontend run build
-node --experimental-strip-types ./hosts/web-host/cli.ts serve --directive-root C:\\Users\\User\\.openclaw\\workspace\\directive-workspace</pre></section></main></body></html>`;
+node --experimental-strip-types ./hosts/web-host/cli.ts serve --directive-root ${escapedRoot}</pre></section></main></body></html>`;
 }
 
 export function startDirectiveFrontendServer(
@@ -420,6 +422,40 @@ export function startDirectiveFrontendServer(
           closedBy: "directive-frontend-operator",
         }));
       }
+      if (method === "POST" && pathname === "/api/architecture/note-handoff-closeout") {
+        const payload = parseJsonBody<{
+          handoffPath: string;
+          resultSummary: string;
+          primaryEvidencePath?: string;
+          transformedArtifactsProduced?: string[];
+          nextDecision?: "needs-more-evidence" | "adopt" | "defer" | "reject";
+          valueShape?: "interface_or_handoff" | "data_shape" | "working_document" | "behavior_rule" | "design_pattern" | "executable_logic" | "operating_model_change";
+          adaptationQuality?: "strong" | "adequate" | "weak" | "skipped";
+          improvementQuality?: "strong" | "adequate" | "weak" | "skipped";
+          proofExecuted?: boolean;
+          targetArtifactClarified?: boolean;
+          deltaEvidencePresent?: boolean;
+          noUnresolvedBaggage?: boolean;
+          productArtifactMaterialized?: boolean;
+        }>(await readBody(req));
+        return void writeJson(res, 200, closeDirectiveArchitectureNoteHandoff({
+          directiveRoot,
+          handoffPath: payload.handoffPath,
+          resultSummary: payload.resultSummary,
+          primaryEvidencePath: payload.primaryEvidencePath,
+          transformedArtifactsProduced: payload.transformedArtifactsProduced,
+          nextDecision: payload.nextDecision,
+          valueShape: payload.valueShape,
+          adaptationQuality: payload.adaptationQuality,
+          improvementQuality: payload.improvementQuality,
+          proofExecuted: payload.proofExecuted,
+          targetArtifactClarified: payload.targetArtifactClarified,
+          deltaEvidencePresent: payload.deltaEvidencePresent,
+          noUnresolvedBaggage: payload.noUnresolvedBaggage,
+          productArtifactMaterialized: payload.productArtifactMaterialized,
+          closedBy: "directive-frontend-operator",
+        }));
+      }
       if (method === "POST" && pathname === "/api/architecture/bounded-continuation") {
         const payload = parseJsonBody<{
           resultPath: string;
@@ -580,7 +616,7 @@ export function startDirectiveFrontendServer(
       }
 
       if (!fs.existsSync(FRONTEND_INDEX_PATH)) {
-        return void writeHtml(res, 503, renderMissingBuildPage());
+        return void writeHtml(res, 503, renderMissingBuildPage(directiveRoot));
       }
 
       if (method !== "GET" && method !== "HEAD") {

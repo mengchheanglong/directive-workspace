@@ -40,11 +40,11 @@ Any future Runtime slice based on this source must prove:
 ## Current State
 
 - the CLI precondition is now proven in:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-agent-orchestrator-cli-precondition-proof.md`
+  - `runtime/records/2026-03-21-agent-orchestrator-cli-precondition-proof.md`
 - the bounded AO CLI status smoke is now proven in:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md`
+  - `runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md`
 - the host-adapter decision is now closed in:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-agent-orchestrator-host-adapter-decision.md`
+  - `runtime/records/2026-03-21-agent-orchestrator-host-adapter-decision.md`
 - the pack remains `follow_up_only`
 - the pack is still not allowed to become `live_runtime` without a narrower AO host adapter target, promotion record, registry entry, and passing host gates
 

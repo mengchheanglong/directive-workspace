@@ -9,7 +9,7 @@
 - Proposed host: `Mission Control`
 - Proposed integration mode: `wrap` (guardrail-first)
 - Promotion contract path: pending (create only after re-entry preconditions are fully met)
-- Re-entry contract path (if deferred): `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-cli-anything-reentry-contract.md`
+- Re-entry contract path (if deferred): `runtime/follow-up/2026-03-20-cli-anything-reentry-contract.md`
 - Re-entry preconditions (checklist):
   - [x] command-mediation contract exists
   - [x] command-class approval policy exists
@@ -36,6 +36,6 @@
 - Current status: `deferred with formal re-entry contract`
 
 Current precondition artifacts:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\command-mediation-contract.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\command-class-approval-policy.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-22-cli-anything-reentry-preconditions-slice-01.md`
+- `shared/contracts/command-mediation-contract.md`
+- `shared/contracts/command-class-approval-policy.md`
+- `runtime/records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md`

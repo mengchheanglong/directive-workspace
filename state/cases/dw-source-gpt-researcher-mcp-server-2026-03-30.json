@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-source-gpt-researcher-mcp-server-2026-03-30",
+  "candidateId": "dw-source-gpt-researcher-mcp-server-2026-03-30",
+  "candidateName": "GPT Researcher MCP Server",
+  "sourceType": "product-doc",
+  "sourceReference": "sources/intake/gpt-researcher/mcp-server/README.md",
+  "decisionState": "monitor",
+  "routeTarget": "monitor",
+  "operatingMode": "note",
+  "queueStatus": "completed",
+  "createdAt": "2026-03-30T00:00:00.000Z",
+  "updatedAt": "2026-03-30T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md",
+    "triageRecordPath": "discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
+    "routingRecordPath": "discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-3670d87c.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-3670d87c.md",
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md"
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-03-30",
+      "decisionState": "monitor",
+      "intake": {
+        "intake_date": "2026-03-30",
+        "source_type": "product-doc",
+        "source_reference": "sources/intake/gpt-researcher/mcp-server/README.md",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Engine-building mission pressure: assess whether deep-research-backed source acquisition and evidence gathering should improve Directive Workspace Discovery source collection, research support, or routing support without opening runtime integration or host execution.",
+        "initial_relevance_to_workspace": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "suspected_adoption_target": "discovery-held candidate",
+        "immediate_notes": "Engine run 3670d87c-559f-4c94-815b-e04b1185ed34 selected discovery. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-03-30",
+        "first_pass_summary": "Engine-building mission pressure: assess whether deep-research-backed source acquisition and evidence gathering should improve Directive Workspace Discovery source collection, research support, or routing support without opening runtime integration or host execution.",
+        "problem_it_appears_to_solve": "Make source selection and routing clearer and more reusable than the original source context.",
+        "extractable_value_hypothesis": "Engine-building mission pressure: assess whether deep-research-backed source acquisition and evidence gathering should improve Directive Workspace Discovery source collection, research support, or routing support without opening runtime integration or host execution. | Fresh repo-local product doc under sources/intake/gpt-researcher. Retained value is Discovery-held pressure around deep research as a source-gathering and evidence-support input. Out of scope: MCP server installation, runtime integration, live execution surfaces, or adopting the product as a reusable runtime capability.",
+        "routing_recommendation": "Shared Engine routing selected monitor with usefulness level meta.",
+        "proposed_adoption_target": "discovery-held candidate",
+        "stack_shape_summary": "product-doc source; host dependence engine_only; integration mode none.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.. Excluded baggage: non-mission-relevant source detail, unadapted source terminology.",
+        "suggested_decision_state": "hold_in_discovery",
+        "fit_to_current_direction": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "reusability_across_surfaces": "Value remains useful without a host runtime surface.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "low",
+        "can_current_gates_validate_safely": "partially - proof plan discovery_review defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "routing_review, human_decision_required",
+        "missing_evidence": "mission-fit rationale recorded, routing rationale recorded, next bounded action chosen",
+        "next_action": "Keep the candidate in Discovery until routing clarity improves.",
+        "monitor_defer_trigger_conditions": "Hold the source in Discovery until routing confidence or downstream adoption target becomes clearer.",
+        "reentry_conditions": "Respect rollback boundary: Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work."
+      },
+      "routing": {
+        "route_date": "2026-03-30",
+        "source_type": "product-doc",
+        "decision_state": "monitor",
+        "adoption_target": "discovery-held candidate",
+        "route_destination": "monitor",
+        "why_this_route": "Recommended discovery because its lane score (17) exceeded the alternatives.",
+        "why_not_alternatives": "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure. Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+        "receiving_track_owner": "discovery",
+        "required_next_artifact": "discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
+        "linked_intake_record": "discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md",
+        "linked_triage_record": "discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
+        "reentry_or_promotion_conditions": "routing_review, human_decision_required",
+        "review_cadence": "before any downstream route is accepted"
+      }
+    }
+  }
+}

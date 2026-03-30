@@ -3,8 +3,8 @@
 - Candidate id: agentics
 - Candidate name: agentics
 - Runtime record date: 2026-03-19
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\03-adopted\2026-03-19-adopted-candidates-architecture-recheck.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
+- Origin path: `architecture/03-adopted/2026-03-19-adopted-candidates-architecture-recheck.md`
+- Linked follow-up record: `runtime/follow-up/DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
 - Runtime objective: Run one live Daily Status Digest and one docs maintenance sweep under runtime conditions and capture operational evidence.
 - Proposed host: Mission Control
 - Proposed runtime surface: Directive Workspace reporting and maintenance lane

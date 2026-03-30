@@ -1,0 +1,252 @@
+{
+  "runId": "d7ec1192-bba6-42c7-855c-2f7e51bd37b3",
+  "receivedAt": "2026-03-30T00:00:00.000Z",
+  "source": {
+    "sourceId": "dw-source-gh-aw-safe-outputs-spec-2026-03-30",
+    "sourceType": "product-doc",
+    "sourceRef": "sources/intake/gh-aw/docs/src/content/docs/reference/safe-outputs-specification.md",
+    "title": "GH-AW Safe Outputs Gateway Specification",
+    "summary": "Engine-building mission pressure: extract contract/schema, proof-boundary, sanitization, gate-ordering, provenance, and rollback patterns that could improve Directive Workspace Architecture without opening GitHub execution or host-admin seams.",
+    "notes": [
+      "Fresh repo-local document source inside sources/intake/gh-aw. Formal specification for declarative safe-output requests, deferred validated execution, content sanitization, error handling, provenance, and execution guarantees. Retained value is Engine-owned contract, evaluator, and workflow-boundary patterns rather than direct runtime reuse. not the library as a dependency. rather than direct runtime reuse."
+    ],
+    "missionAlignmentHint": "Engine-building mission pressure: extract contract/schema, proof-boundary, sanitization, gate-ordering, provenance, and rollback patterns that could improve Directive Workspace Architecture without opening GitHub execution or host-admin seams.",
+    "capabilityGapId": "gap-directive-engine-materialization"
+  },
+  "mission": {
+    "missionId": "directive-workspace-discovery-front-door",
+    "currentObjective": "Build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.",
+    "usefulnessSignals": [
+      "Useful means anything that materially improves:",
+      "revenue and conversion",
+      "execution speed and automation strength",
+      "decision quality and strategic leverage",
+      "cost efficiency and reliability",
+      "orchestration quality and agent coordination",
+      "capability-gap detection and self-improvement velocity"
+    ],
+    "capabilityLanes": [
+      "Directive engine materialization - one reusable executable core that hosts can embed cleanly",
+      "Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior",
+      "Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions",
+      "Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement",
+      "Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)",
+      "Evaluation quality - dimensional measurement (evaluators), not just binary gates",
+      "Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling"
+    ],
+    "activeMissionMarkdown": "# Active Mission\n\nLast updated: 2026-03-24\nStatus: canonical\n\n## Current Objective\n\nBuild and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.\n\n## What Usefulness Means Under This Objective\n\nUseful means anything that materially improves:\n- revenue and conversion\n- execution speed and automation strength\n- decision quality and strategic leverage\n- cost efficiency and reliability\n- orchestration quality and agent coordination\n- capability-gap detection and self-improvement velocity\n\n## Capability Lanes That Matter Most\n\n1. Directive engine materialization - one reusable executable core that hosts can embed cleanly\n   Architecture is currently the closest lane to this objective because the current mission is to improve the Engine itself.\n2. Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior\n3. Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions\n4. Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement\n5. Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)\n6. Evaluation quality - dimensional measurement (evaluators), not just binary gates\n7. Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling\n\n## Known Capability Gaps (Open)\n\n- gap: Canonical Directive engine surface only partially materialized\n  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Runtime / Architecture logic centered inside the Engine\n  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Runtime / Architecture operate as clear Engine lanes rather than loose top-level features\n\n## Recently Resolved Gaps\n\n- gap: Discovery as actual front door for most work - RESOLVED 2026-03-23\n  resolution: `check:discovery-front-door-coverage` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.\n\n- gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22\n  resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.\n\n- gap: Architecture-to-Runtime handoff - RESOLVED 2026-03-22\n  resolution: Formal handoff record created for autoresearch bounded-run pattern. All contract fields exercised.\n\n- gap: Evaluator lane dimensional proof - RESOLVED 2026-03-22\n  resolution: Backend test boilerplate consolidation uses dimensional evaluator with numeric before/after (20.6% line reduction, 16.9% byte reduction). First non-vacuous dimensional proof.\n\n- gap: Discovery intake queue native usage - RESOLVED 2026-03-22\n  resolution: 5 native primary-mode queue entries achieved (threshold: 5+). 14 total entries (5 native, 9 backfill). Three behavior-preserving transformation candidates processed end-to-end through native queue.\n\n- gap: agent-lab legacy dependency - RESOLVED 2026-03-22\n  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Runtime-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state."
+  },
+  "openGaps": [
+    {
+      "gapId": "gap-directive-engine-materialization",
+      "description": "Canonical Directive engine surface is only partially materialized as one reusable executable core with clear lane boundaries and host-adapter seams",
+      "priority": "high",
+      "relatedMissionObjective": "Directive engine materialization",
+      "currentState": "A first engine slice exists, but real source intake still falls back to host helpers, Markdown-first assets, and manual post-decision lane handoff",
+      "desiredState": "Engine owns substantially more intake, routing, adaptation/improvement, proof, decision, and handoff state while Discovery, Runtime, and Architecture operate as clear Engine lanes",
+      "detectedAt": "2026-03-24",
+      "resolvedAt": null,
+      "resolutionNotes": null
+    }
+  ],
+  "selectedLane": {
+    "laneId": "architecture",
+    "label": "Architecture",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true
+  },
+  "candidate": {
+    "candidateId": "dw-source-gh-aw-safe-outputs-spec-2026-03-30",
+    "candidateName": "GH-AW Safe Outputs Gateway Specification",
+    "recommendedLaneId": "architecture",
+    "recommendedLaneLabel": "Architecture",
+    "recommendedRecordShape": "split_case",
+    "usefulnessLevel": "meta",
+    "missionPriorityScore": 67,
+    "confidence": "high",
+    "matchedGapId": "gap-directive-engine-materialization",
+    "matchedGapRank": 1,
+    "requiresHumanReview": false,
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because its lane score (27) exceeded the alternatives.",
+      "Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Pattern-extraction signal is present (2/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.",
+      "Split-case is recommended because the candidate looks structural or ambiguous enough to benefit from fuller Discovery records."
+    ]
+  },
+  "analysis": {
+    "missionFitSummary": "Engine-building mission pressure: extract contract/schema, proof-boundary, sanitization, gate-ordering, provenance, and rollback patterns that could improve Directive Workspace Architecture without opening GitHub execution or host-admin seams.",
+    "primaryAdoptionQuestion": "What is the primary adoption target of the extracted value?",
+    "matchedCapabilityGapId": "gap-directive-engine-materialization",
+    "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because its lane score (27) exceeded the alternatives.",
+      "Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Pattern-extraction signal is present (2/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.",
+      "Split-case is recommended because the candidate looks structural or ambiguous enough to benefit from fuller Discovery records."
+    ]
+  },
+  "routingAssessment": {
+    "recommendedLaneId": "architecture",
+    "recommendedRecordShape": "split_case",
+    "missionPriorityScore": 67,
+    "confidence": "high",
+    "matchedGapId": "gap-directive-engine-materialization",
+    "matchedGapRank": 1,
+    "explicitRouteDestination": null,
+    "routeConflict": false,
+    "needsHumanReview": false,
+    "scoreBreakdown": {
+      "missionFit": 5,
+      "gapAlignment": 4,
+      "laneScores": {
+        "discovery": 11,
+        "architecture": 27,
+        "runtime": 13
+      },
+      "metaUsefulnessSignal": 4,
+      "patternExtractionSignal": 2,
+      "transformationSignal": 0,
+      "runtimeSignal": 3,
+      "ambiguityPenalty": 0,
+      "total": 67
+    },
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because its lane score (27) exceeded the alternatives.",
+      "Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Pattern-extraction signal is present (2/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.",
+      "Split-case is recommended because the candidate looks structural or ambiguous enough to benefit from fuller Discovery records."
+    ]
+  },
+  "extractionPlan": {
+    "extractedValue": [
+      "Engine-building mission pressure: extract contract/schema, proof-boundary, sanitization, gate-ordering, provenance, and rollback patterns that could improve Directive Workspace Architecture without opening GitHub execution or host-admin seams.",
+      "Fresh repo-local document source inside sources/intake/gh-aw. Formal specification for declarative safe-output requests, deferred validated execution, content sanitization, error handling, provenance, and execution guarantees. Retained value is Engine-owned contract, evaluator, and workflow-boundary patterns rather than direct runtime reuse. not the library as a dependency. rather than direct runtime reuse."
+    ],
+    "excludedBaggage": [
+      "non-mission-relevant source detail",
+      "unadapted source terminology"
+    ]
+  },
+  "adaptationPlan": {
+    "directiveOwnedForm": "Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.",
+    "adaptedValue": [
+      "Convert extracted mechanisms into Engine-owned logic or operating assets.",
+      "Strip source baggage before adoption into the Engine."
+    ]
+  },
+  "improvementPlan": {
+    "improvementGoals": [
+      "improve engine self-improvement quality",
+      "improve future source adaptation quality"
+    ],
+    "intendedDelta": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption."
+  },
+  "proofPlan": {
+    "proofKind": "architecture_validation",
+    "objective": "Prove the extracted mechanism is adapted into product-owned operating code or engine logic without carrying source baggage forward blindly, and that the proof boundary stays grounded in the staged improvement delta \"improve engine self-improvement quality\".",
+    "requiredEvidence": [
+      "adapted mechanism described",
+      "excluded baggage described",
+      "engine or product boundary improvement explained",
+      "improvement delta stays anchored to prior extraction, adaptation, and improvement stages"
+    ],
+    "requiredGates": [
+      "adaptation_complete",
+      "improvement_complete",
+      "engine_boundary_preserved",
+      "decision_review"
+    ],
+    "rollbackPrompt": "Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer."
+  },
+  "decision": {
+    "decisionState": "accept_for_architecture",
+    "adoptionTargetLaneId": "architecture",
+    "adoptionTargetLaneLabel": "Architecture",
+    "requiresHumanApproval": true,
+    "summary": "Preliminary engine decision: accept_for_architecture for Architecture, pending human approval before final adoption.",
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because its lane score (27) exceeded the alternatives.",
+      "Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Pattern-extraction signal is present (2/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.",
+      "Split-case is recommended because the candidate looks structural or ambiguous enough to benefit from fuller Discovery records.",
+      "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete."
+    ]
+  },
+  "integrationProposal": {
+    "targetLaneId": "architecture",
+    "targetLaneLabel": "Architecture",
+    "integrationMode": "adapt",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true,
+    "handoffArtifactFamily": "architecture_adoption",
+    "nextAction": "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete.",
+    "requiresHumanReview": false
+  },
+  "reportPlan": {
+    "reportKind": "architecture_adaptation_report",
+    "summary": "Sync the accept_for_architecture decision and adapt integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+    "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+    "requiredDestinations": [
+      "directive_workspace_record",
+      "directive_workspace_report_sync"
+    ],
+    "syncRequired": true
+  },
+  "events": [
+    {
+      "type": "source_ingested",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Source captured for candidate dw-source-gh-aw-safe-outputs-spec-2026-03-30."
+    },
+    {
+      "type": "source_analyzed",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Engine-building mission pressure: extract contract/schema, proof-boundary, sanitization, gate-ordering, provenance, and rollback patterns that could improve Directive Workspace Architecture without opening GitHub execution or host-admin seams. Usefulness rationale: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources."
+    },
+    {
+      "type": "candidate_routed",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Candidate routed to architecture with usefulness level meta. Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources."
+    },
+    {
+      "type": "value_extracted",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Extracted 2 value signals and excluded 2 baggage signals."
+    },
+    {
+      "type": "value_adapted",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib."
+    },
+    {
+      "type": "value_improved",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption."
+    },
+    {
+      "type": "proof_planned",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Proof plan architecture_validation prepared."
+    },
+    {
+      "type": "decision_recorded",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Preliminary engine decision: accept_for_architecture for Architecture, pending human approval before final adoption."
+    },
+    {
+      "type": "integration_proposed",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Integration proposal targets architecture via architecture_adoption."
+    },
+    {
+      "type": "report_planned",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Sync the accept_for_architecture decision and adapt integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources."
+    }
+  ]
+}

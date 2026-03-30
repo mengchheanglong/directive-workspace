@@ -7,8 +7,26 @@ import {
   type DirectiveArchitectureCloseoutWriteRequest,
 } from "./architecture-closeout.ts";
 import {
+  readDirectiveArchitectureHandoffArtifact,
+  type DirectiveArchitectureHandoffArtifact,
+} from "./architecture-handoff-start.ts";
+import {
   upsertDirectiveArchitectureAdoptionDecisionArtifact,
 } from "./architecture-adoption-decision-store.ts";
+import {
+  mirrorDirectiveNoteArchitectureCloseout,
+  readDirectiveMirroredDiscoveryCaseRecord,
+  writeDirectiveMirroredDiscoveryCaseRecord,
+} from "./case-store.ts";
+import { appendDirectiveCaseMirrorEvents, readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
+import {
+  syncDiscoveryIntakeLifecycle,
+} from "./discovery-intake-lifecycle-sync.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "./discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "./dw-state.ts";
+import type {
+  DiscoveryIntakeQueueDocument,
+} from "./discovery-intake-queue-writer.ts";
 import type {
   DirectiveArchitectureSelfImprovementArtifact,
 } from "./architecture-adoption-artifacts.ts";
@@ -17,6 +35,10 @@ import type {
   ArchitectureUsefulnessLevel,
   ArchitectureValueShape,
 } from "./architecture-adoption-resolution.ts";
+import {
+  writeDirectiveNoteArchitectureCloseoutProjectionSet,
+  type DirectiveMirroredNoteArchitectureCloseoutProjectionInput,
+} from "./architecture-note-closeout-projections.ts";
 
 export type DirectiveArchitectureBoundedStartArtifact = {
   title: string;
@@ -72,7 +94,7 @@ export type DirectiveArchitectureBoundedResultArtifact = {
   resultSummary: string;
   nextDecision: string;
   handoffStubPath: string;
-  startRelativePath: string;
+  startRelativePath: string | null;
   engineRunRecordPath: string;
   engineRunReportPath: string;
   discoveryRoutingRecordPath: string;
@@ -134,13 +156,34 @@ export type CloseDirectiveArchitectureBoundedStartInput = {
   productArtifactMaterialized?: boolean;
 };
 
+export type CloseDirectiveArchitectureNoteHandoffInput = {
+  handoffPath: string;
+  directiveRoot?: string;
+  closedBy?: string | null;
+  snapshotAt?: string | null;
+  resultSummary: string;
+  primaryEvidencePath?: string | null;
+  transformedArtifactsProduced?: string[] | null;
+  nextDecision?: "needs-more-evidence" | "adopt" | "defer" | "reject";
+  valueShape?: ArchitectureValueShape;
+  adaptationQuality?: "strong" | "adequate" | "weak" | "skipped";
+  improvementQuality?: "strong" | "adequate" | "weak" | "skipped";
+  proofExecuted?: boolean;
+  targetArtifactClarified?: boolean;
+  deltaEvidencePresent?: boolean;
+  noUnresolvedBaggage?: boolean;
+  productArtifactMaterialized?: boolean;
+};
+
 export type DirectiveArchitectureBoundedCloseoutResult = {
   ok: true;
   created: boolean;
   snapshotAt: string;
   directiveRoot: string;
-  startRelativePath: string;
-  startAbsolutePath: string;
+  handoffRelativePath: string;
+  handoffAbsolutePath: string;
+  startRelativePath: string | null;
+  startAbsolutePath: string | null;
   resultRelativePath: string;
   resultAbsolutePath: string;
   decisionRelativePath: string;
@@ -350,6 +393,15 @@ function optionalStringList(value: unknown) {
     .filter((entry): entry is string => Boolean(entry));
 }
 
+function readJson<T>(filePath: string) {
+  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function writeJson(filePath: string, value: unknown) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
 function stripBackticks(value: string) {
   return value.trim().replace(/^`|`$/g, "");
 }
@@ -409,7 +461,11 @@ function firstField(fields: Map<string, string[]>, label: string, fieldName: str
 }
 
 function optionalFirstField(fields: Map<string, string[]>, label: string) {
-  return optionalString(fields.get(label)?.[0]);
+  const value = optionalString(fields.get(label)?.[0]);
+  if (!value || /^n\/a$/i.test(value) || /^not resolved$/i.test(value)) {
+    return null;
+  }
+  return value;
 }
 
 function listField(fields: Map<string, string[]>, label: string) {
@@ -428,6 +484,27 @@ function resolveContinuationStartRelativePath(resultRelativePath: string) {
     throw new Error("invalid_input: resultPath must point to an Architecture bounded-result artifact");
   }
   return resultRelativePath.replace(/-bounded-result\.md$/u, "-continuation-bounded-start.md");
+}
+
+function resolveCloseoutStateFromVerdict(verdict: string) {
+  if (verdict === "adopt") {
+    return "adopted";
+  }
+  if (verdict === "hand_off_to_runtime") {
+    return "runtime_handoff";
+  }
+  return "stay_experimental";
+}
+
+function readDiscoveryQueueDocument(directiveRoot: string) {
+  const queuePath = normalizePath(path.join(directiveRoot, "discovery", "intake-queue.json"));
+  if (!fs.existsSync(queuePath)) {
+    throw new Error(`invalid_input: discovery intake queue not found: ${queuePath}`);
+  }
+  return {
+    queuePath,
+    queue: readJson<DiscoveryIntakeQueueDocument>(queuePath),
+  };
 }
 
 function parseQualityLevel(value: string | null, fallback: "strong" | "adequate" | "weak" | "skipped") {
@@ -1022,6 +1099,96 @@ function renderBoundedResultMarkdown(input: {
   ].join("\n");
 }
 
+function renderNoteHandoffBoundedResultMarkdown(input: {
+  handoffArtifact: DirectiveArchitectureHandoffArtifact;
+  snapshotAt: string;
+  closedBy: string;
+  resultSummary: string;
+  primaryEvidencePath: string | null;
+  transformedArtifactsProduced: string[] | null;
+  nextDecision: string;
+  closeout: ReturnType<typeof buildDirectiveArchitectureCloseoutFile>;
+}) {
+  const artifact = input.handoffArtifact;
+  const closeout = input.closeout;
+  const boundedScope = artifact.boundedScope.length > 0
+    ? artifact.boundedScope.map((item) => `- ${item}`).join("\n")
+    : "- Keep the NOTE review bounded to one Architecture result.";
+  const inputs = artifact.inputs.length > 0
+    ? artifact.inputs.map((item) => `- ${item}`).join("\n")
+    : "- n/a";
+  const gates = artifact.validationGates.length > 0
+    ? artifact.validationGates.map((item) => `- \`${item}\``).join("\n")
+    : "- n/a";
+  const transformedArtifacts =
+    input.transformedArtifactsProduced && input.transformedArtifactsProduced.length > 0
+      ? input.transformedArtifactsProduced.map((item) => `- \`${item}\``).join("\n")
+      : "- none explicitly materialized in this NOTE review.";
+  const metaCategory = closeout.artifact.self_improvement?.category ?? "n/a";
+
+  return [
+    `# ${artifact.title} Bounded Architecture Result`,
+    "",
+    `- Candidate id: ${artifact.candidateId}`,
+    `- Candidate name: ${artifact.title}`,
+    `- Experiment date: ${input.snapshotAt.slice(0, 10)}`,
+    "- Owning track: Architecture",
+    "- Experiment type: note-mode direct bounded result",
+    `- Closeout approval: reviewed by ${input.closedBy} directly from NOTE-mode handoff \`${artifact.handoffRelativePath}\``,
+    "",
+    `- Objective: ${artifact.objective}`,
+    "- Bounded scope:",
+    boundedScope,
+    "- Inputs:",
+    inputs,
+    "- Expected output:",
+    "- One NOTE-mode bounded Architecture result artifact.",
+    "- Validation gate(s):",
+    gates,
+    "- Transition policy profile: `decision_review`",
+    "- Scoring policy profile: `architecture_self_improvement`",
+    `- Rollback: ${artifact.rollback}`,
+    `- Result summary: ${input.resultSummary}`,
+    "- Evidence path:",
+    ...(input.primaryEvidencePath
+      ? [`- Primary evidence path: \`${input.primaryEvidencePath}\``]
+      : []),
+    "- Bounded start: `n/a`",
+    `- Handoff stub: \`${artifact.handoffRelativePath}\``,
+    `- Engine run record: ${artifact.engineRunRecordPath ? `\`${artifact.engineRunRecordPath}\`` : "n/a"}`,
+    `- Engine run report: ${artifact.engineRunReportPath ? `\`${artifact.engineRunReportPath}\`` : "n/a"}`,
+    `- Discovery routing record: ${artifact.discoveryRoutingRecordPath ? `\`${artifact.discoveryRoutingRecordPath}\`` : "n/a"}`,
+    `- Closeout decision artifact: \`${closeout.relativePath}\``,
+    `- Next decision: \`${input.nextDecision}\``,
+    "",
+    "## Lifecycle classification (per `architecture-artifact-lifecycle` contract)",
+    "",
+    "- Origin: `source-driven`",
+    `- Usefulness level: \`${artifact.usefulnessLevel}\``,
+    `- Runtime threshold check: ${artifact.runtimeThresholdCheck}`,
+    "",
+    "## Source adaptation fields (Architecture source-driven experiments only)",
+    "",
+    "- Source analysis ref: n/a",
+    "- Adaptation decision ref: n/a",
+    `- Adaptation quality: \`${closeout.artifact.adaptation_quality}\``,
+    `- Improvement quality: \`${closeout.artifact.improvement_quality || "skipped"}\``,
+    `- Meta-useful: \`${artifact.usefulnessLevel === "meta" ? "yes" : "no"}\``,
+    `- Meta-usefulness category: \`${metaCategory}\``,
+    "- Transformation artifact gate result: `not_applicable`",
+    "- Transformed artifacts produced:",
+    transformedArtifacts,
+    "",
+    "## Closeout decision",
+    "",
+    `- Verdict: \`${closeout.artifact.decision.verdict}\``,
+    `- Rationale: ${closeout.artifact.decision.rationale}`,
+    `- Review result: \`${closeout.reviewResolution?.reviewResult || "not_run"}\``,
+    `- Review score: \`${String(closeout.reviewResolution?.reviewScore ?? "n/a")}\``,
+    "",
+  ].join("\n");
+}
+
 function renderContinuationBoundedStartMarkdown(input: {
   resultArtifact: DirectiveArchitectureBoundedResultArtifact;
   snapshotAt: string;
@@ -1182,7 +1349,7 @@ export function readDirectiveArchitectureBoundedResultArtifact(input: {
     resultSummary: firstField(fields, "Result summary", "result summary"),
     nextDecision: firstField(fields, "Next decision", "next decision"),
     handoffStubPath: firstField(fields, "Handoff stub", "handoff stub"),
-    startRelativePath: firstField(fields, "Bounded start", "bounded start"),
+    startRelativePath: optionalFirstField(fields, "Bounded start"),
     engineRunRecordPath: firstField(fields, "Engine run record", "engine run record"),
     engineRunReportPath: firstField(fields, "Engine run report", "engine run report"),
     discoveryRoutingRecordPath: firstField(fields, "Discovery routing record", "discovery routing record"),
@@ -1212,6 +1379,12 @@ export function continueDirectiveArchitectureFromBoundedResult(
     directiveRoot: input.directiveRoot,
     resultPath: input.resultPath,
   });
+
+  if (!resultArtifact.startRelativePath) {
+    throw new Error(
+      "invalid_input: NOTE-mode direct bounded results cannot open a continuation start from a missing bounded start",
+    );
+  }
 
   if (
     resultArtifact.verdict !== "stay_experimental"
@@ -1251,6 +1424,232 @@ export function continueDirectiveArchitectureFromBoundedResult(
     usefulnessLevel: resultArtifact.usefulnessLevel,
     objective: resultArtifact.objective,
     continuationState: "continued",
+  };
+}
+
+export function closeDirectiveArchitectureNoteHandoff(
+  input: CloseDirectiveArchitectureNoteHandoffInput,
+): DirectiveArchitectureBoundedCloseoutResult {
+  const handoffArtifact = readDirectiveArchitectureHandoffArtifact({
+    directiveRoot: input.directiveRoot,
+    handoffPath: input.handoffPath,
+  });
+  const { queuePath, queue } = readDiscoveryQueueDocument(handoffArtifact.directiveRoot);
+  const queueEntry = queue.entries.find((entry) => entry.candidate_id === handoffArtifact.candidateId) ?? null;
+
+  if (!queueEntry) {
+    throw new Error(`invalid_input: discovery queue entry not found for ${handoffArtifact.candidateId}`);
+  }
+  if (String(queueEntry.operating_mode ?? "").trim().toLowerCase() !== "note") {
+    throw new Error("invalid_input: direct handoff closeout is only available for NOTE-mode Architecture cases");
+  }
+  if (queueEntry.routing_target !== "architecture") {
+    throw new Error("invalid_input: direct handoff closeout only supports Architecture-routed Discovery cases");
+  }
+  if (handoffArtifact.startExists) {
+    throw new Error("invalid_input: NOTE-mode direct handoff closeout is only valid before a bounded start exists");
+  }
+
+  const closedBy = String(input.closedBy || "directive-frontend-operator").trim()
+    || "directive-frontend-operator";
+  const snapshotAt = optionalString(input.snapshotAt) || new Date().toISOString();
+  const transitionDate = snapshotAt.slice(0, 10);
+  const resultSummary = requiredString(input.resultSummary, "resultSummary");
+  const created = !handoffArtifact.resultExists;
+
+  if (created) {
+    const primaryEvidencePath = resolveRecordedDirectiveArchitecturePrimaryEvidencePath({
+      directiveRoot: handoffArtifact.directiveRoot,
+      primaryEvidencePath: input.primaryEvidencePath,
+    });
+    const transformedArtifactsProduced = resolveRecordedDirectiveArchitectureProducedArtifacts({
+      directiveRoot: handoffArtifact.directiveRoot,
+      transformedArtifactsProduced: input.transformedArtifactsProduced,
+    });
+    const nextDecision = input.nextDecision || "defer";
+    const valueShape = input.valueShape && VALUE_SHAPES.includes(input.valueShape)
+      ? input.valueShape
+      : "working_document";
+    const adaptationQuality = input.adaptationQuality && QUALITY_LEVELS.has(input.adaptationQuality)
+      ? input.adaptationQuality
+      : "adequate";
+    const improvementQuality = input.improvementQuality && QUALITY_LEVELS.has(input.improvementQuality)
+      ? input.improvementQuality
+      : "skipped";
+    const proofExecuted = input.proofExecuted === true;
+    const targetArtifactClarified = input.targetArtifactClarified === true;
+    const deltaEvidencePresent = input.deltaEvidencePresent === true;
+    const noUnresolvedBaggage = input.noUnresolvedBaggage === true;
+    const productArtifactMaterialized = input.productArtifactMaterialized === true;
+    const projectionInput: DirectiveMirroredNoteArchitectureCloseoutProjectionInput = {
+      snapshotAt,
+      closedBy,
+      resultSummary,
+      primaryEvidencePath,
+      transformedArtifactsProduced: transformedArtifactsProduced ?? [],
+      nextDecision,
+      valueShape,
+      adaptationQuality,
+      improvementQuality,
+      proofExecuted,
+      targetArtifactClarified,
+      deltaEvidencePresent,
+      noUnresolvedBaggage,
+      productArtifactMaterialized,
+    };
+
+    const mirrored = readDirectiveMirroredDiscoveryCaseRecord({
+      directiveRoot: handoffArtifact.directiveRoot,
+      caseId: handoffArtifact.candidateId,
+    });
+    if (!mirrored.record) {
+      const routing = readDirectiveDiscoveryRoutingArtifact({
+        directiveRoot: handoffArtifact.directiveRoot,
+        routingPath: queueEntry.routing_record_path,
+      });
+      writeDirectiveMirroredDiscoveryCaseRecord({
+        directiveRoot: handoffArtifact.directiveRoot,
+        record: {
+          schemaVersion: 1,
+          mirrorKind: "discovery_front_door_submission",
+          caseId: handoffArtifact.candidateId,
+          candidateId: handoffArtifact.candidateId,
+          candidateName: handoffArtifact.title,
+          sourceType: queueEntry.source_type,
+          sourceReference: queueEntry.source_reference,
+          decisionState: routing.decisionState,
+          routeTarget: queueEntry.routing_target,
+          operatingMode: queueEntry.operating_mode ?? null,
+          queueStatus: queueEntry.status,
+          createdAt: `${transitionDate}T00:00:00.000Z`,
+          updatedAt: snapshotAt,
+          linkedArtifacts: {
+            intakeRecordPath: queueEntry.intake_record_path ?? routing.linkedIntakeRecord ?? null,
+            triageRecordPath: routing.linkedTriageRecord,
+            routingRecordPath: queueEntry.routing_record_path,
+            engineRunRecordPath: handoffArtifact.engineRunRecordPath,
+            engineRunReportPath: handoffArtifact.engineRunReportPath,
+            architectureHandoffPath: handoffArtifact.handoffRelativePath,
+            architectureDecisionPath: handoffArtifact.resultRelativePath.replace(/\.md$/u, "-adoption-decision.json"),
+            resultRecordPath: null,
+          },
+          projectionInputs: null,
+        },
+      });
+    }
+
+    mirrorDirectiveNoteArchitectureCloseout({
+      directiveRoot: handoffArtifact.directiveRoot,
+      caseId: handoffArtifact.candidateId,
+      receivedAt: snapshotAt,
+      queueStatus: "completed",
+      linkedArtifacts: {
+        architectureHandoffPath: handoffArtifact.handoffRelativePath,
+        architectureDecisionPath: handoffArtifact.resultRelativePath.replace(/\.md$/u, "-adoption-decision.json"),
+        resultRecordPath: handoffArtifact.resultRelativePath,
+      },
+      projectionInput,
+    });
+
+    const projectionSet = writeDirectiveNoteArchitectureCloseoutProjectionSet({
+      directiveRoot: handoffArtifact.directiveRoot,
+      caseId: handoffArtifact.candidateId,
+    });
+    if (!projectionSet.ok) {
+      throw new Error(
+        `invalid_state: unable to generate NOTE Architecture closeout projections for ${handoffArtifact.candidateId}: ${projectionSet.reason}`,
+      );
+    }
+  }
+
+  const syncResult = syncDiscoveryIntakeLifecycle({
+    directiveRoot: handoffArtifact.directiveRoot,
+    queue,
+    transitionDate,
+    request: {
+      candidate_id: handoffArtifact.candidateId,
+      target_phase: "completed",
+      routing_target: "architecture",
+      intake_record_path: queueEntry.intake_record_path ?? null,
+      routing_record_path: queueEntry.routing_record_path,
+      result_record_path: handoffArtifact.resultRelativePath,
+      note_append:
+        `NOTE-mode Architecture closeout by ${closedBy} recorded ${handoffArtifact.resultRelativePath} directly from ${handoffArtifact.handoffRelativePath}`,
+    },
+  });
+  writeJson(queuePath, syncResult.queue);
+
+  const resolvedState = resolveDirectiveWorkspaceState({
+    directiveRoot: handoffArtifact.directiveRoot,
+    artifactPath: handoffArtifact.resultRelativePath,
+  });
+  if (resolvedState.focus?.ok) {
+    const mirrored = readDirectiveMirroredDiscoveryCaseRecord({
+      directiveRoot: handoffArtifact.directiveRoot,
+      caseId: handoffArtifact.candidateId,
+    });
+    const eventLog = readDirectiveCaseMirrorEvents({
+      directiveRoot: handoffArtifact.directiveRoot,
+      caseId: handoffArtifact.candidateId,
+    });
+    const nextSequence = eventLog.events.reduce(
+      (highest, event) => Math.max(highest, event.sequence),
+      0,
+    ) + 1;
+    appendDirectiveCaseMirrorEvents({
+      directiveRoot: handoffArtifact.directiveRoot,
+      caseId: handoffArtifact.candidateId,
+      events: [
+        {
+          schemaVersion: 1,
+          eventId: `${handoffArtifact.candidateId}:state_materialized:note_closeout:v1`,
+          caseId: handoffArtifact.candidateId,
+          candidateId: handoffArtifact.candidateId,
+          candidateName: handoffArtifact.title,
+          sequence: nextSequence,
+          eventType: "state_materialized",
+          occurredAt: snapshotAt,
+          queueStatus: resolvedState.focus.discovery.queueStatus,
+          routeTarget: resolvedState.focus.routeTarget,
+          operatingMode: resolvedState.focus.discovery.operatingMode,
+          linkedArtifactPath: resolvedState.focus.currentHead.artifactPath,
+          decisionState: mirrored.record?.decisionState ?? null,
+          currentHeadPath: resolvedState.focus.currentHead.artifactPath,
+          currentStage: resolvedState.focus.currentStage,
+          nextLegalStep: resolvedState.focus.nextLegalStep,
+        },
+      ],
+    });
+  }
+
+  const resultArtifact = readDirectiveArchitectureBoundedResultArtifact({
+    directiveRoot: handoffArtifact.directiveRoot,
+    resultPath: handoffArtifact.resultRelativePath,
+  });
+
+  return {
+    ok: true,
+    created,
+    snapshotAt,
+    directiveRoot: handoffArtifact.directiveRoot,
+    handoffRelativePath: handoffArtifact.handoffRelativePath,
+    handoffAbsolutePath: handoffArtifact.handoffAbsolutePath,
+    startRelativePath: resultArtifact.startRelativePath,
+    startAbsolutePath: resultArtifact.startRelativePath
+      ? normalizePath(path.join(handoffArtifact.directiveRoot, resultArtifact.startRelativePath))
+      : null,
+    resultRelativePath: resultArtifact.resultRelativePath,
+    resultAbsolutePath: resultArtifact.resultAbsolutePath,
+    decisionRelativePath: resultArtifact.decisionRelativePath,
+    decisionAbsolutePath: resultArtifact.decisionAbsolutePath,
+    candidateId: resultArtifact.candidateId,
+    candidateName: resultArtifact.candidateName,
+    usefulnessLevel: resultArtifact.usefulnessLevel,
+    objective: resultArtifact.objective,
+    resultSummary: resultArtifact.resultSummary,
+    nextDecision: resultArtifact.nextDecision,
+    verdict: resultArtifact.verdict,
+    closeoutState: resolveCloseoutStateFromVerdict(resultArtifact.verdict),
   };
 }
 
@@ -1384,6 +1783,8 @@ export function closeDirectiveArchitectureBoundedStart(
     created,
     snapshotAt,
     directiveRoot: startArtifact.directiveRoot,
+    handoffRelativePath: startArtifact.handoffStubPath,
+    handoffAbsolutePath: normalizePath(path.join(startArtifact.directiveRoot, startArtifact.handoffStubPath)),
     startRelativePath: startArtifact.startRelativePath,
     startAbsolutePath: startArtifact.startAbsolutePath,
     resultRelativePath: startArtifact.resultRelativePath,

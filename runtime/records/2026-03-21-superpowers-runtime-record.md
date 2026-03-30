@@ -3,8 +3,8 @@
 - Candidate id: superpowers
 - Candidate name: superpowers
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-21-runtime-wave-02-shortlist.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-21-runtime-wave-02-shortlist.md`
+- Origin path: `runtime/follow-up/2026-03-21-runtime-wave-02-shortlist.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-21-runtime-wave-02-shortlist.md`
 - Runtime objective: import one bounded `Superpowers Workflow Operator` agent through the Mission Control `agents/import-packs` route and prove that Runtime can surface workflow discipline from the cutover pack without adopting upstream plugin marketplace, hook, or overlay behavior as product truth.
 - Proposed host: Mission Control
 - Proposed runtime surface: explicit-only bounded workflow operator import lane

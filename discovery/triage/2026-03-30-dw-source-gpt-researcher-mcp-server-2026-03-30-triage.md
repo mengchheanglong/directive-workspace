@@ -1,0 +1,24 @@
+# Discovery Triage Record: GPT Researcher MCP Server
+
+- Candidate id: dw-source-gpt-researcher-mcp-server-2026-03-30
+- Candidate name: GPT Researcher MCP Server
+- Triage date: 2026-03-30
+- First-pass summary: Engine-building mission pressure: assess whether deep-research-backed source acquisition and evidence gathering should improve Directive Workspace Discovery source collection, research support, or routing support without opening runtime integration or host execution.
+- Problem it appears to solve: Make source selection and routing clearer and more reusable than the original source context.
+- Extractable value hypothesis: Engine-building mission pressure: assess whether deep-research-backed source acquisition and evidence gathering should improve Directive Workspace Discovery source collection, research support, or routing support without opening runtime integration or host execution. | Fresh repo-local product doc under sources/intake/gpt-researcher. Retained value is Discovery-held pressure around deep research as a source-gathering and evidence-support input. Out of scope: MCP server installation, runtime integration, live execution surfaces, or adopting the product as a reusable runtime capability.
+- Routing recommendation: Shared Engine routing selected monitor with usefulness level meta.
+- Proposed adoption target: discovery-held candidate
+- Stack-shape summary: product-doc source; host dependence engine_only; integration mode none.
+- Boilerplate vs product boundary: Directive-owned form: Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.. Excluded baggage: non-mission-relevant source detail, unadapted source terminology.
+- Suggested decision state: hold_in_discovery
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan discovery_review defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: routing_review, human_decision_required
+- Missing evidence: mission-fit rationale recorded, routing rationale recorded, next bounded action chosen
+- Monitor/Defer trigger conditions: Hold the source in Discovery until routing confidence or downstream adoption target becomes clearer.
+- Re-entry conditions: Respect rollback boundary: Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work.
+- Next action: Keep the candidate in Discovery until routing clarity improves.
+- Linked intake record: discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md

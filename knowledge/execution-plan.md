@@ -3,15 +3,15 @@
 Last updated: 2026-03-24
 Owner: User (scope), Codex (implementation), OpenClaw (orchestration), Claude (planning/review)
 
-Primary doctrine reference: `C:\Users\User\.openclaw\workspace\CLAUDE.md`
-Directive Workspace doctrine guardrails:
-- `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-doctrine\SKILL.md`
-- `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-audit\SKILL.md`
+Primary doctrine reference: `../CLAUDE.md`
+Directive Workspace product doctrine guardrails:
+- `../OWNERSHIP.md`
+- `./doctrine.md`
 
 Product-local references:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\doctrine.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\workflow.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\active-mission.md`
+- `knowledge/doctrine.md`
+- `knowledge/workflow.md`
+- `knowledge/active-mission.md`
 
 ## 1) North Star
 
@@ -41,7 +41,7 @@ Current objective:
 - build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration
 
 Current mission reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\active-mission.md`
+- `knowledge/active-mission.md`
 
 ## 4) Canonical Roles
 
@@ -138,7 +138,7 @@ Objective: improve Directive Architecture through bounded, evidence-backed extra
 
 Completion notes:
 - Discovery is now the standalone front-door surface
-- Architecture records and experiments now live under `directive-workspace/architecture`
+- Architecture records and experiments now live under `architecture/`
 - the current adopted Architecture cycle is closed
 
 ### Phase 3: Discovery Buildout
@@ -246,7 +246,7 @@ Priority list:
 3. Treat Markdown/contracts/schemas/templates as spec and reporting surfaces emitted by or aligned to engine behavior, not as the primary product completion target.
 4. Keep Mission Control as the first broad host, but require host-side DW behavior to collapse toward Engine consumption rather than host-local reconstruction.
 5. Keep the standalone host bounded and useful, but pause breadth-first expansion unless it directly proves the engine adapter boundary.
-6. Keep raw source material in `directive-workspace/sources/` so Architecture and Runtime remain extraction/adaptation lanes, not repo-storage lanes.
+6. Keep raw source material in `sources/` so Architecture and Runtime remain extraction/adaptation lanes, not repo-storage lanes.
 7. Keep every new candidate tied to mission-conditioned usefulness and known capability gaps where applicable.
 8. Maintain behavior-preserving transformation as a first-class lane: favor verifiable improvements in speed, cost, reliability, maintainability, and runtime fit alongside new capability adoption.
 9. Strengthen dimensional evaluators: prefer numeric before/after measurement where applicable, not just binary pass/fail gates.
@@ -258,6 +258,62 @@ Completed waves (historical reference):
 - Runtime Waves 01-04: all complete
 - Runtime System Bundles 02-06: all complete
 - Discovery: primary-mode transition complete on 2026-03-22
+
+## 13) Post-Phase-2 Side Experiment Reservation: Structural Blueprint / Analogy Layer
+
+Locked vNext migration order remains:
+1. Phase 1A - parallel event mirror foundation
+2. Phase 1B - snapshot materializer and backfill parity
+3. Phase 2 - planner in recommendation mode
+4. Phase 3 - partial generated projections and event-first write path
+5. Phase 4 - durable runner and repo-awareness packets
+6. Phase 5 - retire artifact-first control
+
+Verdict:
+- keep structural blueprint / analogy work only as a narrow later side experiment
+- do not treat it as Phase 1A or Phase 1B work
+- do not let it change roadmap order or block substrate migration
+
+Placement and owner:
+- placement: after Phase 2, outside the critical path
+- owner: Engine shared reasoning with planner-adjacent evaluation
+- precondition: planner foundations must already be proven on current doctrine before this is considered
+
+Experiment shape:
+- start as an evaluation-only experiment on a tiny golden set
+- suggested golden set: Inspect AI, OpenEvals, PromptWizard, ts-edge, and one Runtime-oriented negative control
+- evaluate whether structural blueprint data improves:
+  - route explanation
+  - next-step recommendation quality
+  - reduction in repeated reinterpretation
+  - reduction in false transfer
+- keep the experiment outside the critical path until it demonstrates measurable value
+- discard it quickly if it does not measurably improve recommendation quality or transfer discipline
+
+Structural mapping rule:
+- this is not generic analogy note-taking
+- no structural blueprint counts unless it maps relations, not attributes
+- the goal is transfer discipline, not decorative abstraction
+
+Suggested schema direction (note only, not implementation scope):
+- `structural_blueprint`
+- `source_structure`
+- `target_structure`
+- `relational_correspondence`
+- `transferable_schema`
+- `transfer_conditions`
+- `non_transfer_conditions`
+- `mapping_completeness`
+- `systematicity_strength`
+- `false_analogy_risk`
+- `blueprint_confidence`
+
+Anti-drift rules:
+- do not block Phase 1A on this idea
+- do not place it inside the case-store or append-only event foundation
+- do not invent a new lane for it
+- do not make blueprint extraction mandatory in Discovery early
+- do not let a smart-sounding reasoning layer delay the substrate migration
 
 ## 13) Stop / Continue / Start
 

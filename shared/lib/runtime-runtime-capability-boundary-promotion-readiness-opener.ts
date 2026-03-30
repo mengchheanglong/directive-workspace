@@ -9,8 +9,14 @@ import {
   requireDirectiveExplicitApproval,
   requireDirectiveString,
   resolveDirectiveWorkspaceRelativePath,
-  writeDirectiveArtifactIfMissing,
 } from "../../engine/approval-boundary.ts";
+import { appendDirectiveCaseMirrorEvents, readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
+import {
+  mirrorDirectiveRuntimePromotionReadinessOpen,
+  readDirectiveMirroredDiscoveryCaseRecord,
+  writeDirectiveMirroredDiscoveryCaseRecord,
+} from "./case-store.ts";
+import { resolveDirectiveWorkspaceState } from "./dw-state.ts";
 import {
   readDirectiveRuntimeProofArtifact,
   type DirectiveRuntimeProofArtifact,
@@ -19,6 +25,10 @@ import {
   readDirectiveRuntimeRecordArtifact,
   type DirectiveRuntimeRecordArtifact,
 } from "./runtime-record-proof-opener.ts";
+import {
+  writeDirectiveRuntimePromotionReadinessProjectionSet,
+  type DirectiveMirroredRuntimePromotionReadinessOpenProjectionInput,
+} from "./runtime-promotion-readiness-projections.ts";
 
 function normalizeRelativePath(filePath: string) {
   return filePath.replace(/\\/g, "/");
@@ -26,6 +36,47 @@ function normalizeRelativePath(filePath: string) {
 
 function readUtf8(filePath: string) {
   return fs.readFileSync(filePath, "utf8");
+}
+
+function readJson<T>(filePath: string) {
+  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function extractOptionalBulletValue(markdown: string, label: string) {
+  const prefix = `- ${label}:`;
+  const line = markdown
+    .split(/\r?\n/)
+    .find((entry) => entry.trim().startsWith(prefix));
+  if (!line) {
+    return null;
+  }
+  return line
+    .trim()
+    .replace(prefix, "")
+    .trim()
+    .replace(/^`|`$/g, "");
+}
+
+function readDirectiveRuntimeRoutingBackfillCompat(input: {
+  directiveRoot: string;
+  routingPath: string;
+}) {
+  const routingRelativePath = resolveDirectiveWorkspaceRelativePath(
+    input.directiveRoot,
+    input.routingPath,
+    "routingPath",
+  );
+  const routingAbsolutePath = path.resolve(input.directiveRoot, routingRelativePath).replace(/\\/g, "/");
+  const content = readUtf8(routingAbsolutePath);
+
+  return {
+    sourceType: extractBulletValue(content, "Source type"),
+    linkedIntakeRecord: extractBulletValue(content, "Linked intake record"),
+    linkedTriageRecord: extractOptionalBulletValue(content, "Linked triage record"),
+    routingRelativePath,
+    engineRunRecordPath: null,
+    engineRunReportPath: null,
+  };
 }
 
 function extractMarkdownTitle(markdown: string) {
@@ -113,6 +164,48 @@ export type DirectiveRuntimePromotionReadinessOpenResult = {
   candidateId: string;
   candidateName: string;
 };
+
+type DirectiveDiscoveryIntakeQueueEntry = {
+  candidate_id: string;
+  candidate_name: string;
+  source_type: string;
+  source_reference: string;
+  status: string;
+  routing_target: string | null;
+  intake_record_path?: string | null;
+  routing_record_path?: string | null;
+  result_record_path?: string | null;
+  operating_mode?: string | null;
+};
+
+function buildRuntimePromotionReadinessOpenProjectionInput(input: {
+  artifact: DirectiveRuntimeRuntimeCapabilityBoundaryArtifact;
+  approvedBy: string;
+  snapshotAt: string;
+}): DirectiveMirroredRuntimePromotionReadinessOpenProjectionInput {
+  return {
+    snapshotAt: input.snapshotAt,
+    approvedBy: input.approvedBy,
+    boundaryDate: input.artifact.boundaryDate,
+    candidateId: input.artifact.candidateId,
+    candidateName: input.artifact.candidateName,
+    capabilityBoundaryRelativePath: input.artifact.capabilityBoundaryRelativePath,
+    linkedRuntimeProofPath: input.artifact.linkedRuntimeProofPath,
+    linkedRuntimeRecordPath: input.artifact.linkedRuntimeRecordPath,
+    linkedFollowUpPath: input.artifact.linkedFollowUpPath,
+    linkedRoutingPath: input.artifact.linkedRoutingPath,
+    linkedCallableStubPath: input.artifact.linkedCallableStubPath,
+    promotionReadinessRelativePath: input.artifact.promotionReadinessRelativePath,
+    runtimeObjective: input.artifact.runtimeObjective,
+    proposedHost: input.artifact.proposedHost,
+    proposedRuntimeSurface: input.artifact.proposedRuntimeSurface,
+    requiredProofItems: input.artifact.requiredProofItems,
+    requiredGates: input.artifact.requiredGates,
+    rollback: input.artifact.rollback,
+    noOpPath: input.artifact.noOpPath,
+    reviewCadence: input.artifact.reviewCadence,
+  };
+}
 
 function renderPromotionReadinessArtifact(input: {
   artifact: DirectiveRuntimeRuntimeCapabilityBoundaryArtifact;
@@ -281,13 +374,142 @@ export function openDirectiveRuntimePromotionReadiness(input: {
   });
 
   const approvedBy = normalizeDirectiveApprovalActor(input.approvedBy);
-  const created = writeDirectiveArtifactIfMissing({
-    absolutePath: artifact.promotionReadinessAbsolutePath,
-    content: renderPromotionReadinessArtifact({
+  const snapshotAt = new Date().toISOString();
+  const created = !artifact.promotionReadinessExists;
+
+  const mirrored = readDirectiveMirroredDiscoveryCaseRecord({
+    directiveRoot,
+    caseId: artifact.candidateId,
+  });
+  if (!mirrored.record) {
+    const queuePath = path.join(directiveRoot, "discovery", "intake-queue.json");
+    const queueDocument = fs.existsSync(queuePath)
+      ? readJson<{ entries: DirectiveDiscoveryIntakeQueueEntry[] }>(queuePath)
+      : null;
+    const queueEntry =
+      queueDocument?.entries.find((entry) => entry.candidate_id === artifact.candidateId)
+      ?? null;
+    const routingPath =
+      queueEntry?.routing_record_path
+      ?? artifact.linkedRoutingPath
+      ?? null;
+    if (!routingPath) {
+      throw new Error(
+        `invalid_state: unable to backfill mirrored Runtime promotion-readiness case for ${artifact.candidateId} without a routing record`,
+      );
+    }
+    const routing = readDirectiveRuntimeRoutingBackfillCompat({
+      directiveRoot,
+      routingPath,
+    });
+    writeDirectiveMirroredDiscoveryCaseRecord({
+      directiveRoot,
+      record: {
+        schemaVersion: 1,
+        mirrorKind: "discovery_front_door_submission",
+        caseId: artifact.candidateId,
+        candidateId: artifact.candidateId,
+        candidateName: artifact.candidateName,
+        sourceType: queueEntry?.source_type ?? routing.sourceType,
+        sourceReference: queueEntry?.source_reference ?? artifact.linkedFollowUpPath,
+        decisionState: artifact.runtimeRecordArtifact.followUpArtifact.currentDecisionState,
+        routeTarget: "runtime",
+        operatingMode: queueEntry?.operating_mode ?? null,
+        queueStatus: queueEntry?.status ?? "routed",
+        createdAt: `${artifact.boundaryDate}T00:00:00.000Z`,
+        updatedAt: snapshotAt,
+        linkedArtifacts: {
+          intakeRecordPath: queueEntry?.intake_record_path ?? routing.linkedIntakeRecord ?? null,
+          triageRecordPath: routing.linkedTriageRecord,
+          routingRecordPath: queueEntry?.routing_record_path ?? routing.routingRelativePath,
+          engineRunRecordPath: routing.engineRunRecordPath,
+          engineRunReportPath: routing.engineRunReportPath,
+          runtimeFollowUpPath: artifact.linkedFollowUpPath,
+          runtimeRecordPath: artifact.linkedRuntimeRecordPath,
+          runtimeProofPath: artifact.linkedRuntimeProofPath,
+          runtimeCapabilityBoundaryPath: artifact.capabilityBoundaryRelativePath,
+          runtimePromotionReadinessPath: artifact.promotionReadinessRelativePath,
+          resultRecordPath: queueEntry?.result_record_path ?? artifact.linkedFollowUpPath,
+        },
+        projectionInputs: null,
+      },
+    });
+  }
+
+  mirrorDirectiveRuntimePromotionReadinessOpen({
+    directiveRoot,
+    caseId: artifact.candidateId,
+    receivedAt: snapshotAt,
+    queueStatus: mirrored.record?.queueStatus ?? "routed",
+    linkedArtifacts: {
+      runtimeFollowUpPath: artifact.linkedFollowUpPath,
+      runtimeRecordPath: artifact.linkedRuntimeRecordPath,
+      runtimeProofPath: artifact.linkedRuntimeProofPath,
+      runtimeCapabilityBoundaryPath: artifact.capabilityBoundaryRelativePath,
+      runtimePromotionReadinessPath: artifact.promotionReadinessRelativePath,
+      resultRecordPath: mirrored.record?.linkedArtifacts.resultRecordPath ?? artifact.linkedFollowUpPath,
+    },
+    projectionInput: buildRuntimePromotionReadinessOpenProjectionInput({
       artifact,
       approvedBy,
+      snapshotAt,
     }),
   });
+
+  const projectionSet = writeDirectiveRuntimePromotionReadinessProjectionSet({
+    directiveRoot,
+    caseId: artifact.candidateId,
+  });
+  if (!projectionSet.ok) {
+    throw new Error(
+      `invalid_state: unable to generate Runtime promotion-readiness projections for ${artifact.candidateId}: ${projectionSet.reason}`,
+    );
+  }
+
+  const resolvedState = resolveDirectiveWorkspaceState({
+    directiveRoot,
+    artifactPath: artifact.promotionReadinessRelativePath,
+  });
+  if (resolvedState.focus?.ok) {
+    const currentMirror = readDirectiveMirroredDiscoveryCaseRecord({
+      directiveRoot,
+      caseId: artifact.candidateId,
+    });
+    const eventLog = readDirectiveCaseMirrorEvents({
+      directiveRoot,
+      caseId: artifact.candidateId,
+    });
+    const nextSequence = eventLog.events.reduce(
+      (highest, event) => Math.max(highest, event.sequence),
+      0,
+    ) + 1;
+    appendDirectiveCaseMirrorEvents({
+      directiveRoot,
+      caseId: artifact.candidateId,
+      events: [
+        {
+          schemaVersion: 1,
+          eventId: `${artifact.candidateId}:state_materialized:runtime_promotion_readiness_open:v1`,
+          caseId: artifact.candidateId,
+          candidateId: artifact.candidateId,
+          candidateName: artifact.candidateName,
+          sequence: nextSequence,
+          eventType: "state_materialized",
+          occurredAt: snapshotAt,
+          queueStatus: resolvedState.focus.discovery.queueStatus,
+          routeTarget: resolvedState.focus.routeTarget,
+          operatingMode: resolvedState.focus.discovery.operatingMode,
+          linkedArtifactPath: resolvedState.focus.currentHead.artifactPath,
+          decisionState:
+            currentMirror.record?.decisionState
+            ?? artifact.runtimeRecordArtifact.followUpArtifact.currentDecisionState,
+          currentHeadPath: resolvedState.focus.currentHead.artifactPath,
+          currentStage: resolvedState.focus.currentStage,
+          nextLegalStep: resolvedState.focus.nextLegalStep,
+        },
+      ],
+    });
+  }
 
   return {
     ok: true,

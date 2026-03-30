@@ -1,0 +1,18 @@
+{
+  "candidate_id": "dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28",
+  "candidate_name": "Engine Discovery Framework-Source Runtime Overread Routing Hardening",
+  "decision": "adopt",
+  "final_status": "adopt_planned_next",
+  "usefulness_level": "meta",
+  "artifact_type": "shared-lib",
+  "readiness": {
+    "bounded_scope_kept": true,
+    "mechanical_success_criteria_met": true,
+    "delta_evidence_present": true,
+    "adaptation_decision_complete": true
+  },
+  "notes": [
+    "The adopted next step remains one shared-lib routing-quality slice.",
+    "The result stays limited to framework-pattern extraction Runtime overread."
+  ]
+}

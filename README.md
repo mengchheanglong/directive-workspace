@@ -11,12 +11,13 @@ Canonical operating loop:
 
 Directive Workspace doctrine is governed first by:
 
-- [CLAUDE.md](/C:/Users/User/.openclaw/workspace/CLAUDE.md)
-- [directive-workspace-doctrine skill](/C:/Users/User/.openclaw/workspace/.claude/skills/directive-workspace-doctrine/SKILL.md)
-- [directive-workspace-audit skill](/C:/Users/User/.openclaw/workspace/.claude/skills/directive-workspace-audit/SKILL.md)
+- [CLAUDE.md](./CLAUDE.md)
+- [OWNERSHIP.md](./OWNERSHIP.md)
+- [knowledge/doctrine.md](./knowledge/doctrine.md)
 
-The files under `directive-workspace/knowledge/` operationalize that doctrine for this product surface.
-If a local Directive Workspace document drifts from those governing sources, the governing sources win and the local document should be corrected.
+The files under `knowledge/` operationalize that doctrine for this product surface.
+If adjacent OpenClaw workspace doctrine helpers are used during incubation, treat them as external environment aids rather than as ownership of the Directive Workspace product root.
+If a local Directive Workspace document drifts from the governing sources above, the governing sources win and the local document should be corrected.
 
 ## Engine Model
 
@@ -57,16 +58,16 @@ Architecture is the lane closest to the current mission because the current miss
 - OpenClaw is the **orchestration layer**. Persistent, looping, memory-backed coordination.
 
 Canonical host/product boundary:
-- [host-integration-boundary.md](/C:/Users/User/.openclaw/workspace/directive-workspace/shared/contracts/host-integration-boundary.md)
+- [host-integration-boundary.md](./shared/contracts/host-integration-boundary.md)
 
 ## Package-Ready Standalone Surface
 
 Directive Workspace exposes a package-ready standalone surface at the product root:
 
 - package name: `@directive-workspace/product`
-- root manifest: [package.json](/C:/Users/User/.openclaw/workspace/directive-workspace/package.json)
-- root barrel: [index.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/index.ts)
-- standalone surface inventory: [STANDALONE_SURFACE.json](/C:/Users/User/.openclaw/workspace/directive-workspace/STANDALONE_SURFACE.json)
+- root manifest: [package.json](./package.json)
+- root barrel: [index.ts](./index.ts)
+- standalone surface inventory: [STANDALONE_SURFACE.json](./STANDALONE_SURFACE.json)
 
 Stable root export lanes:
 
@@ -91,10 +92,10 @@ Stable root export lanes:
 
 Initial Engine surface:
 
-- engine barrel: [engine/index.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/engine/index.ts)
+- engine barrel: [engine/index.ts](./engine/index.ts)
 - core orchestrator: `DirectiveEngine`
 - stable lane contract: `DirectiveEngineLaneSet`
-- default DW lane set: [directive-workspace-lanes.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/engine/directive-workspace-lanes.ts)
+- default DW lane set: [directive-workspace-lanes.ts](./engine/directive-workspace-lanes.ts)
 - canonical store boundary: `DirectiveEngineStore`
 - default in-memory store: `createMemoryDirectiveEngineStore`
 
@@ -144,7 +145,7 @@ They should not substitute for the missing Engine behavior.
 
 Directive Workspace also includes a standalone filesystem reference host at:
 
-- [hosts/standalone-host/README.md](/C:/Users/User/.openclaw/workspace/directive-workspace/hosts/standalone-host/README.md)
+- [hosts/standalone-host/README.md](./hosts/standalone-host/README.md)
 
 That reference host exposes a bounded HTTP API, config-driven boot, runtime status/access logging, optional SQLite persistence, optional bearer auth, a Discovery front door that can persist full Engine run records and materialize Discovery intake/triage/routing outputs from the active mission and capability-gap corpus, and a bounded local Runtime workflow. This is a shareable local host surface for GitHub/package usage. It is not yet the broader host/runtime replacement for Mission Control.
 
@@ -200,23 +201,6 @@ Focused report output now distinguishes:
 - `currentStage` / `nextLegalStep` = the latest known case state reachable from that artifact's linked chain
 - `currentHead.artifactPath` / `currentHead.artifactStage` = the current live artifact to continue from, derived from the canonical linked chain rather than queue-owned workflow state
 
-## OpenClaw Note
-
-When Directive Workspace documents need to reference OpenClaw-specific recovery behavior, they should defer to OpenClaw-owned docs instead of defining that role here.
-
-OpenClaw-native rescue references:
-
-- `C:\Users\User\.openclaw\workspace\openclaw\RESCUE_OPENCLAW.md`
-- `C:\Users\User\.openclaw\workspace\openclaw\RESCUE_PROTOCOL.md`
-
-## What Directive Workspace Is Not
-
-- a repo catalog
-- a notes archive
-- a coding-only evaluator
-- a static architecture lab
-- a runtime integration checklist
-
 ## Structure
 
 - `engine/` - shared core machinery and default Directive Workspace lane definitions
@@ -230,11 +214,11 @@ OpenClaw-native rescue references:
 
 ## Start Here
 
-- [engine-direction.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/engine-direction.md)
-- [doctrine.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/doctrine.md)
-- [workflow.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/workflow.md)
-- [active-mission.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/active-mission.md)
-- [OWNERSHIP.md](/C:/Users/User/.openclaw/workspace/directive-workspace/OWNERSHIP.md)
-- [execution-plan.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/execution-plan.md)
-- [architecture-completion-rubric.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/architecture-completion-rubric.md)
-- [technology-policy.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/technology-policy.md)
+- [engine-direction.md](./knowledge/engine-direction.md)
+- [doctrine.md](./knowledge/doctrine.md)
+- [workflow.md](./knowledge/workflow.md)
+- [active-mission.md](./knowledge/active-mission.md)
+- [OWNERSHIP.md](./OWNERSHIP.md)
+- [execution-plan.md](./knowledge/execution-plan.md)
+- [architecture-completion-rubric.md](./knowledge/architecture-completion-rubric.md)
+- [technology-policy.md](./knowledge/technology-policy.md)

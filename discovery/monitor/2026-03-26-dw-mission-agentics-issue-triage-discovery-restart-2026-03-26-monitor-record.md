@@ -14,6 +14,6 @@
 - Last review result: `2026-03-26` Discovery restart kept the candidate in monitor because Engine routing favored Discovery-held review over downstream route commitment.
 - Next review date: `2026-04-26`
 - No-op rule: if the promotion triggers remain unmet, stay `monitor` and update the timestamp only.
-- Linked intake record: `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\intake\2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-intake.md`
-- Linked triage record: `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\triage\2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-triage.md`
-- Linked routing record: `C:\Users\User\.openclaw\workspace\directive-workspace\discovery\routing-log\2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md`
+- Linked intake record: `discovery/intake/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-intake.md`
+- Linked triage record: `discovery/triage/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-triage.md`
+- Linked routing record: `discovery/routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md`

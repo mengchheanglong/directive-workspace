@@ -3,10 +3,11 @@
 Directive Workspace is a product with strict boundaries.
 
 Governing doctrine comes first from:
-- `C:\Users\User\.openclaw\workspace\CLAUDE.md`
-- `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-doctrine\SKILL.md`
-- `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-audit\SKILL.md`
+- `CLAUDE.md`
+- `OWNERSHIP.md`
+- `knowledge/doctrine.md`
 
+If adjacent OpenClaw workspace doctrine helpers are used during incubation, treat them as external environment aids rather than as ownership of the product root.
 Use the local Directive Workspace docs only insofar as they stay aligned with those governing sources.
 
 Contributors should optimize for:
@@ -56,18 +57,18 @@ Not appropriate without explicit approval:
 ## Required Verification
 
 When changes affect Mission Control integration:
-- `npm --prefix C:\\Users\\User\\.openclaw\\workspace\\mission-control run typecheck`
-- `npm --prefix C:\\Users\\User\\.openclaw\\workspace\\mission-control run build`
-- `npm --prefix C:\\Users\\User\\.openclaw\\workspace\\mission-control run check:ops-stack`
+- run `npm run typecheck` from the current Mission Control root
+- run `npm run build` from the current Mission Control root
+- run `npm run check:ops-stack` from the current Mission Control root
 
 When changes are docs-only inside Directive Workspace:
 - keep doctrine, ownership, execution plan, and migration state aligned
 
 ## Canonical References
 
-- [README.md](C:/Users/User/.openclaw/workspace/directive-workspace/README.md)
-- [OWNERSHIP.md](C:/Users/User/.openclaw/workspace/directive-workspace/OWNERSHIP.md)
-- [doctrine.md](C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/doctrine.md)
-- [execution-plan.md](C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/execution-plan.md)
-- [decision-states.md](C:/Users/User/.openclaw/workspace/directive-workspace/shared/decision-states.md)
-- [adoption-targets.md](C:/Users/User/.openclaw/workspace/directive-workspace/shared/adoption-targets.md)
+- [README.md](./README.md)
+- [OWNERSHIP.md](./OWNERSHIP.md)
+- [doctrine.md](./knowledge/doctrine.md)
+- [execution-plan.md](./knowledge/execution-plan.md)
+- [decision-states.md](./shared/decision-states.md)
+- [adoption-targets.md](./shared/adoption-targets.md)

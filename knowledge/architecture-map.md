@@ -11,7 +11,7 @@ tags:
 # Architecture Map
 
 Primary reference:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\doctrine.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\doctrine.md`
 
 ## System Topology
 
@@ -44,13 +44,13 @@ Doctrine:
 - Planned end state: archive or delete after cutover from `C:\Users\User\.openclaw\workspace\agent-lab`.
 
 ### Directive Architecture surface
-- target product-owned surface: `C:\Users\User\.openclaw\workspace\directive-workspace\architecture`
+- target product-owned surface: `C:\Users\User\projects\directive-workspace\architecture`
 - legacy redirect path: `C:\Users\User\.openclaw\workspace\architecture-lab`
 - current role: reusable operating-code layer — contracts, schemas, templates, policies, bounded experiments, adopted patterns, and historical records.
 - does not own OpenClaw-native rescue role definitions
 
 ### Directive Runtime surface
-- target product-owned surface: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime`
+- target product-owned surface: `C:\Users\User\projects\directive-workspace\runtime`
 - current role: bounded runtime operationalization and behavior-preserving transformation — records, contracts, core host-agnostic logic, promotion semantics, and dimensional evaluator proof.
 - current lifecycle: `follow-up -> records -> promotion-records -> registry`
 - current runtime host: `C:\Users\User\.openclaw\workspace\mission-control`

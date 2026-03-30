@@ -100,6 +100,7 @@ export type DirectiveEngineRoutingAssessment = {
     gapAlignment: number;
     laneScores: Record<DirectiveEngineLaneId, number>;
     metaUsefulnessSignal: number;
+    patternExtractionSignal: number;
     transformationSignal: number;
     runtimeSignal: number;
     ambiguityPenalty: number;

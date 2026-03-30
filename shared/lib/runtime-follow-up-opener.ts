@@ -9,8 +9,18 @@ import {
   requireDirectiveExplicitApproval,
   requireDirectiveString,
   resolveDirectiveWorkspaceRelativePath,
-  writeDirectiveArtifactIfMissing,
 } from "../../engine/approval-boundary.ts";
+import { appendDirectiveCaseMirrorEvents, readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
+import {
+  mirrorDirectiveRuntimeFollowUpOpen,
+  readDirectiveMirroredDiscoveryCaseRecord,
+  writeDirectiveMirroredDiscoveryCaseRecord,
+} from "./case-store.ts";
+import { resolveDirectiveWorkspaceState } from "./dw-state.ts";
+import {
+  writeDirectiveRuntimeFollowUpOpenProjectionSet,
+  type DirectiveMirroredRuntimeFollowUpOpenProjectionInput,
+} from "./runtime-follow-up-projections.ts";
 
 function normalizeRelativePath(filePath: string) {
   return filePath.replace(/\\/g, "/");
@@ -29,6 +39,48 @@ function optionalString(value: string | null | undefined) {
 
 function readUtf8(filePath: string) {
   return fs.readFileSync(filePath, "utf8");
+}
+
+function readJson<T>(filePath: string) {
+  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+}
+
+function extractOptionalBulletValue(markdown: string, label: string) {
+  const prefix = `- ${label}:`;
+  const line = markdown
+    .split(/\r?\n/)
+    .find((entry) => entry.trim().startsWith(prefix));
+  if (!line) {
+    return null;
+  }
+  return line
+    .trim()
+    .replace(prefix, "")
+    .trim()
+    .replace(/^`|`$/g, "");
+}
+
+function readDirectiveRuntimeRoutingBackfillCompat(input: {
+  directiveRoot: string;
+  routingPath: string;
+}) {
+  const routingRelativePath = resolveDirectiveWorkspaceRelativePath(
+    input.directiveRoot,
+    input.routingPath,
+    "routingPath",
+  );
+  const routingAbsolutePath = path.resolve(input.directiveRoot, routingRelativePath).replace(/\\/g, "/");
+  const content = readUtf8(routingAbsolutePath);
+
+  return {
+    sourceType: extractBulletValue(content, "Source type"),
+    decisionState: extractBulletValue(content, "Decision state"),
+    linkedIntakeRecord: extractBulletValue(content, "Linked intake record"),
+    linkedTriageRecord: extractOptionalBulletValue(content, "Linked triage record"),
+    routingRelativePath,
+    engineRunRecordPath: null,
+    engineRunReportPath: null,
+  };
 }
 
 function extractMarkdownTitle(markdown: string) {
@@ -98,17 +150,6 @@ function extractLinkedSinglePath(markdown: string, label: string) {
   return null;
 }
 
-function toSentenceCase(value: string) {
-  return value.replace(/[_-]+/g, " ").trim();
-}
-
-function renderListOrPlaceholder(values: string[], placeholder = "  - n/a") {
-  if (values.length === 0) {
-    return placeholder;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
-
 export type DirectiveRuntimeFollowUpArtifact = {
   title: string;
   candidateId: string;
@@ -176,74 +217,48 @@ function buildRuntimeProofRelativePath(input: {
   );
 }
 
-function renderRuntimeV0Record(input: {
+type DirectiveDiscoveryIntakeQueueEntry = {
+  candidate_id: string;
+  candidate_name: string;
+  source_type: string;
+  source_reference: string;
+  status: string;
+  routing_target: string | null;
+  intake_record_path?: string | null;
+  routing_record_path?: string | null;
+  result_record_path?: string | null;
+  operating_mode?: string | null;
+};
+
+function buildRuntimeFollowUpOpenProjectionInput(input: {
   artifact: DirectiveRuntimeFollowUpArtifact;
   approvedBy: string;
-}) {
-  const capabilityShape = input.artifact.allowedExportSurfaces.length > 0
-    ? input.artifact.allowedExportSurfaces
-    : ["bounded runtime capability"];
-  const boundedSurface = capabilityShape
-    .map((value) => `\`${value}\``)
-    .join(", ");
-  const proofSummary = input.artifact.requiredProof.length > 0
-    ? input.artifact.requiredProof.join("; ")
-    : "n/a";
-
-  return `# Runtime V0 Record: ${input.artifact.candidateName} (${input.artifact.followUpDate})
-
-## follow-up review decision
-- Candidate id: \`${input.artifact.candidateId}\`
-- Candidate name: \`${input.artifact.candidateName}\`
-- Source follow-up record: \`${input.artifact.followUpRelativePath}\`
-- Review decision: \`approved_for_bounded_runtime_conversion_record\`
-- Reviewed by: \`${input.approvedBy}\`
-- Review date: \`${input.artifact.followUpDate}\`
-- Current status: \`pending_proof_boundary\`
-
-## bounded runtime usefulness
-- Runtime value to operationalize: ${input.artifact.runtimeValueToOperationalize}
-- Proposed host: \`${input.artifact.proposedHost}\`
-- Proposed integration mode: ${toSentenceCase(input.artifact.proposedIntegrationMode)}
-- Reusable capability target surface: ${boundedSurface}
-- Origin track: \`${input.artifact.originTrack}\`
-- Source decision state: \`${input.artifact.currentDecisionState}\`
-
-## expected effect
-- Convert this approved Runtime follow-up into one explicit Directive-owned runtime-capability record without opening execution, host integration, or automation.
-- Keep the capability bounded to the follow-up objective and the approved reusable export surface only.
-
-## proof required before any further Runtime move
-- Required proof summary: ${proofSummary}
-- Required proof:
-${renderListOrPlaceholder(input.artifact.requiredProof)}
-- Required gates:
-${renderListOrPlaceholder(input.artifact.requiredGates.map((value) => `\`${value}\``))}
-
-## validation boundary
-- Validate against the approved Runtime follow-up record, linked Discovery routing record, and Engine evidence only.
-- Do not imply runtime execution, host integration, orchestration, or background automation.
-- Keep excluded baggage out of the converted capability boundary:
-${renderListOrPlaceholder(input.artifact.excludedBaggage)}
-
-## rollback boundary
-- Rollback: ${input.artifact.rollback}
-- No-op path: ${input.artifact.noOpPath}
-- Review cadence: ${input.artifact.reviewCadence}
-
-## known risks
-${renderListOrPlaceholder(input.artifact.risks)}
-
-## artifact linkage
-- Runtime v0 record: \`${input.artifact.runtimeRecordRelativePath}\`
-- Source Runtime follow-up record: \`${input.artifact.followUpRelativePath}\`
-${input.artifact.linkedHandoffPath ? `- Linked Discovery routing record: \`${input.artifact.linkedHandoffPath}\`\n` : ""}- Next Runtime proof artifact if later approved: \`${input.artifact.runtimeProofRelativePath}\`
-
-## boundary
-- This record does not authorize execution.
-- This record does not open host integration.
-- This record only records that the follow-up has been explicitly reviewed and opened into one bounded non-executing Runtime artifact.
-`;
+  snapshotAt: string;
+}): DirectiveMirroredRuntimeFollowUpOpenProjectionInput {
+  return {
+    snapshotAt: input.snapshotAt,
+    approvedBy: input.approvedBy,
+    followUpDate: input.artifact.followUpDate,
+    candidateId: input.artifact.candidateId,
+    candidateName: input.artifact.candidateName,
+    followUpRelativePath: input.artifact.followUpRelativePath,
+    runtimeRecordRelativePath: input.artifact.runtimeRecordRelativePath,
+    runtimeProofRelativePath: input.artifact.runtimeProofRelativePath,
+    currentDecisionState: input.artifact.currentDecisionState,
+    originTrack: input.artifact.originTrack,
+    runtimeValueToOperationalize: input.artifact.runtimeValueToOperationalize,
+    proposedHost: input.artifact.proposedHost,
+    proposedIntegrationMode: input.artifact.proposedIntegrationMode,
+    allowedExportSurfaces: input.artifact.allowedExportSurfaces,
+    excludedBaggage: input.artifact.excludedBaggage,
+    requiredProof: input.artifact.requiredProof,
+    requiredGates: input.artifact.requiredGates,
+    risks: input.artifact.risks,
+    rollback: input.artifact.rollback,
+    noOpPath: input.artifact.noOpPath,
+    reviewCadence: input.artifact.reviewCadence,
+    linkedHandoffPath: input.artifact.linkedHandoffPath,
+  };
 }
 
 export function readDirectiveRuntimeFollowUpArtifact(input: {
@@ -347,13 +362,136 @@ export function openDirectiveRuntimeFollowUp(input: {
   });
 
   const approvedBy = normalizeDirectiveApprovalActor(input.approvedBy);
-  const created = writeDirectiveArtifactIfMissing({
-    absolutePath: artifact.runtimeRecordAbsolutePath,
-    content: renderRuntimeV0Record({
+  const snapshotAt = new Date().toISOString();
+  const created = !artifact.runtimeRecordExists;
+
+  const mirrored = readDirectiveMirroredDiscoveryCaseRecord({
+    directiveRoot,
+    caseId: artifact.candidateId,
+  });
+  if (!mirrored.record) {
+    const queuePath = path.join(directiveRoot, "discovery", "intake-queue.json");
+    const queueDocument = fs.existsSync(queuePath)
+      ? readJson<{ entries: DirectiveDiscoveryIntakeQueueEntry[] }>(queuePath)
+      : null;
+    const queueEntry =
+      queueDocument?.entries.find((entry) => entry.candidate_id === artifact.candidateId)
+      ?? null;
+    const routingPath =
+      queueEntry?.routing_record_path
+      ?? artifact.linkedHandoffPath
+      ?? null;
+    if (!routingPath) {
+      throw new Error(
+        `invalid_state: unable to backfill mirrored Runtime case for ${artifact.candidateId} without a routing record`,
+      );
+    }
+    const routing = readDirectiveRuntimeRoutingBackfillCompat({
+      directiveRoot,
+      routingPath,
+    });
+    writeDirectiveMirroredDiscoveryCaseRecord({
+      directiveRoot,
+      record: {
+        schemaVersion: 1,
+        mirrorKind: "discovery_front_door_submission",
+        caseId: artifact.candidateId,
+        candidateId: artifact.candidateId,
+        candidateName: artifact.candidateName,
+        sourceType: queueEntry?.source_type ?? routing.sourceType,
+        sourceReference: queueEntry?.source_reference ?? artifact.followUpRelativePath,
+        decisionState: artifact.currentDecisionState,
+        routeTarget: "runtime",
+        operatingMode: queueEntry?.operating_mode ?? null,
+        queueStatus: queueEntry?.status ?? "routed",
+        createdAt: `${artifact.followUpDate}T00:00:00.000Z`,
+        updatedAt: snapshotAt,
+        linkedArtifacts: {
+          intakeRecordPath: queueEntry?.intake_record_path ?? routing.linkedIntakeRecord ?? null,
+          triageRecordPath: routing.linkedTriageRecord,
+          routingRecordPath: queueEntry?.routing_record_path ?? routing.routingRelativePath,
+          engineRunRecordPath: routing.engineRunRecordPath,
+          engineRunReportPath: routing.engineRunReportPath,
+          runtimeFollowUpPath: artifact.followUpRelativePath,
+          runtimeRecordPath: artifact.runtimeRecordRelativePath,
+          runtimeProofPath: artifact.runtimeProofRelativePath,
+          resultRecordPath: queueEntry?.result_record_path ?? artifact.followUpRelativePath,
+        },
+        projectionInputs: null,
+      },
+    });
+  }
+
+  mirrorDirectiveRuntimeFollowUpOpen({
+    directiveRoot,
+    caseId: artifact.candidateId,
+    receivedAt: snapshotAt,
+    queueStatus: mirrored.record?.queueStatus ?? "routed",
+    linkedArtifacts: {
+      runtimeFollowUpPath: artifact.followUpRelativePath,
+      runtimeRecordPath: artifact.runtimeRecordRelativePath,
+      runtimeProofPath: artifact.runtimeProofRelativePath,
+      resultRecordPath: mirrored.record?.linkedArtifacts.resultRecordPath ?? artifact.followUpRelativePath,
+    },
+    projectionInput: buildRuntimeFollowUpOpenProjectionInput({
       artifact,
       approvedBy,
+      snapshotAt,
     }),
   });
+
+  const projectionSet = writeDirectiveRuntimeFollowUpOpenProjectionSet({
+    directiveRoot,
+    caseId: artifact.candidateId,
+  });
+  if (!projectionSet.ok) {
+    throw new Error(
+      `invalid_state: unable to generate Runtime follow-up projections for ${artifact.candidateId}: ${projectionSet.reason}`,
+    );
+  }
+
+  const resolvedState = resolveDirectiveWorkspaceState({
+    directiveRoot,
+    artifactPath: artifact.runtimeRecordRelativePath,
+  });
+  if (resolvedState.focus?.ok) {
+    const currentMirror = readDirectiveMirroredDiscoveryCaseRecord({
+      directiveRoot,
+      caseId: artifact.candidateId,
+    });
+    const eventLog = readDirectiveCaseMirrorEvents({
+      directiveRoot,
+      caseId: artifact.candidateId,
+    });
+    const nextSequence = eventLog.events.reduce(
+      (highest, event) => Math.max(highest, event.sequence),
+      0,
+    ) + 1;
+    appendDirectiveCaseMirrorEvents({
+      directiveRoot,
+      caseId: artifact.candidateId,
+      events: [
+        {
+          schemaVersion: 1,
+          eventId: `${artifact.candidateId}:state_materialized:runtime_follow_up_open:v1`,
+          caseId: artifact.candidateId,
+          candidateId: artifact.candidateId,
+          candidateName: artifact.candidateName,
+          sequence: nextSequence,
+          eventType: "state_materialized",
+          occurredAt: snapshotAt,
+          queueStatus: resolvedState.focus.discovery.queueStatus,
+          routeTarget: resolvedState.focus.routeTarget,
+          operatingMode: resolvedState.focus.discovery.operatingMode,
+          linkedArtifactPath: resolvedState.focus.currentHead.artifactPath,
+          decisionState: currentMirror.record?.decisionState ?? artifact.currentDecisionState,
+          currentHeadPath: resolvedState.focus.currentHead.artifactPath,
+          currentStage: resolvedState.focus.currentStage,
+          nextLegalStep: resolvedState.focus.nextLegalStep,
+        },
+      ],
+    });
+  }
 
   return {
     ok: true,

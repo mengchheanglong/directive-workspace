@@ -52,9 +52,8 @@ function buildMachineReadablePack() {
     directiveRoot: DIRECTIVE_ROOT.replace(/\\/g, "/"),
     canonicalTruth: {
       readFirst: [
-        "workspace/CLAUDE.md",
-        "workspace/directive-workspace/CLAUDE.md",
-        "workspace/directive-workspace/knowledge/continuation/READ_THIS_FIRST.md",
+        "CLAUDE.md",
+        "knowledge/continuation/READ_THIS_FIRST.md",
       ],
       runFirst: [
         "npm run check",
@@ -97,11 +96,10 @@ function buildMachineReadablePack() {
 function renderReadThisFirst(pack: ReturnType<typeof buildMachineReadablePack>) {
   return `# Read This First
 
-1. Read \`workspace/CLAUDE.md\`.
-2. Read \`workspace/directive-workspace/CLAUDE.md\`.
-3. Run \`npm run check\` from \`workspace/directive-workspace\`.
-4. Run \`npm run report:directive-workspace-state\`.
-5. Treat [dw-state.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/shared/lib/dw-state.ts) as the canonical read surface.
+1. Read \`CLAUDE.md\`.
+2. Run \`npm run check\` from the current Directive Workspace product root.
+3. Run \`npm run report:directive-workspace-state\`.
+4. Treat [dw-state.ts](../../shared/lib/dw-state.ts) as the canonical read surface.
 
 How to read focused state:
 - \`artifactStage\` / \`artifactNextLegalStep\`: the inspected artifact's own boundary.
@@ -130,9 +128,8 @@ function renderGuide(pack: ReturnType<typeof buildMachineReadablePack>) {
 
 ## What to read first
 
-1. \`workspace/CLAUDE.md\`
-2. \`workspace/directive-workspace/CLAUDE.md\`
-3. [READ_THIS_FIRST.md](/C:/Users/User/.openclaw/workspace/directive-workspace/knowledge/continuation/READ_THIS_FIRST.md)
+1. \`CLAUDE.md\`
+2. [READ_THIS_FIRST.md](./READ_THIS_FIRST.md)
 
 ## What to run first
 
@@ -149,9 +146,9 @@ npm run report:directive-workspace-state -- ${CANONICAL_EXAMPLES.architectureBou
 
 ## Canonical truth
 
-- Resolver: [dw-state.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/shared/lib/dw-state.ts)
-- Whole-product checker: [check-directive-workspace-composition.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/scripts/check-directive-workspace-composition.ts)
-- Current-state report: [report-directive-workspace-state.ts](/C:/Users/User/.openclaw/workspace/directive-workspace/scripts/report-directive-workspace-state.ts)
+- Resolver: [dw-state.ts](../../shared/lib/dw-state.ts)
+- Whole-product checker: [check-directive-workspace-composition.ts](../../scripts/check-directive-workspace-composition.ts)
+- Current-state report: [report-directive-workspace-state.ts](../../scripts/report-directive-workspace-state.ts)
 
 ## How to interpret focused reads
 

@@ -1,0 +1,23 @@
+# Discovery Intake Record: GPT Researcher MCP Server
+
+- Candidate id: dw-source-gpt-researcher-mcp-server-2026-03-30
+- Candidate name: GPT Researcher MCP Server
+- Intake date: 2026-03-30
+- Source type: product-doc
+- Source reference: sources/intake/gpt-researcher/mcp-server/README.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Engine-building mission pressure: assess whether deep-research-backed source acquisition and evidence gathering should improve Directive Workspace Discovery source collection, research support, or routing support without opening runtime integration or host execution.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: discovery-held candidate
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 3670d87c-559f-4c94-815b-e04b1185ed34 selected discovery. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md

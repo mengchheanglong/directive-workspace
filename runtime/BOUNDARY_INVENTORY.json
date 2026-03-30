@@ -1,6 +1,6 @@
 {
   "status": "active",
-  "updatedAt": "2026-03-24",
+  "updatedAt": "2026-03-29",
   "decision": {
     "productOwner": "directive-workspace",
     "productOwnerReason": "Directive Workspace is the standalone product and canonical owner of doctrine, contracts, shared operating assets, and source-adaptation logic.",
@@ -351,17 +351,17 @@
       "id": "shared-lib-architecture-handoff-start",
       "group": "shared_lib",
       "canonicalPath": "shared/lib/architecture-handoff-start.ts",
-      "hostMirrorPath": null,
+      "hostMirrorPath": "src/lib/directive-workspace/architecture-handoff-start.ts",
       "compareBodyOnly": false,
-      "cutoverDecision": "direct_host_service_import"
+      "cutoverDecision": "keep_mirror"
     },
     {
       "id": "shared-lib-engine-run-artifacts",
       "group": "shared_lib",
       "canonicalPath": "shared/lib/engine-run-artifacts.ts",
-      "hostMirrorPath": null,
+      "hostMirrorPath": "src/lib/directive-workspace/engine-run-artifacts.ts",
       "compareBodyOnly": false,
-      "cutoverDecision": "direct_host_service_import"
+      "cutoverDecision": "keep_mirror"
     }
   ],
   "hostOnlyEntries": [

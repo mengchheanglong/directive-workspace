@@ -49,6 +49,9 @@ export type DirectiveArchitectureHandoffArtifact = {
   startRelativePath: string | null;
   startAbsolutePath: string | null;
   startExists: boolean;
+  resultRelativePath: string;
+  resultAbsolutePath: string;
+  resultExists: boolean;
 };
 
 type ParsedArchitectureHandoff = Omit<
@@ -59,6 +62,9 @@ type ParsedArchitectureHandoff = Omit<
   | "startRelativePath"
   | "startAbsolutePath"
   | "startExists"
+  | "resultRelativePath"
+  | "resultAbsolutePath"
+  | "resultExists"
 >;
 
 function stripBackticks(value: string) {
@@ -194,6 +200,13 @@ function resolveStartRelativePath(handoffRelativePath: string) {
   return handoffRelativePath.replace(/-engine-handoff\.md$/u, "-bounded-start.md");
 }
 
+function resolveResultRelativePath(handoffRelativePath: string) {
+  if (!handoffRelativePath.endsWith("-engine-handoff.md")) {
+    throw new Error("invalid_input: handoffPath must point to an Architecture engine-handoff stub");
+  }
+  return handoffRelativePath.replace(/-engine-handoff\.md$/u, "-bounded-result.md");
+}
+
 function readArchitectureHandoffArtifact(input: {
   directiveRoot: string;
   handoffRelativePath: string;
@@ -212,6 +225,8 @@ function readArchitectureHandoffArtifact(input: {
   );
   const startRelativePath = resolveStartRelativePath(input.handoffRelativePath);
   const startAbsolutePath = path.resolve(input.directiveRoot, startRelativePath).replace(/\\/g, "/");
+  const resultRelativePath = resolveResultRelativePath(input.handoffRelativePath);
+  const resultAbsolutePath = path.resolve(input.directiveRoot, resultRelativePath).replace(/\\/g, "/");
 
   return {
     ...parsed,
@@ -221,6 +236,9 @@ function readArchitectureHandoffArtifact(input: {
     startRelativePath,
     startAbsolutePath,
     startExists: fs.existsSync(startAbsolutePath),
+    resultRelativePath,
+    resultAbsolutePath,
+    resultExists: fs.existsSync(resultAbsolutePath),
   };
 }
 

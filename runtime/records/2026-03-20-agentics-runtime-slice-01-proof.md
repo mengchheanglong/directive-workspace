@@ -8,7 +8,7 @@ Slice type: bounded runtime playbook execution
 ## Run Contract
 
 Source playbook:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
+- `runtime/follow-up/DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
 
 Execution scope:
 - Playbook A: one live Directive Daily Status Digest
@@ -17,11 +17,11 @@ Execution scope:
 ## Runtime Artifacts
 
 - digest output:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-20-agentics-daily-status-digest.md`
+  - `runtime/records/2026-03-20-agentics-daily-status-digest.md`
 - maintenance validation output:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-20-agentics-docs-maintenance-validation.md`
+  - `runtime/records/2026-03-20-agentics-docs-maintenance-validation.md`
   - rerun after fix:
-    - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-20-agentics-docs-maintenance-validation-rerun.md`
+    - `runtime/records/2026-03-20-agentics-docs-maintenance-validation-rerun.md`
 
 ## Operational Outcomes
 
@@ -65,7 +65,7 @@ Current digest/validation output is useful but quality depends on explicit input
 
 Follow-up status:
 - previously detected blocker was remediated in:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\02-experiments\2026-03-20-autoresearch-reanalysis-bundle-01.md`
+  - `architecture/02-experiments/2026-03-20-autoresearch-reanalysis-bundle-01.md`
 - rerun validation status: `PASS` (6/6 files)
 
 ## Rollback

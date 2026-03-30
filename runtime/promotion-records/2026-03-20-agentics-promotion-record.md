@@ -3,12 +3,12 @@
 - Candidate id: agentics
 - Candidate name: agentics
 - Promotion date: 2026-03-20
-- Linked Runtime record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-19-agentics-runtime-record.md`
+- Linked Runtime record: `runtime/records/2026-03-19-agentics-runtime-record.md`
 - Target host: Mission Control
 - Target runtime surface: Directive Workspace reporting and maintenance lane
 - Integration mode: adapt
 - Proposed runtime status: callable (bounded-contract, validation-first)
-- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-20-agentics-runtime-slice-01-proof.md`
+- Proof path: `runtime/records/2026-03-20-agentics-runtime-slice-01-proof.md`
 - Quality gate profile: promotion_quality_gate/v1
 - Promotion profile family: research_quality_gate
 - Proof shape: quality_metric_snapshot/v1

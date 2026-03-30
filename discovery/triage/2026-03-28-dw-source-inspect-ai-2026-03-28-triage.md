@@ -1,0 +1,24 @@
+# Discovery Triage Record: Inspect AI
+
+- Candidate id: dw-source-inspect-ai-2026-03-28
+- Candidate name: Inspect AI
+- Triage date: 2026-03-28
+- First-pass summary: Evaluation quality and proof-backed adoption. Assess whether Inspect AI's task, scorer, tool, agent, tool-approval, and sandboxing patterns should improve Directive Workspace evaluator quality, proof design, and Architecture-side decision discipline without adopting Inspect AI itself as runtime capability.
+- Problem it appears to solve: Turn extracted evaluator, scorer, tool-approval, agent-evaluation, and sandbox review mechanisms into Directive-owned improvements that compound future proof and evaluation quality.
+- Extractable value hypothesis: Evaluation quality and proof-backed adoption. Assess whether Inspect AI's task, scorer, tool, agent, tool-approval, and sandboxing patterns should improve Directive Workspace evaluator quality, proof design, and Architecture-side decision discipline without adopting Inspect AI itself as runtime capability. | Official docs position Inspect AI as an open-source LLM evaluation framework with tasks, scorers, tools, agents, MCP/tool support, sandboxing, and 100+ pre-built evals. Discovery hypothesis: retained value is evaluator/proof framework patterns rather than direct runtime reuse.
+- Routing recommendation: Shared Engine routing initially selected runtime with usefulness level direct, but operator review overrides the case to Architecture because the retained value is evaluator/proof framework patterns that improve Engine proof quality rather than a reusable host capability.
+- Proposed adoption target: engine-owned evaluator and proof-framework patterns
+- Stack-shape summary: github-repo source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic or operating-code assets such as evaluator contracts, proof workflow patterns, tool-approval boundaries, or sandbox review doctrine. Excluded baggage: source-specific runtime packaging, Python framework baggage, and host-local adapter assumptions from the original source.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Meta-usefulness: the retained value improves how Directive Workspace judges, proves, and governs evaluator-shaped work rather than introducing a new runtime host capability.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: medium
+- Can current gates validate it safely: partially - a NOTE-mode Architecture handoff can keep the source bounded while clarifying whether any evaluator/proof pattern warrants later Directive-owned adaptation.
+- Immediate risks: adaptation_complete, engine_boundary_preserved, decision_review
+- Missing evidence: adapted evaluator or proof pattern described, excluded-baggage boundary confirmed, explicit Engine-side proof/evaluator delta
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the source at a routed NOTE-mode Architecture handoff and do not open runtime adoption unless a later review explicitly changes the primary adoption target.
+- Next action: Open one NOTE-mode Architecture handoff that preserves the evaluator/proof-framework hypothesis without adopting Inspect AI itself as runtime capability.
+- Linked intake record: discovery/intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md

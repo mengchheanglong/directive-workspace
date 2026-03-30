@@ -452,7 +452,7 @@ export type DirectiveFrontendArchitectureResultDetail =
       nextDecision: string;
       verdict: string;
       rationale: string;
-      startRelativePath: string;
+      startRelativePath: string | null;
       handoffStubPath: string;
       decisionRelativePath: string;
       continuationStartRelativePath: string | null;
@@ -1030,9 +1030,17 @@ function normalizeDirectiveWorkspaceArtifactReference(input: {
     ? normalizePath(normalizedValue)
     : normalizePath(path.join(directiveRoot, normalizedValue));
   const rootPrefix = `${directiveRoot}/`;
+  const workspaceRootSegment = `/${path.basename(directiveRoot)}/`;
 
   if (absolutePath === directiveRoot || absolutePath.startsWith(rootPrefix)) {
     return normalizeRelativePath(path.relative(directiveRoot, absolutePath));
+  }
+
+  const workspaceRootIndex = absolutePath.indexOf(workspaceRootSegment);
+  if (workspaceRootIndex >= 0) {
+    return normalizeRelativePath(
+      absolutePath.slice(workspaceRootIndex + workspaceRootSegment.length),
+    );
   }
 
   return normalizedValue;

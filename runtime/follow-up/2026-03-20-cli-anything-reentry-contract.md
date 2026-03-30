@@ -14,12 +14,12 @@ Define objective conditions that must be true before `CLI-Anything` may move fro
 1. Command-mediation contract exists
 - Runtime has a written command-mediation contract artifact
 - contract defines command classes, input/output schema, and hard-deny behavior
- - current artifact: `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\command-mediation-contract.md`
+ - current artifact: `shared/contracts/command-mediation-contract.md`
 
 2. Approval policy exists
 - command classes are mapped to explicit approval policy
 - policy defines which classes require manual approval vs pre-approved execution
- - current artifact: `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\command-class-approval-policy.md`
+ - current artifact: `shared/contracts/command-class-approval-policy.md`
 
 3. Rollback/no-op test exists
 - one bounded command set has a documented rollback or no-op behavior

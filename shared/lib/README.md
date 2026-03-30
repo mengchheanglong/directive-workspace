@@ -13,6 +13,10 @@ Current canonical shared helpers:
 - `integration-artifact-generator.ts`
 - `discovery-gap-priority.ts`
 - `discovery-gap-worklist-generator.ts`
+- `discovery-gap-worklist-selector.ts`
+- `openclaw-discovery-submission-adapter.ts`
+- `openclaw-maintenance-watchdog-signal-adapter.ts`
+- `openclaw-runtime-verification-signal-adapter.ts`
 - `discovery-intake-queue-writer.ts`
 - `discovery-intake-queue-transition.ts`
 - `discovery-intake-lifecycle-sync.ts`

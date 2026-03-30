@@ -3,8 +3,8 @@
 - Candidate id: desloppify
 - Candidate name: desloppify
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-desloppify-quality-utility-followup.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-desloppify-quality-utility-followup.md`
+- Origin path: `runtime/follow-up/2026-03-20-desloppify-quality-utility-followup.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-desloppify-quality-utility-followup.md`
 - Runtime objective: preserve the already-live run-scoped quality utility prototype under explicit Runtime proof, promotion, and rollback accounting without letting the upstream scoring system become lifecycle truth.
 - Proposed host: Mission Control
 - Proposed runtime surface: run-scoped quality utility prototype lane

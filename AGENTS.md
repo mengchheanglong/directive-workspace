@@ -8,9 +8,6 @@ Before substantive work in this folder:
 
 1. Read `CLAUDE.md` in this folder first.
 2. Treat it as the governing doctrine for Directive Workspace.
-3. Use the relevant skills from `.claude/skills` when they match the task:
-   - `directive-workspace-doctrine`
-   - `directive-workspace-audit`
 
 ## Core operating rule
 

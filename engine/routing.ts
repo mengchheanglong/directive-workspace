@@ -81,6 +81,13 @@ const META_USEFULNESS_KEYWORDS = [
   "policy",
 ];
 
+const PATTERN_EXTRACTION_KEYWORDS = [
+  "without adopting",
+  "rather than direct runtime reuse",
+  "not the library as a dependency",
+  "not the library as dependency",
+];
+
 const RUNTIME_SOURCE_TYPES = new Set([
   "github-repo",
   "external-system",
@@ -271,6 +278,10 @@ function deriveLaneScores(input: {
   const architectureSignal = countKeywordHits(input.sourceText, ARCHITECTURE_KEYWORDS);
   const baseRuntimeSignal = countKeywordHits(input.sourceText, RUNTIME_KEYWORDS);
   const metaUsefulnessSignal = countKeywordHits(input.sourceText, META_USEFULNESS_KEYWORDS);
+  const patternExtractionSignal = countKeywordHits(
+    input.sourceText,
+    PATTERN_EXTRACTION_KEYWORDS,
+  );
   const transformationSignal = countKeywordHits(input.sourceText, TRANSFORMATION_KEYWORDS);
   const runtimeSignal =
     baseRuntimeSignal +
@@ -293,6 +304,11 @@ function deriveLaneScores(input: {
   const matchedGapRuntimeSignal =
     countKeywordHits(matchedGapText, RUNTIME_KEYWORDS)
     + countKeywordHits(matchedGapText, TRANSFORMATION_KEYWORDS);
+  const runtimeOverreadCorrectionEligible =
+    RUNTIME_SOURCE_TYPES.has(input.source.sourceType) &&
+    patternExtractionSignal > 0 &&
+    metaUsefulnessSignal > 0 &&
+    transformationSignal === 0;
 
   const laneScores = {
     discovery:
@@ -301,16 +317,19 @@ function deriveLaneScores(input: {
       matchedGapDiscoverySignal * 2,
     architecture:
       structuralSignal * 3 +
-      matchedGapArchitectureSignal * 2,
+      matchedGapArchitectureSignal * 2 +
+      (runtimeOverreadCorrectionEligible ? patternExtractionSignal * 4 : 0),
     runtime:
       runtimeSignal * 3 +
       transformationSignal * 2 +
-      matchedGapRuntimeSignal * 2,
+      matchedGapRuntimeSignal * 2 -
+      (runtimeOverreadCorrectionEligible ? patternExtractionSignal * 3 : 0),
   };
 
   return {
     laneScores,
     metaUsefulnessSignal: clampInt(metaUsefulnessSignal, 0, 5),
+    patternExtractionSignal: clampInt(patternExtractionSignal, 0, 5),
     transformationSignal: clampInt(transformationSignal, 0, 5),
     runtimeSignal: clampInt(runtimeSignal, 0, 5),
   };
@@ -385,7 +404,13 @@ export function assessDirectiveEngineRouting(input: {
   });
   const missionFit = deriveMissionFit(sourceText, input.mission);
   const gapAlignment = matchedGap ? priorityWeight(matchedGap.priority) + 1 : 0;
-  const { laneScores, metaUsefulnessSignal, transformationSignal, runtimeSignal } = deriveLaneScores({
+  const {
+    laneScores,
+    metaUsefulnessSignal,
+    patternExtractionSignal,
+    transformationSignal,
+    runtimeSignal,
+  } = deriveLaneScores({
     source: input.source,
     sourceText,
     matchedGap,
@@ -434,6 +459,11 @@ export function assessDirectiveEngineRouting(input: {
       `Meta-usefulness signal is present (${metaUsefulnessSignal}/5), which strengthens Engine-improvement handling inside Architecture or Discovery.`,
     );
   }
+  if (patternExtractionSignal > 0) {
+    rationale.push(
+      `Pattern-extraction signal is present (${patternExtractionSignal}/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.`,
+    );
+  }
   if (recommendedRecordShape === "fast_path") {
     rationale.push(
       "Fast-path is recommended because the route appears bounded enough to avoid a full split-case path.",
@@ -463,6 +493,7 @@ export function assessDirectiveEngineRouting(input: {
       gapAlignment,
       laneScores,
       metaUsefulnessSignal,
+      patternExtractionSignal,
       transformationSignal,
       runtimeSignal,
       ambiguityPenalty,

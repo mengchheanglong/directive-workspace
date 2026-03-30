@@ -32,7 +32,7 @@ Canonical naming:
 Directive Workspace is being developed as a user-directed AI workspace for continuously improving a personal work system through the controlled intake, evaluation, and integration of new capabilities.
 
 Related delivery plan:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\delivery-plan.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\delivery-plan.md`
 
 ## Working Thesis
 Directive Workspace should be built as a user-directed workspace that can absorb useful external innovation such as research papers, GitHub repositories, AI products, models, workflows, and tool patterns, evaluate whether they improve real work, and integrate them into a controlled and evolving operating system.

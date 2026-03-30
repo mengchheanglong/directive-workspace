@@ -1,609 +1,50 @@
-import { LitElement, css, html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 
-type FrontendCurrentHead = {
-  artifact_path: string;
-  artifact_kind: string;
-  artifact_stage: string;
-  artifact_lane: string;
-  view_path: string;
-};
-
-type FrontendQueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  status: string;
-  status_effective: string;
-  status_warning: string | null;
-  routing_target: string | null;
-  routing_record_path?: string | null;
-  result_record_path: string | null;
-  integrity_state: "ok" | "broken" | null;
-  current_case_stage: string | null;
-  current_case_next_legal_step: string | null;
-  current_head: FrontendCurrentHead | null;
-  runtime_summary: {
-    proposed_host: string | null;
-    promotion_readiness_blockers: string[];
-  } | null;
-};
-
-type FrontendQueueOverview = {
-  entries: FrontendQueueEntry[];
-  totalEntries: number;
-};
-
-type FrontendHandoffStub = {
-  kind:
-    | "architecture_handoff"
-    | "architecture_handoff_invalid"
-    | "runtime_follow_up"
-    | "runtime_follow_up_legacy"
-    | "runtime_handoff_legacy";
-  lane: "architecture" | "runtime";
-  relativePath: string;
-  candidateId: string;
-  title: string;
-  status: string;
-  startRelativePath: string | null;
-  warning: string | null;
-};
-
-type FrontendDiscoveryRoutingDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  sourceType?: string;
-  decisionState?: string;
-  adoptionTarget?: string;
-  routeDestination?: string;
-  whyThisRoute?: string;
-  whyNotAlternatives?: string;
-  requiredNextArtifact?: string;
-  linkedIntakeRecord?: string;
-  linkedTriageRecord?: string | null;
-  reviewCadence?: string | null;
-  engineRunId?: string | null;
-  engineRunRecordPath?: string | null;
-  engineRunReportPath?: string | null;
-  usefulnessLevel?: string | null;
-  usefulnessRationale?: string | null;
-  matchedGapId?: string | null;
-  downstreamStubRelativePath?: string | null;
-  approvalAllowed?: boolean;
-  content?: string;
-};
-
-type FrontendRuntimeFollowUpDetail = {
-  ok: boolean;
-  error?: string;
-  kind?: "runtime_follow_up";
-  relativePath?: string;
-  content?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  status?: string;
-  runtimeValueToOperationalize?: string;
-  proposedHost?: string;
-  proposedIntegrationMode?: string;
-  reviewCadence?: string;
-  linkedRoutingPath?: string | null;
-  runtimeRecordRelativePath?: string;
-  runtimeRecordExists?: boolean;
-  approvalAllowed?: boolean;
-};
-
-type FrontendLegacyRuntimeFollowUpDetail = {
-  ok: boolean;
-  error?: string;
-  kind?: "runtime_follow_up_legacy";
-  relativePath?: string;
-  content?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  currentDecisionState?: string | null;
-  runtimeValueToOperationalize?: string;
-  proposedHost?: string;
-  proposedIntegrationMode?: string | null;
-  reentryContractPath?: string | null;
-  currentStatus?: string | null;
-  reviewCadence?: string | null;
-  requiredProof?: string[];
-  requiredGates?: string[];
-  rollbackNote?: string | null;
-};
-
-type FrontendLegacyRuntimeHandoffDetail = {
-  ok: boolean;
-  error?: string;
-  kind?: "runtime_handoff_legacy";
-  relativePath?: string;
-  content?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  handoffType?: string | null;
-  runtimeValueToOperationalize?: string;
-  proposedHost?: string;
-  proposedRuntimeSurface?: string;
-  originatingArchitectureRecordPath?: string | null;
-  mixedValuePartitionRef?: string | null;
-  runtimeFollowUpPath?: string | null;
-  runtimeRecordPath?: string | null;
-  runtimeProofPath?: string | null;
-  promotionRecordPath?: string | null;
-  registryEntryPath?: string | null;
-  qualityGateResult?: string | null;
-};
-
-type FrontendRuntimeRecordDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  runtimeObjective?: string;
-  proposedHost?: string;
-  proposedRuntimeSurface?: string;
-  requiredProofSummary?: string;
-  currentStatus?: string;
-  linkedFollowUpRecord?: string;
-  linkedRoutingPath?: string | null;
-  runtimeProofRelativePath?: string;
-  proofExists?: boolean;
-  approvalAllowed?: boolean;
-  content?: string;
-};
-
-type FrontendRuntimeProofDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  runtimeObjective?: string;
-  proposedHost?: string;
-  proposedRuntimeSurface?: string;
-  currentStatus?: string;
-  linkedRuntimeRecordPath?: string;
-  linkedFollowUpPath?: string;
-  linkedRoutingPath?: string | null;
-  runtimeCapabilityBoundaryRelativePath?: string;
-  runtimeCapabilityBoundaryExists?: boolean;
-  approvalAllowed?: boolean;
-  content?: string;
-};
-
-type FrontendRuntimeRuntimeCapabilityBoundaryDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  runtimeObjective?: string;
-  proposedHost?: string;
-  proposedRuntimeSurface?: string;
-  currentProofStatus?: string;
-  linkedRuntimeProofPath?: string;
-  linkedRuntimeRecordPath?: string;
-  linkedFollowUpPath?: string;
-  linkedRoutingPath?: string | null;
-  promotionReadinessRelativePath?: string;
-  promotionReadinessExists?: boolean;
-  approvalAllowed?: boolean;
-  content?: string;
-};
-
-type FrontendRuntimePromotionReadinessDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  runtimeObjective?: string;
-  proposedHost?: string;
-  proposedRuntimeSurface?: string;
-  executionState?: string;
-  currentStatus?: string;
-  promotionReadinessDecision?: string;
-  hostFacingPromotionDecision?: string;
-  frontendCapabilityDecision?: string;
-  openedRuntimeImplementationSlicePath?: string | null;
-  prePromotionImplementationSlicePath?: string | null;
-  promotionInputPackagePath?: string | null;
-  profileCheckerDecisionPath?: string | null;
-  compileContractPath?: string | null;
-  promotionGoNoGoDecisionPath?: string | null;
-  linkedCapabilityBoundaryPath?: string;
-  linkedRuntimeProofPath?: string;
-  linkedRuntimeRecordPath?: string;
-  linkedFollowUpPath?: string;
-  linkedRoutingPath?: string | null;
-  artifactStage?: string;
-  artifactNextLegalStep?: string;
-  currentStage?: string;
-  nextLegalStep?: string;
-  promotionReadinessBlockers?: string[];
-  content?: string;
-};
-
-type FrontendArchitectureStartDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  objective?: string;
-  startApproval?: string;
-  resultSummary?: string;
-  handoffStubPath?: string;
-  resultRelativePath?: string | null;
-  decisionRelativePath?: string | null;
-  closeoutAssist?: {
-    missionFitSummary: string;
-    primaryAdoptionQuestion: string;
-    extractedValue: string[];
-    excludedBaggage: string[];
-    directiveOwnedForm: string;
-    adaptedValue: string[];
-    improvementGoals: string[];
-    intendedDelta: string;
-    structuralStages: string[];
-    stagePreservationExpectation: "preserve_explicit_stages" | "not_applicable";
-    stagePreservationSummary: string;
-    decisionGuidance: string;
-    readinessGuidance: string[];
-    suggestedResultSummary: string;
-  };
-  resultEvidence?: {
-    availability: "direct_evidence" | "artifact_only" | "not_available";
-    primaryKind: "code_path" | "artifact_path" | "none";
-    primaryPath: string | null;
-    primaryLabel: string;
-    summary: string;
-    supportingEvidence: Array<{
-      kind: "bounded_result" | "closeout_decision" | "engine_run_record";
-      path: string;
-      label: string;
-    }>;
-  };
-  content?: string;
-};
-
-type FrontendArchitectureResultDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  objective?: string;
-  closeoutApproval?: string;
-  resultSummary?: string;
-  nextDecision?: string;
-  verdict?: string;
-  rationale?: string;
-  startRelativePath?: string;
-  handoffStubPath?: string;
-  decisionRelativePath?: string;
-  continuationStartRelativePath?: string | null;
-  adoptionRelativePath?: string | null;
-  resultEvidence?: {
-    availability: "direct_evidence" | "artifact_only" | "not_available";
-    primaryKind: "code_path" | "artifact_path" | "none";
-    primaryPath: string | null;
-    primaryLabel: string;
-    summary: string;
-    supportingEvidence: Array<{
-      kind: "bounded_result" | "closeout_decision" | "engine_run_record";
-      path: string;
-      label: string;
-    }>;
-  };
-  content?: string;
-};
-
-type FrontendArchitectureAdoptionDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  finalStatus?: string;
-  sourceResultRelativePath?: string;
-  decisionRelativePath?: string;
-  implementationTargetRelativePath?: string | null;
-  content?: string;
-};
-
-type FrontendArchitectureImplementationTargetDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  title?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  artifactType?: string;
-  finalStatus?: string;
-  objective?: string;
-  expectedOutcome?: string;
-  adoptionRelativePath?: string;
-  decisionRelativePath?: string;
-  sourceResultRelativePath?: string;
-  implementationResultRelativePath?: string | null;
-  content?: string;
-};
-
-type FrontendArchitectureImplementationResultDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  objective?: string;
-  outcome?: "success" | "failure";
-  resultSummary?: string;
-  validationResult?: string;
-  rollbackNote?: string;
-  targetRelativePath?: string;
-  adoptionRelativePath?: string;
-  sourceResultRelativePath?: string;
-  retainedRelativePath?: string | null;
-  content?: string;
-};
-
-type FrontendArchitectureRetentionDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  objective?: string;
-  stabilityLevel?: string;
-  reuseScope?: string;
-  confirmationDecision?: string;
-  rollbackBoundary?: string;
-  resultRelativePath?: string;
-  targetRelativePath?: string;
-  adoptionRelativePath?: string;
-  sourceResultRelativePath?: string;
-  integrationRecordRelativePath?: string | null;
-  content?: string;
-};
-
-type FrontendArchitectureIntegrationRecordDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  objective?: string;
-  integrationTargetSurface?: string;
-  readinessSummary?: string;
-  expectedEffect?: string;
-  validationBoundary?: string;
-  integrationDecision?: string;
-  rollbackBoundary?: string;
-  retainedRelativePath?: string;
-  resultRelativePath?: string;
-  targetRelativePath?: string;
-  adoptionRelativePath?: string;
-  sourceResultRelativePath?: string;
-  consumptionRelativePath?: string | null;
-  content?: string;
-};
-
-type FrontendArchitectureConsumptionRecordDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  objective?: string;
-  appliedSurface?: string;
-  applicationSummary?: string;
-  observedEffect?: string;
-  validationResult?: string;
-  outcome?: "success" | "failure";
-  rollbackNote?: string;
-  integrationRelativePath?: string;
-  retainedRelativePath?: string;
-  resultRelativePath?: string;
-  targetRelativePath?: string;
-  adoptionRelativePath?: string;
-  sourceResultRelativePath?: string;
-  evaluationRelativePath?: string | null;
-  content?: string;
-};
-
-type FrontendArchitecturePostConsumptionEvaluationDetail = {
-  ok: boolean;
-  error?: string;
-  relativePath?: string;
-  absolutePath?: string;
-  candidateId?: string;
-  candidateName?: string;
-  usefulnessLevel?: string;
-  objective?: string;
-  decision?: "keep" | "reopen";
-  rationale?: string;
-  observedStability?: string;
-  retainedUsefulnessAssessment?: string;
-  nextBoundedAction?: string;
-  rollbackNote?: string;
-  reopenedStartRelativePath?: string | null;
-  consumptionRelativePath?: string;
-  integrationRelativePath?: string;
-  retainedRelativePath?: string;
-  resultRelativePath?: string;
-  targetRelativePath?: string;
-  adoptionRelativePath?: string;
-  sourceResultRelativePath?: string;
-  content?: string;
-};
-
-type FrontendEngineRunRecord = {
-  runId: string;
-  receivedAt: string;
-  candidate: {
-    candidateId: string;
-    candidateName: string;
-    usefulnessLevel: string;
-  };
-  selectedLane: {
-    laneId: string;
-  };
-  analysis: {
-    usefulnessRationale: string;
-  };
-  decision: {
-    decisionState: string;
-  };
-  proofPlan: {
-    proofKind: string;
-  };
-  integrationProposal: {
-    integrationMode: string;
-  };
-  reportPlan: {
-    summary: string;
-  };
-};
-
-type FrontendEngineRunsOverview = {
-  recentRuns: Array<{
-    record: FrontendEngineRunRecord;
-  }>;
-  totalRuns: number;
-};
-
-type FrontendEngineRunDetail = {
-  ok: boolean;
-  error?: string;
-  record?: FrontendEngineRunRecord;
-  recordPath?: string | null;
-  reportPath?: string | null;
-  reportContent?: string | null;
-  reportExcerpt?: string | null;
-};
-
-type FrontendLaneAnchor = {
-  label: string;
-  artifactPath: string;
-  currentStage: string;
-  nextLegalStep: string;
-  candidateId: string | null;
-  candidateName: string | null;
-};
-
-type FrontendRuntimeSummaryCase = {
-  candidate_id: string;
-  candidate_name: string;
-  current_case_stage: string | null;
-  current_case_next_legal_step: string | null;
-  current_head: FrontendCurrentHead | null;
-  runtime_summary: {
-    proposed_host: string | null;
-    promotion_readiness_blockers: string[];
-  } | null;
-};
-
-type FrontendArchitectureSummaryCase = {
-  candidate_id: string;
-  candidate_name: string;
-  current_case_stage: string | null;
-  current_case_next_legal_step: string | null;
-  current_head: FrontendCurrentHead | null;
-};
-
-type FrontendLaneCaseStripInput = {
-  tone: "runtime" | "architecture";
-  title: string;
-  summary: string;
-  tags: Array<{
-    value: string;
-    tone: "default" | "runtime" | "architecture" | "warning";
-  }>;
-  cards: Array<{
-    label: string;
-    value: unknown;
-  }>;
-  boundaryNote: unknown;
-  action?: {
-    href: string;
-    label: string;
-  } | null;
-};
-
-type FrontendSnapshot = {
-  engineRuns: FrontendEngineRunsOverview;
-  queue: FrontendQueueOverview;
-  runtimeSummary: {
-    activeCases: FrontendRuntimeSummaryCase[];
-    recentAnchors: FrontendLaneAnchor[];
-  };
-  architectureSummary: {
-    activeCases: FrontendArchitectureSummaryCase[];
-    recentAnchors: FrontendLaneAnchor[];
-  };
-  handoffStubs: FrontendHandoffStub[];
-  handoffWarnings: string[];
-};
-
-async function getJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, init);
-  if (!response.ok) {
-    throw new Error((await response.text()) || `request_failed:${response.status}`);
-  }
-  return response.json() as Promise<T>;
-}
-
-function navTo(path: string) {
-  window.history.pushState({}, "", path);
-  window.dispatchEvent(new PopStateEvent("popstate"));
-}
-
-function artifactPathToViewPath(relativePath: string) {
-  if (relativePath.startsWith("architecture/02-experiments/") && relativePath.endsWith("-bounded-start.md")) {
-    return `/architecture-starts/view?path=${encodeURIComponent(relativePath)}`;
-  }
-  if (
-    (relativePath.startsWith("architecture/02-experiments/") || relativePath.startsWith("architecture/01-bounded-starts/"))
-    && relativePath.endsWith("-bounded-result.md")
-  ) {
-    return `/architecture-results/view?path=${encodeURIComponent(relativePath)}`;
-  }
-  return `/artifacts?path=${encodeURIComponent(relativePath)}`;
-}
+import { appStyles } from "./app-styles";
+import type {
+  FrontendArchitectureAdoptionDetail,
+  FrontendArchitectureConsumptionRecordDetail,
+  FrontendArchitectureImplementationResultDetail,
+  FrontendArchitectureImplementationTargetDetail,
+  FrontendArchitectureIntegrationRecordDetail,
+  FrontendArchitecturePostConsumptionEvaluationDetail,
+  FrontendArchitectureResultDetail,
+  FrontendArchitectureRetentionDetail,
+  FrontendArchitectureStartDetail,
+  FrontendArchitectureSummaryCase,
+  FrontendDiscoveryRoutingDetail,
+  FrontendEngineRunDetail,
+  FrontendEngineRunRecord,
+  FrontendEngineRunsOverview,
+  FrontendHandoffStub,
+  FrontendLaneAnchor,
+  FrontendLaneCaseStripInput,
+  FrontendLegacyRuntimeFollowUpDetail,
+  FrontendLegacyRuntimeHandoffDetail,
+  FrontendQueueEntry,
+  FrontendQueueOverview,
+  FrontendRuntimeFollowUpDetail,
+  FrontendRuntimePromotionReadinessDetail,
+  FrontendRuntimeProofDetail,
+  FrontendRuntimeRecordDetail,
+  FrontendRuntimeRuntimeCapabilityBoundaryDetail,
+  FrontendRuntimeSummaryCase,
+  FrontendSnapshot,
+} from "./app-types";
+import { artifactPathToViewPath, getJson, navTo } from "./app-utils";
+import {
+  renderArchitectureCaseStrip,
+  renderArchitectureLaneSummary,
+  renderDiscoveryLanePage,
+  renderLaneAnchorList,
+  renderLaneCaseStrip,
+  renderLaneOverviewCard,
+  renderQueueCard,
+  renderQueueStat,
+  renderQueueTag,
+  renderRuntimeCaseStrip,
+  renderRuntimeLaneSummary,
+} from "./components/lane-sections";
 
 class DirectiveFrontendApp extends LitElement {
   static properties = {
@@ -615,111 +56,7 @@ class DirectiveFrontendApp extends LitElement {
     submitError: { state: true },
   };
 
-  static styles = css`
-    :host { display:block; color:#1f1c16; }
-    main { max-width:1180px; margin:0 auto; padding:20px; }
-    .panel { background:#fffdf7; border:1px solid #d9d0bf; border-radius:10px; padding:16px; margin:0 0 16px; }
-    .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
-    .queue-summary-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin:0 0 16px; }
-    .queue-card-list { display:grid; gap:14px; }
-    .queue-card { border:1px solid #e2d9c8; border-radius:12px; padding:16px; background:linear-gradient(180deg,#fffdf9 0%,#fcf8ef 100%); }
-    .queue-card.runtime { border-color:#b8ccef; box-shadow:0 0 0 1px rgba(17,85,170,0.08) inset; }
-    .queue-card.architecture { border-color:#d6c1e8; box-shadow:0 0 0 1px rgba(94,57,145,0.06) inset; }
-    .queue-card.monitor { border-color:#d9d0bf; background:#fcfaf4; }
-    .queue-card-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin:0 0 12px; }
-    .queue-card-title { margin:0; font-size:24px; line-height:1.2; }
-    .queue-card-subtitle { margin:4px 0 0; font-size:12px; color:#5c5548; word-break:break-word; }
-    .queue-tag-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
-    .queue-kv-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin:0 0 12px; }
-    .queue-kv { border:1px solid #e7dfd1; border-radius:10px; padding:12px; background:#fffdfa; min-width:0; }
-    .queue-kv h4 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:0.04em; color:#6a624f; }
-    .queue-kv p { margin:0; }
-    .queue-stage { font-size:14px; font-weight:700; word-break:break-word; }
-    .queue-step { font-size:14px; line-height:1.5; }
-    .queue-actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding-top:12px; border-top:1px solid #ece3d2; }
-    .queue-link-list { display:flex; gap:10px; flex-wrap:wrap; }
-    .queue-highlight { border:1px solid #d5c8b1; border-radius:12px; padding:14px; background:#f9f3e7; }
-    .queue-highlight h3 { margin:0 0 8px; }
-    .queue-highlight p { margin:0; }
-    .queue-count { font-size:28px; font-weight:700; line-height:1; margin:0 0 6px; }
-    .queue-empty { text-align:center; padding:24px; border:1px dashed #d9d0bf; border-radius:12px; background:#fcfaf4; }
-    .lane-case-strip { border:1px solid #d9d0bf; border-radius:14px; padding:16px; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); overflow:hidden; min-width:0; }
-    .lane-case-strip.runtime { border-color:#b8ccef; background:linear-gradient(180deg,#f7fbff 0%,#edf4ff 100%); }
-    .lane-case-strip.architecture { border-color:#d6c1e8; background:linear-gradient(180deg,#fbf7ff 0%,#f3ecfb 100%); }
-    .lane-case-strip h3 { margin:0 0 8px; }
-    .lane-case-strip p, .lane-case-strip li { margin:0; overflow-wrap:anywhere; }
-    .lane-case-strip-grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); margin-top:14px; }
-    .lane-case-strip-card { border:1px solid #e6dcc8; border-radius:12px; background:#fff; padding:12px; min-width:0; overflow:hidden; }
-    .lane-case-strip.runtime .lane-case-strip-card { border-color:#d5e3f7; }
-    .lane-case-strip.architecture .lane-case-strip-card { border-color:#e2d4f0; }
-    .lane-case-strip-card h4 { margin:0 0 6px; font-size:12px; text-transform:uppercase; letter-spacing:0.04em; color:#5b6170; }
-    .lane-case-strip-card p, .lane-case-strip-card li { overflow-wrap:anywhere; }
-    .runtime-lane-grid { display:grid; gap:14px; grid-template-columns:1.2fr 0.8fr; align-items:start; }
-    .runtime-lane-stack { display:grid; gap:12px; }
-    .runtime-anchor-list { display:grid; gap:10px; }
-    .runtime-anchor-item { border:1px solid #d5e3f7; border-radius:12px; background:#fff; padding:12px; min-width:0; overflow:hidden; }
-    .runtime-anchor-item h4 { margin:0 0 6px; font-size:15px; }
-    .runtime-anchor-item p { margin:0; overflow-wrap:anywhere; }
-    .lane-overview-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
-    .lane-overview-card { border:1px solid #d9d0bf; border-radius:14px; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); padding:16px; min-width:0; overflow:hidden; }
-    .lane-overview-card.runtime { border-color:#b8ccef; background:linear-gradient(180deg,#f7fbff 0%,#edf4ff 100%); }
-    .lane-overview-card.architecture { border-color:#d6c1e8; background:linear-gradient(180deg,#fbf7ff 0%,#f3ecfb 100%); }
-    .lane-overview-card.discovery { border-color:#d9d0bf; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); }
-    .lane-overview-card h3 { margin:0 0 8px; }
-    .lane-overview-card p { margin:0; overflow-wrap:anywhere; }
-    .lane-overview-stats { display:grid; gap:10px; grid-template-columns:repeat(2,minmax(0,1fr)); margin:14px 0; }
-    .lane-overview-stat { border:1px solid #e6dcc8; border-radius:10px; background:#fffdfa; padding:10px; min-width:0; overflow:hidden; }
-    .lane-overview-stat h4 { margin:0 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:#6a624f; }
-    .lane-overview-stat p { margin:0; }
-    .lane-page-grid { display:grid; gap:14px; grid-template-columns:1.15fr 0.85fr; align-items:start; }
-    .lane-page-stack { display:grid; gap:12px; }
-    .lane-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-    .lane-case-list { display:grid; gap:12px; }
-    .hero { background:linear-gradient(180deg,#fffdfa 0%,#f7f1e5 100%); border:1px solid #d7ccb6; border-radius:14px; padding:18px; }
-    .hero h2 { margin:0 0 8px; }
-    .hero p { margin:0; }
-    .hero-meta { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 0; }
-    .lane-head-strip-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
-    .seam-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
-    .seam-card { border:1px solid #e4dbc9; border-radius:12px; background:#fffdfa; padding:14px; min-width:0; }
-    .seam-card h3 { margin:0 0 8px; font-size:15px; }
-    .seam-card p { margin:0; }
-    .seam-card ul { margin:0; }
-    .seam-value { font-size:16px; font-weight:700; line-height:1.4; word-break:break-word; }
-    .link-stack { display:grid; gap:8px; }
-    .seam-note { border-left:4px solid #b8ccef; padding-left:12px; }
-    .nav { display:inline-block; margin:6px 8px 0 0; padding:6px 10px; border:1px solid #cfc5b4; border-radius:999px; text-decoration:none; color:#1f1c16; background:#fcf9f1; }
-    .nav.active { background:#1f1c16; color:#fff; border-color:#1f1c16; }
-    table { width:100%; border-collapse:collapse; font-size:13px; }
-    th, td { text-align:left; padding:8px; border-bottom:1px solid #e7dfd1; vertical-align:top; }
-    input, textarea, select, button { font:inherit; }
-    input, textarea, select { width:100%; box-sizing:border-box; padding:8px; border:1px solid #bfb39d; border-radius:6px; background:#fff; }
-    textarea { min-height:96px; resize:vertical; }
-    button { padding:8px 12px; border-radius:6px; border:1px solid #1f1c16; background:#1f1c16; color:#fff; cursor:pointer; }
-    button.secondary { background:#fffdf7; color:#1f1c16; }
-    .row { display:grid; gap:8px; margin:0 0 10px; }
-    label, .muted { font-size:12px; color:#5c5548; }
-    .pill { display:inline-block; padding:2px 8px; border-radius:999px; border:1px solid #cabb9e; font-size:12px; }
-    .actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-    .message { background:#eef6ff; border-color:#b7d4ff; }
-    .warning { background:#fff7e8; border-color:#e7c88d; }
-    .good { background:#eef8ef; border-color:#a8d1ad; }
-    pre { white-space:pre-wrap; word-break:break-word; background:#faf7ef; padding:12px; border:1px solid #e1d8c7; border-radius:8px; overflow-x:auto; }
-    a { color:#1155aa; text-decoration:none; }
-    a:hover { text-decoration:underline; }
-    ul { margin:0; padding-left:18px; }
-    .mono { word-break:break-all; }
-    .panel, .queue-card, .queue-kv, .queue-highlight, .hero, .seam-card { overflow:hidden; }
-    .queue-card-title, .queue-card-subtitle, .queue-stage, .queue-step, .seam-value, .pill { overflow-wrap:anywhere; }
-    @media (max-width: 720px) {
-      main { padding:14px; }
-      .queue-card-header { flex-direction:column; }
-      .queue-tag-row { justify-content:flex-start; }
-      .hero-meta { flex-direction:column; align-items:flex-start; }
-      .runtime-lane-grid { grid-template-columns:1fr; }
-      .lane-page-grid { grid-template-columns:1fr; }
-    }
-  `;
+  static styles = appStyles;
 
   declare route: string;
   declare page: any;
@@ -873,51 +210,15 @@ class DirectiveFrontendApp extends LitElement {
   }
 
   private renderQueueTag(value: string, tone: "default" | "runtime" | "architecture" | "warning" = "default") {
-    const style = {
-      default: "background:#fcf7ee;",
-      runtime: "background:#edf4ff; border-color:#b8ccef;",
-      architecture: "background:#f5eefc; border-color:#d6c1e8;",
-      warning: "background:#fff3da; border-color:#e7c88d;",
-    }[tone];
-    return html`<span class="pill" style=${style}>${value}</span>`;
+    return renderQueueTag(value, tone);
   }
 
   private renderQueueStat(label: string, value: number, description: string) {
-    return html`
-      <section class="queue-highlight">
-        <div class="queue-count">${value}</div>
-        <h3>${label}</h3>
-        <p class="muted">${description}</p>
-      </section>
-    `;
+    return renderQueueStat(label, value, description);
   }
 
   private renderLaneCaseStrip(input: FrontendLaneCaseStripInput) {
-    return html`
-      <section class=${`lane-case-strip ${input.tone}`}>
-        <h3>${input.title}</h3>
-        <p>${input.summary}</p>
-        ${input.tags.length
-          ? html`<div class="hero-meta">
-              ${input.tags.map((tag) => this.renderQueueTag(tag.value, tag.tone))}
-            </div>`
-          : nothing}
-        <div class="lane-case-strip-grid">
-          ${input.cards.map((card) => html`
-            <section class="lane-case-strip-card">
-              <h4>${card.label}</h4>
-              <div>${card.value}</div>
-            </section>
-          `)}
-        </div>
-        <p class="muted" style="margin-top:12px;">${input.boundaryNote}</p>
-        ${input.action
-          ? html`<div class="queue-link-list" style="margin-top:12px;">
-              <a href=${input.action.href} @click=${(event: Event) => { event.preventDefault(); navTo(input.action?.href || ""); }}>${input.action.label}</a>
-            </div>`
-          : nothing}
-      </section>
-    `;
+    return renderLaneCaseStrip(input, this.renderQueueTag.bind(this));
   }
 
   private renderQueueCard(
@@ -925,301 +226,41 @@ class DirectiveFrontendApp extends LitElement {
     run: FrontendEngineRunRecord | undefined,
     handoffPath: string | null,
   ) {
-    const lane = entry.current_head?.artifact_lane ?? entry.routing_target ?? "queue";
-    const cardClass = lane === "runtime"
-      ? "queue-card runtime"
-      : lane === "architecture"
-        ? "queue-card architecture"
-        : "queue-card monitor";
-    const routingTone = entry.routing_target === "runtime"
-      ? "runtime"
-      : entry.routing_target === "architecture"
-        ? "architecture"
-        : "default";
-    const statusTone = entry.status_effective !== entry.status ? "warning" : "default";
-    const integrityTone = entry.integrity_state === "broken" ? "warning" : "default";
-    const head = entry.current_head;
-    const engineRunHref = run ? `/engine-runs/${encodeURIComponent(run.runId)}` : null;
-    const handoffHref = handoffPath ? `/handoffs/view?path=${encodeURIComponent(handoffPath)}` : null;
-    const activeHeadLabel = head?.artifact_lane === "runtime"
-      ? "Active Runtime head"
-      : head?.artifact_lane === "architecture"
-        ? "Active Architecture head"
-        : "Current live artifact";
-
-    return html`
-      <article class=${cardClass}>
-        <div class="queue-card-header">
-          <div>
-            <h3 class="queue-card-title">${entry.candidate_name}</h3>
-            <div class="queue-card-subtitle mono">${entry.candidate_id}</div>
-          </div>
-          <div class="queue-tag-row">
-            ${this.renderQueueTag(entry.status_effective, statusTone)}
-            ${entry.routing_target ? this.renderQueueTag(entry.routing_target, routingTone as any) : nothing}
-            ${this.renderQueueTag(`integrity:${entry.integrity_state ?? "n/a"}`, integrityTone)}
-          </div>
-        </div>
-
-        <div class="queue-kv-grid">
-          <section class="queue-kv">
-            <h4>${activeHeadLabel}</h4>
-            <div>${this.currentHeadLink(entry)}</div>
-            <p class="muted">${head ? `${head.artifact_stage} | ${head.artifact_lane}` : "Not resolved yet."}</p>
-          </section>
-
-          <section class="queue-kv">
-            <h4>Current case stage</h4>
-            <p class="queue-stage">${entry.current_case_stage ?? "n/a"}</p>
-          </section>
-
-          <section class="queue-kv">
-            <h4>Continue from here</h4>
-            <p class="queue-step">${entry.current_case_next_legal_step ?? "No explicit next legal step recorded yet."}</p>
-          </section>
-
-          <section class="queue-kv">
-            <h4>Downstream stub</h4>
-            <div>${handoffHref
-              ? html`<a href=${handoffHref} @click=${(event: Event) => { event.preventDefault(); navTo(handoffHref); }}>${handoffPath}</a>`
-              : html`<span class="muted">No downstream stub recorded.</span>`}</div>
-            ${entry.result_record_path && handoffPath !== entry.result_record_path
-              ? html`<p class="muted mono">${entry.result_record_path}</p>`
-              : nothing}
-          </section>
-        </div>
-
-        ${entry.status_warning
-          ? html`<p class="muted" style="margin-top:12px;">${entry.status_warning}</p>`
-          : nothing}
-
-        <div class="queue-actions">
-          <div class="queue-link-list">
-            ${engineRunHref
-              ? html`<a href=${engineRunHref} @click=${(event: Event) => { event.preventDefault(); navTo(engineRunHref); }}>Engine run</a>`
-              : html`<span class="muted">Engine run unavailable</span>`}
-            ${entry.routing_record_path
-              ? html`<a href=${`/discovery-routing-records/view?path=${encodeURIComponent(entry.routing_record_path)}`} @click=${(event: Event) => {
-                event.preventDefault();
-                navTo(`/discovery-routing-records/view?path=${encodeURIComponent(entry.routing_record_path || "")}`);
-              }}>Routing record</a>`
-              : nothing}
-            ${head
-              ? html`<a href=${head.view_path} @click=${(event: Event) => { event.preventDefault(); navTo(head.view_path); }}>Open current head</a>`
-              : nothing}
-          </div>
-        </div>
-      </article>
-    `;
+    return renderQueueCard(entry, run, handoffPath, {
+      currentHeadLink: this.currentHeadLink.bind(this),
+    });
   }
 
   private renderRuntimeCaseStrip(entry: FrontendRuntimeSummaryCase | FrontendQueueEntry) {
-    const head = entry.current_head;
-    const blockers = entry.runtime_summary?.promotion_readiness_blockers ?? [];
-    const proposedHost = entry.runtime_summary?.proposed_host ?? "n/a";
-    const candidateLabel = entry.candidate_name || entry.candidate_id;
-    const stageLabel = entry.current_case_stage ?? "runtime state not resolved";
-    const seamCopy = entry.runtime_summary
-      ? `${candidateLabel} is currently the live Runtime stop for Directive Workspace at ${stageLabel}. This strip reuses the same truth-backed seam context as the detail page, but keeps home, queue, and lane views useful before drill-down.`
-      : `${candidateLabel} is currently visible in the Runtime lane for Directive Workspace at ${stageLabel}. This case has not reached promotion-readiness yet, so the lane strip stays limited to the current stage and next legal step.`;
-    return this.renderLaneCaseStrip({
-      tone: "runtime",
-      title: candidateLabel,
-      summary: seamCopy,
-      tags: [
-        { value: stageLabel, tone: "runtime" },
-        { value: proposedHost, tone: "runtime" },
-      ],
-      cards: [
-        {
-          label: "Current stage",
-          value: html`<p class="seam-value">${stageLabel}</p>`,
-        },
-        {
-          label: "Next legal step",
-          value: html`<p>${entry.current_case_next_legal_step ?? "No explicit next legal step recorded."}</p>`,
-        },
-        {
-          label: "Proposed host",
-          value: html`<p class="seam-value">${proposedHost}</p>`,
-        },
-        {
-          label: "Blockers",
-          value: blockers.length
-            ? html`<ul>${blockers.map((blocker) => html`<li><code>${blocker}</code></li>`)}</ul>`
-            : html`<p class="muted">${entry.runtime_summary ? "No blockers recorded." : "Blockers are not surfaced before promotion-readiness."}</p>`,
-        },
-      ],
-      boundaryNote: "Directive Workspace web host is the active product surface here. Runtime and Engine still own gating and progression rules, so this strip does not open promotion, implementation, integration, or execution.",
-      action: head
-        ? {
-            href: head.view_path,
-            label: "Open Runtime seam review",
-          }
-        : null,
+    return renderRuntimeCaseStrip(entry, {
+      currentHeadLink: this.currentHeadLink.bind(this),
     });
   }
 
   private renderRuntimeLaneSummary(summary: FrontendSnapshot["runtimeSummary"]) {
-    return html`
-      <section class="panel">
-        <h2>Runtime lane summary</h2>
-        <p class="muted">This read-only section groups active Runtime cases and recent Runtime anchors from canonical Directive Workspace truth. It improves Runtime visibility before drill-down without opening any downstream seam.</p>
-        <div class="runtime-lane-grid" style="margin-top:14px;">
-          <section class="runtime-lane-stack">
-            <div class="queue-highlight">
-              <h3>Active Runtime cases</h3>
-              <p class="muted">Cases currently routed into the Runtime lane and visible through the product frontend.</p>
-            </div>
-            ${summary.activeCases.length
-              ? summary.activeCases.map((entry) => this.renderRuntimeCaseStrip(entry))
-              : html`<div class="queue-empty muted">No active Runtime cases found.</div>`}
-          </section>
-
-          <section class="runtime-lane-stack">
-            <div class="queue-highlight">
-              <h3>Recent Runtime anchors</h3>
-              <p class="muted">Canonical Runtime anchors from the shared state resolver. These show the current Runtime stops and linked artifact heads without inventing controls.</p>
-            </div>
-            <div class="runtime-anchor-list">
-              ${summary.recentAnchors.length
-                ? summary.recentAnchors.map((anchor) => html`
-                    <article class="runtime-anchor-item">
-                      <h4>${anchor.candidateName ?? anchor.label}</h4>
-                      <p class="muted mono" style="margin-bottom:8px;">${anchor.artifactPath}</p>
-                      <p><strong>Current stage:</strong> ${anchor.currentStage}</p>
-                      <p style="margin-top:8px;"><strong>Next legal step:</strong> ${anchor.nextLegalStep}</p>
-                    </article>
-                  `)
-                : html`<div class="queue-empty muted">No Runtime anchors available.</div>`}
-            </div>
-          </section>
-        </div>
-      </section>
-    `;
+    return renderRuntimeLaneSummary(summary, {
+      currentHeadLink: this.currentHeadLink.bind(this),
+    });
   }
 
   private renderLaneAnchorList(title: string, description: string, anchors: FrontendLaneAnchor[]) {
-    return html`
-      <section class="lane-page-stack">
-        <div class="queue-highlight">
-          <h3>${title}</h3>
-          <p class="muted">${description}</p>
-        </div>
-        <div class="runtime-anchor-list">
-          ${anchors.length
-            ? anchors.map((anchor) => html`
-                <article class="runtime-anchor-item">
-                  <h4>${anchor.candidateName ?? anchor.label}</h4>
-                  <p class="muted mono" style="margin-bottom:8px;">${anchor.artifactPath}</p>
-                  <p><strong>Current stage:</strong> ${anchor.currentStage}</p>
-                  <p style="margin-top:8px;"><strong>Next legal step:</strong> ${anchor.nextLegalStep}</p>
-                </article>
-              `)
-            : html`<div class="queue-empty muted">No anchors available.</div>`}
-        </div>
-      </section>
-    `;
+    return renderLaneAnchorList(title, description, anchors);
   }
 
   private renderArchitectureCaseStrip(entry: FrontendArchitectureSummaryCase) {
-    const head = entry.current_head;
-    return this.renderLaneCaseStrip({
-      tone: "architecture",
-      title: entry.candidate_name,
-      summary: `${entry.candidate_name} remains visible through the Architecture lane as a truth-backed case summary. The frontend shows the current live head and next legal step, while Architecture keeps ownership of downstream legality and progression.`,
-      tags: [
-        { value: entry.current_case_stage ?? "architecture state not resolved", tone: "architecture" },
-        { value: entry.candidate_id, tone: "architecture" },
-      ],
-      cards: [
-        {
-          label: "Current stage",
-          value: html`<p class="seam-value">${entry.current_case_stage ?? "n/a"}</p>`,
-        },
-        {
-          label: "Next legal step",
-          value: html`<p>${entry.current_case_next_legal_step ?? "No explicit next legal step recorded."}</p>`,
-        },
-        {
-          label: "Current head",
-          value: head
-            ? html`
-                <div><a href=${head.view_path} @click=${(event: Event) => { event.preventDefault(); navTo(head.view_path); }}>${head.artifact_path}</a></div>
-                <div class="muted">${head.artifact_stage} | ${head.artifact_lane}</div>
-              `
-            : html`<p class="muted">Current head not resolved.</p>`,
-        },
-      ],
-      boundaryNote: "Architecture is a real lane with retained outputs and downstream chains. This strip stays read-only and truth-backed rather than reopening closed work from the frontend.",
-      action: head
-        ? {
-            href: head.view_path,
-            label: "Open current Architecture head",
-          }
-        : null,
+    return renderArchitectureCaseStrip(entry, {
+      currentHeadLink: this.currentHeadLink.bind(this),
     });
   }
 
   private renderArchitectureLaneSummary(summary: FrontendSnapshot["architectureSummary"]) {
-    return html`
-      <section class="panel">
-        <h2>Architecture lane</h2>
-        <p class="muted">Architecture is already a real product lane with bounded starts, results, adoption, retention, integration, consumption, and evaluation history. The frontend now surfaces that lane directly instead of hiding it behind artifact-only drill-down.</p>
-        <div class="lane-page-grid" style="margin-top:14px;">
-          <section class="lane-page-stack">
-            <div class="queue-highlight">
-              <h3>Current Architecture cases</h3>
-              <p class="muted">Recent Architecture-routed cases from queue truth and their current live heads.</p>
-            </div>
-            <div class="lane-case-list">
-              ${summary.activeCases.length
-                ? summary.activeCases.map((entry) => this.renderArchitectureCaseStrip(entry))
-                : html`<div class="queue-empty muted">No Architecture cases found.</div>`}
-            </div>
-          </section>
-          ${this.renderLaneAnchorList(
-            "Recent Architecture anchors",
-            "Canonical Architecture anchors from the shared state resolver. These summarize retained/evaluated Architecture heads without inventing new workflow controls.",
-            summary.recentAnchors,
-          )}
-        </div>
-      </section>
-    `;
+    return renderArchitectureLaneSummary(summary, {
+      currentHeadLink: this.currentHeadLink.bind(this),
+    });
   }
 
   private renderDiscoveryLanePage(snapshot: FrontendSnapshot) {
-    const runtimeCount = snapshot.runtimeSummary.activeCases.length;
-    const architectureCount = snapshot.architectureSummary.activeCases.length;
-    return html`
-      <section class="panel">
-        <h2>Discovery lane</h2>
-        <p class="muted">Discovery remains the front door. It owns source submission, queue state, routing records, and explicit downstream approvals into Architecture handoffs or Runtime follow-ups.</p>
-        <div class="lane-overview-grid" style="margin-top:14px;">
-          <section class="lane-overview-card discovery">
-            <h3>Queue</h3>
-            <div class="lane-overview-stats">
-              <div class="lane-overview-stat"><h4>Total entries</h4><p class="seam-value">${snapshot.queue.totalEntries}</p></div>
-              <div class="lane-overview-stat"><h4>Handoff stubs</h4><p class="seam-value">${snapshot.handoffStubs.length}</p></div>
-            </div>
-            <p class="muted">Queue and handoff state remain the canonical Discovery operating surfaces.</p>
-            <div class="lane-actions">
-              <a href="/submit" @click=${(event: Event) => { event.preventDefault(); navTo("/submit"); }}>Open source submission</a>
-              <a href="/queue" @click=${(event: Event) => { event.preventDefault(); navTo("/queue"); }}>Open queue</a>
-              <a href="/handoffs" @click=${(event: Event) => { event.preventDefault(); navTo("/handoffs"); }}>Open handoffs</a>
-            </div>
-          </section>
-          <section class="lane-overview-card discovery">
-            <h3>Routing outcomes</h3>
-            <div class="lane-overview-stats">
-              <div class="lane-overview-stat"><h4>To Architecture</h4><p class="seam-value">${architectureCount}</p></div>
-              <div class="lane-overview-stat"><h4>To Runtime</h4><p class="seam-value">${runtimeCount}</p></div>
-            </div>
-            <p class="muted">Discovery stays explicit. It does not auto-advance downstream work; it records the route and hands off to the next bounded lane surface.</p>
-          </section>
-        </div>
-      </section>
-    `;
+    return renderDiscoveryLanePage(snapshot);
   }
 
   private renderLaneOverviewCard(input: {
@@ -1233,26 +274,7 @@ class DirectiveFrontendApp extends LitElement {
     tertiary?: string;
     href: string;
   }) {
-    return html`
-      <section class=${`lane-overview-card ${input.tone}`}>
-        <h3>${input.title}</h3>
-        <p>${input.description}</p>
-        <div class="lane-overview-stats">
-          <div class="lane-overview-stat">
-            <h4>${input.primaryLabel}</h4>
-            <p class="seam-value">${input.primaryValue}</p>
-          </div>
-          <div class="lane-overview-stat">
-            <h4>${input.secondaryLabel}</h4>
-            <p class="seam-value">${input.secondaryValue}</p>
-          </div>
-        </div>
-        ${input.tertiary ? html`<p class="muted">${input.tertiary}</p>` : nothing}
-        <div class="lane-actions">
-          <a href=${input.href} @click=${(event: Event) => { event.preventDefault(); navTo(input.href); }}>Open ${input.title}</a>
-        </div>
-      </section>
-    `;
+    return renderLaneOverviewCard(input);
   }
 
   private async onSubmit(event: SubmitEvent) {
@@ -1951,8 +973,8 @@ class DirectiveFrontendApp extends LitElement {
             <tr><th>re-entry contract</th><td>${this.artifactLink(detail.reentryContractPath)}</td></tr>
             <tr><th>current status</th><td>${detail.currentStatus ?? html`<span class="muted">n/a</span>`}</td></tr>
             <tr><th>review cadence</th><td>${detail.reviewCadence ?? html`<span class="muted">n/a</span>`}</td></tr>
-            <tr><th>required proof</th><td>${detail.requiredProof?.length ? html`<ul>${detail.requiredProof.map((entry) => html`<li>${entry}</li>`)}</ul>` : html`<span class="muted">n/a</span>`}</td></tr>
-            <tr><th>required gates</th><td>${detail.requiredGates?.length ? html`<ul>${detail.requiredGates.map((entry) => html`<li>${entry}</li>`)}</ul>` : html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>required proof</th><td>${detail.requiredProof?.length ? html`<ul>${detail.requiredProof.map((entry: string) => html`<li>${entry}</li>`)}</ul>` : html`<span class="muted">n/a</span>`}</td></tr>
+            <tr><th>required gates</th><td>${detail.requiredGates?.length ? html`<ul>${detail.requiredGates.map((entry: string) => html`<li>${entry}</li>`)}</ul>` : html`<span class="muted">n/a</span>`}</td></tr>
             <tr><th>rollback note</th><td>${detail.rollbackNote ?? html`<span class="muted">n/a</span>`}</td></tr>
           </tbody></table></section>
           <section class="panel message">

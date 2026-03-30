@@ -3,8 +3,8 @@
 - Candidate id: software-design-philosophy-skill
 - Candidate name: software-design-philosophy-skill
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-software-design-philosophy-skill-cutover.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-software-design-philosophy-skill-cutover.md`
+- Origin path: `runtime/follow-up/2026-03-20-software-design-philosophy-skill-cutover.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-software-design-philosophy-skill-cutover.md`
 - Runtime objective: import one bounded `Design Philosophy Reviewer` agent through the Mission Control `agents/import-packs` route and prove that Runtime can promote a compact design-review guidance lane without adopting upstream installation flow or a generic skill-pack runtime.
 - Proposed host: Mission Control
 - Proposed runtime surface: explicit-only bounded design review skill import lane

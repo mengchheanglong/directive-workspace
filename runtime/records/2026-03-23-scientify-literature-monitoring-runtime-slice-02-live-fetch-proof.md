@@ -8,16 +8,16 @@ Slice type: bounded live provider execution proof
 ## Run Contract
 
 Linked Runtime record:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-runtime-record.md`
+- `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-record.md`
 
 Linked proof checklist:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
+- `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
 
 Runner used:
 - `C:\Users\User\.openclaw\workspace\mission-control\scripts\run-scientify-literature-monitoring-live-fetch.ts`
 
 Artifact builder used:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\lib\literature-monitoring-artifacts.ts`
+- `shared/lib/literature-monitoring-artifacts.ts`
 
 Fixed scope:
 - fetch one bounded qualified candidate pool from OpenAlex + arXiv
@@ -27,11 +27,11 @@ Fixed scope:
 ## Produced Artifacts
 
 - Live qualified-pool artifact:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-live-qualified-pool.json`
+  - `runtime/records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json`
 - Live degraded-quality artifact:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-live-degraded-pool.json`
+  - `runtime/records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json`
 - Live gate snapshot:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
+  - `runtime/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
 
 ## Proof Result
 
@@ -63,7 +63,7 @@ Fixed scope:
 - `degraded_quality_case.degraded_state_visible` -> `true`
 - `degraded_quality_case.delivery_result` -> `degraded_only`
 - Snapshot JSON:
-  - `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
+  - `runtime/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
 
 ## Limitations
 

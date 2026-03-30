@@ -172,6 +172,170 @@ If verification fails:
 fix the bounded slice if practical
 otherwise stop honestly at the failed boundary and record the issue clearly
 
+## Locked vNext roadmap guardrail
+
+Preserve the locked vNext migration order exactly:
+1. Phase 1A - parallel event mirror foundation
+2. Phase 1B - snapshot materializer and backfill parity
+3. Phase 2 - planner in recommendation mode
+4. Phase 3 - partial generated projections and event-first write path
+5. Phase 4 - durable runner and repo-awareness packets
+6. Phase 5 - retire artifact-first control
+
+## Current Runtime Execution Stop-Line
+
+Current sanctioned manual execution boundary:
+- `scripts/runtime-manual-control.ts`
+- backed by the shared manual-control layer in `shared/lib/runtime-manual-control.ts`
+
+Allowed now:
+- explicit single Runtime actions only through the already-proven Runtime execution substrate
+- approved named Runtime sequences only through the already-proven named sequence options
+- admin/test-only CLI invocation only
+- explicit choice required
+- explicit approval required
+- non-authoritative execution only
+
+Explicitly not allowed now:
+- host-admin execution seam
+- normal user-facing execution surface
+- planner-driven execution
+- arbitrary action lists
+- arbitrary sequences
+- sequence composition beyond the already-proven named options
+- authority cutover away from `shared/lib/dw-state.ts`
+- authority cutover away from `scripts/report-directive-workspace-state.ts`
+
+Reopen criteria:
+- do not reopen this area unless there is a concrete operator need that the CLI cannot adequately support
+- minimum evidence for reopening must include:
+- explicit documented operator need
+- why the CLI is insufficient
+- explicit admin/test-only access model
+- isolated boundary or namespace
+- preserved approval propagation
+- no planner-driven execution
+- no authority cutover
+
+Anti-drift warning:
+- do not add a host-admin route just for symmetry
+- do not broaden Runtime exposure without a concrete need
+- do not treat "would be cleaner" as sufficient justification
+- do not continue this area by momentum alone
+- keep the CLI as the sanctioned Runtime execution boundary until the reopen criteria are met
+
+Reserved later side experiment:
+- structural blueprint / analogy work is explicitly post-Phase-2 and non-blocking
+- owner: Engine shared reasoning / planner-adjacent evaluation
+- keep it outside the critical path until planner foundations are proven
+- start only as an evaluation-first experiment on a tiny golden set
+- discard it quickly if it does not measurably improve recommendation quality or transfer discipline
+
+## Current Structural Mapping Experiment Boundary
+
+Current structural-mapping status:
+- sidecar-only experimental documentation
+- structural usefulness cases only
+- not a live system field
+- not authoritative truth
+
+Current allowed anchor scope:
+- `dw-source-ts-edge-2026-03-27`
+- `dw-source-scientify-research-workflow-plugin-2026-03-27`
+
+Current not-allowed scope:
+- live Discovery routing
+- planner recommendation logic
+- Runtime execution logic
+- `shared/lib/dw-state.ts`
+- `scripts/report-directive-workspace-state.ts`
+- universal source coverage
+- not required for NOTE-mode review sources
+
+Use rule:
+- only use structural mapping when it says something sharper than current bounded-result language
+- no structural mapping counts unless it captures relations, not attributes
+
+Anti-drift:
+- do not turn this experiment into a required source-analysis field
+- do not add it to all sources by momentum alone
+- do not treat elegant pattern language as evidence of usefulness
+- do not reopen this area beyond the current two anchor cases without a later explicit bounded decision
+
+## Current Structural Mapping Stop-Line
+
+Current parked status:
+- parked
+- sidecar-only
+- non-authoritative
+- limited to the existing `ts-edge` and `Scientify` structural-mapping sidecars
+
+Allowed now:
+- retain the existing schema note
+- retain the two existing sidecars
+- retain the tiny validation script
+- retain the planning boundary note
+
+Explicitly not allowed now:
+- adding more sidecars
+- live Discovery integration
+- planner integration
+- execution integration
+- `shared/lib/dw-state.ts` integration
+- `scripts/report-directive-workspace-state.ts` integration
+- NOTE-mode review usage by symmetry
+- broad schema rollout
+
+Reopen criteria:
+- only reopen this area if a future source clearly shows both:
+- structural usefulness is primary
+- current bounded-result language cannot cleanly separate transferable relation from source-specific baggage
+- reopening requires a new bounded decision pass first
+- automatic reuse is not allowed
+
+Anti-drift warning:
+- do not treat the presence of the sidecars as approval for expansion
+- do not add more sidecars just because the format exists
+- do not let elegant structural language count as proof of usefulness
+
+Anti-drift:
+- do not block Phase 1A or Phase 1B on it
+- do not move it into the case-store or event-log foundation work
+- do not invent a new lane for it
+- do not make blueprint extraction mandatory in early Discovery
+- do not let it delay the substrate migration
+
+## Current Product Root After Relocation
+
+Canonical product root:
+- `C:\Users\User\projects\directive-workspace`
+
+Relocation status:
+- relocation is complete enough for normal product work to proceed from the new root
+- `npm run report:directive-workspace-state` passes from the new root
+- `npm run check` passes from the new root
+- `C:\Users\User\.openclaw\workspace\directive-workspace` is no longer the canonical product home
+
+External integration status:
+- Mission Control and OpenClaw remain external integrations and adapters
+- they are not allowed to assume the old sibling-root layout under `.openclaw\workspace`
+- future integration work must treat Directive Workspace as an external product root
+
+Explicitly not allowed now:
+- drifting back to `.openclaw\workspace` as the canonical root
+- adding permanent compatibility shims as a substitute for product-root clarity
+- reopening relocation work by momentum alone
+- reopening frozen Runtime exposure or structural-mapping lanes during relocation closeout
+
+Reopen criteria:
+- only reopen relocation work if a concrete post-move defect appears
+- or if a specific external integration still fails against `C:\Users\User\projects\directive-workspace`
+
+Anti-drift warning:
+- future docs and scripts must not reintroduce the old root as the canonical product home
+- examples that still mention the old root must be clearly labeled as historical or integration-specific, not as the product root
+- continue product work from the new root only unless the reopen criteria are met
+
 ## Change discipline
 
 Keep edits:
@@ -2586,4 +2750,730 @@ Next likely move:
 Stop the guarded correctness-fix loop here and rerank from fresh full-product truth; the next linked implementation-target pair is already clean, so the strongest remaining work is no longer a direct live repo-generated parsing defect.
 Risks / notes:
 This was a bounded content-shape repair only. It intentionally did not change Architecture semantics, queue policy, or any parked-case state.
+
+### Cycle 53
+Chosen task:
+Run one bounded Discovery intake for Inspect AI and preserve the remaining scout shortlist as a lightweight reserve list.
+Why it won:
+Fresh source throughput was the highest-ROI next move after the March 28 repair loop closed. Inspect AI had already been selected as the best new external source candidate, and the task explicitly required a single bounded Discovery front-door run without reopening parked work or auto-continuing internal chains.
+Affected layer:
+Discovery front door + shared Discovery queue truth.
+Owning lane:
+Discovery.
+Mission usefulness:
+Adds one real new external source to the system, tests the NOTE-mode front door on a fresh evaluator-framework candidate, and records a truthful route for later human review without opening implementation work.
+Proof path:
+`shared/lib/discovery-front-door.ts`
+`discovery/intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md`
+`discovery/triage/2026-03-28-dw-source-inspect-ai-2026-03-28-triage.md`
+`discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`discovery/intake-queue.json`
+Rollback path:
+Delete the new Inspect AI intake / triage / routing / handoff artifacts, remove the new engine run record/report pair, revert `shared/lib/discovery-front-door.ts`, remove the Inspect AI queue entry, and revert this log entry.
+Stop-line:
+Process exactly one new external source through Discovery intake + triage + routing, persist an explicit NOTE-mode classification, open at most one justified downstream handoff target, record the reserve list informationally only, verify, and stop.
+Files touched:
+`shared/lib/discovery-front-door.ts`
+`discovery/intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md`
+`discovery/triage/2026-03-28-dw-source-inspect-ai-2026-03-28-triage.md`
+`discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`runtime/standalone-host/engine-runs/2026-03-28T00-00-00-000Z-dw-source-inspect-ai-2026-03-28-402b52cf.json`
+`runtime/standalone-host/engine-runs/2026-03-28T00-00-00-000Z-dw-source-inspect-ai-2026-03-28-402b52cf.md`
+`discovery/intake-queue.json`
+`implement.md`
+Verification run:
+direct queue-entry verification for `dw-source-inspect-ai-2026-03-28`
+`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+Inspect AI now exists as one real NOTE-mode Discovery candidate. The shared Engine initially routed it to Runtime, but operator review overrode the case to Architecture because the retained value is evaluator/proof framework patterns rather than adopting the Python framework itself as reusable runtime capability. One handoff stub was opened and the queue now records `operating_mode = note`, `routing_target = architecture`, and the handoff as `result_record_path`.
+Next likely move:
+No automatic next move was opened. If human review approves continuing this source later, the next bounded step would be one NOTE-mode Architecture review/result slice focused on evaluator/proof pattern retention only.
+Risks / notes:
+This run exposed a routing weakness: evaluator-framework sources can still overread as direct runtime capability even when the retained value is narrower and Engine-facing. The remaining useful scout shortlist was preserved below as informational reserve only; no queue or routing artifacts were created for it.
+
+## Deferred Source Reserve (2026-03-28)
+
+1. Source name: OpenEvals
+   Source URL: `https://github.com/langchain-ai/openevals`
+   Why it still looks useful: Lightweight evaluator primitives with TypeScript and Python coverage could sharpen Directive Workspace proof/evaluator boundaries with less platform overhead than a full evaluation framework.
+   Likely primary lane: Architecture
+   Likely mode: STANDARD
+   Why it was not chosen now: Inspect AI offered a richer, more differentiated evaluator-framework surface for the next bounded Discovery run.
+   Condition that would make it the right next source later: choose it when the next source slot should focus on smaller evaluator-library primitives rather than a fuller evaluation platform.
+
+2. Source name: PromptWizard
+   Source URL: `https://github.com/microsoft/PromptWizard`
+   Why it still looks useful: Feedback-driven prompt refinement and synthetic example generation could inform bounded Architecture work around instruction refinement and evaluator-guided prompt improvement.
+   Likely primary lane: Architecture
+   Likely mode: NOTE
+   Why it was not chosen now: Prompt optimization is weaker than evaluator/proof quality against the current mission pressure.
+   Condition that would make it the right next source later: choose it when prompt-improvement discipline becomes a clearer bottleneck than evaluator/proof structure.
+
+3. Source name: Bespoke Curator
+   Source URL: `https://github.com/bespokelabsai/curator`
+   Why it still looks useful: Structured-output and batch data curation patterns could later help extraction pipelines, fault recovery, and higher-throughput structured source adaptation.
+   Likely primary lane: Monitor
+   Likely mode: NOTE
+   Why it was not chosen now: It is farther from the current evaluator/proof and Engine-shaping pressure than Inspect AI.
+   Condition that would make it the right next source later: choose it when Discovery / extraction throughput becomes the main bottleneck and structured batch pipeline patterns matter more than evaluator quality.
+
+### Cycle 54
+Chosen task:
+Open one bounded DEEP Engine routing-quality slice for framework-source Runtime overread and implement the smallest rule that covers Inspect AI and ts-edge.
+Why it won:
+Inspect AI did not justify downstream continuation, but it exposed a repeated shared routing weakness that already had two live proof cases. Fixing that one bounded misrouting class improved future source throughput more than opening another source immediately.
+Affected layer:
+Shared Engine routing quality.
+Owning lane:
+Architecture.
+Mission usefulness:
+Improves how Discovery interprets framework/tooling repos whose retained value is Engine-facing pattern extraction rather than reusable runtime capability.
+Proof path:
+`engine/routing.ts`
+`engine/types.ts`
+`scripts/check-directive-engine-stage-chaining.ts`
+`runtime/standalone-host/engine-runs/2026-03-28T00-00-00-000Z-dw-source-inspect-ai-2026-03-28-402b52cf.json`
+`runtime/standalone-host/engine-runs/2026-03-27T00-00-00-000Z-dw-source-ts-edge-2026-03-27-0aacdf59.json`
+Rollback path:
+Revert the routing signal in `engine/routing.ts`, revert `engine/types.ts`, revert the focused proof-case assertions in `scripts/check-directive-engine-stage-chaining.ts`, remove the DEEP case chain below, and revert this log entry.
+Stop-line:
+Open one explicit DEEP routing-quality case, define one bounded misrouting class, implement one narrow correction seam for that class, verify it against Inspect AI and ts-edge, and stop.
+Files touched:
+`engine/routing.ts`
+`engine/types.ts`
+`scripts/check-directive-engine-stage-chaining.ts`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-start.md`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-implementation-target.md`
+`architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-implementation-result.md`
+`implement.md`
+Verification run:
+`npm run check:directive-engine-stage-chaining`
+`npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-implementation-result.md`
+`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+The shared Engine now recognizes one bounded misrouting class: framework/tooling repos whose own text says to retain the pattern without adopting the source itself as runtime capability or dependency. Inspect AI and ts-edge both replay to Architecture, while the runtime control case remains Runtime.
+Next likely move:
+No automatic continuation was opened. If routing-quality work resumes later, the next bounded slice should be a different misrouting class rather than expanding this one by momentum.
+Risks / notes:
+This slice intentionally leaves stored historical engine-run artifacts unchanged. It corrects future routing behavior and proof-case replays, not past recorded runs.
+
+### Cycle 55
+Chosen task:
+Run one bounded Discovery intake for OpenEvals through the front door and stop after triage, routing, explicit mode classification, and at most one justified next target.
+Why it won:
+The framework-source routing-quality fix was complete, Inspect AI was already parked at a NOTE handoff, and the next highest-ROI move was a fresh external source run that exercised the improved router without reopening any parked case.
+Affected layer:
+Discovery front door.
+Owning lane:
+Discovery, routing to Architecture.
+Mission usefulness:
+Adds a fresh evaluator-library source while testing whether the improved router can correctly keep lighter-weight evaluator-pattern sources on the Architecture side.
+Proof path:
+`shared/lib/discovery-front-door.ts`
+`discovery/intake/2026-03-28-dw-source-openevals-2026-03-28-intake.md`
+`discovery/triage/2026-03-28-dw-source-openevals-2026-03-28-triage.md`
+`discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+Rollback path:
+Remove the OpenEvals intake, triage, routing, handoff, and engine-run artifacts, revert the queue entry in `discovery/intake-queue.json`, and revert this log entry.
+Stop-line:
+Process exactly one new external source through Discovery intake, triage, routing, explicit mode classification, and open only one justified downstream target if the route clearly requires it.
+Files touched:
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`discovery/intake-queue.json`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+OpenEvals entered through Discovery first and routed cleanly to Architecture in NOTE mode without any operator override. One bounded Architecture handoff was opened because the routing record explicitly required that artifact, and no deeper Architecture or Runtime chain was opened.
+Next likely move:
+No automatic continuation was opened. Re-rank from fresh live truth rather than continuing OpenEvals by momentum.
+Risks / notes:
+This run stayed lightweight by design. It preserved the remaining reserve candidates as reserve only and did not create any new active queue or routing artifacts beyond OpenEvals.
+
+### Cycle 56
+Chosen task:
+Run one bounded Discovery intake for PromptWizard through the front door and stop after triage, routing, explicit mode classification, and at most one justified next target.
+Why it won:
+Inspect AI and OpenEvals were both already parked at NOTE handoffs, the routing-quality fix had validated cleanly, and the next highest-ROI move was another reserve-source intake that tested fresh throughput rather than continuing any existing chain.
+Affected layer:
+Discovery front door.
+Owning lane:
+Discovery, routing to Architecture.
+Mission usefulness:
+Adds a fresh prompt-optimization source while testing whether lighter-weight prompt/evaluator-pattern sources also route cleanly into Architecture without runtime overread.
+Proof path:
+`shared/lib/discovery-front-door.ts`
+`discovery/intake/2026-03-28-dw-source-promptwizard-2026-03-28-intake.md`
+`discovery/triage/2026-03-28-dw-source-promptwizard-2026-03-28-triage.md`
+`discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md`
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+Rollback path:
+Remove the PromptWizard intake, triage, routing, handoff, and engine-run artifacts, revert the queue entry in `discovery/intake-queue.json`, and revert this log entry.
+Stop-line:
+Process exactly one new external source through Discovery intake, triage, routing, explicit mode classification, and open only one justified downstream target if the route clearly requires it.
+Files touched:
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`discovery/intake-queue.json`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+PromptWizard entered through Discovery first and routed cleanly to Architecture in NOTE mode without any operator override. One bounded Architecture handoff was opened because the routing record explicitly required that artifact, and no deeper Architecture or Runtime chain was opened.
+Next likely move:
+No automatic continuation was opened. Re-rank from fresh live truth rather than continuing PromptWizard by momentum.
+Risks / notes:
+This run stayed lightweight by design. It preserved Bespoke Curator as reserve only and did not create any new active queue or routing artifacts beyond PromptWizard.
+
+### Cycle 57
+Chosen task:
+Open one bounded DEEP NOTE-mode Architecture route/stop-line alignment slice and correct the shared handoff/route contract so NOTE-mode Architecture cases stop at the truthful result boundary instead of advertising a bounded start.
+Why it won:
+Three fresh NOTE-mode Architecture proof cases now existed, and all of them exposed the same shared mismatch: doctrine says NOTE-mode Architecture is handoff plus one bounded result, but live truth still advertised a STANDARD-style bounded start. Fixing that one shared seam beat opening another source or continuing any handoff by momentum.
+Affected layer:
+Shared Engine and truth-quality resolution.
+Owning lane:
+Architecture.
+Mission usefulness:
+Keeps NOTE-mode Architecture routing honest and prevents the system from over-advertising STANDARD-style downstream work on lightweight Architecture cases.
+Proof path:
+`shared/lib/dw-state.ts`
+`scripts/check-directive-workspace-composition.ts`
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+Rollback path:
+Revert the NOTE-mode route/handoff wording change in `shared/lib/dw-state.ts`, revert the focused proof-case assertions in `scripts/check-directive-workspace-composition.ts`, remove the DEEP case chain below, and revert this log entry.
+Stop-line:
+Open one explicit DEEP NOTE-mode Architecture case, define one bounded misalignment class, implement one narrow route/contract correction seam, verify it against Inspect AI, OpenEvals, and PromptWizard, and stop.
+Files touched:
+`shared/lib/dw-state.ts`
+`scripts/check-directive-workspace-composition.ts`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-start.md`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/03-adopted/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-adopted-planned-next.md`
+`architecture/03-adopted/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-implementation-target.md`
+`architecture/05-implementation-results/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-implementation-result.md`
+`implement.md`
+Verification run:
+`npm run check`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-implementation-result.md`
+`npm run report:directive-workspace-state`
+Result:
+Discovery-routed Architecture cases in NOTE mode now advertise the truthful downstream boundary: review the handoff and record one bounded result, with no bounded start required. The three NOTE proof cases resolved cleanly after the fix, while the existing ts-edge STANDARD control stayed unchanged.
+Next likely move:
+No automatic continuation was opened. If NOTE-mode alignment resumes later, the next slice should be a different proved misalignment rather than broadening this one by momentum.
+Risks / notes:
+This slice intentionally left Runtime semantics, STANDARD and DEEP Architecture semantics, and the broader Architecture chain untouched.
+
+### Cycle 58
+Chosen task:
+Open one bounded NOTE-mode Architecture materialization slice so operator-approved NOTE continuation can close a handoff directly to a bounded result without opening a bounded start.
+Why it won:
+Live truth had already aligned NOTE-mode Architecture wording at the route and handoff layers, but the write path still could not materialize that boundary. Continuing another source or another handoff first would only pile more NOTE handoffs onto the same incomplete seam.
+Affected layer:
+Shared Architecture materialization and truth resolution.
+Owning lane:
+Architecture.
+Mission usefulness:
+Turns the NOTE-mode Architecture boundary from a truthful read-only contract into an operable path, and proves it on one live external-source case without changing STANDARD or DEEP behavior.
+Proof path:
+`shared/lib/architecture-handoff-start.ts`
+`shared/lib/architecture-bounded-closeout.ts`
+`shared/lib/dw-state.ts`
+`scripts/check-directive-workspace-composition.ts`
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+Rollback path:
+Delete the OpenEvals bounded-result and paired adoption-decision artifact, restore the queue entry in `discovery/intake-queue.json` to the handoff as the current result record, revert the NOTE direct-closeout code path, and revert this log entry.
+Stop-line:
+Implement only the NOTE-mode direct handoff-to-result materialization seam, prove it on one bounded NOTE Architecture case, verify shared truth stays aligned, and stop.
+Files touched:
+`shared/lib/architecture-handoff-start.ts`
+`shared/lib/architecture-bounded-closeout.ts`
+`shared/lib/dw-state.ts`
+`shared/lib/architecture-implementation-target.ts`
+`hosts/web-host/server.ts`
+`hosts/web-host/data.ts`
+`scripts/check-directive-workspace-composition.ts`
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result-adoption-decision.json`
+`discovery/intake-queue.json`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`npm run check:directive-workspace-composition`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+OpenEvals now resolves from NOTE handoff to a direct NOTE bounded result with no bounded start. The queue entry is completed, the routing record resolves cleanly to the bounded-result current head, and Inspect AI plus PromptWizard remain at the original NOTE handoff boundary.
+Next likely move:
+Do not auto-continue OpenEvals. Re-rank from live truth again. If NOTE-mode Architecture alignment resumes later, the next exact slice is whether NOTE-mode approved continuation should also update route-local required-next-artifact semantics instead of leaving routing records as historical handoff contracts.
+Risks / notes:
+This slice intentionally left the frontend action wiring untouched, left STANDARD and DEEP Architecture materialization untouched, and treated OpenEvals as the single live proof case instead of migrating every NOTE handoff in one pass.
+
+### Cycle 59
+Chosen task:
+Use the already-landed NOTE-mode Architecture direct closeout path on Inspect AI and stop after one bounded result.
+Why it won:
+The shared seam was already in place, OpenEvals had already proven it once, and Inspect AI was the strongest remaining parked NOTE Architecture handoff. This added real product progress without reopening routing work, PromptWizard, reserve-source intake, or Runtime seams.
+Affected layer:
+Architecture NOTE-mode case progression.
+Owning lane:
+Architecture.
+Mission usefulness:
+Closes one high-signal evaluator-framework source into a truthful NOTE bounded result, preserving retained evaluator/proof patterns while keeping deeper adoption unopened.
+Proof path:
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result-adoption-decision.json`
+`discovery/intake-queue.json`
+`scripts/check-directive-workspace-composition.ts`
+Rollback path:
+Delete the Inspect AI bounded-result and paired decision artifact, restore the queue entry in `discovery/intake-queue.json` to the handoff as the result record, revert the proof-case expectation change in `scripts/check-directive-workspace-composition.ts`, and revert this log entry.
+Stop-line:
+Materialize exactly one NOTE bounded result for Inspect AI, verify focused truth plus full checks, and stop without continuing PromptWizard.
+Files touched:
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result-adoption-decision.json`
+`discovery/intake-queue.json`
+`scripts/check-directive-workspace-composition.ts`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+Inspect AI now resolves cleanly to a NOTE-mode bounded-result current head with no bounded-start artifact. OpenEvals remains clean on the same path, PromptWizard remains parked at handoff, and no Runtime or ts-edge drift occurred.
+Next likely move:
+Do not auto-continue PromptWizard. If another NOTE closeout is justified later, PromptWizard is the exact next same-shape case.
+Risks / notes:
+This slice intentionally used the existing NOTE closeout path without reopening shared seam work. It also left PromptWizard, reserve sources, Runtime cases, and frontend wiring untouched.
+
+### Cycle 60
+Chosen task:
+Use the already-landed NOTE-mode Architecture direct closeout path on PromptWizard and stop after one bounded result.
+Why it won:
+PromptWizard was the last remaining parked NOTE Architecture handoff after OpenEvals and Inspect AI had already closed cleanly through the same path. This completed the remaining same-shape NOTE source case without reopening shared seam work, Runtime, reserve-source intake, or a broader rerank.
+Affected layer:
+Architecture NOTE-mode case progression.
+Owning lane:
+Architecture.
+Mission usefulness:
+Closes one prompt-optimization source into a truthful NOTE bounded result, preserving prompt-refinement and evaluator-guided improvement patterns for future Architecture work while keeping deeper adoption explicitly unopened.
+Proof path:
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result-adoption-decision.json`
+`discovery/intake-queue.json`
+`scripts/check-directive-workspace-composition.ts`
+Rollback path:
+Delete the PromptWizard bounded-result and paired decision artifact, restore the queue entry in `discovery/intake-queue.json` to the handoff as the result record, revert the proof-case expectation change in `scripts/check-directive-workspace-composition.ts`, and revert this log entry.
+Stop-line:
+Materialize exactly one NOTE bounded result for PromptWizard, verify focused truth plus full checks, and stop without opening any second move.
+Files touched:
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
+`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result-adoption-decision.json`
+`discovery/intake-queue.json`
+`scripts/check-directive-workspace-composition.ts`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+PromptWizard now resolves cleanly to a NOTE-mode bounded-result current head with no bounded-start artifact. OpenEvals and Inspect AI remain clean on the same path, and no Runtime or ts-edge drift occurred.
+Next likely move:
+Do not auto-continue any NOTE Architecture case. Re-anchor on live truth and rerank from the now-fully-closed NOTE Architecture source set.
+Risks / notes:
+This slice intentionally reused the existing NOTE closeout seam without reopening shared Architecture flow work. It also left reserve sources, Runtime cases, retention, and frontend untouched.
+
+### Cycle 61
+Chosen task:
+Refresh the stale Architecture materialization due-check proof script so it matches the live zero-due surface.
+Why it won:
+Current repo truth showed `npm run report:architecture-materialization-due-check` clean with `totalDueItems: 0`, but the targeted checker still asserted that at least one due item must exist. That was the highest-ROI bounded correctness fix after relocation closeout because it corrected a stale proof surface without reopening legacy backfill or frozen Runtime seams.
+Affected layer:
+Shared Architecture proof/reporting.
+Owning lane:
+Architecture.
+Mission usefulness:
+Keeps the Architecture materialization proof surface aligned with current repo-backed state, so operators can trust a clean due-check instead of inheriting obsolete backlog assumptions.
+Proof path:
+`scripts/check-architecture-materialization-due-check.ts`
+`npm run check:architecture-materialization-due-check`
+Rollback path:
+Revert the zero-due assertions in `scripts/check-architecture-materialization-due-check.ts` and remove this log entry.
+Stop-line:
+Update the stale targeted due-check assertions to current zero-due truth, verify them, and stop without changing the canonical report semantics or broadening into legacy artifact cleanup.
+Files touched:
+`scripts/check-architecture-materialization-due-check.ts`
+`implement.md`
+Verification run:
+`npm run check:architecture-materialization-due-check`
+`npm run report:architecture-materialization-due-check`
+`npm run check`
+Result:
+The targeted Architecture materialization checker now passes against the live clean state: zero due items, zero decision-backed due adoptions, zero due-adoption decision gaps, and no due adopted summary when the surface is empty. The grouped legacy warning surface remains visible and unchanged.
+Next likely move:
+Re-rank from fresh truth again. The strongest remaining bounded seam is the single unreadable warning in the due-check: classify the historical Scientify Architecture-to-Runtime handoff under `architecture/03-adopted` as an out-of-scope handoff/non-adoption artifact instead of an unreadable adoption.
+Risks / notes:
+This slice intentionally did not normalize the 33 legacy-incompatible adoption artifacts or change the due-check reader. It only repaired the stale proof script so current clean-state truth is enforced honestly.
+
+### Cycle 62
+Chosen task:
+Reclassify the historical Scientify Architecture-to-Runtime handoff in the Architecture materialization due-check so it counts as an out-of-scope handoff artifact instead of an unreadable adoption.
+Why it won:
+After Cycle 61, the only misleading live warning inside this exact lane was the due-check/report treating `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff.md` as unreadable. Current repo truth showed the artifact was readable and decision-backed; the bug was purely its classification in materialization accounting.
+Affected layer:
+Shared Architecture materialization reader/report behavior.
+Owning lane:
+Architecture.
+Mission usefulness:
+Keeps the Architecture materialization due-check truthful by separating historical Architecture-to-Runtime handoffs from actual adopted Architecture outputs that should still ratchet toward implementation targets/results.
+Proof path:
+`shared/lib/architecture-materialization-due-check.ts`
+`scripts/check-architecture-materialization-due-check.ts`
+Rollback path:
+Revert the out-of-scope runtime-handoff classification in `shared/lib/architecture-materialization-due-check.ts`, revert the focused assertions in `scripts/check-architecture-materialization-due-check.ts`, and remove this log entry.
+Stop-line:
+Add one narrow decision-backed handoff classification rule, verify the Scientify warning disappears from the due-check/report output, and stop without broadening into general legacy adoption cleanup.
+Files touched:
+`shared/lib/architecture-materialization-due-check.ts`
+`scripts/check-architecture-materialization-due-check.ts`
+`implement.md`
+Verification run:
+`npm run check:architecture-materialization-due-check`
+`npm run report:architecture-materialization-due-check`
+`npm run check`
+Result:
+The due-check/report now classifies the historical Scientify record as one `skippedRuntimeHandoffArtifacts` item and no longer counts it under `skippedUnreadableAdoptions`. The live report stays clean on the main metric (`totalDueItems: 0`) and the warning list drops to the separate grouped legacy-compatibility warning only.
+Next likely move:
+Stop and rerank. The only remaining warning class in this surface is the grouped `skippedLegacyIncompatibleAdoptions` bucket, which is broader legacy compatibility work rather than another narrow historical handoff misclassification.
+Risks / notes:
+This slice intentionally did not touch Runtime behavior, structural mapping, planner/execution seams, or the broad legacy adopted corpus. It only changed Architecture materialization accounting for decision-backed `hand_off_to_runtime` artifacts.
+
+### Cycle 63
+Chosen task:
+Wire the Architecture materialization due-check into the standard top-level validation path.
+Why it won:
+The Architecture materialization due-check surface had just needed two bounded truth repairs, but `npm run check` still did not execute `check:architecture-materialization-due-check`. Adding that one focused validation step was the highest-ROI proof-wiring move because it closes a real regression gap without reopening any frozen lane.
+Affected layer:
+Shared validation / proof wiring.
+Owning lane:
+Architecture.
+Mission usefulness:
+Keeps future regressions in the Architecture materialization due-check/report surface from slipping past the default repo validation path.
+Proof path:
+`package.json`
+`npm run check:architecture-materialization-due-check`
+`npm run check`
+Rollback path:
+Revert the `check` script wiring in `package.json` and remove this log entry.
+Stop-line:
+Make `npm run check` execute `check:architecture-materialization-due-check`, verify both validations pass, and stop without broadening top-level validation beyond this one repaired surface.
+Files touched:
+`package.json`
+`implement.md`
+Verification run:
+`npm run check:architecture-materialization-due-check`
+`npm run check`
+Result:
+The standard `npm run check` chain now executes `check:architecture-materialization-due-check` between `check:directive-workspace-composition` and `check:directive-engine-stage-chaining`. The focused due-check still passes with `totalDueItems: 0`, `skippedUnreadableAdoptions: 0`, and `skippedRuntimeHandoffArtifacts: 1`, and the full repo check still passes.
+Next likely move:
+Re-rank from fresh repo truth outside the frozen Runtime exposure, structural-mapping, and parked legacy-adoption lanes.
+Risks / notes:
+This slice intentionally did not broaden validation to unrelated checks. It only promoted the already-repaired Architecture materialization due-check into the default proof path.
+
+### Cycle 64
+Chosen task:
+Normalize stale old-root Directive Workspace path references in current product knowledge docs.
+Why it won:
+Live repo truth still exposed `.openclaw\workspace\directive-workspace` as the product root in several `knowledge/*.md` guidance docs even though relocation is complete and the canonical product root is now `C:\Users\User\projects\directive-workspace`. That was a concrete post-relocation truth defect and a tighter next move than speculative new validation work.
+Affected layer:
+Product knowledge / continuation guidance.
+Owning lane:
+Architecture.
+Mission usefulness:
+Keeps future operators and agents from being routed back toward the non-canonical product root when using current Directive Workspace knowledge docs.
+Proof path:
+`knowledge/architecture-completion-rubric.md`
+`knowledge/architecture-map.md`
+`knowledge/charter.md`
+`knowledge/delivery-workflow.md`
+`knowledge/delivery-plan.md`
+`knowledge/project-plan.md`
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|C:/Users/User/.openclaw/workspace/directive-workspace" ...`
+`npm run report:directive-workspace-state`
+`npm run check`
+Rollback path:
+Revert the six touched knowledge docs and remove this log entry.
+Stop-line:
+Replace only stale Directive Workspace root references in the current knowledge docs, verify those references are gone from that bounded surface, and stop without broad documentation cleanup.
+Files touched:
+`knowledge/architecture-completion-rubric.md`
+`knowledge/architecture-map.md`
+`knowledge/charter.md`
+`knowledge/delivery-workflow.md`
+`knowledge/delivery-plan.md`
+`knowledge/project-plan.md`
+`implement.md`
+Verification run:
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|C:/Users/User/.openclaw/workspace/directive-workspace" knowledge/architecture-completion-rubric.md knowledge/architecture-map.md knowledge/charter.md knowledge/delivery-workflow.md knowledge/delivery-plan.md knowledge/project-plan.md -S`
+`npm run report:directive-workspace-state`
+`npm run check`
+Result:
+The six current knowledge docs no longer identify `.openclaw\workspace\directive-workspace` as the product root. The authoritative report still resolves the canonical root as `C:/Users/User/projects/directive-workspace`, and the full check chain remains green.
+Next likely move:
+Re-rank from fresh truth. Do not continue broad relocation cleanup by momentum; only reopen another old-root slice if it appears in a current authoritative guidance surface rather than historical records.
+Risks / notes:
+This slice intentionally left historical Architecture artifacts, external Mission Control/OpenClaw paths, and other non-Directive Workspace root references untouched.
+
+### Cycle 65
+Chosen task:
+Clarify doctrine-level meaning of `external source`, then process one fresh real source through Discovery first for the Engine-building mission.
+Why it won:
+Internal truth surfaces were clean enough that the product needed fresh source pressure rather than more maintenance. A repo-local `gh-aw` document source was already available, and the Safe Outputs specification was the strongest bounded fit because it offers contract/schema, proof-boundary, sanitization, provenance, and gate-ordering patterns that can improve Engine quality without reopening runtime execution or host-admin seams.
+Affected layer:
+Doctrine plus Discovery-to-Architecture NOTE intake.
+Owning lane:
+Architecture.
+Mission usefulness:
+Clarifies that Discovery may draw from either unprocessed in-context sources or one newly found outside source when current pressure is exhausted, then uses that rule to intake one real Engine-improving source instead of inventing maintenance work.
+Proof path:
+`CLAUDE.md`
+`discovery/intake/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-routing-record.md`
+`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-engine-handoff.md`
+`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result.md`
+`npm run report:directive-workspace-state`
+`npm run check`
+Rollback path:
+Revert the `CLAUDE.md` clarification, delete the GH-AW Safe Outputs source-case artifacts and engine run, restore the prior queue/state entries, and remove this log entry.
+Stop-line:
+Record the doctrine clarification, route one fresh real source through Discovery first, close it at the honest NOTE-mode Architecture stop-line, and stop without forcing deeper Architecture materialization or reopening parked Runtime lanes.
+Files touched:
+`CLAUDE.md`
+`discovery/intake-queue.json`
+`discovery/intake/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-routing-record.md`
+`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-engine-handoff.md`
+`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result.md`
+`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result-adoption-decision.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gh-aw-safe-outputs-spec-2026-03-30-d7ec1192.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gh-aw-safe-outputs-spec-2026-03-30-d7ec1192.md`
+`state/cases/dw-source-gh-aw-safe-outputs-spec-2026-03-30.json`
+`state/case-events/dw-source-gh-aw-safe-outputs-spec-2026-03-30.jsonl`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state`
+`npm run check`
+`rg -n "dw-source-gh-aw-2026-03-30|dw-source-gh-aw-safe-outputs-spec-2026-03-30" discovery architecture runtime state -S`
+Result:
+`CLAUDE.md` now makes explicit that an external source may be either an unprocessed in-context source or a newly found outside source when current pressure is exhausted, while keeping Discovery as the required front door. The accidental broad repo-level `gh-aw` runtime intake was removed, then a narrower fresh source (`sources/intake/gh-aw/docs/src/content/docs/reference/safe-outputs-specification.md`) was processed through Discovery, routed to Architecture with `usefulnessLevel: meta`, opened as a NOTE-mode handoff, and closed as a NOTE-mode bounded result with `nextDecision: defer`. Main repo truth surfaces still pass.
+Next likely move:
+Stop and rerank from fresh truth. Do not continue this case unless a later decision explicitly promotes one narrower Safe Outputs pattern into a bounded Architecture adaptation slice.
+Risks / notes:
+This slice intentionally did not reopen runtime execution, host-admin seams, planner-driven execution, structural-mapping expansion, or the parked legacy adoption bucket. It also corrected an in-flight misfit by removing the earlier broad `gh-aw` repo-level runtime route before recording the narrower document-level source.
+
+### Cycle 66
+Chosen task:
+Process one fresh repo-local source through Discovery first after parking the Safe Outputs case.
+Why it won:
+The Safe Outputs NOTE case is explicitly parked, internal truth surfaces are clean, and the product still needs fresh mission-conditioned source pressure. `sources/intake/autoresearch/guide/advanced-patterns.md` was the strongest fresh candidate because it offers guarded verification, custom evaluator-script, composite metric, and recovery-discipline patterns that improve Engine proof quality without reopening runtime execution or orchestration lanes.
+Affected layer:
+Discovery-to-Architecture NOTE intake.
+Owning lane:
+Architecture.
+Mission usefulness:
+Adds one fresh real source to the Engine-building loop and captures proof/evaluator-pattern pressure that can improve how Directive Workspace judges, proves, and adapts future sources.
+Proof path:
+`discovery/intake/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-routing-record.md`
+`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-engine-handoff.md`
+`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result.md`
+`npm run report:directive-workspace-state`
+`npm run check`
+Rollback path:
+Delete the Autoresearch Advanced Patterns case artifacts, remove its queue/state entries, and remove this log entry.
+Stop-line:
+Process exactly one fresh source through Discovery first, close it at the honest NOTE-mode Architecture boundary, and stop without forcing a new adaptation slice from pattern guidance alone.
+Files touched:
+`discovery/intake-queue.json`
+`discovery/intake/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-routing-record.md`
+`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-engine-handoff.md`
+`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result.md`
+`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result-adoption-decision.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-autoresearch-advanced-patterns-2026-03-30-0b83a61b.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-autoresearch-advanced-patterns-2026-03-30-0b83a61b.md`
+`state/cases/dw-source-autoresearch-advanced-patterns-2026-03-30.json`
+`state/case-events/dw-source-autoresearch-advanced-patterns-2026-03-30.jsonl`
+`implement.md`
+Verification run:
+`npm run report:directive-workspace-state`
+`npm run check`
+`rg -n "dw-source-autoresearch-advanced-patterns-2026-03-30" discovery architecture runtime state discovery/intake-queue.json -S`
+Result:
+Fresh source `sources/intake/autoresearch/guide/advanced-patterns.md` entered through Discovery first, routed to Architecture with `usefulnessLevel: meta`, and closed honestly as a NOTE-mode bounded result with `nextDecision: defer` and verdict `stay_experimental`. The retained value is a bounded pattern set for guard-backed verification, custom verify scripts, composite metrics, and explicit recovery discipline. Main repo truth surfaces remain green.
+Next likely move:
+Stop and rerank from fresh truth. Do not continue this NOTE case by momentum unless a later bounded judgment isolates one concrete Architecture adaptation target from these retained patterns.
+Risks / notes:
+This slice intentionally left runtime execution, host-admin seams, planner-driven execution, structural-mapping expansion, the parked legacy adoption bucket, and the parked Safe Outputs case untouched.
+
+### Cycle 67
+Chosen task:
+Process one fresh repo-local source through Discovery first after parking the Safe Outputs and advanced-patterns NOTE cases.
+Why it won:
+The pressure loop still needed fresh Architecture-facing sources, and `sources/intake/agentics/docs/repo-ask.md` was the strongest local candidate that could improve source-analysis quality, routing rationale quality, and evidence gathering without reopening execution seams.
+Affected layer:
+Discovery-to-Architecture NOTE intake.
+Owning lane:
+Architecture.
+Mission usefulness:
+Adds fresh source pressure around question-conditioned repository interrogation, explicit evidence gathering, and bounded external lookup as possible Engine-owned source-analysis improvements.
+Proof path:
+`discovery/intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-routing-record.md`
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-engine-handoff.md`
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
+Rollback path:
+Delete the Agentics Repo Ask case artifacts, remove its queue/state entries, and remove this log entry.
+Stop-line:
+Process exactly one fresh source through Discovery first, close it at the honest NOTE-mode Architecture boundary if no concrete adaptation target appears, and rerank instead of continuing the case by momentum.
+Files touched:
+`discovery/intake-queue.json`
+`discovery/intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-routing-record.md`
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-engine-handoff.md`
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result-adoption-decision.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-agentics-repo-ask-2026-03-30-bd643258.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-agentics-repo-ask-2026-03-30-bd643258.md`
+`state/cases/dw-source-agentics-repo-ask-2026-03-30.json`
+`state/case-events/dw-source-agentics-repo-ask-2026-03-30.jsonl`
+`implement.md`
+Verification run:
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
+`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result-adoption-decision.json`
+Result:
+Fresh source `sources/intake/agentics/docs/repo-ask.md` entered through Discovery first, routed to Architecture with `usefulnessLevel: meta`, and closed honestly as a NOTE-mode bounded result with `nextDecision: defer` and verdict `stay_experimental`. It added fresh source-analysis pressure but still did not isolate a concrete promotion-worthy Architecture artifact.
+Next likely move:
+Rerank again from fresh truth rather than stopping on one NOTE closeout.
+Risks / notes:
+This slice intentionally kept GitHub comment execution, assistant runtime packaging, and any broader question-answering program out of scope.
+
+### Cycle 68
+Chosen task:
+Process the next strongest fresh source after the Repo Ask NOTE closeout and stop if it clearly routes somewhere other than Architecture.
+Why it won:
+The pressure loop needed either one real bounded Architecture slice or an honest alternative stop condition. `sources/intake/gpt-researcher/mcp-server/README.md` was the strongest remaining local source, and the live router favored Discovery-held monitor with high confidence instead of another weak Architecture NOTE.
+Affected layer:
+Discovery front door plus Discovery monitor lifecycle.
+Owning lane:
+Discovery.
+Mission usefulness:
+Adds fresh source pressure around deeper research-backed source acquisition and evidence gathering while preserving the rule that unclear downstream adoption targets should remain Discovery-held instead of being forced into Architecture or Runtime.
+Proof path:
+`discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md`
+`discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
+Rollback path:
+Delete the GPT Researcher MCP Server case artifacts, remove its queue/state entries, and remove this log entry.
+Stop-line:
+If the strongest fresh source clearly routes to Discovery-held monitor with no bounded Architecture target, record that route honestly and stop the pressure loop instead of forcing another Architecture NOTE case.
+Files touched:
+`discovery/intake-queue.json`
+`discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md`
+`discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md`
+`discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md`
+`discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-59767548.json`
+`runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-59767548.md`
+`state/cases/dw-source-gpt-researcher-mcp-server-2026-03-30.json`
+`state/case-events/dw-source-gpt-researcher-mcp-server-2026-03-30.jsonl`
+`implement.md`
+Verification run:
+`discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
+`state/cases/dw-source-gpt-researcher-mcp-server-2026-03-30.json`
+Result:
+Fresh source `sources/intake/gpt-researcher/mcp-server/README.md` entered through Discovery first and was routed to `monitor` with `usefulnessLevel: meta` and current stage `discovery.monitor.active`. That created the honest stop condition for this run: the strongest remaining source pressure is Discovery-held, not a new bounded Architecture slice.
+Next likely move:
+Stop and report that no bounded Architecture slice emerged in this run because the next strongest fresh source belongs in Discovery monitor.
+Risks / notes:
+This slice intentionally did not open MCP installation, runtime integration, host execution, or any generic deep-research program.
+
+### Cycle 69
+Chosen task:
+Wire planner-parity truth checking into the standard top-level validation path.
+Why it won:
+The live state report still names stale statuses and overstated next steps as the highest-value whole-product seam, and `check:case-planner-parity` is the existing bounded check that exercises those semantics across parked NOTE cases, explicit stops, review gates, and Discovery monitor holds. The top-level `npm run check` path was not yet covering that truth surface.
+Affected layer:
+Shared whole-product validation wiring.
+Owning lane:
+Engine truth/checking hardening.
+Mission usefulness:
+Raises the default proof floor for case-level continuation legality so future regressions in parked-stop semantics, Discovery monitor holds, or overstated next steps are caught by the standard validation path.
+Proof path:
+`package.json`
+`npm run check:case-planner-parity`
+`npm run check`
+`npm run report:directive-workspace-state`
+Rollback path:
+Remove `npm run check:case-planner-parity` from the top-level `check` script and remove this log entry.
+Stop-line:
+Stop once the standard `npm run check` path includes planner parity, the main truth surfaces still pass, and no broader validation expansion is required by live repo truth.
+Files touched:
+`package.json`
+`implement.md`
+Verification run:
+`npm run check:case-planner-parity`
+`npm run check`
+`npm run report:directive-workspace-state`
+Result:
+The default validation chain now includes `check:case-planner-parity`, so the main repo proof path covers parked NOTE-case stop semantics, review-gated boundaries, and Discovery monitor hold behavior instead of relying on targeted manual runs.
+Next likely move:
+Rerank from fresh truth. Do not broaden validation wiring again unless another specific uncovered truth surface is clearly dominant.
+Risks / notes:
+This slice stayed inside validation/proof wiring only and did not reopen parked NOTE cases, Runtime seams, structural mapping, legacy adoption cleanup, or authority surfaces.
 

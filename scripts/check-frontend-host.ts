@@ -157,6 +157,28 @@ async function assertNoRuntimeIssues(page: Page) {
   assert.doesNotMatch(issues.text, /Loading Reading live Directive Workspace state\./i);
 }
 
+async function waitForPathname(page: Page, expectedPathname: string, timeout = 30000) {
+  try {
+    await page.waitForFunction(
+      (expected) => window.location.pathname === expected,
+      { timeout },
+      expectedPathname,
+    );
+  } catch (error) {
+    const snapshot = await page.evaluate(() => {
+      const app = document.querySelector("directive-frontend-app");
+      return {
+        href: window.location.href,
+        pathname: window.location.pathname,
+        text: app?.shadowRoot?.textContent || document.body.textContent || "",
+      };
+    });
+    throw new Error(
+      `wait_for_pathname_failed:${expectedPathname}\n${String((error as Error).message || error)}\ncurrent_href=${snapshot.href}\ncurrent_pathname=${snapshot.pathname}\nrendered_excerpt=${snapshot.text.slice(0, 2000)}`,
+    );
+  }
+}
+
 async function submitThroughShadowForm(page: Page, input: {
   candidateName: string;
   candidateId: string;
@@ -1036,10 +1058,7 @@ async function main() {
     await waitForBodyText(page, "Runtime follow-up stub");
     await waitForBodyText(page, "Approve Runtime record");
     await clickShadowButtonByText(page, "Approve Runtime record");
-    await page.waitForFunction(
-      () => window.location.pathname === "/runtime-records/view",
-      { timeout: 30000 },
-    );
+    await waitForPathname(page, "/runtime-records/view");
     await waitForBodyText(page, "Runtime v0 record");
     await waitForBodyText(page, "Approve Runtime proof artifact");
     assert.equal(

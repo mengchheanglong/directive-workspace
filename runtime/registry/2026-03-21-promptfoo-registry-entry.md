@@ -3,11 +3,11 @@
 - Candidate id: promptfoo
 - Candidate name: promptfoo
 - Registry date: 2026-03-21
-- Linked promotion record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\promotion-records\2026-03-21-promptfoo-promotion-record.md`
+- Linked promotion record: `runtime/promotion-records/2026-03-21-promptfoo-promotion-record.md`
 - Host: Mission Control
 - Runtime surface: bounded agent eval harness / promotion guard lane
 - Runtime status: callable (bounded-eval-lane)
-- Proof path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-21-promptfoo-runtime-slice-01-proof.md`
+- Proof path: `runtime/records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
 - Last validated by: `npm run check:ops-stack`
 - Last validation date: 2026-03-21
 - Active risks: eval dataset is intentionally small; callable status depends on continued eval guard health and regression stability.

@@ -18,13 +18,10 @@ import {
 } from "./discovery-intake-queue-writer.ts";
 import type { DiscoverySubmissionRequest } from "./discovery-submission-router.ts";
 import {
-  renderDiscoveryIntakeRecord,
-  renderDiscoveryTriageRecord,
   resolveDiscoveryIntakeRecordPath,
   resolveDiscoveryTriageRecordPath,
 } from "./discovery-case-record-writer.ts";
 import {
-  renderDiscoveryRoutingRecord,
   resolveDiscoveryRoutingRecordPath,
   type DiscoveryRoutingDecisionState,
 } from "./discovery-routing-record-writer.ts";
@@ -33,6 +30,11 @@ import {
   type DiscoveryIntakeLifecycleSyncRequest,
 } from "./discovery-intake-lifecycle-sync.ts";
 import type { CapabilityGapRecord } from "./discovery-gap-worklist-generator.ts";
+import { mirrorDirectiveDiscoveryFrontDoorSubmission } from "./case-store.ts";
+import {
+  writeDirectiveDiscoveryFrontDoorProjectionSet,
+  type DirectiveMirroredDiscoveryFrontDoorProjectionInput,
+} from "./discovery-front-door-projections.ts";
 
 type DiscoveryFrontDoorDecision = {
   routingTarget: Exclude<DiscoveryRoutingTarget, null>;
@@ -415,10 +417,33 @@ export async function submitDirectiveDiscoveryFrontDoor(input: {
   const filteredRoutingRationale = filterRoutingRationaleLines(
     engineResult.record.routingAssessment.rationale,
   );
-
-  const intakeMarkdown = renderDiscoveryIntakeRecord({
+  const routingRecordPath = resolveDiscoveryRoutingRecordPath({
     candidate_id: normalizedRequest.candidate_id,
     candidate_name: normalizedRequest.candidate_name,
+    route_date: routeDate,
+    source_type: normalizedRequest.source_type ?? "internal-signal",
+    decision_state: frontDoorDecision.decisionState,
+    adoption_target: frontDoorDecision.adoptionTarget,
+    route_destination: frontDoorDecision.routingTarget,
+    why_this_route:
+      filteredRoutingRationale[1]
+      ?? `Shared Engine routing selected ${frontDoorDecision.routingTarget}.`,
+    why_not_alternatives:
+      filteredRoutingRationale
+        .filter((_, index) => index !== 1)
+        .join(" ")
+      || "The other lanes scored lower under the active mission-conditioned routing pass. Discovery still materialized a full intake, triage, and routing record set so the decision remains inspectable.",
+    receiving_track_owner: frontDoorDecision.receivingTrackOwner,
+    required_next_artifact: frontDoorDecision.requiredNextArtifact,
+    linked_intake_record: intakeRecordPath,
+    linked_triage_record: triageRecordPath,
+    reentry_or_promotion_conditions:
+      engineResult.record.proofPlan.requiredGates.join(", ") || "human review required",
+    review_cadence: frontDoorDecision.reviewCadence,
+  });
+  const projectionInput: DirectiveMirroredDiscoveryFrontDoorProjectionInput = {
+    routeDate,
+    decisionState: frontDoorDecision.decisionState,
     intake: {
       intake_date: routeDate,
       source_type: normalizedRequest.source_type ?? "internal-signal",
@@ -440,12 +465,6 @@ export async function submitDirectiveDiscoveryFrontDoor(input: {
         "Human review remains explicit before downstream lane execution.",
       ].join(" "),
     },
-    linked_triage_record: triageRecordPath,
-  });
-
-  const triageMarkdown = renderDiscoveryTriageRecord({
-    candidate_id: normalizedRequest.candidate_id,
-    candidate_name: normalizedRequest.candidate_name,
     triage: {
       triage_date: routeDate,
       first_pass_summary: engineResult.record.analysis.missionFitSummary,
@@ -486,58 +505,29 @@ export async function submitDirectiveDiscoveryFrontDoor(input: {
       reentry_conditions:
         `Respect rollback boundary: ${engineResult.record.proofPlan.rollbackPrompt}`,
     },
-    linked_intake_record: intakeRecordPath,
-  });
-
-  const routingRecordPath = resolveDiscoveryRoutingRecordPath({
-    candidate_id: normalizedRequest.candidate_id,
-    candidate_name: normalizedRequest.candidate_name,
-    route_date: routeDate,
-    source_type: normalizedRequest.source_type ?? "internal-signal",
-    decision_state: frontDoorDecision.decisionState,
-    adoption_target: frontDoorDecision.adoptionTarget,
-    route_destination: frontDoorDecision.routingTarget,
-    why_this_route:
-      filteredRoutingRationale[1]
-      ?? `Shared Engine routing selected ${frontDoorDecision.routingTarget}.`,
-    why_not_alternatives:
-      filteredRoutingRationale
-        .filter((_, index) => index !== 1)
-        .join(" ")
-      || "The other lanes scored lower under the active mission-conditioned routing pass. Discovery still materialized a full intake, triage, and routing record set so the decision remains inspectable.",
-    receiving_track_owner: frontDoorDecision.receivingTrackOwner,
-    required_next_artifact: frontDoorDecision.requiredNextArtifact,
-    linked_intake_record: intakeRecordPath,
-    linked_triage_record: triageRecordPath,
-    reentry_or_promotion_conditions:
-      engineResult.record.proofPlan.requiredGates.join(", ") || "human review required",
-    review_cadence: frontDoorDecision.reviewCadence,
-  });
-
-  const routingMarkdown = renderDiscoveryRoutingRecord({
-    candidate_id: normalizedRequest.candidate_id,
-    candidate_name: normalizedRequest.candidate_name,
-    route_date: routeDate,
-    source_type: normalizedRequest.source_type ?? "internal-signal",
-    decision_state: frontDoorDecision.decisionState,
-    adoption_target: frontDoorDecision.adoptionTarget,
-    route_destination: frontDoorDecision.routingTarget,
-    why_this_route:
-      filteredRoutingRationale[1]
-      ?? `Shared Engine routing selected ${frontDoorDecision.routingTarget}.`,
-    why_not_alternatives:
-      filteredRoutingRationale
-        .filter((_, index) => index !== 1)
-        .join(" ")
-      || "The other lanes scored lower under the active mission-conditioned routing pass. Discovery still materialized a full intake, triage, and routing record set so the decision remains inspectable.",
-    receiving_track_owner: frontDoorDecision.receivingTrackOwner,
-    required_next_artifact: frontDoorDecision.requiredNextArtifact,
-    linked_intake_record: intakeRecordPath,
-    linked_triage_record: triageRecordPath,
-    reentry_or_promotion_conditions:
-      engineResult.record.proofPlan.requiredGates.join(", ") || "human review required",
-    review_cadence: frontDoorDecision.reviewCadence,
-  });
+    routing: {
+      route_date: routeDate,
+      source_type: normalizedRequest.source_type ?? "internal-signal",
+      decision_state: frontDoorDecision.decisionState,
+      adoption_target: frontDoorDecision.adoptionTarget,
+      route_destination: frontDoorDecision.routingTarget,
+      why_this_route:
+        filteredRoutingRationale[1]
+        ?? `Shared Engine routing selected ${frontDoorDecision.routingTarget}.`,
+      why_not_alternatives:
+        filteredRoutingRationale
+          .filter((_, index) => index !== 1)
+          .join(" ")
+        || "The other lanes scored lower under the active mission-conditioned routing pass. Discovery still materialized a full intake, triage, and routing record set so the decision remains inspectable.",
+      receiving_track_owner: frontDoorDecision.receivingTrackOwner,
+      required_next_artifact: frontDoorDecision.requiredNextArtifact,
+      linked_intake_record: intakeRecordPath,
+      linked_triage_record: triageRecordPath,
+      reentry_or_promotion_conditions:
+        engineResult.record.proofPlan.requiredGates.join(", ") || "human review required",
+      review_cadence: frontDoorDecision.reviewCadence,
+    },
+  };
 
   const engineArtifactPaths = resolveEngineArtifactPaths({
     directiveRoot,
@@ -553,10 +543,39 @@ export async function submitDirectiveDiscoveryFrontDoor(input: {
       recordRelativePath: engineArtifactPaths.recordRelativePath,
     }),
   );
-  writeUtf8(path.resolve(directiveRoot, intakeRecordPath), intakeMarkdown);
-  writeUtf8(path.resolve(directiveRoot, triageRecordPath), triageMarkdown);
-  writeUtf8(path.resolve(directiveRoot, routingRecordPath), routingMarkdown);
 
+  mirrorDirectiveDiscoveryFrontDoorSubmission({
+    directiveRoot,
+    caseId: input.request.candidate_id,
+    candidateId: input.request.candidate_id,
+    candidateName: input.request.candidate_name,
+    sourceType: normalizedRequest.source_type ?? "internal-signal",
+    sourceReference: input.request.source_reference,
+    receivedAt: engineResult.record.receivedAt,
+    decisionState: frontDoorDecision.decisionState,
+    routeTarget: frontDoorDecision.routingTarget,
+    operatingMode: normalizedRequest.operating_mode ?? null,
+    queueStatus: "routed",
+    linkedArtifacts: {
+      intakeRecordPath,
+      triageRecordPath,
+      routingRecordPath,
+      engineRunRecordPath: engineArtifactPaths.recordRelativePath,
+      engineRunReportPath: engineArtifactPaths.reportRelativePath,
+    },
+    projectionInputs: {
+      discoveryFrontDoor: projectionInput,
+    },
+  });
+  const projectionWrite = writeDirectiveDiscoveryFrontDoorProjectionSet({
+    directiveRoot,
+    caseId: input.request.candidate_id,
+  });
+  if (!projectionWrite.ok) {
+    throw new Error(
+      `generated_discovery_projection_failed:${projectionWrite.reason}:${input.request.candidate_id}`,
+    );
+  }
   const lifecycleResult = syncDiscoveryIntakeLifecycle({
     queue: queueWithMatchedGap,
     request: {
@@ -573,6 +592,29 @@ export async function submitDirectiveDiscoveryFrontDoor(input: {
     directiveRoot,
   });
   writeJsonNoBom(queuePath, lifecycleResult.queue);
+  mirrorDirectiveDiscoveryFrontDoorSubmission({
+    directiveRoot,
+    caseId: input.request.candidate_id,
+    candidateId: input.request.candidate_id,
+    candidateName: input.request.candidate_name,
+    sourceType: normalizedRequest.source_type ?? "internal-signal",
+    sourceReference: input.request.source_reference,
+    receivedAt: engineResult.record.receivedAt,
+    decisionState: frontDoorDecision.decisionState,
+    routeTarget: frontDoorDecision.routingTarget,
+    operatingMode: lifecycleResult.entry.operating_mode ?? null,
+    queueStatus: lifecycleResult.entry.status,
+    linkedArtifacts: {
+      intakeRecordPath,
+      triageRecordPath,
+      routingRecordPath,
+      engineRunRecordPath: engineArtifactPaths.recordRelativePath,
+      engineRunReportPath: engineArtifactPaths.reportRelativePath,
+    },
+    projectionInputs: {
+      discoveryFrontDoor: projectionInput,
+    },
+  });
 
   return {
     ok: true,
@@ -624,5 +666,6 @@ function toQueueSubmission(request: DiscoverySubmissionRequest) {
     mission_alignment: request.mission_alignment ?? null,
     capability_gap_id: request.capability_gap_id ?? null,
     notes: request.notes ?? null,
+    operating_mode: request.operating_mode ?? null,
   };
 }

@@ -6,15 +6,15 @@ Status: canonical
 This is the default operating workflow for Directive Workspace.
 
 Workflow precedence note:
-- interpret this file through the repo-governing doctrine in `C:\Users\User\.openclaw\workspace\CLAUDE.md`
-- use `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-doctrine\SKILL.md` and `C:\Users\User\.openclaw\workspace\.claude\skills\directive-workspace-audit\SKILL.md` as the guardrails for whether this workflow is still serving the real project
+- interpret this file through the repo-governing doctrine in `../CLAUDE.md`
+- use `../OWNERSHIP.md` and `./doctrine.md` as the local guardrails for whether this workflow is still serving the real project
 
 The goal is to keep the system fast by default and only expand the process when complexity or risk actually requires it.
 
 ## OpenClaw note
 
 OpenClaw-native rescue/recovery work is not owned by this workflow.
-If a Directive Workspace document needs to point at OpenClaw rescue behavior, reference:
+If a Directive Workspace document needs to point at OpenClaw rescue behavior, treat the current adjacent OpenClaw workspace docs as external examples:
 - `C:\Users\User\.openclaw\workspace\openclaw\RESCUE_OPENCLAW.md`
 - `C:\Users\User\.openclaw\workspace\openclaw\RESCUE_PROTOCOL.md`
 

@@ -287,10 +287,12 @@ function readArchitectureUpstreamChainFromAdoption(input: {
     directiveRoot: input.directiveRoot,
     resultPath: input.adoptionDetail.sourceResultRelativePath,
   });
-  const start = readDirectiveArchitectureBoundedStartArtifact({
-    directiveRoot: input.directiveRoot,
-    startPath: result.startRelativePath,
-  });
+  const start = result.startRelativePath
+    ? readDirectiveArchitectureBoundedStartArtifact({
+      directiveRoot: input.directiveRoot,
+      startPath: result.startRelativePath,
+    })
+    : null;
   const handoff = readLinkedArtifactIfPresent({
     directiveRoot: input.directiveRoot,
     relativePath: result.handoffStubPath,
@@ -477,6 +479,7 @@ function findArchitectureReopenedStartForEvaluation(directiveRoot: string, evalu
 
 function buildArchitectureState(input: {
   directiveRoot: string;
+  operatingMode?: string | null;
   handoff?: DirectiveArchitectureHandoffArtifact | null;
   start?: DirectiveArchitectureBoundedStartArtifact | null;
   result?: DirectiveArchitectureBoundedResultArtifact | null;
@@ -537,7 +540,15 @@ function buildArchitectureState(input: {
       "architecture/01-bounded-starts/*-reopened-bounded-start.md",
     );
   }
-  if (input.result?.verdict === "stay_experimental" && !input.result.continuationStartExists && !input.adoption) {
+  if (
+    input.result?.verdict === "stay_experimental"
+    && !input.result.continuationStartExists
+    && !input.adoption
+    && !isNoteDirectArchitectureBoundedResult({
+      operatingMode: input.operatingMode ?? null,
+      result: input.result,
+    })
+  ) {
     recordMissingExpectedArtifact(
       { missingExpectedArtifacts, inconsistentLinks },
       input.result.continuationStartRelativePath,
@@ -581,7 +592,7 @@ function buildArchitectureState(input: {
   }
 
   let currentStage = "architecture.handoff.pending_review";
-  let nextLegalStep = "Explicitly approve the bounded Architecture start.";
+  let nextLegalStep = getArchitectureHandoffNextLegalStep(input.operatingMode ?? null);
 
   if (input.handoff && input.start && !input.result) {
     currentStage = "architecture.bounded_start.opened";
@@ -590,7 +601,12 @@ function buildArchitectureState(input: {
   if (input.result) {
     currentStage = `architecture.bounded_result.${input.result.verdict}`;
     nextLegalStep =
-      input.result.verdict === "stay_experimental"
+      isNoteDirectArchitectureBoundedResult({
+        operatingMode: input.operatingMode ?? null,
+        result: input.result,
+      })
+        ? getNoteDirectArchitectureBoundedResultNextLegalStep({ result: input.result })
+        : input.result.verdict === "stay_experimental"
         ? "Explicitly continue the experimental Architecture slice or stop without auto-advancing."
         : "Explicitly adopt/materialize the bounded Architecture result.";
   }
@@ -642,8 +658,53 @@ function buildArchitectureState(input: {
   };
 }
 
+function isNoteOperatingMode(operatingMode: string | null | undefined) {
+  return String(operatingMode ?? "").trim().toLowerCase() === "note";
+}
+
+function getArchitectureHandoffNextLegalStep(operatingMode: string | null | undefined) {
+  return isNoteOperatingMode(operatingMode)
+    ? "Explicitly review the Architecture handoff and record one NOTE-mode bounded result; no bounded start is required."
+    : "Explicitly approve the bounded Architecture start.";
+}
+
+function getArchitectureRouteBoundaryNextLegalStep(operatingMode: string | null | undefined) {
+  return isNoteOperatingMode(operatingMode)
+    ? "Explicitly review the routed Architecture handoff and record one NOTE-mode bounded result; no bounded start is required."
+    : "Explicitly approve the bounded Architecture handoff/start boundary.";
+}
+
+function isNoteArchitectureRouteProgressedPastHandoff(input: {
+  operatingMode: string | null | undefined;
+  routeDestination: string;
+  requiredNextArtifact: string;
+  downstreamArtifactPath: string | null | undefined;
+}) {
+  return isNoteOperatingMode(input.operatingMode)
+    && input.routeDestination === "architecture"
+    && input.requiredNextArtifact.endsWith("-engine-handoff.md")
+    && String(input.downstreamArtifactPath ?? "").endsWith("-bounded-result.md");
+}
+
+function isNoteDirectArchitectureBoundedResult(input: {
+  operatingMode: string | null | undefined;
+  result?: DirectiveArchitectureBoundedResultArtifact | null;
+}) {
+  return isNoteOperatingMode(input.operatingMode) && !input.result?.startRelativePath;
+}
+
+function getNoteDirectArchitectureBoundedResultNextLegalStep(input: {
+  result?: DirectiveArchitectureBoundedResultArtifact | null;
+}) {
+  if (input.result?.verdict === "adopt") {
+    return "No automatic Architecture step is open; this NOTE-mode bounded result is an explicit stop unless a new bounded pressure justifies deeper materialization.";
+  }
+  return "No automatic Architecture step is open; this NOTE-mode bounded result is an explicit stop unless a new bounded pressure is introduced.";
+}
+
 function buildArchitectureArtifactStage(input: {
   artifactKind: DirectiveWorkspaceArtifactKind;
+  operatingMode?: string | null;
   result?: DirectiveArchitectureBoundedResultArtifact | null;
   adoption?: { path: string; detail: DirectiveArchitectureAdoptionDetail } | null;
   implementationResult?: { path: string; detail: DirectiveArchitectureImplementationResultDetail } | null;
@@ -654,7 +715,7 @@ function buildArchitectureArtifactStage(input: {
     case "architecture_handoff":
       return {
         artifactStage: "architecture.handoff.pending_review",
-        artifactNextLegalStep: "Explicitly approve the bounded Architecture start.",
+        artifactNextLegalStep: getArchitectureHandoffNextLegalStep(input.operatingMode ?? null),
       };
     case "architecture_bounded_start":
       return {
@@ -665,7 +726,12 @@ function buildArchitectureArtifactStage(input: {
       return {
         artifactStage: `architecture.bounded_result.${input.result?.verdict ?? "unknown"}`,
         artifactNextLegalStep:
-          input.result?.verdict === "stay_experimental"
+          isNoteDirectArchitectureBoundedResult({
+            operatingMode: input.operatingMode ?? null,
+            result: input.result ?? null,
+          })
+            ? getNoteDirectArchitectureBoundedResultNextLegalStep({ result: input.result ?? null })
+            : input.result?.verdict === "stay_experimental"
             ? "Explicitly continue the experimental Architecture slice or stop without auto-advancing."
             : "Explicitly adopt/materialize the bounded Architecture result.",
       };
@@ -746,6 +812,12 @@ function resolveArchitectureFocusFromAnyPath(input: {
         startPath: handoff.startRelativePath as string,
       });
     }
+    if (handoff.resultExists) {
+      result = readDirectiveArchitectureBoundedResultArtifact({
+        directiveRoot: input.directiveRoot,
+        resultPath: handoff.resultRelativePath,
+      });
+    }
   } else if (relativePath.endsWith("-bounded-start.md")) {
     start = readDirectiveArchitectureBoundedStartArtifact({
       directiveRoot: input.directiveRoot,
@@ -766,10 +838,12 @@ function resolveArchitectureFocusFromAnyPath(input: {
       resultPath: relativePath,
     });
     artifactKind = "architecture_bounded_result";
-    start = readDirectiveArchitectureBoundedStartArtifact({
-      directiveRoot: input.directiveRoot,
-      startPath: result.startRelativePath,
-    });
+    if (result.startRelativePath) {
+      start = readDirectiveArchitectureBoundedStartArtifact({
+        directiveRoot: input.directiveRoot,
+        startPath: result.startRelativePath,
+      });
+    }
     handoff = readLinkedArtifactIfPresent({
       directiveRoot: input.directiveRoot,
       relativePath: result.handoffStubPath,
@@ -1079,6 +1153,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
     ?? start?.candidateName
     ?? handoff?.title
     ?? null;
+  const queueEntry = candidateId ? findQueueEntryByCandidateId(input.directiveRoot, candidateId) : null;
 
   return {
     artifactKind,
@@ -1091,6 +1166,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
     evaluation,
     ...buildArchitectureState({
       directiveRoot: input.directiveRoot,
+      operatingMode: queueEntry?.operating_mode ?? null,
       handoff,
       start,
       result,
@@ -1314,6 +1390,12 @@ function resolveDiscoveryFocus(input: {
     requiredNextArtifactIsConcrete
     && routing.downstreamStubRelativePath
     && routing.requiredNextArtifact !== routing.downstreamStubRelativePath
+    && !isNoteArchitectureRouteProgressedPastHandoff({
+      operatingMode: queueEntry?.operating_mode ?? null,
+      routeDestination: routing.routeDestination,
+      requiredNextArtifact: routing.requiredNextArtifact,
+      downstreamArtifactPath: routing.downstreamStubRelativePath,
+    })
   ) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
@@ -1324,7 +1406,7 @@ function resolveDiscoveryFocus(input: {
   const currentStage = downstream?.currentStage ?? `discovery.route.${routing.routeDestination}`;
   const nextLegalStep = downstream?.nextLegalStep
     ?? (routing.routeDestination === "architecture"
-      ? "Explicitly approve the bounded Architecture handoff/start boundary."
+      ? getArchitectureRouteBoundaryNextLegalStep(queueEntry?.operating_mode ?? null)
       : routing.routeDestination === "runtime"
         ? "Explicitly approve the bounded Runtime follow-up boundary."
         : "Keep the source in Discovery until the adoption target becomes clearer.");
@@ -1342,7 +1424,7 @@ function resolveDiscoveryFocus(input: {
     artifactStage: `discovery.route.${routing.routeDestination}`,
     artifactNextLegalStep:
       routing.routeDestination === "architecture"
-        ? "Explicitly approve the bounded Architecture handoff/start boundary."
+        ? getArchitectureRouteBoundaryNextLegalStep(queueEntry?.operating_mode ?? null)
         : routing.routeDestination === "runtime"
           ? "Explicitly approve the bounded Runtime follow-up boundary."
           : "Keep the source in Discovery until the adoption target becomes clearer.",
@@ -1588,15 +1670,16 @@ export function resolveDirectiveWorkspaceState(input: {
         directiveRoot,
         artifactPath,
       });
+      const queueEntry = findQueueEntryByCandidateId(directiveRoot, architecture.candidateId);
       const architectureArtifactStage = buildArchitectureArtifactStage({
         artifactKind: architecture.artifactKind,
+        operatingMode: queueEntry?.operating_mode ?? null,
         result: architecture.result ?? null,
         adoption: architecture.adoption ?? null,
         implementationResult: architecture.implementationResult ?? null,
         consumption: architecture.consumption ?? null,
         evaluation: architecture.evaluation ?? null,
       });
-      const queueEntry = findQueueEntryByCandidateId(directiveRoot, architecture.candidateId);
       const engineRun = findLatestEngineRunByCandidateId(directiveRoot, architecture.candidateId);
       const linkedArtifacts = architecture.linked;
       linkedArtifacts.discoveryIntakePath = queueEntry?.intake_record_path ?? null;

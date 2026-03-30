@@ -3,8 +3,8 @@
 - Candidate id: promptfoo
 - Candidate name: promptfoo
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-promptfoo-runtime-followup.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-promptfoo-runtime-followup.md`
+- Origin path: `runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md`
 - Runtime objective: execute one bounded Promptfoo-backed evaluation run against the Mission Control agent eval surface and prove that Runtime can use a product-owned eval harness for promotion safety.
 - Proposed host: Mission Control
 - Proposed runtime surface: agent eval harness / promotion guard lane

@@ -3,8 +3,8 @@
 - Candidate id: arscontexta
 - Candidate name: arscontexta
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-21-arscontexta-context-operator-cutover.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-21-arscontexta-context-operator-cutover.md`
+- Origin path: `runtime/follow-up/2026-03-21-arscontexta-context-operator-cutover.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-21-arscontexta-context-operator-cutover.md`
 - Runtime objective: import a bounded arscontexta context-operator set through the Mission Control `agents/import-packs` route without adopting the upstream plugin runtime or default methodology surface.
 - Proposed host: Mission Control
 - Proposed runtime surface: explicit-only bounded context operator import lane

@@ -3,13 +3,13 @@
 - Candidate id: scientify-literature-monitoring
 - Candidate name: scientify literature monitoring workflow
 - Runtime record date: 2026-03-23
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\handoff\2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-23-scientify-literature-monitoring-runtime-followup.md`
+- Origin path: `runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`
 - Runtime objective: define and validate one bounded recurring literature-monitoring workflow surface with explicit digest output and explicit degraded-state behavior before any host promotion.
 - Proposed host: OpenClaw
 - Proposed runtime surface: Runtime-owned bounded literature-monitoring workflow contract with separable retrieval, ranking/filter, digest rendering, and delivery adapter boundary
 - Execution slice: slice 02 bounded live-fetch proof, following the slice 01 runtime-definition bundle and product-side artifact proof
-- Required proof: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\records\2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
+- Required proof: `runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
 - Required gates:
   - `npm run check:directive-workflow-doctrine`
   - `npm run directive:sync:reports`
@@ -23,5 +23,5 @@
 - Next decision point: decide whether to keep the workflow host-neutral/no-op or open one explicit bounded host proposal surface without widening the runtime
 
 Supporting product contracts:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\bounded-literature-monitoring-workflow.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\shared\contracts\literature-monitoring-degraded-state-guard.md`
+- `shared/contracts/bounded-literature-monitoring-workflow.md`
+- `shared/contracts/literature-monitoring-degraded-state-guard.md`

@@ -3,8 +3,8 @@
 - Candidate id: skills-manager
 - Candidate name: skills-manager
 - Runtime record date: 2026-03-21
-- Origin path: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-skills-manager-lifecycle-cutover.md`
-- Linked follow-up record: `C:\Users\User\.openclaw\workspace\directive-workspace\runtime\follow-up\2026-03-20-skills-manager-lifecycle-cutover.md`
+- Origin path: `runtime/follow-up/2026-03-20-skills-manager-lifecycle-cutover.md`
+- Linked follow-up record: `runtime/follow-up/2026-03-20-skills-manager-lifecycle-cutover.md`
 - Runtime objective: import one bounded `Skills Lifecycle Operator` agent through the Mission Control `agents/import-packs` route and prove that Runtime can promote a skill-lifecycle governance lane without adopting the upstream desktop app runtime.
 - Proposed host: Mission Control
 - Proposed runtime surface: bounded skill lifecycle import lane
