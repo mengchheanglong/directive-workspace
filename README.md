@@ -202,6 +202,24 @@ Focused report output now distinguishes:
 - `currentStage` / `nextLegalStep` = the latest known case state reachable from that artifact's linked chain
 - `currentHead.artifactPath` / `currentHead.artifactStage` = the current live artifact to continue from, derived from the canonical linked chain rather than queue-owned workflow state
 
+## Current Baseline
+
+Directive Workspace is now operating on a simplified v1 baseline:
+
+- CLAUDE-aligned core completion is achieved
+- the active operator path is shorter and defaults to truthful early stop-lines
+- Runtime follow-up navigation has one canonical report surface instead of raw folder-recency browsing
+- Architecture DEEP-only materialization is physically collapsed under `architecture/deep-materialization/` while logical artifact paths remain stable
+- check infrastructure is faster and less repetitive through shared helpers for frontend build, frontend host startup, temporary Directive roots, and DW web-host checker families
+
+This means the current repo emphasis is:
+
+- preserve product truth and proof discipline
+- keep Discovery as the front door
+- keep Runtime reusable and bounded
+- keep Architecture self-improvement real but only deepen when the next stage adds concrete new product value
+- treat remaining cleanup or optimization as incremental improvement, not missing baseline product setup
+
 ## Research Engine Discovery Skill
 
 Directive Workspace now treats `research-engine` as a bounded Discovery capability. It ingests a Discovery-only `research-engine` bundle through the canonical Discovery front door without granting it route or adoption authority.
@@ -258,3 +276,4 @@ Useful operator reports:
 - `npm run report:directive-workspace-state`
 - `npm run report:runtime-follow-up-navigation`
 - `npm run report:runtime-loop-control`
+- `npm run report:read-only-lifecycle-coordination`

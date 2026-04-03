@@ -12,6 +12,7 @@ This folder should contain:
 - shared schemas
 - shared host-agnostic libraries
 - reusable templates
+- canonical path/storage compatibility layers where stable logical artifact paths must survive structural cleanup
 
 Current reusable templates include:
 - Discovery fast-path record
@@ -31,14 +32,26 @@ Current cross-track contracts include:
 - citation-set fallback contract
 
 Current shared libraries include:
+- `shared/lib/dw-state.ts`
+- `shared/lib/directive-workspace-artifact-storage.ts`
+- `shared/lib/architecture-deep-tail-stage-map.ts`
+- `shared/lib/architecture-deep-tail-artifact-helpers.ts`
+- `shared/lib/runtime-follow-up-navigation.ts`
+- `shared/lib/runtime-promotion-assistance.ts`
 - `shared/lib/structured-output-fallback.ts`
 - `shared/lib/lifecycle-artifacts.ts`
 - `shared/lib/integration-artifact-generator.ts`
 
 Host note:
-- Mission Control may keep temporary host-local mirrors of `shared/lib/` files
+- hosts may keep temporary host-local mirrors of `shared/lib/` files
 - canonical ownership remains in Directive Workspace
 - mirror drift must be prevented by host sync checks
+
+Current emphasis:
+- one shared vocabulary across Discovery, Runtime, Architecture, and hosts
+- one canonical state read surface
+- one canonical artifact path/storage compatibility layer where filesystem layout changed but logical links must stay stable
+- one canonical set of host-agnostic navigation/report builders for active operator surfaces
 
 This folder should not contain:
 - host runtime code
