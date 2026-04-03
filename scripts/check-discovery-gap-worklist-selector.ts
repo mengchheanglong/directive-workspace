@@ -50,8 +50,6 @@ function main() {
     isDiscoveryGapWorklistItemEligibleForSelection(item)
   );
 
-  assert.ok(expectedTopEligible, "expected canonical discovery gap worklist to expose at least one eligible open gap");
-
   const selection = readTopEligibleDiscoveryGapFromCanonicalWorklist({
     directiveRoot: DIRECTIVE_ROOT,
   });
@@ -63,15 +61,20 @@ function main() {
     "selector should preserve the canonical worklist selection rule",
   );
   assert.equal(selection.totalOpenItems, worklist.items.length);
-  assert.ok(selection.eligibleOpenItems >= 1, "expected at least one eligible open gap");
-  assert.deepEqual(selection.selectedGap, {
-    gap_id: expectedTopEligible.gap_id,
-    worklist_rank: expectedTopEligible.worklist_rank,
-    priority_score: expectedTopEligible.priority_score,
-    next_slice_track: expectedTopEligible.next_slice_track,
-    next_action: expectedTopEligible.next_action,
-    gap_status: expectedTopEligible.gap_status,
-  });
+  if (expectedTopEligible) {
+    assert.ok(selection.eligibleOpenItems >= 1, "expected at least one eligible open gap");
+    assert.deepEqual(selection.selectedGap, {
+      gap_id: expectedTopEligible.gap_id,
+      worklist_rank: expectedTopEligible.worklist_rank,
+      priority_score: expectedTopEligible.priority_score,
+      next_slice_track: expectedTopEligible.next_slice_track,
+      next_action: expectedTopEligible.next_action,
+      gap_status: expectedTopEligible.gap_status,
+    });
+  } else {
+    assert.equal(selection.eligibleOpenItems, 0);
+    assert.equal(selection.selectedGap, null);
+  }
 
   assert.equal(
     fs.readFileSync(GAP_WORKLIST_PATH, "utf8"),

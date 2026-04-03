@@ -19,6 +19,7 @@
 - Runtime v0 record: `runtime/02-records/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-record.md`
 - Source Runtime follow-up record: `runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
 - Linked Discovery routing record: `discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
+- Callable stub: `runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts`
 - Runtime objective: Reimplement Scientify's 4 literature-access tools (arxiv-search, arxiv-download, openalex-search, unpaywall-download) as Directive-owned callable runtime capability for automated literature discovery and retrieval.
 - Proposed host: `pending_host_selection`
 - Proposed runtime surface: reimplement
@@ -93,3 +94,4 @@ Note: exact byte-identical API responses are not claimed. The claims are about r
 - Runtime record: `runtime/02-records/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-record.md`
 - Source Runtime follow-up record: `runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
 - Linked Discovery routing record: `discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
+- Callable stub: `runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts`

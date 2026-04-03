@@ -1,4 +1,4 @@
-import { DIRECTIVE_WORKSPACE_V0, type DirectiveRuntimeStatus } from "./v0";
+import { DIRECTIVE_WORKSPACE_V0, type DirectiveRuntimeStatus } from "./runtime-core-contract";
 
 export type DirectiveLifecycleCapabilityInput = {
   createdAt: string;

@@ -23,7 +23,7 @@
 - Queue entries that reference a capability gap must use a valid `gap_id` from `discovery/capability-gaps.json`
 - Queue entries that declare mission alignment must reference an objective from `knowledge/active-mission.md`
 - Queue validation checker runs as a gate (exit 1 on failure)
-- Front-door routine coverage is enforced by `npm run check:discovery-front-door-coverage`
+- Front-door routine coverage is measured by `shared/lib/discovery-front-door-coverage.ts`
 
 ## Primary Mode Constraints
 
@@ -48,7 +48,7 @@ Transitioned from shadow to primary on 2026-03-22:
 - Criteria partially met: backfill entries lack `fast_path_record_path` but all correspond to real routing-log records
 
 Routine-usage follow-up closed on 2026-03-23:
-- executable front-door coverage checker created at `mission-control/scripts/check-discovery-front-door-coverage.ts`
+- canonical front-door coverage analysis now lives at `shared/lib/discovery-front-door-coverage.ts`
 - split-case queue linkage normalized to `intake_record_path`
 - native post-primary Discovery coverage now measures against live corpus usage instead of hand-counted markdown ratios
 

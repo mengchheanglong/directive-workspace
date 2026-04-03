@@ -14,6 +14,7 @@ import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
 import { runDirectiveRuntimeActionByExplicitInvocation } from "../shared/lib/runtime-runner-invocation.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import {
   runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence,
   type DirectiveRuntimeProofCapabilityBoundarySequenceInput,
@@ -71,17 +72,6 @@ function uniqueRelativePaths(items: Array<string | null | undefined>) {
 function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
   for (const relativePath of uniqueRelativePaths(relativePaths)) {
     copyRelativeFile(relativePath, directiveRoot);
-  }
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-two-step-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
   }
 }
 
@@ -243,11 +233,11 @@ function directSingleActionBaseline(directiveRoot: string) {
 }
 
 function scenarioFreshSequenceMatchesDirectPath() {
-  withTempDirectiveRoot((directRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-two-step-" }, (directRoot) => {
     seedDirectiveRoot(directRoot);
     const direct = directSingleActionBaseline(directRoot);
 
-    withTempDirectiveRoot((sequenceRoot) => {
+    withTempDirectiveRoot({ prefix: "directive-runtime-two-step-" }, (sequenceRoot) => {
       seedDirectiveRoot(sequenceRoot);
       const result = runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence({
         directiveRoot: sequenceRoot,
@@ -323,7 +313,7 @@ function scenarioFreshSequenceMatchesDirectPath() {
 }
 
 function scenarioInterruptedBeforeStep1ThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-two-step-" }, (directiveRoot) => {
     seedDirectiveRoot(directiveRoot);
     const interrupted = runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence({
       directiveRoot,
@@ -367,7 +357,7 @@ function scenarioInterruptedBeforeStep1ThenResumed() {
 }
 
 function scenarioInterruptedAfterStep1ThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-two-step-" }, (directiveRoot) => {
     seedDirectiveRoot(directiveRoot);
     const interrupted = runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence({
       directiveRoot,
@@ -439,7 +429,7 @@ function scenarioInterruptedAfterStep1ThenResumed() {
 }
 
 function scenarioInterruptedAfterStep2ThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-two-step-" }, (directiveRoot) => {
     seedDirectiveRoot(directiveRoot);
     const interrupted = runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence({
       directiveRoot,
@@ -493,7 +483,7 @@ function scenarioInterruptedAfterStep2ThenResumed() {
 }
 
 function scenarioApprovalAndStaleHeadGuards() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-two-step-" }, (directiveRoot) => {
     seedDirectiveRoot(directiveRoot);
 
     assert.throws(

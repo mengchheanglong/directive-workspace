@@ -72,6 +72,7 @@ import {
   recordMissingExpectedArtifact,
   recordMissingLinkedArtifactIfAbsent,
 } from "../../engine/artifact-link-validation.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
 export type DirectiveWorkspaceFocusLane =
   | "discovery"
   | "engine"
@@ -117,6 +118,7 @@ export type DirectiveWorkspaceArtifactKind =
   | "runtime_proof_callable_integration"
   | "runtime_runtime_capability_boundary"
   | "runtime_promotion_readiness"
+  | "runtime_promotion_record"
   | "runtime_callable_integration"
   | "unknown";
 
@@ -144,7 +146,10 @@ export type DirectiveWorkspaceLinkedArtifacts = {
   runtimeProofPath: string | null;
   runtimeRuntimeCapabilityBoundaryPath: string | null;
   runtimePromotionReadinessPath: string | null;
+  runtimePromotionRecordPath: string | null;
+  runtimePromotionSpecificationPath: string | null;
   runtimeCallableStubPath: string | null;
+  runtimeHostConsumptionReportPath: string | null;
 };
 
 export type DirectiveWorkspaceCurrentHead = {
@@ -177,6 +182,12 @@ export type DirectiveWorkspaceResolvedFocus = {
   discovery: {
     queueStatus: string | null;
     operatingMode: string | null;
+    submissionOrigin: string | null;
+    sourceType: string | null;
+    sourceReference: string | null;
+    signalBand: string | null;
+    signalTotalScore: number | null;
+    signalScoreSummary: string | null;
     routingDecision: string | null;
     usefulnessLevel: string | null;
     usefulnessRationale: string | null;
@@ -312,7 +323,7 @@ function readArchitectureUpstreamChainFromAdoption(input: {
 function findArchitectureImplementationTargetForAdoption(directiveRoot: string, adoptionPath: string) {
   for (const targetPath of listFiles({
     directiveRoot,
-    relativeDir: "architecture/04-implementation-targets",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir,
     suffix: ".md",
   })) {
     try {
@@ -336,7 +347,7 @@ function findArchitectureImplementationTargetForAdoption(directiveRoot: string, 
 function findArchitectureImplementationResultForTarget(directiveRoot: string, targetPath: string) {
   for (const resultPath of listFiles({
     directiveRoot,
-    relativeDir: "architecture/05-implementation-results",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.relativeDir,
     suffix: ".md",
   })) {
     try {
@@ -360,7 +371,7 @@ function findArchitectureImplementationResultForTarget(directiveRoot: string, ta
 function findArchitectureRetentionForResult(directiveRoot: string, implementationResultPath: string) {
   for (const retainedPath of listFiles({
     directiveRoot,
-    relativeDir: "architecture/06-retained",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir,
     suffix: ".md",
   })) {
     try {
@@ -384,7 +395,7 @@ function findArchitectureRetentionForResult(directiveRoot: string, implementatio
 function findArchitectureIntegrationForRetention(directiveRoot: string, retainedPath: string) {
   for (const integrationPath of listFiles({
     directiveRoot,
-    relativeDir: "architecture/07-integration-records",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.relativeDir,
     suffix: ".md",
   })) {
     try {
@@ -408,7 +419,7 @@ function findArchitectureIntegrationForRetention(directiveRoot: string, retained
 function findArchitectureConsumptionForIntegration(directiveRoot: string, integrationPath: string) {
   for (const consumptionPath of listFiles({
     directiveRoot,
-    relativeDir: "architecture/08-consumption-records",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.relativeDir,
     suffix: ".md",
   })) {
     try {
@@ -432,7 +443,7 @@ function findArchitectureConsumptionForIntegration(directiveRoot: string, integr
 function findArchitectureEvaluationForConsumption(directiveRoot: string, consumptionPath: string) {
   for (const evaluationPath of listFiles({
     directiveRoot,
-    relativeDir: "architecture/09-post-consumption-evaluations",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir,
     suffix: ".md",
   })) {
     try {
@@ -560,34 +571,37 @@ function buildArchitectureState(input: {
   if (input.adoption && !input.implementationTarget) {
     recordMissingExpectedArtifact(
       { missingExpectedArtifacts, inconsistentLinks },
-      "architecture/04-implementation-targets/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.gapPattern,
     );
   }
   if (input.implementationTarget && !input.implementationResult) {
     recordMissingExpectedArtifact(
       { missingExpectedArtifacts, inconsistentLinks },
-      "architecture/05-implementation-results/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.gapPattern,
     );
   }
   if (input.implementationResult && !input.retained) {
-    recordMissingExpectedArtifact({ missingExpectedArtifacts, inconsistentLinks }, "architecture/06-retained/*.md");
+    recordMissingExpectedArtifact(
+      { missingExpectedArtifacts, inconsistentLinks },
+      ARCHITECTURE_DEEP_TAIL_STAGE.retained.gapPattern,
+    );
   }
   if (input.retained && !input.integration) {
     recordMissingExpectedArtifact(
       { missingExpectedArtifacts, inconsistentLinks },
-      "architecture/07-integration-records/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.gapPattern,
     );
   }
   if (input.integration && !input.consumption) {
     recordMissingExpectedArtifact(
       { missingExpectedArtifacts, inconsistentLinks },
-      "architecture/08-consumption-records/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.gapPattern,
     );
   }
   if (input.consumption && !input.evaluation) {
     recordMissingExpectedArtifact(
       { missingExpectedArtifacts, inconsistentLinks },
-      "architecture/09-post-consumption-evaluations/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.gapPattern,
     );
   }
 
@@ -865,7 +879,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
       directiveRoot: input.directiveRoot,
       adoptionDetail: adoption.detail,
     }));
-  } else if (relativePath.startsWith("architecture/04-implementation-targets/")) {
+  } else if (relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.pathPrefix)) {
     implementationTarget = {
       path: relativePath,
       detail: readDirectiveArchitectureImplementationTargetDetail({
@@ -889,7 +903,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
         adoptionDetail: adoption.detail,
       }));
     }
-  } else if (relativePath.startsWith("architecture/05-implementation-results/")) {
+  } else if (relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.pathPrefix)) {
     implementationResult = {
       path: relativePath,
       detail: readDirectiveArchitectureImplementationResultDetail({
@@ -917,7 +931,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
         adoptionDetail: adoption.detail,
       }));
     }
-  } else if (relativePath.startsWith("architecture/06-retained/")) {
+  } else if (relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.retained.pathPrefix)) {
     retained = {
       path: relativePath,
       detail: readDirectiveArchitectureRetentionDetail({
@@ -951,7 +965,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
         adoptionDetail: adoption.detail,
       }));
     }
-  } else if (relativePath.startsWith("architecture/07-integration-records/")) {
+  } else if (relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.pathPrefix)) {
     integration = {
       path: relativePath,
       detail: readDirectiveArchitectureIntegrationRecordDetail({
@@ -986,7 +1000,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
         ? findArchitectureImplementationResultForTarget(input.directiveRoot, implementationTarget.path)
         : null;
     }
-  } else if (relativePath.startsWith("architecture/08-consumption-records/")) {
+  } else if (relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.pathPrefix)) {
     consumption = {
       path: relativePath,
       detail: readDirectiveArchitectureConsumptionRecordDetail({
@@ -1030,7 +1044,7 @@ function resolveArchitectureFocusFromAnyPath(input: {
         ? findArchitectureImplementationResultForTarget(input.directiveRoot, implementationTarget.path)
         : null;
     }
-  } else if (relativePath.startsWith("architecture/09-post-consumption-evaluations/")) {
+  } else if (relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.pathPrefix)) {
     evaluation = {
       path: relativePath,
       detail: readDirectiveArchitecturePostConsumptionEvaluationDetail({
@@ -1221,8 +1235,8 @@ function buildOverviewAnchors(directiveRoot: string): DirectiveWorkspaceAnchorSu
 
   const latestArchitectureEvaluation = listFiles({
     directiveRoot,
-    relativeDir: "architecture/09-post-consumption-evaluations",
-    suffix: "-evaluation.md",
+    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir,
+    suffix: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.artifactSuffix,
   })[0];
   if (latestArchitectureEvaluation) candidates.push(latestArchitectureEvaluation);
 
@@ -1341,17 +1355,6 @@ function resolveDiscoveryFocus(input: {
   const engineSelectionMatchesDiscoveryHeldRoute =
     engineRun?.record.selectedLane?.laneId === "discovery"
     && isDiscoveryHeldRouteDestination(routing.routeDestination);
-  if (
-    engineRun?.record.selectedLane?.laneId
-    && engineRun.record.selectedLane.laneId !== routing.routeDestination
-    && !engineSelectionMatchesDiscoveryHeldRoute
-    && !documentsOperatorOverride
-  ) {
-    recordInconsistentLink(
-      { missingExpectedArtifacts, inconsistentLinks },
-      `Engine selected lane "${engineRun.record.selectedLane.laneId}" does not match Discovery route "${routing.routeDestination}"`,
-    );
-  }
 
   let downstream: DirectiveWorkspaceResolvedFocus | null = null;
   const discoveryHeldDownstreamPath =
@@ -1384,6 +1387,25 @@ function resolveDiscoveryFocus(input: {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
       `downstream artifact lane "${downstream.lane}" does not match Discovery route "${routing.routeDestination}"`,
+    );
+  }
+  const routeSupersedesEngineSelection =
+    Boolean(
+      engineRun?.record.selectedLane?.laneId
+      && engineRun.record.selectedLane.laneId !== routing.routeDestination
+      && downstream?.lane === routing.routeDestination
+      && queueEntry?.routing_target === routing.routeDestination,
+    );
+  if (
+    engineRun?.record.selectedLane?.laneId
+    && engineRun.record.selectedLane.laneId !== routing.routeDestination
+    && !engineSelectionMatchesDiscoveryHeldRoute
+    && !documentsOperatorOverride
+    && !routeSupersedesEngineSelection
+  ) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `Engine selected lane "${engineRun.record.selectedLane.laneId}" does not match Discovery route "${routing.routeDestination}"`,
     );
   }
   if (
@@ -1443,6 +1465,12 @@ function resolveDiscoveryFocus(input: {
     discovery: {
       queueStatus: queueEntry?.status ?? null,
       operatingMode: queueEntry?.operating_mode ?? null,
+      submissionOrigin: queueEntry?.submission_origin ?? null,
+      sourceType: queueEntry?.source_type ?? null,
+      sourceReference: queueEntry?.source_reference ?? null,
+      signalBand: queueEntry?.discovery_signal_band ?? null,
+      signalTotalScore: queueEntry?.signal_total_score ?? null,
+      signalScoreSummary: queueEntry?.signal_score_summary ?? null,
       routingDecision: routing.decisionState,
       usefulnessLevel: routing.usefulnessLevel,
       usefulnessRationale: routing.usefulnessRationale,
@@ -1450,10 +1478,18 @@ function resolveDiscoveryFocus(input: {
     },
     engine: {
       runId: engineRun?.record.runId ?? routing.engineRunId,
-      selectedLane: engineRun?.record.selectedLane?.laneId ?? routing.routeDestination,
-      decisionState: engineRun?.record.decision?.decisionState ?? routing.decisionState,
-      proofKind: engineRun?.record.proofPlan?.proofKind ?? null,
-      nextAction: engineRun?.record.integrationProposal?.nextAction ?? null,
+      selectedLane: routeSupersedesEngineSelection
+        ? routing.routeDestination
+        : engineRun?.record.selectedLane?.laneId ?? routing.routeDestination,
+      decisionState: routeSupersedesEngineSelection
+        ? routing.decisionState
+        : engineRun?.record.decision?.decisionState ?? routing.decisionState,
+      proofKind: routeSupersedesEngineSelection
+        ? null
+        : engineRun?.record.proofPlan?.proofKind ?? null,
+      nextAction: routeSupersedesEngineSelection
+        ? routing.requiredNextArtifact
+        : engineRun?.record.integrationProposal?.nextAction ?? null,
     },
   } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">);
 }
@@ -1560,6 +1596,12 @@ function resolveDiscoveryMonitorFocus(input: {
     discovery: {
       queueStatus: queueEntry?.status ?? null,
       operatingMode: queueEntry?.operating_mode ?? null,
+      submissionOrigin: queueEntry?.submission_origin ?? null,
+      sourceType: queueEntry?.source_type ?? null,
+      sourceReference: queueEntry?.source_reference ?? null,
+      signalBand: queueEntry?.discovery_signal_band ?? null,
+      signalTotalScore: queueEntry?.signal_total_score ?? null,
+      signalScoreSummary: queueEntry?.signal_score_summary ?? null,
       routingDecision: routingArtifact?.decisionState ?? "monitor",
       usefulnessLevel: routingArtifact?.usefulnessLevel ?? engineRun?.record.candidate.usefulnessLevel ?? null,
       usefulnessRationale:
@@ -1586,14 +1628,34 @@ function resolveEngineFocus(input: {
   const absolutePath = path.join(input.directiveRoot, relativePath);
   const record = JSON.parse(readUtf8(absolutePath)) as StoredDirectiveEngineRunRecord;
   const queueEntry = findQueueEntryByCandidateId(input.directiveRoot, record.candidate.candidateId);
+  const reportPath = relativePath.replace(/\.json$/i, ".md");
 
   const linkedArtifacts = zeroLinkedArtifacts();
   linkedArtifacts.engineRunRecordPath = relativePath;
-  linkedArtifacts.engineRunReportPath = fileExistsInDirectiveWorkspace(input.directiveRoot, relativePath.replace(/\.json$/i, ".md"))
-    ? relativePath.replace(/\.json$/i, ".md")
-    : null;
+  linkedArtifacts.engineRunReportPath = reportPath;
   linkedArtifacts.discoveryIntakePath = queueEntry?.intake_record_path ?? null;
   linkedArtifacts.discoveryRoutingPath = queueEntry?.routing_record_path ?? null;
+
+  const missingExpectedArtifacts: string[] = [];
+  const inconsistentLinks: string[] = [];
+  recordMissingLinkedArtifactIfAbsent({
+    directiveRoot: input.directiveRoot,
+    state: { missingExpectedArtifacts, inconsistentLinks },
+    relativePath: linkedArtifacts.engineRunReportPath,
+    label: "Engine run report artifact",
+  });
+  recordMissingLinkedArtifactIfAbsent({
+    directiveRoot: input.directiveRoot,
+    state: { missingExpectedArtifacts, inconsistentLinks },
+    relativePath: linkedArtifacts.discoveryIntakePath,
+    label: "Discovery intake record",
+  });
+  recordMissingLinkedArtifactIfAbsent({
+    directiveRoot: input.directiveRoot,
+    state: { missingExpectedArtifacts, inconsistentLinks },
+    relativePath: linkedArtifacts.discoveryRoutingPath,
+    label: "Discovery routing record",
+  });
 
   return finalizeResolvedFocus({
     ok: true,
@@ -1609,8 +1671,8 @@ function resolveEngineFocus(input: {
     nextLegalStep: "Inspect the Discovery routing record and only then explicitly approve the next bounded downstream stub.",
     routeTarget: record.selectedLane.laneId,
     statusGate: record.decision.decisionState,
-    missingExpectedArtifacts: [],
-    inconsistentLinks: [],
+    missingExpectedArtifacts,
+    inconsistentLinks,
     intentionallyUnbuiltDownstreamStages: [
       "automatic downstream advancement",
       "runtime execution",
@@ -1619,6 +1681,12 @@ function resolveEngineFocus(input: {
     discovery: {
       queueStatus: queueEntry?.status ?? null,
       operatingMode: queueEntry?.operating_mode ?? null,
+      submissionOrigin: queueEntry?.submission_origin ?? null,
+      sourceType: queueEntry?.source_type ?? record.source.sourceType,
+      sourceReference: queueEntry?.source_reference ?? record.source.sourceRef,
+      signalBand: queueEntry?.discovery_signal_band ?? null,
+      signalTotalScore: queueEntry?.signal_total_score ?? null,
+      signalScoreSummary: queueEntry?.signal_score_summary ?? null,
       routingDecision: queueEntry?.routing_target ?? null,
       usefulnessLevel: record.candidate.usefulnessLevel,
       usefulnessRationale: record.analysis.usefulnessRationale,
@@ -1725,6 +1793,12 @@ export function resolveDirectiveWorkspaceState(input: {
         discovery: {
           queueStatus: queueEntry?.status ?? null,
           operatingMode: queueEntry?.operating_mode ?? null,
+          submissionOrigin: queueEntry?.submission_origin ?? null,
+          sourceType: queueEntry?.source_type ?? null,
+          sourceReference: queueEntry?.source_reference ?? null,
+          signalBand: queueEntry?.discovery_signal_band ?? null,
+          signalTotalScore: queueEntry?.signal_total_score ?? null,
+          signalScoreSummary: queueEntry?.signal_score_summary ?? null,
           routingDecision: routingArtifact?.routeDestination ?? queueEntry?.routing_target ?? null,
           usefulnessLevel: routingArtifact?.usefulnessLevel ?? engineRun?.record.candidate.usefulnessLevel ?? null,
           usefulnessRationale:
@@ -1747,6 +1821,7 @@ export function resolveDirectiveWorkspaceState(input: {
         artifactPath,
       });
       const runtimeArtifactStage = buildRuntimeArtifactStage({
+        directiveRoot,
         artifactKind: runtime.artifactKind,
         legacyFollowUp: runtime.legacyFollowUp ?? null,
         legacyHandoff: runtime.legacyHandoff ?? null,
@@ -1765,6 +1840,7 @@ export function resolveDirectiveWorkspaceState(input: {
         legacyRuntimeTransformationProof: runtime.legacyRuntimeTransformationProof ?? null,
         legacyRuntimeRegistry: runtime.legacyRuntimeRegistry ?? null,
         legacyRuntimePromotionRecord: runtime.legacyRuntimePromotionRecord ?? null,
+        promotionRecord: runtime.promotionRecord ?? null,
         runtimeRecord: runtime.runtimeRecord ?? null,
         runtimeProof: runtime.runtimeProof ?? null,
         capabilityBoundary: runtime.capabilityBoundary ?? null,
@@ -1799,6 +1875,12 @@ export function resolveDirectiveWorkspaceState(input: {
         discovery: {
           queueStatus: queueEntry?.status ?? null,
           operatingMode: queueEntry?.operating_mode ?? null,
+          submissionOrigin: queueEntry?.submission_origin ?? null,
+          sourceType: queueEntry?.source_type ?? null,
+          sourceReference: queueEntry?.source_reference ?? null,
+          signalBand: queueEntry?.discovery_signal_band ?? null,
+          signalTotalScore: queueEntry?.signal_total_score ?? null,
+          signalScoreSummary: queueEntry?.signal_score_summary ?? null,
           routingDecision: queueEntry?.routing_target ?? null,
           usefulnessLevel: engineRun?.record.candidate.usefulnessLevel ?? null,
           usefulnessRationale: engineRun?.record.analysis.usefulnessRationale ?? null,
@@ -1813,7 +1895,9 @@ export function resolveDirectiveWorkspaceState(input: {
         },
         runtime: {
           proposedHost: runtime.promotionReadiness?.proposedHost ?? runtime.legacyProposedHost ?? null,
-          executionState: runtime.promotionReadiness?.executionState ?? null,
+          executionState: runtime.linked.runtimeHostConsumptionReportPath
+            ? "bounded standalone-host callable consumption proven through the shared Runtime executor; one promoted host path is now real while registry acceptance and promotion automation remain closed"
+            : runtime.promotionReadiness?.executionState ?? null,
           promotionReadinessBlockers: buildRuntimePromotionReadinessBlockers({
             promotionReadiness: runtime.promotionReadiness ?? null,
           }),

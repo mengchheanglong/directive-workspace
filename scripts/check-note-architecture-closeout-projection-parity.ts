@@ -23,6 +23,7 @@ import {
 } from "../shared/lib/case-store.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type QueueEntry = {
   candidate_id: string;
@@ -73,17 +74,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
   const targetPath = path.join(tempRoot, relativePath);
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
   fs.copyFileSync(sourcePath, targetPath);
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-note-closeout-projection-parity-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
 }
 
 function parseClosedBy(closeoutApproval: string) {
@@ -296,7 +286,7 @@ function main() {
   const queuePath = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
   const queueDocument = readJson<{ entries: QueueEntry[] }>(queuePath);
 
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-note-closeout-projection-parity-" }, (directiveRoot) => {
     const tempQueue = structuredClone(queueDocument);
 
     for (const proofCase of NOTE_CASES) {

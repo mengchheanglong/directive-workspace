@@ -81,3 +81,21 @@ For repeated same-class wording or authority-alignment micro-repairs, prefer bat
 - one final stop summary
 
 Reserve full standalone cycle entries for slices that change structural rules, add a new contract or check, or require non-trivial product interpretation.
+
+## External research policy
+
+Read this file first.
+
+Use external MCP tools only when repo-local truth is not enough.
+
+Tool routing:
+- Use `tavily` for broad discovery, recent web research, and finding candidate sources.
+- Use `exa` for code examples, API docs, implementation patterns, and “find something similar”.
+- Use `firecrawl` only after a target source/site is chosen and deeper extraction, crawling, or page-level scraping is needed.
+
+Rules:
+- Discovery-first when using outside sources.
+- Do not let outside sources override repo doctrine.
+- Compare external findings against current repo truth.
+- Return one bounded recommendation, not a broad redesign.
+- Stop after one safe, reversible slice.

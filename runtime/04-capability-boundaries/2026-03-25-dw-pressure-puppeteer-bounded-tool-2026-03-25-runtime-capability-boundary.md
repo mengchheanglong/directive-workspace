@@ -10,7 +10,7 @@
 - Candidate name: `Puppeteer Bounded Tool Runtime Run`
 - Capability form: bounded runtime capability boundary
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
 - Execution state: not executing, not host-integrated, not implemented, not promoted
 
@@ -20,7 +20,7 @@
 - Source Runtime follow-up record: `runtime/follow-up/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-runtime-follow-up-record.md`
 - Linked Discovery routing record: `discovery/routing-log/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-routing-record.md`
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
 
 ## capability boundary

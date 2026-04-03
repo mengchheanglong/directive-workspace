@@ -12,7 +12,7 @@ import {
   type DirectiveCapabilityRecommendation,
   type DirectiveExperimentStatus,
   type DirectiveEvaluationOutcome,
-} from "./v0.js";
+} from "./runtime-core-contract.js";
 
 export type DirectiveCandidateContractInput = {
   sourceType?: unknown;

@@ -12,6 +12,7 @@ import {
 } from "../shared/lib/case-store.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type QueueEntry = {
   candidate_id: string;
@@ -37,17 +38,6 @@ const GOLDEN_CANDIDATE_IDS = [
 
 function readJson<T>(filePath: string) {
   return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-async function withTempDirectiveRoot(run: (directiveRoot: string) => Promise<void> | void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-case-snapshot-parity-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    await run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
 }
 
 function loadGoldenQueueEntries() {
@@ -95,7 +85,7 @@ function buildMirroredRecord(input: {
 async function main() {
   const goldenEntries = loadGoldenQueueEntries();
 
-  await withTempDirectiveRoot(async (directiveRoot) => {
+  await withTempDirectiveRoot({ prefix: "directive-case-snapshot-parity-" }, async (directiveRoot) => {
     const results = [];
 
     for (const queueEntry of goldenEntries) {

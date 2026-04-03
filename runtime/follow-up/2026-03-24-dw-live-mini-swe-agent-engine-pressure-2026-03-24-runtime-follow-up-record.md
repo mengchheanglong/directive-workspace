@@ -6,7 +6,7 @@
 - Current decision state: `route_to_runtime_follow_up`
 - Origin track: `discovery-engine-handoff`
 - Runtime value to operationalize: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.
-- Proposed host: `mission-control`
+- Proposed host: `Directive Workspace standalone host (hosts/standalone-host/)`
 - Proposed integration mode: reimplement
 - Source-pack allowlist profile: n/a
 - Allowed export surfaces:
@@ -42,6 +42,5 @@
 
 Linked handoff:
 - `discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`
-
 
 

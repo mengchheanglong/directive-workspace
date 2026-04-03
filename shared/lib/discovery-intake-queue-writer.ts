@@ -8,6 +8,8 @@ export type DiscoverySourceType =
   | "external-system"
   | "internal-signal";
 
+export type DiscoverySubmissionOrigin = "research-engine" | null;
+
 export type DiscoveryQueueStatus =
   | "pending"
   | "processing"
@@ -33,6 +35,10 @@ export type DiscoveryIntakeSubmission = {
   capability_gap_id?: string | null;
   notes?: string | null;
   operating_mode?: DiscoveryOperatingMode;
+  submission_origin?: DiscoverySubmissionOrigin;
+  discovery_signal_band?: string | null;
+  signal_total_score?: number | null;
+  signal_score_summary?: string | null;
 };
 
 export type DiscoveryOperatingMode = "note" | "standard" | "deep" | null;
@@ -56,6 +62,10 @@ export type DiscoveryIntakeQueueEntry = {
   result_record_path: string | null;
   notes: string | null;
   operating_mode?: DiscoveryOperatingMode;
+  submission_origin?: DiscoverySubmissionOrigin;
+  discovery_signal_band?: string | null;
+  signal_total_score?: number | null;
+  signal_score_summary?: string | null;
 };
 
 export type DiscoveryIntakeQueueDocument = {
@@ -78,6 +88,13 @@ function optionalString(value: string | null | undefined) {
   }
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+function optionalFiniteNumber(value: number | null | undefined) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return null;
+  }
+  return value;
 }
 
 export function getDiscoveryIntakeArtifactPath(
@@ -125,6 +142,10 @@ export function createDiscoveryIntakeQueueEntry(input: {
     result_record_path: null,
     notes: optionalString(input.submission.notes),
     operating_mode: input.submission.operating_mode ?? null,
+    submission_origin: input.submission.submission_origin ?? null,
+    discovery_signal_band: optionalString(input.submission.discovery_signal_band),
+    signal_total_score: optionalFiniteNumber(input.submission.signal_total_score),
+    signal_score_summary: optionalString(input.submission.signal_score_summary),
   };
 }
 

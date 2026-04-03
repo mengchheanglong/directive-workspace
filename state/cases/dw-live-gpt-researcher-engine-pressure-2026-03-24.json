@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-live-gpt-researcher-engine-pressure-2026-03-24",
+  "candidateId": "dw-live-gpt-researcher-engine-pressure-2026-03-24",
+  "candidateName": "GPT Researcher Engine Pattern Audit",
+  "sourceType": "github-repo",
+  "sourceReference": "https://github.com/assafelovic/gpt-researcher",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "note",
+  "queueStatus": "completed",
+  "createdAt": "2026-03-24T00:00:00.000Z",
+  "updatedAt": "2026-04-01T10:30:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": null,
+    "triageRecordPath": null,
+    "routingRecordPath": "discovery/routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md",
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
+    "architectureDecisionPath": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result-adoption-decision.json",
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md"
+  },
+  "projectionInputs": {
+    "noteArchitectureCloseout": {
+      "snapshotAt": "2026-04-01T10:30:00.000Z",
+      "closedBy": "directive-architecture-review",
+      "resultSummary": "Recorded GPT Researcher as a NOTE-mode Architecture review result. Retained value is planner structure, citation-backed report persistence, MCP retrieval wiring, and engine-facing research workflow pattern guidance for later Directive Workspace Architecture work, while direct host/runtime adoption remains intentionally unopened from this slice.",
+      "primaryEvidencePath": "runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-dw-live-gpt-researcher-engine-pressure-2026-03-24-cc5eed01.md",
+      "transformedArtifactsProduced": [],
+      "nextDecision": "needs-more-evidence",
+      "valueShape": "working_document",
+      "adaptationQuality": "adequate",
+      "improvementQuality": "skipped",
+      "proofExecuted": false,
+      "targetArtifactClarified": false,
+      "deltaEvidencePresent": false,
+      "noUnresolvedBaggage": false,
+      "productArtifactMaterialized": false
+    }
+  }
+}

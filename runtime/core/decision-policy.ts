@@ -6,7 +6,7 @@ import {
   type DirectiveIntegrationProof,
   type DirectiveIntegrationStatus,
   type DirectiveRuntimeStatus,
-} from "./v0.js";
+} from "./runtime-core-contract.js";
 
 export function resolveStatusAfterDecision(
   decision: string,

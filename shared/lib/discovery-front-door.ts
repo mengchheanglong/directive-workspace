@@ -658,6 +658,7 @@ export async function submitDirectiveDiscoveryFrontDoor(input: {
 }
 
 function toQueueSubmission(request: DiscoverySubmissionRequest) {
+  const submissionOrigin = request.submission_origin ?? null;
   return {
     candidate_id: request.candidate_id,
     candidate_name: request.candidate_name,
@@ -667,5 +668,15 @@ function toQueueSubmission(request: DiscoverySubmissionRequest) {
     capability_gap_id: request.capability_gap_id ?? null,
     notes: request.notes ?? null,
     operating_mode: request.operating_mode ?? null,
+    ...(submissionOrigin ? { submission_origin: submissionOrigin } : {}),
+    ...(typeof request.discovery_signal_band === "string" && request.discovery_signal_band.trim()
+      ? { discovery_signal_band: request.discovery_signal_band }
+      : {}),
+    ...(typeof request.signal_total_score === "number" && Number.isFinite(request.signal_total_score)
+      ? { signal_total_score: request.signal_total_score }
+      : {}),
+    ...(typeof request.signal_score_summary === "string" && request.signal_score_summary.trim()
+      ? { signal_score_summary: request.signal_score_summary }
+      : {}),
   };
 }

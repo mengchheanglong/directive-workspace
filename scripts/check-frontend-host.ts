@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -7,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 import puppeteer, { type Page } from "puppeteer";
 
-import { startDirectiveFrontendServer } from "../hosts/web-host/server.ts";
+import { withDirectiveFrontendCheckServer } from "./frontend-check-helpers.ts";
 import {
   readDirectiveFrontendSnapshot,
   readDirectiveWorkbenchHandoffDetail,
@@ -117,13 +116,6 @@ function sampleRunRecord(input: {
       },
     ],
   };
-}
-
-function buildFrontend() {
-  execSync("npm run frontend:build", {
-    cwd: DIRECTIVE_ROOT,
-    stdio: "inherit",
-  });
 }
 
 async function waitForBodyText(page: Page, text: string, timeout = 20000) {
@@ -565,8 +557,6 @@ async function main() {
   assertLegacyRuntimeActiveFollowUpRepoCompatibility();
   assertLegacyNarrativeRuntimeFollowUpRepoCompatibility();
   assertCurrentArchitectureHandoffWarningsStayClean();
-  buildFrontend();
-
   const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "dw-frontend-host-"));
   const directiveRoot = path.join(tempRoot, "directive-workspace");
   const queuePath = path.join(directiveRoot, "discovery", "intake-queue.json");
@@ -906,12 +896,6 @@ async function main() {
     ].join("\n"),
   );
 
-  const handle = await startDirectiveFrontendServer({
-    directiveRoot,
-    host: "127.0.0.1",
-    port: 0,
-  });
-
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: { width: 1440, height: 900 },
@@ -935,7 +919,11 @@ async function main() {
   });
 
   try {
-    await page.goto(`${handle.origin}/`, { waitUntil: "networkidle0", timeout: 30000 });
+    await withDirectiveFrontendCheckServer({
+      directiveRoot,
+      frontendBuildDirectiveRoot: DIRECTIVE_ROOT,
+    }, async (handle) => {
+      await page.goto(`${handle.origin}/`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Directive Workspace Frontend");
     await waitForBodyText(page, "Directive Workspace overview");
     await waitForBodyText(page, "Discovery lane");
@@ -1251,23 +1239,23 @@ async function main() {
       true,
     );
 
-    process.stdout.write(
-      `${JSON.stringify(
-        {
-          ok: true,
-          metrics: {
-            origin: handle.origin,
-            seededRunId: "sample-engine-run",
-            submittedCandidateId: "frontend-submit-check",
+      process.stdout.write(
+        `${JSON.stringify(
+          {
+            ok: true,
+            metrics: {
+              origin: handle.origin,
+              seededRunId: "sample-engine-run",
+              submittedCandidateId: "frontend-submit-check",
+            },
           },
-        },
-        null,
-        2,
-      )}\n`,
-    );
+          null,
+          2,
+        )}\n`,
+      );
+    });
   } finally {
     await browser.close();
-    await handle.close();
   }
 }
 

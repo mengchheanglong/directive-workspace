@@ -22,6 +22,7 @@
 **/.ruff_cache/
 **/.venv/
 **/.venv-*/
+/scratch/venvs/
 
 # Local env overrides only; examples stay trackable
 /.env

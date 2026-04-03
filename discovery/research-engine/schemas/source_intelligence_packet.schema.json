@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "research-engine/schemas/source_intelligence_packet.schema.json",
+  "title": "Research Engine Source Intelligence Packet",
+  "type": "object",
+  "required": [
+    "packet_kind",
+    "contract_version",
+    "mission_id",
+    "generated_at",
+    "decision_boundary",
+    "research_frame",
+    "baseline_context",
+    "candidate_intelligence",
+    "signal_scoring",
+    "strong_signals",
+    "weak_signals",
+    "open_uncertainties",
+    "machine_friendly_research_packet"
+  ],
+  "properties": {
+    "packet_kind": { "const": "research_engine.source_intelligence_packet" },
+    "contract_version": { "const": 1 },
+    "mission_id": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "decision_boundary": { "type": "string" },
+    "research_frame": { "type": "object" },
+    "baseline_context": { "type": "object" },
+    "candidate_intelligence": { "type": "array", "items": { "type": "object" } },
+    "signal_scoring": { "type": "array", "items": { "type": "object" } },
+    "strong_signals": { "type": "array", "items": { "type": "object" } },
+    "weak_signals": { "type": "array", "items": { "type": "object" } },
+    "open_uncertainties": { "type": "array", "items": { "type": "string" } },
+    "machine_friendly_research_packet": { "type": "object" }
+  }
+}

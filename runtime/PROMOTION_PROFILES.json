@@ -1,6 +1,6 @@
 {
   "status": "active",
-  "updatedAt": "2026-03-21",
+  "updatedAt": "2026-04-02",
   "policy": {
     "selectorField": "Quality gate profile",
     "familyField": "Promotion profile family",
@@ -203,6 +203,210 @@
         "Observed citation error rate (%)"
       ],
       "notes": "Use only for bounded non-executing Directive Workspace web-host seam-review surfaces where the host proves truthful read-only presentation of canonical Runtime state without opening promotion, execution, or host integration."
+    },
+    {
+      "id": "standalone_scientify_manual_promotion_guard/v1",
+      "family": "bounded_standalone_scientify_manual_promotion",
+      "proofShape": "standalone_scientify_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/standalone-scientify-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-scientify-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-scientify-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:standalone-scientify-host-adapter",
+        "npm run check:directive-scientify-runtime-callable",
+        "npm run check:pre-host-promotion-record-prerequisites"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual Scientify standalone-host promotion record, where the callable boundary, promotion specification, and host adapter are already real but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "live_mini_swe_agent_standalone_host_manual_promotion_guard/v1",
+      "family": "bounded_live_mini_swe_agent_standalone_host_manual_promotion",
+      "proofShape": "live_mini_swe_agent_standalone_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/live-mini-swe-agent-standalone-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-live-mini-swe-agent-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-live-mini-swe-agent-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:standalone-live-mini-swe-agent-host-adapter",
+        "npm run check:directive-live-mini-swe-agent-runtime-callable",
+        "npm run check:pre-host-promotion-record-prerequisites"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual live mini-swe standalone-host promotion record, where the callable boundary, canonical promotion specification, and bounded standalone-host descriptor surface already exist but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "openmoss_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_openmoss_dw_web_host_manual_promotion",
+      "proofShape": "openmoss_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/openmoss-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-openmoss-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-openmoss-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual OpenMOSS DW web-host promotion record, where the read-only seam-review surface, canonical promotion specification, and bounded web-host proof already exist but registry acceptance, host integration, callable implementation, execution, and automation remain closed."
+    },
+    {
+      "id": "scientify_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_scientify_dw_web_host_manual_promotion",
+      "proofShape": "scientify_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/scientify-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-scientify-dw-web-host-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-scientify-dw-web-host-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-scientify-dw-web-host-runtime-implementation-slice",
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual Scientify live-pressure DW web-host promotion record, where the bounded seam-review implementation surface, canonical promotion specification, and explicit web-host proof already exist but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "openmoss_pressure_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_openmoss_pressure_dw_web_host_manual_promotion",
+      "proofShape": "openmoss_pressure_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/openmoss-pressure-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-openmoss-pressure-dw-web-host-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-openmoss-pressure-dw-web-host-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-openmoss-pressure-dw-web-host-runtime-implementation-slice",
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual OpenMOSS pressure DW web-host promotion record, where the bounded seam-review implementation surface, canonical promotion specification, and explicit web-host proof already exist but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "puppeteer_pressure_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_puppeteer_pressure_dw_web_host_manual_promotion",
+      "proofShape": "puppeteer_pressure_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/puppeteer-pressure-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-puppeteer-pressure-dw-web-host-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-puppeteer-pressure-dw-web-host-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-puppeteer-pressure-dw-web-host-runtime-implementation-slice",
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual Puppeteer pressure DW web-host promotion record, where the bounded seam-review implementation surface, canonical promotion specification, and explicit web-host proof already exist but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "real_mini_swe_agent_runtime_route_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_real_mini_swe_agent_runtime_route_dw_web_host_manual_promotion",
+      "proofShape": "real_mini_swe_agent_runtime_route_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/real-mini-swe-agent-runtime-route-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-real-mini-swe-agent-runtime-route-dw-web-host-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-real-mini-swe-agent-runtime-route-dw-web-host-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-real-mini-swe-agent-runtime-route-v0-dw-web-host-runtime-implementation-slice",
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual mini-swe-agent Runtime Route Proof DW web-host promotion record, where the bounded seam-review implementation surface, canonical promotion specification, and explicit web-host proof already exist but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "scientify_pressure_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_scientify_pressure_dw_web_host_manual_promotion",
+      "proofShape": "scientify_pressure_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/scientify-pressure-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-pressure-scientify-dw-web-host-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-pressure-scientify-dw-web-host-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-pressure-scientify-dw-web-host-runtime-implementation-slice",
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual Scientify pressure DW web-host promotion record, where the bounded seam-review implementation surface, canonical promotion specification, and explicit web-host proof already exist but registry acceptance, host integration, execution, and automation remain closed."
+    },
+    {
+      "id": "temporal_durable_execution_dw_web_host_manual_promotion_guard/v1",
+      "family": "bounded_temporal_durable_execution_dw_web_host_manual_promotion",
+      "proofShape": "temporal_durable_execution_dw_web_host_manual_promotion_snapshot/v1",
+      "contractPath": "shared/contracts/temporal-durable-execution-dw-web-host-runtime-promotion-guard.md",
+      "primaryHostCheckCommand": "npm run check:directive-temporal-durable-execution-dw-web-host-runtime-promotion",
+      "primaryHostCheckScriptPath": "scripts/check-directive-temporal-durable-execution-dw-web-host-runtime-promotion.ts",
+      "supportingHostCheckCommands": [
+        "npm run check:directive-temporal-durable-execution-dw-web-host-runtime-implementation-slice",
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:frontend-host",
+        "npm run check:directive-workspace-composition"
+      ],
+      "nonApplicableFieldsAllowed": [
+        "Full-text coverage threshold (%)",
+        "Evidence-binding threshold (%)",
+        "Citation-error threshold (%)",
+        "Observed full-text coverage (%)",
+        "Observed evidence-binding (%)",
+        "Observed citation error rate (%)"
+      ],
+      "notes": "Use only for the first manual Temporal durable-execution DW web-host promotion record, where the bounded seam-review implementation surface, canonical promotion specification, and explicit web-host proof already exist but registry acceptance, host integration, execution, and automation remain closed."
     },
     {
       "id": "skill_lifecycle_guard/v1",

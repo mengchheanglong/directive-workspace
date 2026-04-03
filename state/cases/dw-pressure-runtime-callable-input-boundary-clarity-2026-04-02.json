@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02",
+  "candidateId": "dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02",
+  "candidateName": "Engine Input-Boundary Review Logic From Callable Failure Evidence",
+  "sourceType": "internal-signal",
+  "sourceReference": "runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.json + runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.md",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "note",
+  "queueStatus": "completed",
+  "createdAt": "2026-04-02T14:54:00.000Z",
+  "updatedAt": "2026-04-02T15:05:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/intake/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-intake.md",
+    "triageRecordPath": "discovery/triage/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-triage.md",
+    "routingRecordPath": "discovery/routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-02T14-54-00-000Z-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-fb7ebe97.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-02T14-54-00-000Z-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-fb7ebe97.md",
+    "architectureHandoffPath": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-engine-handoff.md",
+    "architectureDecisionPath": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json",
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md"
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-04-02",
+      "decisionState": "adopt",
+      "intake": {
+        "intake_date": "2026-04-02",
+        "source_type": "internal-signal",
+        "source_reference": "runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.json + runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.md",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Architecture self-improvement from operational evidence: adapt the callable failure pattern into Engine evaluation logic, analysis policy, and proof guidance rather than a new runtime capability.",
+        "initial_relevance_to_workspace": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "suspected_adoption_target": "engine-owned product logic",
+        "immediate_notes": "Engine run fb7ebe97-820c-4077-8174-dd1e48593cbf selected architecture. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-04-02",
+        "first_pass_summary": "Architecture self-improvement from operational evidence: adapt the callable failure pattern into Engine evaluation logic, analysis policy, and proof guidance rather than a new runtime capability.",
+        "problem_it_appears_to_solve": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.",
+        "extractable_value_hypothesis": "Architecture self-improvement from operational evidence: adapt the callable failure pattern into Engine evaluation logic, analysis policy, and proof guidance rather than a new runtime capability. | signal_kind:runtime_callable_execution_failure_pattern | failure_status:validation_error | failure_count:1 | pattern extraction: retain the failure pattern rather than direct runtime reuse | architecture self-improvement: evaluation policy, proof guidance, operating logic | not the library as a dependency | record_shape:queue_only",
+        "routing_recommendation": "Shared Engine routing selected architecture with usefulness level meta.",
+        "proposed_adoption_target": "engine-owned product logic",
+        "stack_shape_summary": "internal-signal source; host dependence engine_only; integration mode adapt.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: non-mission-relevant source detail, unadapted source terminology.",
+        "suggested_decision_state": "accept_for_architecture",
+        "fit_to_current_direction": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "reusability_across_surfaces": "Value remains useful without a host runtime surface.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "low",
+        "can_current_gates_validate_safely": "partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "missing_evidence": "adapted mechanism described, excluded baggage described, engine or product boundary improvement explained, improvement delta stays anchored to prior extraction, adaptation, and improvement stages",
+        "next_action": "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete.",
+        "monitor_defer_trigger_conditions": "If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.",
+        "reentry_conditions": "Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer."
+      },
+      "routing": {
+        "route_date": "2026-04-02",
+        "source_type": "internal-signal",
+        "decision_state": "adopt",
+        "adoption_target": "engine-owned product logic",
+        "route_destination": "architecture",
+        "why_this_route": "Recommended architecture because its lane score (21) exceeded the alternatives.",
+        "why_not_alternatives": "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring. Transformation signal is present (1/5), which strengthens Runtime-style behavior-preserving work. Meta-usefulness signal is present (5/5), which strengthens Engine-improvement handling inside Architecture or Discovery. Pattern-extraction signal is present (2/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.",
+        "receiving_track_owner": "architecture",
+        "required_next_artifact": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-engine-handoff.md",
+        "linked_intake_record": "discovery/intake/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-intake.md",
+        "linked_triage_record": "discovery/triage/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-triage.md",
+        "reentry_or_promotion_conditions": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "review_cadence": "before any downstream execution or promotion"
+      }
+    },
+    "noteArchitectureCloseout": {
+      "snapshotAt": "2026-04-02T15:05:00.000Z",
+      "closedBy": "codex-era-d-self-improvement",
+      "resultSummary": "Recorded one bounded Architecture self-improvement result from runtime callable failure evidence. The retained product value is the already-materialized shared lib and report/check surface around `shared/lib/operational-architecture-improvement-candidates.ts`, which converts bounded callable `validation_error` evidence into a canonical Engine evaluation-quality Architecture candidate and routed handoff path instead of leaving the signal as ad hoc Runtime follow-up pressure.",
+      "primaryEvidencePath": "shared/lib/operational-architecture-improvement-candidates.ts",
+      "transformedArtifactsProduced": [
+        "shared/lib/operational-architecture-improvement-candidates.ts",
+        "scripts/report-operational-architecture-improvement-candidates.ts",
+        "scripts/check-operational-architecture-improvement-candidates.ts"
+      ],
+      "nextDecision": "adopt",
+      "valueShape": "executable_logic",
+      "adaptationQuality": "strong",
+      "improvementQuality": "strong",
+      "proofExecuted": true,
+      "targetArtifactClarified": true,
+      "deltaEvidencePresent": true,
+      "noUnresolvedBaggage": true,
+      "productArtifactMaterialized": true
+    }
+  }
+}

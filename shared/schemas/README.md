@@ -18,6 +18,7 @@ Current canonical artifacts:
 - `analysis-evidence-artifact.schema.json`
 - `citation-set-artifact.schema.json`
 - `evaluation-support-artifact.schema.json`
+- `checker-definition-registry.schema.json`
 - `discovery-intake-queue-entry.schema.json`
 - `discovery-intake-transition-request.schema.json`
 - `discovery-intake-lifecycle-sync-request.schema.json`
@@ -87,3 +88,7 @@ Standalone-host runtime reference:
 Architecture adoption reference:
 - `shared/contracts/architecture-adoption-criteria.md`
 - `shared/lib/architecture-adoption-artifacts.ts`
+
+Checker-definition pilot reference:
+- `scripts/checker-definition-pilot.json`
+- `scripts/check-checker-definition-pilot.ts`

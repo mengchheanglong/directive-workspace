@@ -1,0 +1,418 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-02",
+  "policy": {
+    "selectionRule": "Use the canonical selector to choose the next bounded completion slice from the lowest priority rank with satisfied dependencies and no closed-seam blocker.",
+    "syncRule": "Update slice state only when repo truth materially changes. Completed means the slice is already proved by code, artifacts, and checks."
+  },
+  "items": [
+    {
+      "sliceId": "scientify_callable_stub_boundary",
+      "title": "Make the first Runtime-owned Scientify callable boundary explicit",
+      "phase": "phase_1",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 10,
+      "state": "completed",
+      "dependsOn": [],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:directive-workspace-state -- runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts",
+        "npm run check:runtime-promotion-specification",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts",
+        "runtime/04-capability-boundaries/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-capability-boundary.md",
+        "runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md"
+      ],
+      "selectionHint": "Completed anchor slice: the Runtime callable boundary is already explicit for Scientify."
+    },
+    {
+      "sliceId": "runtime_promotion_specification_canonicalization",
+      "title": "Canonicalize Runtime promotion specifications",
+      "phase": "phase_2",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 20,
+      "state": "completed",
+      "dependsOn": [
+        "scientify_callable_stub_boundary"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run generate:promotion-specifications",
+        "npm run check:runtime-promotion-specification",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "shared/lib/runtime-promotion-specification.ts",
+        "runtime/06-promotion-specifications"
+      ],
+      "selectionHint": "Completed anchor slice: promotion specifications are now canonical and checked."
+    },
+    {
+      "sliceId": "standalone_host_scientify_adapter_reader",
+      "title": "Let the standalone host consume the Scientify promotion specification through a bounded adapter",
+      "phase": "phase_2",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 30,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_promotion_specification_canonicalization"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run check:standalone-scientify-host-adapter",
+        "npm run check:directive-scientify-runtime-callable",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "hosts/standalone-host/runtime-lane.ts",
+        "scripts/check-standalone-scientify-host-adapter.ts"
+      ],
+      "selectionHint": "Completed anchor slice: one host now consumes the Runtime-owned Scientify capability through a bounded adapter path."
+    },
+    {
+      "sliceId": "decide_first_manual_runtime_promotion_seam",
+      "title": "Record one bounded decision on whether to open the first manual Scientify Runtime promotion seam",
+      "phase": "phase_3",
+      "kind": "decision",
+      "owningLane": "architecture",
+      "priorityRank": 40,
+      "state": "completed",
+      "dependsOn": [
+        "standalone_host_scientify_adapter_reader"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "This is the first bounded frontier slice after the host-adapter proof: decide whether to open the first manual Runtime promotion seam or keep it closed."
+    },
+    {
+      "sliceId": "decide_pre_host_promotion_record_contract",
+      "title": "Decide whether a non-executing promotion-record contract can be prepared before host-facing promotion opens",
+      "phase": "phase_3",
+      "kind": "decision",
+      "owningLane": "architecture",
+      "priorityRank": 45,
+      "state": "completed",
+      "dependsOn": [
+        "decide_first_manual_runtime_promotion_seam"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "control/logs/2026-04",
+        "runtime/README.md",
+        "shared/contracts/runtime-to-host.md"
+      ],
+      "selectionHint": "The next truthful frontier is to decide whether promotion-record preparation can happen in a non-executing, pre-host form without claiming activation or host integration."
+    },
+    {
+      "sliceId": "formalize_pre_host_promotion_record_prerequisites",
+      "title": "Formalize machine-checkable prerequisites for a non-executing manual promotion record",
+      "phase": "phase_3",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 46,
+      "state": "completed",
+      "dependsOn": [
+        "decide_pre_host_promotion_record_contract"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "shared/lib/runtime-promotion-record-writer.ts",
+        "scripts",
+        "shared/contracts/runtime-to-host.md",
+        "runtime/README.md"
+      ],
+      "selectionHint": "Use the existing promotion-record family to define pre-host prerequisites and checks without opening host-facing promotion itself."
+    },
+    {
+      "sliceId": "decide_registry_acceptance_boundary_after_manual_promotion",
+      "title": "Decide whether registry acceptance remains strictly post-host-acceptance for the first manual promotion cycle",
+      "phase": "phase_3",
+      "kind": "decision",
+      "owningLane": "architecture",
+      "priorityRank": 47,
+      "state": "completed",
+      "dependsOn": [
+        "formalize_pre_host_promotion_record_prerequisites"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "control/logs/2026-04",
+        "runtime/README.md"
+      ],
+      "selectionHint": "Resolve the registry boundary explicitly before the loop reaches the first manual promotion chain, so later slices do not need to reinterpret acceptance semantics."
+    },
+    {
+      "sliceId": "decide_open_scientify_manual_runtime_promotion_seam",
+      "title": "Decide whether to explicitly open the first manual Scientify Runtime promotion seam",
+      "phase": "phase_3",
+      "kind": "decision",
+      "owningLane": "architecture",
+      "priorityRank": 48,
+      "state": "completed",
+      "dependsOn": [
+        "decide_registry_acceptance_boundary_after_manual_promotion"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:next-completion-slice",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "control/state/completion-status.json",
+        "control/state/completion-slices.json",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Open the first manual Scientify Runtime promotion seam only if pre-host prerequisite truth, Runtime callable proof, canonical promotion specification, and bounded host-adapter consumption are all already real and the opening remains manual, narrow, reversible, Scientify-only, and non-automated."
+    },
+    {
+      "sliceId": "scientify_manual_runtime_promotion_chain",
+      "title": "Advance Scientify through the first manual Runtime promotion chain",
+      "phase": "phase_3",
+      "kind": "implementation",
+      "owningLane": "runtime",
+      "priorityRank": 50,
+      "state": "completed",
+      "dependsOn": [
+        "decide_open_scientify_manual_runtime_promotion_seam"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:directive-workspace-state -- runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
+        "npm run check:directive-scientify-runtime-promotion",
+        "npm run check:directive-scientify-runtime-callable",
+        "npm run check:standalone-scientify-host-adapter",
+        "npm run check:runtime-promotion-specification",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "runtime/05-promotion-readiness",
+        "runtime/promotion-records",
+        "runtime/06-promotion-specifications",
+        "hosts/standalone-host",
+        "shared/lib/dw-state.ts",
+        "shared/lib/dw-state/runtime.ts"
+      ],
+      "selectionHint": "This slice is now explicitly opened only for the first manual Scientify promotion cycle. Keep it manual, narrow, reversible, Scientify-only, and non-automated."
+    },
+    {
+      "sliceId": "runtime_cycle_evidence_feedback_loop",
+      "title": "Use the first full Runtime cycle to change a later routing, prioritization, or adaptation decision",
+      "phase": "phase_4",
+      "kind": "proof",
+      "owningLane": "architecture",
+      "priorityRank": 60,
+      "state": "completed",
+      "dependsOn": [
+        "scientify_manual_runtime_promotion_chain"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:run-evidence-aggregation",
+        "npm run check:runtime-cycle-evidence-feedback",
+        "npm run check:discovery-gap-worklist-selector",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "control/logs/2026-04",
+        "shared/lib/run-evidence-aggregation.ts",
+        "discovery/capability-gaps.json",
+        "discovery/gap-worklist.json",
+        "control/state/completion-status.json",
+        "control/state/completion-slices.json"
+      ],
+      "selectionHint": "This slice becomes the dominant completion target only after one full manual Runtime promotion has been proved."
+    },
+    {
+      "sliceId": "repeatable_runtime_promotions",
+      "title": "Prove the Runtime promotion path is repeatable across additional cases",
+      "phase": "phase_5",
+      "kind": "implementation",
+      "owningLane": "runtime",
+      "priorityRank": 70,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_cycle_evidence_feedback_loop"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run check:pre-host-promotion-record-prerequisites",
+        "npm run check:directive-openmoss-runtime-promotion",
+        "npm run report:run-evidence-aggregation",
+        "npm run generate:discovery-gap-worklist",
+        "npm run check:runtime-cycle-evidence-feedback",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "runtime/05-promotion-readiness",
+        "runtime/06-promotion-specifications",
+        "runtime/promotion-records",
+        "discovery/capability-gaps.json",
+        "discovery/gap-worklist.json",
+        "control/state/completion-status.json",
+        "control/state/completion-slices.json"
+      ],
+      "selectionHint": "Completed repeatability slice: OpenMOSS now proves the manual non-executing Runtime promotion path works for a second real case."
+    },
+    {
+      "sliceId": "decide_recommendation_first_promotion_assistance_boundary",
+      "title": "Decide whether recommendation-first promotion assistance can open without workflow advancement",
+      "phase": "phase_6",
+      "kind": "decision",
+      "owningLane": "architecture",
+      "priorityRank": 75,
+      "state": "completed",
+      "dependsOn": [
+        "repeatable_runtime_promotions"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:next-completion-slice",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "control/state/completion-status.json",
+        "control/state/completion-slices.json",
+        "scripts/check-completion-slice-selector.ts",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Before opening any assistance that reduces manual promotion effort, decide explicitly whether a recommendation-only, read-only assistance boundary can exist without automatic workflow advancement or bypassed approval gates."
+    },
+    {
+      "sliceId": "semi_automated_promotion_assistance",
+      "title": "Reduce manual promotion effort without bypassing approval gates",
+      "phase": "phase_6",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 80,
+      "state": "completed",
+      "dependsOn": [
+        "decide_recommendation_first_promotion_assistance_boundary"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:runtime-promotion-assistance",
+        "npm run check:runtime-promotion-assistance",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "shared/lib/runtime-promotion-assistance.ts",
+        "scripts/report-runtime-promotion-assistance.ts",
+        "scripts/check-runtime-promotion-assistance.ts",
+        "scripts/check-completion-slice-selector.ts",
+        "control/state/completion-status.json",
+        "control/state/completion-slices.json",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "This is now explicitly opened only as recommendation-first, read-only promotion assistance. It must not mutate queue/state truth, auto-advance workflow stages, bypass approval gates, or imply host integration, runtime execution, or promotion automation."
+    },
+    {
+      "sliceId": "engine_adaptation_feedback_integration",
+      "title": "Deepen Engine adaptation machinery with evidence-backed feedback",
+      "phase": "phase_7",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 90,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_cycle_evidence_feedback_loop"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run check:directive-engine-stage-chaining",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "engine/directive-engine.ts",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "This should only open after real Runtime evidence exists to improve adaptation logic from repo truth instead of theory."
+    },
+    {
+      "sliceId": "read_only_lifecycle_coordination",
+      "title": "Add read-only lifecycle coordination over active cases",
+      "phase": "phase_8",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 100,
+      "state": "completed",
+      "dependsOn": [
+        "semi_automated_promotion_assistance",
+        "engine_adaptation_feedback_integration"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run report:read-only-lifecycle-coordination",
+        "npm run check:read-only-lifecycle-coordination",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "shared/lib/read-only-lifecycle-coordination.ts",
+        "scripts/report-read-only-lifecycle-coordination.ts",
+        "scripts/check-read-only-lifecycle-coordination.ts",
+        "control/state",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Lifecycle coordination should stay late and read-only; do not open it before promotion and evidence loops are materially real."
+    },
+    {
+      "sliceId": "bounded_persistent_orchestration",
+      "title": "Open one bounded persistent coordination primitive",
+      "phase": "phase_9",
+      "kind": "implementation",
+      "owningLane": "architecture",
+      "priorityRank": 110,
+      "state": "completed",
+      "dependsOn": [
+        "read_only_lifecycle_coordination"
+      ],
+      "blockedByClosedSeam": [],
+      "proofCommands": [
+        "npm run run:bounded-persistent-coordination",
+        "npm run check:bounded-persistent-coordination",
+        "npm run report:directive-workspace-state",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "shared/lib/bounded-persistent-coordination.ts",
+        "scripts/run-bounded-persistent-coordination.ts",
+        "scripts/report-bounded-persistent-coordination.ts",
+        "scripts/check-bounded-persistent-coordination.ts",
+        "control/state/coordination-ledger.json",
+        "control/state/completion-status.json",
+        "control/state/completion-slices.json",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Completed: one bounded persistent coordination primitive (coordination snapshot ledger) that detects staleness, cadence drift, and case diff across sessions."
+    }
+  ]
+}

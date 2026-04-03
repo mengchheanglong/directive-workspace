@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-mission-openmoss-runtime-orchestration-2026-03-26",
+  "candidateId": "dw-mission-openmoss-runtime-orchestration-2026-03-26",
+  "candidateName": "OpenMOSS Runtime Orchestration Surface",
+  "sourceType": "github-repo",
+  "sourceReference": "sources/intake/OpenMOSS/README.md",
+  "decisionState": "adopt",
+  "routeTarget": "runtime",
+  "operatingMode": "standard",
+  "queueStatus": "routed",
+  "createdAt": "2026-03-26T00:00:00.000Z",
+  "updatedAt": "2026-03-26T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": null,
+    "triageRecordPath": null,
+    "routingRecordPath": "discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md",
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md"
+  },
+  "projectionInputs": null
+}

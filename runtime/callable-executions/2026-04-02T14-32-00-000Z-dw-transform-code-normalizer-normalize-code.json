@@ -1,0 +1,52 @@
+{
+  "version": "bounded_callable_execution_record/v1",
+  "executionId": "2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code",
+  "executionAt": "2026-04-02T14:32:00.000Z",
+  "capability": {
+    "capabilityId": "dw-transform-code-normalizer",
+    "title": "Code Normalizer (Behavior-Preserving Transformation)",
+    "form": "runtime_owned_behavior_preserving_transformation",
+    "toolCount": 1,
+    "tools": [
+      "normalize-code"
+    ]
+  },
+  "invocation": {
+    "tool": "normalize-code",
+    "timeoutMs": 10000,
+    "status": "validation_error",
+    "ok": false
+  },
+  "metadata": {
+    "startedAt": "2026-04-02T14:21:17.407Z",
+    "completedAt": "2026-04-02T14:21:17.407Z",
+    "durationMs": 0,
+    "timeoutMs": 10000,
+    "capabilityId": "dw-transform-code-normalizer"
+  },
+  "boundary": {
+    "executionSurface": "shared_runtime_callable_executor",
+    "hostIntegrated": false,
+    "promotionAutomation": false,
+    "automaticWorkflowAdvancement": false
+  },
+  "inputSummary": {
+    "kind": "object",
+    "topLevelCount": 1,
+    "keys": [
+      "code"
+    ],
+    "preview": "{\"code\":\"\"}",
+    "sizeBytes": 11
+  },
+  "resultSummary": {
+    "kind": "primitive",
+    "topLevelCount": null,
+    "keys": [],
+    "preview": "\"normalize-code requires non-empty 'code'\""
+  },
+  "artifacts": {
+    "recordPath": "runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.json",
+    "reportPath": "runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.md"
+  }
+}

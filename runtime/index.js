@@ -13,4 +13,4 @@ export {
   normalizeDirectiveRuntimeStatus,
   normalizeDirectiveSourceType,
   parseDirectiveIntegrationProof,
-} from "./core/v0.js";
+} from "./core/runtime-core-contract.js";

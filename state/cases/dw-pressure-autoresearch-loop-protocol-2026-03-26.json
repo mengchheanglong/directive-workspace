@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-pressure-autoresearch-loop-protocol-2026-03-26",
+  "candidateId": "dw-pressure-autoresearch-loop-protocol-2026-03-26",
+  "candidateName": "Autoresearch Autonomous Loop Protocol",
+  "sourceType": "workflow-writeup",
+  "sourceReference": "sources/intake/autoresearch/skills/autoresearch/references/autonomous-loop-protocol.md",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "note",
+  "queueStatus": "routed",
+  "createdAt": "2026-03-26T00:00:00.000Z",
+  "updatedAt": "2026-03-26T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": null,
+    "triageRecordPath": null,
+    "routingRecordPath": "discovery/routing-log/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-routing-record.md",
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/02-experiments/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-engine-handoff.md"
+  },
+  "projectionInputs": null
+}

@@ -1,10 +1,20 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
+import {
+  getDefaultDirectiveWorkspaceRoot,
+  normalizePath,
+  optionalString,
+  readDirectiveArchitectureDeepTailArtifact,
+  requiredString,
+  resolveArchitectureDeepTailRelativePath,
+  resolveDirectiveRelativePath,
+} from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureImplementationTargetDetail,
 } from "./architecture-implementation-target.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
+import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type CreateDirectiveArchitectureImplementationResultInput = {
   targetPath: string;
@@ -70,33 +80,6 @@ export type DirectiveArchitectureImplementationResultDetail = {
   content: string;
 };
 
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
-}
-
-function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
-
-function optionalString(value: string | null | undefined) {
-  if (typeof value !== "string") {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-function normalizeRelativePath(inputPath: string) {
-  return requiredString(inputPath, "path").replace(/\\/g, "/");
-}
-
 function extractSectionBullets(content: string, heading: string) {
   const escapedHeading = heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const match = content.match(new RegExp(`## ${escapedHeading}\\r?\\n([\\s\\S]*?)(?=\\r?\\n## |$)`));
@@ -123,31 +106,13 @@ function formatYesNo(value: boolean) {
   return value ? "yes" : "no";
 }
 
-function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
-  const normalizedInput = normalizeRelativePath(inputPath);
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error("invalid_input: path must stay within directive-workspace");
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
-}
-
 function resolveImplementationResultRelativePath(targetRelativePath: string) {
-  const fileName = path.posix.basename(targetRelativePath);
-  if (!fileName.endsWith("-implementation-target.md")) {
-    throw new Error("invalid_input: targetPath must point to an implementation target artifact");
-  }
-
-  return path.posix.join(
-    "architecture/05-implementation-results",
-    fileName.replace(/-implementation-target\.md$/u, "-implementation-result.md"),
-  );
+  return resolveArchitectureDeepTailRelativePath({
+    sourceRelativePath: targetRelativePath,
+    expectedSourceSuffix: "-implementation-target.md",
+    targetStage: "implementation_result",
+    inputFieldName: "targetPath",
+  });
 }
 
 export function readDirectiveArchitectureImplementationResultPathForTarget(input: {
@@ -160,7 +125,11 @@ export function readDirectiveArchitectureImplementationResultPathForTarget(input
     input.targetRelativePath,
   );
   const resultRelativePath = resolveImplementationResultRelativePath(targetRelativePath);
-  const resultAbsolutePath = normalizePath(path.join(directiveRoot, resultRelativePath));
+  const resultAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot,
+    relativePath: resultRelativePath,
+    mode: "read",
+  });
 
   return fs.existsSync(resultAbsolutePath) ? resultRelativePath : null;
 }
@@ -299,7 +268,11 @@ export function createDirectiveArchitectureImplementationResult(
     targetPath: targetRelativePath,
   });
   const resultRelativePath = resolveImplementationResultRelativePath(targetRelativePath);
-  const resultAbsolutePath = normalizePath(path.join(directiveRoot, resultRelativePath));
+  const resultAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot,
+    relativePath: resultRelativePath,
+    mode: "write",
+  });
   const created = !fs.existsSync(resultAbsolutePath);
   const snapshotAt = new Date().toISOString();
   const completedBy = String(input.completedBy || "directive-frontend-operator").trim()
@@ -374,17 +347,15 @@ export function readDirectiveArchitectureImplementationResultDetail(input: {
   directiveRoot?: string;
 }): DirectiveArchitectureImplementationResultDetail {
   const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const resultRelativePath = resolveDirectiveRelativePath(directiveRoot, input.resultPath);
-  if (!resultRelativePath.startsWith("architecture/05-implementation-results/")) {
-    throw new Error("invalid_input: resultPath must point to architecture/05-implementation-results/");
-  }
-
-  const resultAbsolutePath = normalizePath(path.join(directiveRoot, resultRelativePath));
-  if (!fs.existsSync(resultAbsolutePath)) {
-    throw new Error(`invalid_input: resultPath not found: ${resultRelativePath}`);
-  }
-
-  const content = fs.readFileSync(resultAbsolutePath, "utf8");
+  const resultArtifact = readDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    artifactPath: input.resultPath,
+    stage: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result,
+    fieldName: "resultPath",
+  });
+  const resultRelativePath = resultArtifact.relativePath;
+  const resultAbsolutePath = resultArtifact.absolutePath;
+  const content = resultArtifact.content;
   const targetRelativePath = content.match(/- Source implementation target: `([^`]+)`/)?.[1] || "";
   const targetDetail = readDirectiveArchitectureImplementationTargetDetail({
     directiveRoot,

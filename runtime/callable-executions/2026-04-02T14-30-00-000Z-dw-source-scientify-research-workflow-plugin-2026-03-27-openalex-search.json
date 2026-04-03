@@ -1,0 +1,62 @@
+{
+  "version": "bounded_callable_execution_record/v1",
+  "executionId": "2026-04-02T14-30-00-000Z-dw-source-scientify-research-workflow-plugin-2026-03-27-openalex-search",
+  "executionAt": "2026-04-02T14:30:00.000Z",
+  "capability": {
+    "capabilityId": "dw-source-scientify-research-workflow-plugin-2026-03-27",
+    "title": "Scientify Literature-Access Tool Bundle",
+    "form": "runtime_owned_callable_bundle",
+    "toolCount": 4,
+    "tools": [
+      "arxiv-search",
+      "arxiv-download",
+      "openalex-search",
+      "unpaywall-download"
+    ]
+  },
+  "invocation": {
+    "tool": "openalex-search",
+    "timeoutMs": 30000,
+    "status": "success",
+    "ok": true
+  },
+  "metadata": {
+    "startedAt": "2026-04-02T14:21:17.348Z",
+    "completedAt": "2026-04-02T14:21:17.391Z",
+    "durationMs": 43,
+    "timeoutMs": 30000,
+    "capabilityId": "dw-source-scientify-research-workflow-plugin-2026-03-27"
+  },
+  "boundary": {
+    "executionSurface": "shared_runtime_callable_executor",
+    "hostIntegrated": false,
+    "promotionAutomation": false,
+    "automaticWorkflowAdvancement": false
+  },
+  "inputSummary": {
+    "kind": "object",
+    "topLevelCount": 2,
+    "keys": [
+      "query",
+      "max_results"
+    ],
+    "preview": "{\"query\":\"execution evidence seed\",\"max_results\":1}",
+    "sizeBytes": 51
+  },
+  "resultSummary": {
+    "kind": "object",
+    "topLevelCount": 5,
+    "keys": [
+      "ok",
+      "query",
+      "total_count",
+      "returned",
+      "works"
+    ],
+    "preview": "{\"ok\":true,\"query\":\"execution evidence seed\",\"total_count\":1,\"returned\":1,\"works\":[{\"id\":\"W4200001\",\"title\":\"Execution Evidence Seed Paper\",\"doi\":\"10.4242/execution-evidence-seed\",\"year\":2026,\"date\":\"2026-04-02\",\"type\":\"article\",\"authors..."
+  },
+  "artifacts": {
+    "recordPath": "runtime/callable-executions/2026-04-02T14-30-00-000Z-dw-source-scientify-research-workflow-plugin-2026-03-27-openalex-search.json",
+    "reportPath": "runtime/callable-executions/2026-04-02T14-30-00-000Z-dw-source-scientify-research-workflow-plugin-2026-03-27-openalex-search.md"
+  }
+}

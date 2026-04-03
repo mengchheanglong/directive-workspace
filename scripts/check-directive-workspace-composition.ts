@@ -9,11 +9,20 @@ import {
   readDirectiveArchitectureBoundedStartArtifact,
 } from "../shared/lib/architecture-bounded-closeout.ts";
 import { readDirectiveArchitectureAdoptionDetail } from "../shared/lib/architecture-result-adoption.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../shared/lib/architecture-deep-tail-stage-map.ts";
 import {
   DIRECTIVE_WORKSPACE_BLOCKED_ADVANCEMENT_MESSAGE,
   DIRECTIVE_WORKSPACE_PRODUCT_TRUTH,
 } from "../engine/workspace-truth.ts";
 import {
+  readDirectiveFrontendArchitectureAdoptionDetail,
+  readDirectiveFrontendArchitectureConsumptionRecordDetail,
+  readDirectiveFrontendArchitectureImplementationTargetDetail,
+  readDirectiveFrontendArchitectureImplementationResultDetail,
+  readDirectiveFrontendArchitectureIntegrationRecordDetail,
+  readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail,
+  readDirectiveFrontendArchitectureRetentionDetail,
+  readDirectiveFrontendArchitectureResultDetail,
   readDirectiveFrontendHandoffDetail,
   readDirectiveFrontendSnapshot,
   readDirectiveFrontendRuntimeProofDetail,
@@ -23,6 +32,7 @@ import {
 } from "../hosts/web-host/data.ts";
 import { runDirectiveArchitectureCompositionCheck } from "./check-architecture-composition.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "../shared/lib/directive-workspace-artifact-storage.ts";
 import { syncDiscoveryIntakeLifecycle } from "../shared/lib/discovery-intake-lifecycle-sync.ts";
 import { openDirectiveDiscoveryRoute } from "../shared/lib/discovery-route-opener.ts";
 import { openDirectiveRuntimeFollowUp } from "../shared/lib/runtime-follow-up-opener.ts";
@@ -37,7 +47,7 @@ const ARCHITECTURE_ROUTE_PATH =
 const RUNTIME_ROUTE_PATH =
   "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md";
 const ARCHITECTURE_EVALUATION_PATH =
-  "architecture/09-post-consumption-evaluations/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md`;
 const ARCHITECTURE_HANDOFF_PATH =
   "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md";
 const ARCHITECTURE_BOUNDED_START_PATH =
@@ -47,17 +57,19 @@ const ARCHITECTURE_BOUNDED_RESULT_PATH =
 const ARCHITECTURE_ADOPTION_PATH =
   "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md";
 const ARCHITECTURE_IMPLEMENTATION_TARGET_PATH =
-  "architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`;
 const ARCHITECTURE_IMPLEMENTATION_RESULT_PATH =
-  "architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md`;
 const ARCHITECTURE_RETAINED_PATH =
-  "architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md`;
 const ARCHITECTURE_INTEGRATION_PATH =
-  "architecture/07-integration-records/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-integration-record.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-integration-record.md`;
 const ARCHITECTURE_CONSUMPTION_PATH =
-  "architecture/08-consumption-records/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-consumption.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-consumption.md`;
 const ARCHITECTURE_STALE_EVALUATION_PATH =
-  "architecture/09-post-consumption-evaluations/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-evaluation.md";
+  `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-evaluation.md`;
+const ROAM_ROUTE_PHASE_A_PHASE_2_PATH =
+  "discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md";
 const RUNTIME_FOLLOW_UP_PATH =
   "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md";
 const LEGACY_RUNTIME_FOLLOW_UP_PATH =
@@ -182,7 +194,7 @@ const DISCOVERY_MONITOR_ROUTE_PATH =
   "discovery/routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md";
 const DISCOVERY_MONITOR_RECORD_PATH =
   "discovery/monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md";
-const LEGACY_ARCHITECTURE_IMPLEMENTATION_TARGET_GAP = "architecture/04-implementation-targets/*.md";
+const LEGACY_ARCHITECTURE_IMPLEMENTATION_TARGET_GAP = ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.gapPattern;
 const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
   {
     candidateId: "dw-openclaw-runtime-verification-freshness-2026-03-22",
@@ -190,7 +202,7 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
     artifactPath: "architecture/03-adopted/2026-03-22-openclaw-runtime-verification-freshness-adopted.md",
     expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
     expectedCurrentHeadPath:
-      "architecture/09-post-consumption-evaluations/2026-03-22-openclaw-runtime-verification-freshness-evaluation.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-22-openclaw-runtime-verification-freshness-evaluation.md`,
     expectedMissingArtifact: null,
   },
   {
@@ -199,7 +211,7 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
     artifactPath: "architecture/03-adopted/2026-03-22-openclaw-maintenance-watchdog-signal-lane-adopted.md",
     expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
     expectedCurrentHeadPath:
-      "architecture/09-post-consumption-evaluations/2026-03-22-openclaw-maintenance-watchdog-signal-lane-evaluation.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-22-openclaw-maintenance-watchdog-signal-lane-evaluation.md`,
     expectedMissingArtifact: null,
   },
   {
@@ -208,7 +220,7 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
     artifactPath: "architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md",
     expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
     expectedCurrentHeadPath:
-      "architecture/09-post-consumption-evaluations/2026-03-22-openclaw-discovery-submission-flow-evaluation.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-22-openclaw-discovery-submission-flow-evaluation.md`,
     expectedMissingArtifact: null,
   },
   {
@@ -217,8 +229,8 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
     artifactPath: "architecture/03-adopted/2026-03-22-discovery-gap-priority-worklist-adopted.md",
     expectedCurrentStage: "architecture.retained.confirmed",
     expectedCurrentHeadPath:
-      "architecture/06-retained/2026-03-22-discovery-gap-priority-worklist-retained.md",
-    expectedMissingArtifact: "architecture/07-integration-records/*.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir}/2026-03-22-discovery-gap-priority-worklist-retained.md`,
+    expectedMissingArtifact: ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.gapPattern,
   },
 ] as const;
 const INTERNAL_ARCHITECTURE_2026_03_28_START_CASES = [
@@ -323,7 +335,7 @@ const CURRENT_ADOPTION_PARSE_GUARD_CASES = [
 ] as const;
 const ROUTED_PROGRESS_ARCHITECTURE_CANDIDATE_ID = "dw-source-ts-edge-2026-03-27";
 const ROUTED_PROGRESS_RUNTIME_CANDIDATE_ID = "dw-source-scientify-research-workflow-plugin-2026-03-27";
-const ROUTED_BROKEN_CANDIDATE_ID = "dw-live-gpt-researcher-engine-pressure-2026-03-24";
+const COMPLETED_NOTE_ARCHITECTURE_CANDIDATE_ID = "dw-live-gpt-researcher-engine-pressure-2026-03-24";
 const ROUTED_PENDING_CONTROL_CANDIDATE_ID = "dw-pressure-openmoss-architecture-loop-2026-03-26";
 const COMPLETED_PROMPTFOO_CANDIDATE_ID = "al-tooling-promptfoo";
 const TS_EDGE_ROUTE_PATH =
@@ -351,7 +363,15 @@ const NOTE_MODE_ARCHITECTURE_PROOF_CASES = [
     handoffPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md",
     resultPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md",
   },
+  {
+    label: "GPT Researcher",
+    routingPath: "discovery/routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md",
+    handoffPath: "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
+    resultPath: "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md",
+  },
 ] as const;
+const ENGINE_FOCUS_NEGATIVE_CASE_PATH =
+  "runtime/standalone-host/engine-runs/2026-03-31T00-00-00-000Z-dw-source-roam-code-2026-03-31-4d4f5f1b.json";
 
 function uniqueRelativePaths(paths: Array<string | null | undefined>) {
   return [...new Set(paths.filter((value): value is string => Boolean(value)))];
@@ -415,7 +435,11 @@ function ensureParentDir(filePath: string) {
 }
 
 function copyRelativeFile(relativePath: string, stagedRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
+  const sourcePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath,
+    mode: "read",
+  });
   if (!fs.existsSync(sourcePath)) {
     throw new Error(`copy source missing: ${relativePath}`);
   }
@@ -510,11 +534,19 @@ function main() {
   assert.ok(architectureRoute.linkedArtifacts.engineRunRecordPath);
   expectNoDrift(ARCHITECTURE_ROUTE_PATH, architectureRoute);
 
+  const engineFocus = expectFocus(ENGINE_FOCUS_NEGATIVE_CASE_PATH);
+  assert.equal(engineFocus.artifactKind, "engine_run");
+  assert.equal(engineFocus.integrityState, "ok");
+  assert.ok(
+    engineFocus.linkedArtifacts.engineRunReportPath?.endsWith(".md"),
+    "Engine focus should expose the paired Engine run report path when present",
+  );
+
   const runtimeRoute = expectFocus(RUNTIME_ROUTE_PATH);
   assert.equal(runtimeRoute.lane, "discovery");
   assert.equal(runtimeRoute.routeTarget, "runtime");
   assert.equal(runtimeRoute.artifactStage, "discovery.route.runtime");
-  assert.equal(runtimeRoute.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(runtimeRoute.currentStage, "runtime.promotion_record.opened");
   assert.ok(
     runtimeRoute.nextLegalStep.includes("No automatic Runtime step is open"),
     `Runtime route next step is not honest about the current seam: ${runtimeRoute.nextLegalStep}`,
@@ -531,6 +563,17 @@ function main() {
     RUNTIME_ROUTE_PROMOTION_READINESS_PATH,
   );
   expectNoDrift(RUNTIME_ROUTE_PATH, runtimeRoute);
+
+  withStagedDirectiveRoot("negative-engine-run-report-link", (stagedRoot) => {
+    copyRelativeFile(ENGINE_FOCUS_NEGATIVE_CASE_PATH, stagedRoot);
+
+    const brokenEngineFocus = expectFocus(ENGINE_FOCUS_NEGATIVE_CASE_PATH, stagedRoot);
+    expectBlockedAdvancement(ENGINE_FOCUS_NEGATIVE_CASE_PATH, brokenEngineFocus);
+    assert.ok(
+      brokenEngineFocus.inconsistentLinks.some((entry) => entry.includes("missing linked Engine run report artifact")),
+      `Expected missing Engine run report artifact to be detected, got: ${brokenEngineFocus.inconsistentLinks.join(", ")}`,
+    );
+  });
 
   const architectureEvaluation = expectFocus(ARCHITECTURE_EVALUATION_PATH);
   assert.equal(architectureEvaluation.lane, "architecture");
@@ -600,6 +643,40 @@ function main() {
     0,
     "Architecture bounded result should not demand a continuation artifact after the chain already moved into adoption/materialization",
   );
+  const architectureBoundedResultDetail = readDirectiveFrontendArchitectureResultDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_BOUNDED_RESULT_PATH,
+  });
+  assert.ok(
+    architectureBoundedResultDetail.ok,
+    `Architecture bounded result detail should resolve cleanly: ${architectureBoundedResultDetail.ok ? "" : architectureBoundedResultDetail.error}`,
+  );
+  if (!architectureBoundedResultDetail.ok) {
+    throw new Error(architectureBoundedResultDetail.error);
+  }
+  assert.equal(
+    architectureBoundedResultDetail.nextDecision,
+    "needs-more-evidence",
+    "Architecture bounded result detail should preserve the raw artifact-era nextDecision for auditability",
+  );
+  assert.equal(
+    architectureBoundedResultDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture bounded result detail should expose the live reopened stage instead of leaving only the stale result-era decision framing",
+  );
+  assert.ok(
+    architectureBoundedResultDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture bounded result detail should downgrade its artifact-local next step: ${architectureBoundedResultDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureBoundedResultDetail.currentHead.artifact_path,
+    architectureBoundedResult.currentHead.artifactPath,
+    "Architecture bounded result detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureBoundedResultDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture bounded result detail should expose the live canonical next step: ${architectureBoundedResultDetail.nextLegalStep}`,
+  );
   expectNoDrift(ARCHITECTURE_BOUNDED_RESULT_PATH, architectureBoundedResult);
 
   const architectureAdoption = expectFocus(ARCHITECTURE_ADOPTION_PATH);
@@ -617,6 +694,40 @@ function main() {
   assert.ok(
     architectureAdoption.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture adoption should preserve the live case-level next step: ${architectureAdoption.nextLegalStep}`,
+  );
+  const architectureAdoptionDetail = readDirectiveFrontendArchitectureAdoptionDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_ADOPTION_PATH,
+  });
+  assert.ok(
+    architectureAdoptionDetail.ok,
+    `Architecture adoption detail should resolve cleanly: ${architectureAdoptionDetail.ok ? "" : architectureAdoptionDetail.error}`,
+  );
+  if (!architectureAdoptionDetail.ok) {
+    throw new Error(architectureAdoptionDetail.error);
+  }
+  assert.equal(
+    architectureAdoptionDetail.finalStatus,
+    "adopt_planned_next",
+    "Architecture adoption detail should preserve the raw artifact-era adoption status for auditability",
+  );
+  assert.equal(
+    architectureAdoptionDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture adoption detail should expose the live reopened stage instead of leaving only the stale adopted status framing",
+  );
+  assert.ok(
+    architectureAdoptionDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture adoption detail should downgrade its artifact-local next step: ${architectureAdoptionDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureAdoptionDetail.currentHead.artifact_path,
+    architectureAdoption.currentHead.artifactPath,
+    "Architecture adoption detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureAdoptionDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture adoption detail should expose the live canonical next step: ${architectureAdoptionDetail.nextLegalStep}`,
   );
   expectNoDrift(ARCHITECTURE_ADOPTION_PATH, architectureAdoption);
 
@@ -636,6 +747,40 @@ function main() {
     architectureImplementationTarget.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture implementation target should preserve the live case-level next step: ${architectureImplementationTarget.nextLegalStep}`,
   );
+  const architectureImplementationTargetDetail = readDirectiveFrontendArchitectureImplementationTargetDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_IMPLEMENTATION_TARGET_PATH,
+  });
+  assert.ok(
+    architectureImplementationTargetDetail.ok,
+    `Architecture implementation target detail should resolve cleanly: ${architectureImplementationTargetDetail.ok ? "" : architectureImplementationTargetDetail.error}`,
+  );
+  if (!architectureImplementationTargetDetail.ok) {
+    throw new Error(architectureImplementationTargetDetail.error);
+  }
+  assert.equal(
+    architectureImplementationTargetDetail.finalStatus,
+    "adopt_planned_next",
+    "Architecture implementation target detail should preserve the raw artifact-era target status for auditability",
+  );
+  assert.equal(
+    architectureImplementationTargetDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture implementation target detail should expose the live reopened stage instead of leaving only the stale target-era framing",
+  );
+  assert.ok(
+    architectureImplementationTargetDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture implementation target detail should downgrade its artifact-local next step: ${architectureImplementationTargetDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureImplementationTargetDetail.currentHead.artifact_path,
+    architectureImplementationTarget.currentHead.artifactPath,
+    "Architecture implementation target detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureImplementationTargetDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture implementation target detail should expose the live canonical next step: ${architectureImplementationTargetDetail.nextLegalStep}`,
+  );
   expectNoDrift(ARCHITECTURE_IMPLEMENTATION_TARGET_PATH, architectureImplementationTarget);
 
   const architectureImplementationResult = expectFocus(ARCHITECTURE_IMPLEMENTATION_RESULT_PATH);
@@ -653,6 +798,40 @@ function main() {
   assert.ok(
     architectureImplementationResult.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture implementation result should preserve the live case-level next step: ${architectureImplementationResult.nextLegalStep}`,
+  );
+  const architectureImplementationResultDetail = readDirectiveFrontendArchitectureImplementationResultDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_IMPLEMENTATION_RESULT_PATH,
+  });
+  assert.ok(
+    architectureImplementationResultDetail.ok,
+    `Architecture implementation result detail should resolve cleanly: ${architectureImplementationResultDetail.ok ? "" : architectureImplementationResultDetail.error}`,
+  );
+  if (!architectureImplementationResultDetail.ok) {
+    throw new Error(architectureImplementationResultDetail.error);
+  }
+  assert.equal(
+    architectureImplementationResultDetail.outcome,
+    "success",
+    "Architecture implementation result detail should preserve the raw artifact-era outcome for auditability",
+  );
+  assert.equal(
+    architectureImplementationResultDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture implementation result detail should expose the live reopened stage instead of leaving only the stale result-era framing",
+  );
+  assert.ok(
+    architectureImplementationResultDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture implementation result detail should downgrade its artifact-local next step: ${architectureImplementationResultDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureImplementationResultDetail.currentHead.artifact_path,
+    architectureImplementationResult.currentHead.artifactPath,
+    "Architecture implementation result detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureImplementationResultDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture implementation result detail should expose the live canonical next step: ${architectureImplementationResultDetail.nextLegalStep}`,
   );
   expectNoDrift(ARCHITECTURE_IMPLEMENTATION_RESULT_PATH, architectureImplementationResult);
 
@@ -672,6 +851,40 @@ function main() {
     architectureRetained.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture retained should preserve the live case-level next step: ${architectureRetained.nextLegalStep}`,
   );
+  const architectureRetentionDetail = readDirectiveFrontendArchitectureRetentionDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_RETAINED_PATH,
+  });
+  assert.ok(
+    architectureRetentionDetail.ok,
+    `Architecture retention detail should resolve cleanly: ${architectureRetentionDetail.ok ? "" : architectureRetentionDetail.error}`,
+  );
+  if (!architectureRetentionDetail.ok) {
+    throw new Error(architectureRetentionDetail.error);
+  }
+  assert.equal(
+    architectureRetentionDetail.confirmationDecision,
+    "Retain this implementation result as valid Directive Workspace Architecture output for the current bounded scope.",
+    "Architecture retention detail should preserve the raw artifact-era retention decision for auditability",
+  );
+  assert.equal(
+    architectureRetentionDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture retention detail should expose the live reopened stage instead of leaving only the stale retention framing",
+  );
+  assert.ok(
+    architectureRetentionDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture retention detail should downgrade its artifact-local next step: ${architectureRetentionDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureRetentionDetail.currentHead.artifact_path,
+    architectureRetained.currentHead.artifactPath,
+    "Architecture retention detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureRetentionDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture retention detail should expose the live canonical next step: ${architectureRetentionDetail.nextLegalStep}`,
+  );
   expectNoDrift(ARCHITECTURE_RETAINED_PATH, architectureRetained);
 
   const architectureIntegration = expectFocus(ARCHITECTURE_INTEGRATION_PATH);
@@ -689,6 +902,40 @@ function main() {
   assert.ok(
     architectureIntegration.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture integration record should preserve the live case-level next step: ${architectureIntegration.nextLegalStep}`,
+  );
+  const architectureIntegrationDetail = readDirectiveFrontendArchitectureIntegrationRecordDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_INTEGRATION_PATH,
+  });
+  assert.ok(
+    architectureIntegrationDetail.ok,
+    `Architecture integration detail should resolve cleanly: ${architectureIntegrationDetail.ok ? "" : architectureIntegrationDetail.error}`,
+  );
+  if (!architectureIntegrationDetail.ok) {
+    throw new Error(architectureIntegrationDetail.error);
+  }
+  assert.equal(
+    architectureIntegrationDetail.integrationDecision,
+    "Record this retained output as integration-ready Directive Workspace Architecture output for the current bounded scope.",
+    "Architecture integration detail should preserve the raw artifact-era integration decision for auditability",
+  );
+  assert.equal(
+    architectureIntegrationDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture integration detail should expose the live reopened stage instead of leaving only the stale integration framing",
+  );
+  assert.ok(
+    architectureIntegrationDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture integration detail should downgrade its artifact-local next step: ${architectureIntegrationDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureIntegrationDetail.currentHead.artifact_path,
+    architectureIntegration.currentHead.artifactPath,
+    "Architecture integration detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureIntegrationDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture integration detail should expose the live canonical next step: ${architectureIntegrationDetail.nextLegalStep}`,
   );
   expectNoDrift(ARCHITECTURE_INTEGRATION_PATH, architectureIntegration);
 
@@ -708,6 +955,40 @@ function main() {
     architectureConsumption.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture consumption record should preserve the live case-level next step: ${architectureConsumption.nextLegalStep}`,
   );
+  const architectureConsumptionDetail = readDirectiveFrontendArchitectureConsumptionRecordDetail({
+    directiveRoot: DIRECTIVE_ROOT,
+    relativePath: ARCHITECTURE_CONSUMPTION_PATH,
+  });
+  assert.ok(
+    architectureConsumptionDetail.ok,
+    `Architecture consumption detail should resolve cleanly: ${architectureConsumptionDetail.ok ? "" : architectureConsumptionDetail.error}`,
+  );
+  if (!architectureConsumptionDetail.ok) {
+    throw new Error(architectureConsumptionDetail.error);
+  }
+  assert.equal(
+    architectureConsumptionDetail.outcome,
+    "success",
+    "Architecture consumption detail should preserve the raw artifact-era outcome for auditability",
+  );
+  assert.equal(
+    architectureConsumptionDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture consumption detail should expose the live reopened stage instead of leaving only the stale consumption framing",
+  );
+  assert.ok(
+    architectureConsumptionDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture consumption detail should downgrade its artifact-local next step: ${architectureConsumptionDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architectureConsumptionDetail.currentHead.artifact_path,
+    architectureConsumption.currentHead.artifactPath,
+    "Architecture consumption detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architectureConsumptionDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture consumption detail should expose the live canonical next step: ${architectureConsumptionDetail.nextLegalStep}`,
+  );
   expectNoDrift(ARCHITECTURE_CONSUMPTION_PATH, architectureConsumption);
 
   const architectureStaleEvaluation = expectFocus(ARCHITECTURE_STALE_EVALUATION_PATH);
@@ -726,12 +1007,76 @@ function main() {
     architectureStaleEvaluation.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
     `Architecture stale evaluation should preserve the live case-level next step: ${architectureStaleEvaluation.nextLegalStep}`,
   );
+  const architecturePostConsumptionEvaluationDetail =
+    readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail({
+      directiveRoot: DIRECTIVE_ROOT,
+      relativePath: ARCHITECTURE_STALE_EVALUATION_PATH,
+    });
+  assert.ok(
+    architecturePostConsumptionEvaluationDetail.ok,
+    `Architecture post-consumption evaluation detail should resolve cleanly: ${architecturePostConsumptionEvaluationDetail.ok ? "" : architecturePostConsumptionEvaluationDetail.error}`,
+  );
+  if (!architecturePostConsumptionEvaluationDetail.ok) {
+    throw new Error(architecturePostConsumptionEvaluationDetail.error);
+  }
+  assert.equal(
+    architecturePostConsumptionEvaluationDetail.decision,
+    "reopen",
+    "Architecture post-consumption evaluation detail should preserve the raw artifact-era reopen decision for auditability",
+  );
+  assert.equal(
+    architecturePostConsumptionEvaluationDetail.currentStage,
+    "architecture.post_consumption_evaluation.reopen",
+    "Architecture post-consumption evaluation detail should expose the live reopened stage instead of leaving only the stale evaluation framing",
+  );
+  assert.ok(
+    architecturePostConsumptionEvaluationDetail.artifactNextLegalStep.includes("no longer the live continuation point"),
+    `Architecture post-consumption evaluation detail should downgrade its artifact-local next step: ${architecturePostConsumptionEvaluationDetail.artifactNextLegalStep}`,
+  );
+  assert.equal(
+    architecturePostConsumptionEvaluationDetail.currentHead.artifact_path,
+    architectureStaleEvaluation.currentHead.artifactPath,
+    "Architecture post-consumption evaluation detail should point to the same canonical current head as shared focus resolution",
+  );
+  assert.ok(
+    architecturePostConsumptionEvaluationDetail.nextLegalStep.includes("Explicitly continue or close the reopened bounded Architecture slice"),
+    `Architecture post-consumption evaluation detail should expose the live canonical next step: ${architecturePostConsumptionEvaluationDetail.nextLegalStep}`,
+  );
   expectNoDrift(ARCHITECTURE_STALE_EVALUATION_PATH, architectureStaleEvaluation);
+
+  const roamRoutePhaseA2 = expectFocus(ROAM_ROUTE_PHASE_A_PHASE_2_PATH);
+  assert.equal(
+    roamRoutePhaseA2.integrityState,
+    "ok",
+    "Roam Phase A / Phase 2 route should stay truthful once the explicit Architecture reroute and downstream bounded result supersede the earlier hold-in-discovery engine run",
+  );
+  assert.equal(roamRoutePhaseA2.lane, "discovery");
+  assert.equal(roamRoutePhaseA2.currentStage, "architecture.bounded_result.stay_experimental");
+  assert.equal(
+    roamRoutePhaseA2.currentHead.artifactPath,
+    "architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md",
+    "Roam Phase A / Phase 2 route should continue from the bounded result current head",
+  );
+  assert.equal(
+    roamRoutePhaseA2.engine.selectedLane,
+    "architecture",
+    "Roam Phase A / Phase 2 route should expose the explicit rerouted Architecture lane instead of the superseded hold-in-discovery engine lane",
+  );
+  assert.equal(
+    roamRoutePhaseA2.engine.decisionState,
+    "adopt",
+    "Roam Phase A / Phase 2 route should expose the explicit reroute decision instead of the superseded hold-in-discovery engine decision",
+  );
+  assert.ok(
+    roamRoutePhaseA2.nextLegalStep.includes("Explicitly continue the experimental Architecture slice"),
+    `Roam Phase A / Phase 2 route should preserve the bounded-result stop boundary: ${roamRoutePhaseA2.nextLegalStep}`,
+  );
+  expectNoDrift(ROAM_ROUTE_PHASE_A_PHASE_2_PATH, roamRoutePhaseA2);
 
   const runtimeFollowUp = expectFocus(RUNTIME_FOLLOW_UP_PATH);
   assert.equal(runtimeFollowUp.lane, "runtime");
   assert.equal(runtimeFollowUp.artifactStage, "runtime.follow_up.pending_review");
-  assert.equal(runtimeFollowUp.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(runtimeFollowUp.currentStage, "runtime.promotion_record.opened");
   assert.ok(
     runtimeFollowUp.artifactNextLegalStep.includes("no longer the live continuation point"),
     `Historical runtime follow-up should downgrade its stale artifact-local next step: ${runtimeFollowUp.artifactNextLegalStep}`,
@@ -810,42 +1155,37 @@ function main() {
   });
   assert.ok(
     livePendingFollowUpDetail.ok && livePendingFollowUpDetail.kind === "runtime_follow_up",
-    "Expected a runtime follow-up detail for the still-pending OpenMOSS loop pressure case",
+    "Expected a runtime follow-up detail for the now-progressed OpenMOSS loop pressure case",
   );
   assert.equal(
     livePendingFollowUpDetail.approvalAllowed,
-    true,
-    "Current-head runtime follow-up detail should still advertise approval when the case is genuinely pending review",
+    false,
+    "Historical runtime follow-up detail should not advertise approval after the case advances downstream",
   );
   const livePendingRuntimeFollowUp = expectFocus(LIVE_PENDING_RUNTIME_FOLLOW_UP_PATH);
-  assert.equal(livePendingRuntimeFollowUp.currentStage, "runtime.follow_up.pending_review");
+  assert.equal(livePendingRuntimeFollowUp.currentStage, "runtime.promotion_record.opened");
   const livePendingFollowUpStub = frontendSnapshot.handoffStubs.find((stub) => stub.relativePath === LIVE_PENDING_RUNTIME_FOLLOW_UP_PATH);
-  assert.ok(livePendingFollowUpStub, "Expected live pending OpenMOSS Runtime follow-up stub in the frontend snapshot");
+  assert.ok(livePendingFollowUpStub, "Expected progressed OpenMOSS Runtime follow-up stub in the frontend snapshot");
   assert.equal(
     livePendingFollowUpStub.candidateId,
     livePendingRuntimeFollowUp.candidateId,
-    "Live pending Runtime follow-up stub should preserve the real candidate id from the artifact",
+    "Progressed Runtime follow-up stub should preserve the real candidate id from the artifact",
   );
   assert.equal(
     livePendingFollowUpStub.status,
-    "pending_review",
-    "Live pending Runtime follow-up stub should remain pending review while it is still the current head",
+    "progressed_downstream",
+    "Progressed Runtime follow-up stub should no longer advertise pending review after downstream advancement",
   );
-  assert.equal(
-    livePendingFollowUpStub.warning,
-    null,
-    "Live pending Runtime follow-up stub should not carry a stale-status warning",
-  );
-  expectPendingNextArtifactGap(
-    LIVE_PENDING_RUNTIME_FOLLOW_UP_PATH,
-    livePendingRuntimeFollowUp,
-    "runtime/02-records/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-record.md",
+  assert.match(
+    livePendingFollowUpStub.warning ?? "",
+    /do not treat this follow-up artifact as a pending review stub/i,
+    "Progressed Runtime follow-up stub should carry a stale-status warning once the live head moved downstream",
   );
 
   const runtimeProof = expectFocus(RUNTIME_PROOF_PATH);
   assert.equal(runtimeProof.lane, "runtime");
   assert.equal(runtimeProof.artifactStage, "runtime.proof.opened");
-  assert.equal(runtimeProof.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(runtimeProof.currentStage, "runtime.promotion_record.opened");
   assert.ok(
     runtimeProof.artifactNextLegalStep.includes("no longer the live continuation point"),
     `Runtime proof artifact-local next step drifted: ${runtimeProof.artifactNextLegalStep}`,
@@ -903,7 +1243,7 @@ function main() {
   assert.equal(runtimeRouteCapabilityBoundary.artifactStage, "runtime.runtime_capability_boundary.opened");
   assert.equal(
     runtimeRouteCapabilityBoundary.currentStage,
-    "runtime.promotion_readiness.opened",
+    "runtime.promotion_record.opened",
   );
   assert.ok(
     runtimeRouteCapabilityBoundary.artifactNextLegalStep.includes("no longer the live continuation point"),
@@ -936,23 +1276,20 @@ function main() {
   const runtimePromotionReadiness = expectFocus(RUNTIME_ROUTE_PROMOTION_READINESS_PATH);
   assert.equal(runtimePromotionReadiness.lane, "runtime");
   assert.equal(runtimePromotionReadiness.artifactStage, "runtime.promotion_readiness.opened");
-  assert.equal(runtimePromotionReadiness.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(runtimePromotionReadiness.currentStage, "runtime.promotion_record.opened");
   assert.ok(
     runtimePromotionReadiness.nextLegalStep.includes("No automatic Runtime step is open"),
     `Runtime promotion-readiness next step drifted: ${runtimePromotionReadiness.nextLegalStep}`,
   );
   assert.equal(
     runtimePromotionReadiness.runtime?.proposedHost,
-    "pending_host_selection",
-    "Runtime promotion-readiness should expose the unresolved proposed host through the shared resolver",
+    "Directive Workspace web host (frontend/ + hosts/web-host/)",
+    "Runtime promotion-readiness should expose the retargeted proposed host through the shared resolver",
   );
-  assert.ok(
-    runtimePromotionReadiness.runtime?.promotionReadinessBlockers.includes("proposed_host_pending_selection"),
-    `Runtime promotion-readiness should expose the pending-host blocker, got: ${runtimePromotionReadiness.runtime?.promotionReadinessBlockers.join(", ")}`,
-  );
-  assert.ok(
-    runtimePromotionReadiness.runtime?.promotionReadinessBlockers.includes("host_facing_promotion_unopened"),
-    `Runtime promotion-readiness should expose that host-facing promotion remains unopened, got: ${runtimePromotionReadiness.runtime?.promotionReadinessBlockers.join(", ")}`,
+  assert.deepEqual(
+    runtimePromotionReadiness.runtime?.promotionReadinessBlockers ?? [],
+    [],
+    `Runtime promotion-readiness should resolve no remaining readiness blockers after the manual promotion record, got: ${runtimePromotionReadiness.runtime?.promotionReadinessBlockers.join(", ")}`,
   );
   expectNoDrift(RUNTIME_ROUTE_PROMOTION_READINESS_PATH, runtimePromotionReadiness);
 
@@ -973,7 +1310,7 @@ function main() {
   assert.equal(tsEdgeRoute.lane, "discovery");
   assert.equal(tsEdgeRoute.routeTarget, "architecture");
   assert.equal(tsEdgeRoute.discovery.operatingMode, "standard");
-  assert.equal(tsEdgeRoute.engine.selectedLane, "runtime");
+  assert.equal(tsEdgeRoute.engine.selectedLane, "architecture");
   assert.equal(tsEdgeRoute.currentStage, "architecture.bounded_result.stay_experimental");
   assert.equal(
     tsEdgeRoute.nextLegalStep,
@@ -1258,6 +1595,51 @@ function main() {
     "discovery.monitor.active",
     "Completed monitor queue entries should expose the live monitor stage",
   );
+
+  withStagedDirectiveRoot("completed-status-missing-result-record-path", (stagedRoot) => {
+    for (const relativePath of uniqueRelativePaths([
+      "discovery/intake-queue.json",
+      DISCOVERY_MONITOR_ROUTE_PATH,
+      DISCOVERY_MONITOR_RECORD_PATH,
+      ...Object.values(discoveryMonitorRoute.linkedArtifacts),
+    ])) {
+      copyRelativeFile(relativePath, stagedRoot);
+    }
+
+    writeRelativeFile("discovery/intake-queue.json", stagedRoot, (content) => {
+      const payload = JSON.parse(content) as { entries?: Array<Record<string, unknown>> };
+      const entries = Array.isArray(payload.entries) ? payload.entries : [];
+      const targetEntry = entries.find((entry) => entry.candidate_id === COMPLETED_MONITOR_CANDIDATE_ID);
+      assert.ok(targetEntry, "Missing staged completed monitor queue entry for missing result_record_path validation");
+      targetEntry.result_record_path = null;
+      return `${JSON.stringify(payload, null, 2)}\n`;
+    });
+
+    const stagedQueueOverview = readFrontendQueueOverview({
+      directiveRoot: stagedRoot,
+      maxEntries: 500,
+    });
+    const stagedEntry = stagedQueueOverview.entries.find((entry) =>
+      entry.candidate_id === COMPLETED_MONITOR_CANDIDATE_ID
+    );
+    assert.ok(stagedEntry, "Missing staged completed monitor queue entry after removing result_record_path");
+    assert.equal(stagedEntry.status, "completed");
+    assert.equal(
+      stagedEntry.status_effective,
+      "completed_inconsistent",
+      "Completed queue entries should stop advertising clean completion when result_record_path is missing even if the routing chain still resolves",
+    );
+    assert.match(
+      stagedEntry.status_warning ?? "",
+      /result_record_path is missing/i,
+      "Completed queue entries should explicitly explain the missing recorded completion artifact",
+    );
+    assert.match(
+      stagedEntry.status_warning ?? "",
+      /discovery\/routing-log\/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record\.md/i,
+      "Completed queue entries should identify the fallback routing artifact when result_record_path is missing",
+    );
+  });
 
   const discoveryMonitorRecord = expectFocus(DISCOVERY_MONITOR_RECORD_PATH);
   assert.equal(discoveryMonitorRecord.integrityState, "ok");
@@ -2230,7 +2612,7 @@ function main() {
     expectPendingNextArtifactGap(
       startPath,
       startFocus,
-      "architecture/06-retained/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.retained.gapPattern,
     );
   }
 
@@ -2310,7 +2692,7 @@ function main() {
     expectPendingNextArtifactGap(
       resultPath,
       resultFocus,
-      "architecture/06-retained/*.md",
+      ARCHITECTURE_DEEP_TAIL_STAGE.retained.gapPattern,
     );
   }
 
@@ -2341,30 +2723,72 @@ function main() {
     "Routed Runtime entries should stop advertising clean routed status once the live head progressed downstream",
   );
 
-  const routedBrokenEntry = queueOverview.entries.find((entry) =>
-    entry.candidate_id === ROUTED_BROKEN_CANDIDATE_ID
+  withStagedDirectiveRoot("routed-progress-routing-record-fallback", (stagedRoot) => {
+    for (const relativePath of uniqueRelativePaths([
+      "discovery/intake-queue.json",
+      TS_EDGE_ROUTE_PATH,
+      ...Object.values(tsEdgeRoute.linkedArtifacts),
+    ])) {
+      copyRelativeFile(relativePath, stagedRoot);
+    }
+
+    writeRelativeFile("discovery/intake-queue.json", stagedRoot, (content) => {
+      const payload = JSON.parse(content) as { entries?: Array<Record<string, unknown>> };
+      const entries = Array.isArray(payload.entries) ? payload.entries : [];
+      const targetEntry = entries.find((entry) => entry.candidate_id === ROUTED_PROGRESS_ARCHITECTURE_CANDIDATE_ID);
+      assert.ok(targetEntry, "Missing staged routed Architecture queue entry for routing-record fallback validation");
+      targetEntry.result_record_path = null;
+      return `${JSON.stringify(payload, null, 2)}\n`;
+    });
+
+    const stagedQueueOverview = readFrontendQueueOverview({
+      directiveRoot: stagedRoot,
+      maxEntries: 500,
+    });
+    const stagedEntry = stagedQueueOverview.entries.find((entry) =>
+      entry.candidate_id === ROUTED_PROGRESS_ARCHITECTURE_CANDIDATE_ID
+    );
+    assert.ok(stagedEntry, "Missing staged routed Architecture queue entry after removing result_record_path");
+    assert.equal(stagedEntry.status, "routed");
+    assert.equal(
+      stagedEntry.status_effective,
+      "routed_progressed",
+      "Routed entries should still surface progressed status when only the routing record remains and canonical current head moved downstream",
+    );
+    assert.match(
+      stagedEntry.status_warning ?? "",
+      /do not treat "discovery\/routing-log\/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record\.md" as the live continuation point/i,
+      "Routed progressed warning should fall back to the routing record path when result_record_path is absent",
+    );
+  });
+
+  const completedNoteArchitectureEntry = queueOverview.entries.find((entry) =>
+    entry.candidate_id === COMPLETED_NOTE_ARCHITECTURE_CANDIDATE_ID
   );
-  assert.ok(routedBrokenEntry, "Missing routed Architecture handoff queue entry for routed-status validation");
-  assert.equal(routedBrokenEntry.status, "routed");
+  assert.ok(
+    completedNoteArchitectureEntry,
+    "Missing completed NOTE-mode Architecture queue entry for current-head validation",
+  );
+  assert.equal(completedNoteArchitectureEntry.status, "completed");
   assert.equal(
-    routedBrokenEntry.status_effective,
-    "routed",
-    "Routed Architecture entries should preserve the raw routed status when the linked handoff stub is now truthful",
+    completedNoteArchitectureEntry.status_effective,
+    "completed",
+    "Completed NOTE-mode Architecture entries should surface the truthful completed queue status after direct closeout",
   );
   assert.equal(
-    routedBrokenEntry.status_warning,
+    completedNoteArchitectureEntry.status_warning,
     null,
-    "Routed Architecture handoff entries should not surface a stale-status warning once the handoff stub resolves cleanly",
+    "Completed NOTE-mode Architecture entries should not surface a stale-status warning once the direct closeout resolves cleanly",
   );
   assert.equal(
-    routedBrokenEntry.current_head?.artifact_path,
-    "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
-    "Routed Architecture handoff entries should point at the live handoff stub as the current head",
+    completedNoteArchitectureEntry.current_head?.artifact_path,
+    "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md",
+    "Completed NOTE-mode Architecture entries should point at the bounded result as the live current head",
   );
   assert.equal(
-    routedBrokenEntry.current_case_stage,
-    "architecture.handoff.pending_review",
-    "Routed Architecture handoff entries should expose the pending-review Architecture handoff stage",
+    completedNoteArchitectureEntry.current_case_stage,
+    "architecture.bounded_result.stay_experimental",
+    "Completed NOTE-mode Architecture entries should expose the bounded-result stop stage",
   );
 
   const routedPendingControlEntry = queueOverview.entries.find((entry) =>
@@ -2373,13 +2797,13 @@ function main() {
   assert.ok(routedPendingControlEntry, "Missing still-pending routed queue entry for routed-status validation");
   assert.equal(
     routedPendingControlEntry.status_effective,
-    "routed",
-    "Still-live routed queue entries should preserve the raw routed status when the downstream stub remains current",
+    "routed_progressed",
+    "Progressed routed queue entries should surface a progressed effective status once the live Runtime case has moved past the follow-up stub",
   );
   assert.equal(
     routedPendingControlEntry.status_warning,
-    null,
-    "Still-live routed queue entries should not surface a stale-status warning",
+    'Queue still marks this case routed, but the live case head has already progressed to runtime.promotion_record.opened at "runtime/promotion-records/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-promotion-record.md". Do not treat "runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md" as the live continuation point.',
+    "Progressed routed queue entries should surface a warning that points at the live promotion-record head",
   );
 
   const runtimeRecordPath = runtimeFollowUp.linkedArtifacts.runtimeRecordPath;
@@ -2904,7 +3328,19 @@ function main() {
           "discovery required-next-artifact mismatch blocks advancement",
           "discovery lifecycle sync rejects mismatched or missing routed downstream stubs before queue mutation",
           "broken completed queue entries stop advertising clean completion",
+          "completed queue entries stop advertising clean completion when result_record_path is missing",
           "progressed routed queue entries stop advertising clean routed status",
+          "progressed routed queue entries still degrade honestly when result_record_path is absent",
+          "stale Architecture bounded-result detail now exposes canonical reopened next-step truth",
+          "stale Architecture adoption detail now exposes canonical reopened next-step truth",
+          "stale Architecture implementation-target detail now exposes canonical reopened next-step truth",
+          "stale Architecture implementation-result detail now exposes canonical reopened next-step truth",
+          "stale Architecture retention detail now exposes canonical reopened next-step truth",
+          "stale Architecture integration detail now exposes canonical reopened next-step truth",
+          "stale Architecture consumption detail now exposes canonical reopened next-step truth",
+          "stale Architecture post-consumption evaluation detail now exposes canonical reopened next-step truth",
+          "explicit rerouted Discovery route can supersede a stale earlier engine lane when queue target and downstream head agree",
+          "engine run missing linked report artifact blocks advancement",
           "historical runtime handoff stubs stop advertising pending review",
           "historical runtime approval surfaces stop advertising stale downstream openings",
           "historical runtime openers block when the live current head moved downstream",

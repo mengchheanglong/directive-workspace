@@ -20,6 +20,9 @@ Use:
 
 Use one entry per completed bounded cycle unless the work is a repeated same-class micro-repair loop.
 
+For NOTE-mode work, use the lightest truthful logging that preserves the decision and stop-line.
+Do not imitate DEEP-mode structure when the case ended as one bounded note or parked review.
+
 For repeated same-class wording or authority-alignment micro-repairs, prefer batched loop-run logging:
 - one run header
 - one compact bullet per verified micro-fix

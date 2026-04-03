@@ -46,6 +46,7 @@ import {
   recordMissingExpectedArtifact,
   recordMissingLinkedArtifactIfAbsent,
 } from "../../../engine/artifact-link-validation.ts";
+import { resolveDirectiveRuntimePromotionSpecificationPath } from "../runtime-promotion-specification.ts";
 type GenericRuntimeRecordArtifact =
   | {
       kind: "follow_up_review";
@@ -118,9 +119,22 @@ type GenericRuntimePromotionReadinessArtifact = {
   linkedRuntimeProofPath: string | null;
   linkedRuntimeRecordPath: string | null;
   linkedCallableStubPath: string | null;
+  linkedPromotionRecordPath: string | null;
   proposedHost: string | null;
   executionState: string | null;
   currentStatus: string | null;
+};
+
+type GenericRuntimePromotionRecordArtifact = {
+  candidateId: string;
+  candidateName: string;
+  promotionRecordPath: string;
+  linkedRuntimeRecordPath: string | null;
+  sourceIntentArtifactPath: string | null;
+  proofArtifactPath: string | null;
+  targetHost: string | null;
+  targetRuntimeSurface: string | null;
+  proposedRuntimeStatus: string;
 };
 
 type GenericLegacyRuntimeFollowUpArtifact = {
@@ -488,9 +502,54 @@ function readGenericRuntimePromotionReadinessArtifact(input: {
     linkedRuntimeProofPath: extractBulletValue(content, "Runtime proof artifact"),
     linkedRuntimeRecordPath: extractBulletValue(content, "Runtime v0 record"),
     linkedCallableStubPath: extractBulletValue(content, "Linked callable stub"),
+    linkedPromotionRecordPath:
+      extractNestedBulletValue(content, "Host-facing promotion record")
+      ?? extractNestedBulletValue(content, "Runtime promotion record")
+      ?? extractBulletValue(content, "Host-facing promotion record")
+      ?? extractBulletValue(content, "Runtime promotion record"),
     proposedHost: extractBulletValue(content, "Proposed host"),
     executionState: extractBulletValue(content, "Execution state"),
     currentStatus: extractBulletValue(content, "Current status"),
+  };
+}
+
+function readGenericRuntimePromotionRecordArtifact(input: {
+  directiveRoot: string;
+  promotionRecordPath: string;
+}): GenericRuntimePromotionRecordArtifact {
+  const promotionRecordPath = resolveDirectiveRelativePath(
+    input.directiveRoot,
+    input.promotionRecordPath,
+    "promotionRecordPath",
+  );
+  const absolutePath = path.join(input.directiveRoot, promotionRecordPath);
+  if (!fs.existsSync(absolutePath)) {
+    throw new Error(`invalid_input: promotionRecordPath not found: ${promotionRecordPath}`);
+  }
+
+  const content = readUtf8(absolutePath);
+  const candidateId = requiredString(
+    stripInlineBackticks(extractBulletValue(content, "Candidate id")),
+    "candidate id",
+  );
+  const candidateName = requiredString(
+    stripInlineBackticks(extractBulletValue(content, "Candidate name")),
+    "candidate name",
+  );
+
+  return {
+    candidateId,
+    candidateName,
+    promotionRecordPath,
+    linkedRuntimeRecordPath: extractBulletValue(content, "Linked Runtime record"),
+    sourceIntentArtifactPath: extractBulletValue(content, "Source intent artifact"),
+    proofArtifactPath: extractBulletValue(content, "Proof path"),
+    targetHost: stripInlineBackticks(extractBulletValue(content, "Target host")),
+    targetRuntimeSurface: stripInlineBackticks(extractBulletValue(content, "Target runtime surface")),
+    proposedRuntimeStatus: requiredString(
+      stripInlineBackticks(extractBulletValue(content, "Proposed runtime status")),
+      "proposed runtime status",
+    ),
   };
 }
 
@@ -508,7 +567,10 @@ export function buildRuntimePromotionReadinessBlockers(input: {
   if (input.promotionReadiness.executionState?.includes("not implemented")) {
     blockers.push("runtime_implementation_unopened");
   }
-  if (input.promotionReadiness.executionState?.includes("not promoted")) {
+  if (
+    input.promotionReadiness.executionState?.includes("not promoted")
+    && !input.promotionReadiness.linkedPromotionRecordPath
+  ) {
     blockers.push("host_facing_promotion_unopened");
   }
 
@@ -1307,6 +1369,108 @@ function inferRuntimePromotionReadinessPathFromCapabilityBoundary(input: {
   return fileExistsInDirectiveWorkspace(input.directiveRoot, candidatePath) ? candidatePath : null;
 }
 
+function inferRuntimePromotionSpecificationPathFromPromotionReadiness(input: {
+  directiveRoot: string;
+  promotionReadinessPath: string | null | undefined;
+}) {
+  if (!input.promotionReadinessPath) {
+    return null;
+  }
+  if (
+    !input.promotionReadinessPath.startsWith("runtime/05-promotion-readiness/")
+    || !input.promotionReadinessPath.endsWith("-promotion-readiness.md")
+  ) {
+    return null;
+  }
+
+  const candidatePath = resolveDirectiveRuntimePromotionSpecificationPath({
+    promotionReadinessPath: input.promotionReadinessPath,
+  });
+  return fileExistsInDirectiveWorkspace(input.directiveRoot, candidatePath) ? candidatePath : null;
+}
+
+function findRuntimePromotionReadinessPathForCandidate(input: {
+  directiveRoot: string;
+  candidateId: string | null | undefined;
+}) {
+  const candidateId = input.candidateId?.trim();
+  if (!candidateId) {
+    return null;
+  }
+
+  const promotionReadinessDir = path.join(input.directiveRoot, "runtime", "05-promotion-readiness");
+  if (!fs.existsSync(promotionReadinessDir)) {
+    return null;
+  }
+
+  const matches = fs
+    .readdirSync(promotionReadinessDir, { withFileTypes: true })
+    .filter((entry) =>
+      entry.isFile() && entry.name.endsWith(`-${candidateId}-promotion-readiness.md`)
+    )
+    .map((entry) => path.join("runtime", "05-promotion-readiness", entry.name).replace(/\\/g, "/"))
+    .sort((left, right) => left.localeCompare(right));
+
+  return matches.at(-1) ?? null;
+}
+
+function findRuntimePromotionRecordPathForCandidate(input: {
+  directiveRoot: string;
+  candidateId: string | null | undefined;
+}) {
+  const candidateId = input.candidateId?.trim();
+  if (!candidateId) {
+    return null;
+  }
+
+  const promotionRecordDir = path.join(input.directiveRoot, "runtime", "promotion-records");
+  if (!fs.existsSync(promotionRecordDir)) {
+    return null;
+  }
+
+  const matches = fs
+    .readdirSync(promotionRecordDir, { withFileTypes: true })
+    .filter((entry) =>
+      entry.isFile() && entry.name.endsWith(`-${candidateId}-promotion-record.md`)
+    )
+    .map((entry) => path.join("runtime", "promotion-records", entry.name).replace(/\\/g, "/"))
+    .sort((left, right) => left.localeCompare(right));
+
+  return matches.at(-1) ?? null;
+}
+
+function findRuntimeStandaloneHostConsumptionReportPathForCandidate(input: {
+  directiveRoot: string;
+  candidateId: string | null | undefined;
+}) {
+  const candidateId = input.candidateId?.trim();
+  if (!candidateId) {
+    return null;
+  }
+
+  const reportDir = path.join(
+    input.directiveRoot,
+    "runtime",
+    "standalone-host",
+    "host-consumption",
+  );
+  if (!fs.existsSync(reportDir)) {
+    return null;
+  }
+
+  const matches = fs
+    .readdirSync(reportDir, { withFileTypes: true })
+    .filter((entry) =>
+      entry.isFile() && entry.name.endsWith(`-${candidateId}-host-consumption-report.json`)
+    )
+    .map((entry) =>
+      path.join("runtime", "standalone-host", "host-consumption", entry.name).replace(/\\/g, "/")
+    )
+    .sort((left, right) => left.localeCompare(right));
+
+  return matches.at(-1) ?? null;
+}
+
 function readGenericCallableIntegrationArtifact(input: {
   directiveRoot: string;
   callablePath: string;
@@ -1326,9 +1490,13 @@ function readGenericCallableIntegrationArtifact(input: {
     /capabilityId:\s*"([^"]+)"/.exec(content)?.[1]
     ?? path.basename(callableRelativePath).replace(/-callable-integration\.ts$/u, "");
 
+  const statusMatch = /status:\s*"(callable|not_implemented)"/.exec(content);
+  const callableStatus: "callable" | "not_implemented" = statusMatch?.[1] === "callable" ? "callable" : "not_implemented";
+
   return {
     candidateId,
     callableRelativePath,
+    callableStatus,
     runtimeRecordRelativePath:
       /runtimeRecordPath:\s*"([^"]+)"/.exec(content)?.[1] ?? null,
     runtimeProofRelativePath:
@@ -1347,6 +1515,7 @@ function buildRuntimeState(input: {
   runtimeProof: GenericRuntimeProofArtifact | null;
   capabilityBoundary: GenericRuntimeRuntimeCapabilityBoundaryArtifact | null;
   promotionReadiness: GenericRuntimePromotionReadinessArtifact | null;
+  promotionRecord: GenericRuntimePromotionRecordArtifact | null;
   callableIntegration: ReturnType<typeof readGenericCallableIntegrationArtifact> | null;
 }) {
   const linked = zeroLinkedArtifacts();
@@ -1374,6 +1543,25 @@ function buildRuntimeState(input: {
         ?? null,
     })
     ?? null;
+  linked.runtimePromotionRecordPath =
+    input.promotionRecord?.promotionRecordPath
+    ?? input.promotionReadiness?.linkedPromotionRecordPath
+    ?? findRuntimePromotionRecordPathForCandidate({
+      directiveRoot: input.directiveRoot,
+      candidateId:
+        input.promotionReadiness?.candidateId
+        ?? input.runtimeRecord?.candidateId
+        ?? input.runtimeProof?.candidateId
+        ?? input.capabilityBoundary?.candidateId
+        ?? input.followUp?.candidateId
+        ?? input.callableIntegration?.candidateId
+        ?? null,
+    })
+    ?? null;
+  linked.runtimePromotionSpecificationPath = inferRuntimePromotionSpecificationPathFromPromotionReadiness({
+    directiveRoot: input.directiveRoot,
+    promotionReadinessPath: linked.runtimePromotionReadinessPath,
+  });
   linked.runtimeCallableStubPath =
     input.callableIntegration?.callableRelativePath
     ?? input.runtimeRecord?.callableStubPath
@@ -1381,6 +1569,21 @@ function buildRuntimeState(input: {
     ?? input.capabilityBoundary?.linkedCallableStubPath
     ?? input.promotionReadiness?.linkedCallableStubPath
     ?? null;
+  linked.runtimeCallableStatus =
+    input.callableIntegration?.callableStatus ?? null;
+  linked.runtimeHostConsumptionReportPath =
+    findRuntimeStandaloneHostConsumptionReportPathForCandidate({
+      directiveRoot: input.directiveRoot,
+      candidateId:
+        input.promotionRecord?.candidateId
+        ?? input.promotionReadiness?.candidateId
+        ?? input.runtimeRecord?.candidateId
+        ?? input.runtimeProof?.candidateId
+        ?? input.capabilityBoundary?.candidateId
+        ?? input.followUp?.candidateId
+        ?? input.callableIntegration?.candidateId
+        ?? null,
+    });
   linked.discoveryRoutingPath =
     input.followUp?.linkedHandoffPath
     ?? input.runtimeRecord?.linkedRoutingPath
@@ -1390,6 +1593,21 @@ function buildRuntimeState(input: {
     input.callableIntegration?.integrationRecordPath
     ?? input.runtimeRecord?.sourceIntegrationRecordPath
     ?? null;
+
+  if (linked.runtimePromotionReadinessPath && !linked.runtimePromotionSpecificationPath) {
+    recordMissingExpectedArtifact(
+      { missingExpectedArtifacts, inconsistentLinks },
+      resolveDirectiveRuntimePromotionSpecificationPath({
+        promotionReadinessPath: linked.runtimePromotionReadinessPath,
+      }),
+    );
+  }
+  recordMissingLinkedArtifactIfAbsent({
+    directiveRoot: input.directiveRoot,
+    state: { missingExpectedArtifacts, inconsistentLinks },
+    relativePath: linked.runtimePromotionRecordPath,
+    label: "Runtime promotion record",
+  });
 
   recordMissingLinkedArtifactIfAbsent({
     directiveRoot: input.directiveRoot,
@@ -1501,6 +1719,33 @@ function buildRuntimeState(input: {
       `missing linked callable stub: ${input.promotionReadiness.linkedCallableStubPath}`,
     );
   }
+  if (
+    input.promotionReadiness?.linkedPromotionRecordPath
+    && !input.promotionRecord
+  ) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `missing linked Runtime promotion record: ${input.promotionReadiness.linkedPromotionRecordPath}`,
+    );
+  }
+  if (input.promotionRecord?.linkedRuntimeRecordPath && !input.runtimeRecord) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `missing linked Runtime record: ${input.promotionRecord.linkedRuntimeRecordPath}`,
+    );
+  }
+  if (input.promotionRecord?.sourceIntentArtifactPath && !input.capabilityBoundary) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `missing linked Runtime capability boundary: ${input.promotionRecord.sourceIntentArtifactPath}`,
+    );
+  }
+  if (input.promotionRecord?.proofArtifactPath && !input.runtimeProof) {
+    recordInconsistentLink(
+      { missingExpectedArtifacts, inconsistentLinks },
+      `missing linked Runtime proof artifact: ${input.promotionRecord.proofArtifactPath}`,
+    );
+  }
   if (input.callableIntegration?.runtimeRecordRelativePath && !input.runtimeRecord) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
@@ -1517,6 +1762,9 @@ function buildRuntimeState(input: {
     );
   }
 
+  const hasExecutingCallable = input.callableIntegration?.callableStatus === "callable";
+  const hasHostConsumedCallable =
+    hasExecutingCallable && Boolean(linked.runtimeHostConsumptionReportPath);
   let currentStage = "runtime.follow_up.pending_review";
   let nextLegalStep = "Explicitly review the Runtime follow-up and approve one bounded Runtime record if justified.";
 
@@ -1528,7 +1776,11 @@ function buildRuntimeState(input: {
     nextLegalStep =
       input.runtimeRecord.kind === "follow_up_review"
         ? "Explicitly review the Runtime v0 record and approve one bounded Runtime proof artifact if justified."
-        : "No automatic Runtime step is open; callable implementation, promotion, and host work remain intentionally unopened.";
+        : hasHostConsumedCallable
+          ? "Callable capability is executing and one bounded host adapter path is already proven. Next legal step is explicit evidence feedback or later registry acceptance if intentionally reopened."
+        : hasExecutingCallable
+          ? "Callable capability is executing. Next legal step is host integration through a bounded adapter path."
+          : "No automatic Runtime step is open; callable implementation, promotion, and host work remain intentionally unopened.";
   }
   if (input.runtimeProof) {
     currentStage =
@@ -1546,13 +1798,37 @@ function buildRuntimeState(input: {
     nextLegalStep =
       promotionReadinessEligible
         ? "Explicitly review the bounded runtime capability boundary and, if justified, open one non-executing promotion-readiness artifact; host-facing promotion and runtime execution remain closed."
-        : "No automatic Runtime step is open; callable implementation, host integration, and runtime execution remain intentionally unopened.";
+        : hasHostConsumedCallable
+          ? "Callable capability is executing and one bounded host adapter path is already proven. Next legal step is explicit evidence feedback or later registry acceptance if intentionally reopened."
+        : hasExecutingCallable
+          ? "Callable capability is executing. Next legal step is host integration through a bounded adapter path."
+          : "No automatic Runtime step is open; callable implementation, host integration, and runtime execution remain intentionally unopened.";
   }
   if (input.promotionReadiness) {
     currentStage = "runtime.promotion_readiness.opened";
     nextLegalStep =
-      "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.";
+      hasHostConsumedCallable
+        ? "No automatic Runtime step is open; host-facing promotion remains historical, while callable execution and one bounded host integration path are already proven."
+        : hasExecutingCallable
+        ? "No automatic Runtime step is open; host-facing promotion and host integration remain intentionally unopened while callable execution is already proven."
+        : "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.";
   }
+  if (input.promotionRecord) {
+    currentStage = "runtime.promotion_record.opened";
+    nextLegalStep =
+      hasHostConsumedCallable
+        ? "No automatic Runtime step is open; registry acceptance and promotion automation remain intentionally unopened while callable execution and one bounded host integration path are already proven."
+        : hasExecutingCallable
+        ? "No automatic Runtime step is open; registry acceptance, host integration, and promotion automation remain intentionally unopened while callable execution is already proven."
+        : "No automatic Runtime step is open; registry acceptance, host integration, runtime execution, and promotion automation remain intentionally unopened.";
+  }
+
+  const intentionallyUnbuiltDownstreamStages = [
+    ...(hasExecutingCallable ? [] : ["runtime execution", "callable implementation"]),
+    ...(input.promotionRecord ? ["registry acceptance"] : ["host-facing promotion"]),
+    ...(hasHostConsumedCallable ? [] : ["host integration"]),
+    "promotion automation",
+  ];
 
   return {
     currentStage,
@@ -1560,17 +1836,12 @@ function buildRuntimeState(input: {
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
-    intentionallyUnbuiltDownstreamStages: [
-      "runtime execution",
-      "host integration",
-      "callable implementation",
-      "host-facing promotion",
-      "promotion automation",
-    ],
+    intentionallyUnbuiltDownstreamStages,
   };
 }
 
 export function buildRuntimeArtifactStage(input: {
+  directiveRoot: string;
   artifactKind: DirectiveWorkspaceArtifactKind;
   legacyFollowUp: GenericLegacyRuntimeFollowUpArtifact | null;
   legacyHandoff: GenericLegacyRuntimeHandoffArtifact | null;
@@ -1589,11 +1860,27 @@ export function buildRuntimeArtifactStage(input: {
   legacyRuntimeTransformationProof: GenericLegacyRuntimeTransformationProofArtifact | null;
   legacyRuntimeRegistry: GenericLegacyRuntimeRegistryArtifact | null;
   legacyRuntimePromotionRecord: GenericLegacyRuntimePromotionRecordArtifact | null;
+  promotionRecord: GenericRuntimePromotionRecordArtifact | null;
   runtimeRecord: GenericRuntimeRecordArtifact | null;
   runtimeProof: GenericRuntimeProofArtifact | null;
   capabilityBoundary: GenericRuntimeRuntimeCapabilityBoundaryArtifact | null;
   callableIntegration: ReturnType<typeof readGenericCallableIntegrationArtifact> | null;
 }) {
+  const hasExecutingCallable = input.callableIntegration?.callableStatus === "callable";
+  const hasHostConsumedCallable =
+    hasExecutingCallable
+    && Boolean(
+      findRuntimeStandaloneHostConsumptionReportPathForCandidate({
+        directiveRoot: input.directiveRoot,
+        candidateId:
+          input.promotionRecord?.candidateId
+          ?? input.runtimeRecord?.candidateId
+          ?? input.runtimeProof?.candidateId
+          ?? input.capabilityBoundary?.candidateId
+          ?? input.callableIntegration?.candidateId
+          ?? null,
+      }),
+    );
   switch (input.artifactKind) {
     case "runtime_follow_up":
       return {
@@ -1728,7 +2015,11 @@ export function buildRuntimeArtifactStage(input: {
     case "runtime_record_callable_integration":
       return {
         artifactStage: "runtime.record.callable_boundary_defined",
-        artifactNextLegalStep: "No automatic Runtime step is open; callable implementation, promotion, and host work remain intentionally unopened.",
+        artifactNextLegalStep: hasHostConsumedCallable
+          ? "Callable capability is executing and one bounded host adapter path is already proven. Next legal step is explicit evidence feedback or later registry acceptance if intentionally reopened."
+          : hasExecutingCallable
+          ? "Callable capability is executing. Next legal step is host integration through a bounded adapter path."
+          : "No automatic Runtime step is open; callable implementation, promotion, and host work remain intentionally unopened.",
       };
     case "runtime_proof_follow_up_review":
       return {
@@ -1746,17 +2037,40 @@ export function buildRuntimeArtifactStage(input: {
         artifactNextLegalStep:
           (!input.callableIntegration && !input.capabilityBoundary?.linkedCallableStubPath)
             ? "Explicitly review the bounded runtime capability boundary and, if justified, open one non-executing promotion-readiness artifact; host-facing promotion and runtime execution remain closed."
-            : "No automatic Runtime step is open; callable implementation, host integration, and runtime execution remain intentionally unopened.",
+            : hasHostConsumedCallable
+              ? "Callable capability is executing and one bounded host adapter path is already proven. Next legal step is explicit evidence feedback or later registry acceptance if intentionally reopened."
+            : hasExecutingCallable
+              ? "Callable capability is executing. Next legal step is host integration through a bounded adapter path."
+              : "No automatic Runtime step is open; callable implementation, host integration, and runtime execution remain intentionally unopened.",
       };
     case "runtime_promotion_readiness":
       return {
         artifactStage: "runtime.promotion_readiness.opened",
-        artifactNextLegalStep: "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.",
+        artifactNextLegalStep: hasHostConsumedCallable
+          ? "No automatic Runtime step is open; host-facing promotion remains historical, while callable execution and one bounded host integration path are already proven."
+          : hasExecutingCallable
+          ? "No automatic Runtime step is open; host-facing promotion and host integration remain intentionally unopened while callable execution is already proven."
+          : "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.",
+      };
+    case "runtime_promotion_record":
+      return {
+        artifactStage: "runtime.promotion_record.opened",
+        artifactNextLegalStep: hasHostConsumedCallable
+          ? "No automatic Runtime step is open; registry acceptance and promotion automation remain intentionally unopened while callable execution and one bounded host integration path are already proven."
+          : hasExecutingCallable
+          ? "No automatic Runtime step is open; registry acceptance, host integration, and promotion automation remain intentionally unopened while callable execution is already proven."
+          : "No automatic Runtime step is open; registry acceptance, host integration, runtime execution, and promotion automation remain intentionally unopened.",
       };
     case "runtime_callable_integration":
       return {
-        artifactStage: "runtime.callable_stub.not_implemented",
-        artifactNextLegalStep: "No automatic Runtime step is open; bounded runtime conversion remains explicit and non-executing.",
+        artifactStage: input.callableIntegration?.callableStatus === "callable"
+          ? "runtime.callable.executing"
+          : "runtime.callable_stub.not_implemented",
+        artifactNextLegalStep: hasHostConsumedCallable
+          ? "Callable capability is executing and one bounded host adapter path is already proven. Next legal step is explicit evidence feedback or later registry acceptance if intentionally reopened."
+          : input.callableIntegration?.callableStatus === "callable"
+          ? "Callable capability is executing. Next legal step is host integration through a bounded adapter path."
+          : "No automatic Runtime step is open; bounded runtime conversion remains explicit and non-executing.",
       };
     default:
       return {
@@ -1794,6 +2108,7 @@ export function resolveRuntimeFocusFromAnyPath(input: {
   let runtimeProof: GenericRuntimeProofArtifact | null = null;
   let capabilityBoundary: GenericRuntimeRuntimeCapabilityBoundaryArtifact | null = null;
   let promotionReadiness: GenericRuntimePromotionReadinessArtifact | null = null;
+  let promotionRecord: GenericRuntimePromotionRecordArtifact | null = null;
   let callableIntegration: ReturnType<typeof readGenericCallableIntegrationArtifact> | null = null;
   let artifactKind: DirectiveWorkspaceArtifactKind = "unknown";
 
@@ -2091,11 +2406,28 @@ export function resolveRuntimeFocusFromAnyPath(input: {
     });
     artifactKind = "runtime_registry_legacy";
   } else if (relativePath.startsWith("runtime/promotion-records/") && relativePath.endsWith("-promotion-record.md")) {
-    legacyRuntimePromotionRecord = readGenericLegacyRuntimePromotionRecordArtifact({
+    const candidatePromotionRecord = readGenericRuntimePromotionRecordArtifact({
       directiveRoot: input.directiveRoot,
       promotionRecordPath: relativePath,
     });
-    artifactKind = "runtime_promotion_record_legacy";
+    const linkedPromotionReadinessPath = findRuntimePromotionReadinessPathForCandidate({
+      directiveRoot: input.directiveRoot,
+      candidateId: candidatePromotionRecord.candidateId,
+    });
+    if (linkedPromotionReadinessPath) {
+      promotionRecord = candidatePromotionRecord;
+      artifactKind = "runtime_promotion_record";
+      promotionReadiness = readGenericRuntimePromotionReadinessArtifact({
+        directiveRoot: input.directiveRoot,
+        promotionReadinessPath: linkedPromotionReadinessPath,
+      });
+    } else {
+      legacyRuntimePromotionRecord = readGenericLegacyRuntimePromotionRecordArtifact({
+        directiveRoot: input.directiveRoot,
+        promotionRecordPath: relativePath,
+      });
+      artifactKind = "runtime_promotion_record_legacy";
+    }
   } else if (relativePath.startsWith("runtime/02-records/")) {
     runtimeRecord = readGenericRuntimeRecordArtifact({
       directiveRoot: input.directiveRoot,
@@ -2205,6 +2537,15 @@ export function resolveRuntimeFocusFromAnyPath(input: {
         callablePath: promotionReadiness.linkedCallableStubPath,
       });
     }
+    if (
+      promotionReadiness.linkedPromotionRecordPath
+      && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedPromotionRecordPath)
+    ) {
+      promotionRecord = readGenericRuntimePromotionRecordArtifact({
+        directiveRoot: input.directiveRoot,
+        promotionRecordPath: promotionReadiness.linkedPromotionRecordPath,
+      });
+    }
   } else if (relativePath.startsWith("runtime/01-callable-integrations/")) {
     callableIntegration = readGenericCallableIntegrationArtifact({
       directiveRoot: input.directiveRoot,
@@ -2282,9 +2623,102 @@ export function resolveRuntimeFocusFromAnyPath(input: {
       });
     }
   }
+  if (!promotionReadiness && promotionRecord) {
+    const inferredPromotionReadinessPath = findRuntimePromotionReadinessPathForCandidate({
+      directiveRoot: input.directiveRoot,
+      candidateId: promotionRecord.candidateId,
+    });
+    if (inferredPromotionReadinessPath) {
+      promotionReadiness = readGenericRuntimePromotionReadinessArtifact({
+        directiveRoot: input.directiveRoot,
+        promotionReadinessPath: inferredPromotionReadinessPath,
+      });
+    }
+  }
+  if (
+    !promotionRecord
+    && promotionReadiness?.linkedPromotionRecordPath
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedPromotionRecordPath)
+  ) {
+    promotionRecord = readGenericRuntimePromotionRecordArtifact({
+      directiveRoot: input.directiveRoot,
+      promotionRecordPath: promotionReadiness.linkedPromotionRecordPath,
+    });
+  }
+  if (
+    promotionReadiness?.linkedRuntimeRecordPath
+    && !runtimeRecord
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedRuntimeRecordPath)
+  ) {
+    runtimeRecord = readGenericRuntimeRecordArtifact({
+      directiveRoot: input.directiveRoot,
+      runtimeRecordPath: promotionReadiness.linkedRuntimeRecordPath,
+    });
+  }
+  if (
+    promotionReadiness?.linkedRuntimeProofPath
+    && !runtimeProof
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedRuntimeProofPath)
+  ) {
+    runtimeProof = readGenericRuntimeProofArtifact({
+      directiveRoot: input.directiveRoot,
+      runtimeProofPath: promotionReadiness.linkedRuntimeProofPath,
+    });
+  }
+  if (
+    promotionReadiness?.linkedCapabilityBoundaryPath
+    && !capabilityBoundary
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedCapabilityBoundaryPath)
+  ) {
+    capabilityBoundary = readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
+      directiveRoot: input.directiveRoot,
+      capabilityBoundaryPath: promotionReadiness.linkedCapabilityBoundaryPath,
+    });
+  }
+  if (
+    promotionReadiness?.linkedCallableStubPath
+    && !callableIntegration
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, promotionReadiness.linkedCallableStubPath)
+  ) {
+    callableIntegration = readGenericCallableIntegrationArtifact({
+      directiveRoot: input.directiveRoot,
+      callablePath: promotionReadiness.linkedCallableStubPath,
+    });
+  }
+  if (
+    runtimeRecord?.linkedFollowUpRecord
+    && !followUp
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, runtimeRecord.linkedFollowUpRecord)
+  ) {
+    followUp = readDirectiveRuntimeFollowUpArtifact({
+      directiveRoot: input.directiveRoot,
+      followUpPath: runtimeRecord.linkedFollowUpRecord,
+    });
+  }
+  if (
+    runtimeRecord?.runtimeProofRelativePath
+    && !runtimeProof
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, runtimeRecord.runtimeProofRelativePath)
+  ) {
+    runtimeProof = readGenericRuntimeProofArtifact({
+      directiveRoot: input.directiveRoot,
+      runtimeProofPath: runtimeRecord.runtimeProofRelativePath,
+    });
+  }
+  if (
+    runtimeProof?.runtimeRuntimeCapabilityBoundaryPath
+    && !capabilityBoundary
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, runtimeProof.runtimeRuntimeCapabilityBoundaryPath)
+  ) {
+    capabilityBoundary = readGenericRuntimeRuntimeCapabilityBoundaryArtifact({
+      directiveRoot: input.directiveRoot,
+      capabilityBoundaryPath: runtimeProof.runtimeRuntimeCapabilityBoundaryPath,
+    });
+  }
 
   const candidateId =
-    promotionReadiness?.candidateId
+    promotionRecord?.candidateId
+    ?? promotionReadiness?.candidateId
     ?? capabilityBoundary?.candidateId
     ?? runtimeProof?.candidateId
     ?? runtimeRecord?.candidateId
@@ -2309,7 +2743,8 @@ export function resolveRuntimeFocusFromAnyPath(input: {
     ?? callableIntegration?.candidateId
     ?? null;
   const candidateName =
-    promotionReadiness?.candidateName
+    promotionRecord?.candidateName
+    ?? promotionReadiness?.candidateName
     ?? runtimeProof?.candidateName
     ?? runtimeRecord?.candidateName
     ?? followUp?.candidateName
@@ -2366,6 +2801,7 @@ export function resolveRuntimeFocusFromAnyPath(input: {
     legacyRuntimeTransformationProof,
     legacyRuntimeRegistry,
     legacyRuntimePromotionRecord,
+    promotionRecord,
     runtimeRecord,
     runtimeProof,
     capabilityBoundary,
@@ -2468,9 +2904,8 @@ export function resolveRuntimeFocusFromAnyPath(input: {
           runtimeProof,
           capabilityBoundary,
           promotionReadiness,
+          promotionRecord,
           callableIntegration,
         })),
   };
 }
-
-

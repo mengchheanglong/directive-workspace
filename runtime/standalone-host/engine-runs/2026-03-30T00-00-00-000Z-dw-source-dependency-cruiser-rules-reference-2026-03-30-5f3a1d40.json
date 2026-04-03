@@ -1,0 +1,209 @@
+{
+  "runId": "5f3a1d40-9b71-4c7a-a6db-2f9f18ea5bf2",
+  "receivedAt": "2026-03-30T00:00:00.000Z",
+  "source": {
+    "sourceId": "dw-source-dependency-cruiser-rules-reference-2026-03-30",
+    "sourceType": "product-doc",
+    "sourceRef": "https://github.com/sverweij/dependency-cruiser/blob/main/doc/rules-reference.md",
+    "title": "dependency-cruiser Rules Reference",
+    "summary": "Assess whether dependency-cruiser's narrow forbidden-rule surface can truthfully protect the canonical dw-state facade and private implementation split without opening repo-wide linting or dependency-policy work.",
+    "notes": [
+      "selected_source:dependency-cruiser-rules-reference | retained_value:narrow-dependency-boundary-rule-shape | relevant_surfaces:forbidden,path,pathNot,reachable,moreUnstable,schema-validated-config,js-config-composition"
+    ],
+    "missionAlignmentHint": "Engine structure pressure: protect the canonical dw-state read surface with one truthful boundary proposal only if current repo imports support it.",
+    "capabilityGapId": "gap-directive-engine-materialization"
+  },
+  "mission": {
+    "missionId": "directive-workspace-discovery-front-door",
+    "currentObjective": "Build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.",
+    "usefulnessSignals": [
+      "Useful means anything that materially improves:",
+      "revenue and conversion",
+      "execution speed and automation strength",
+      "decision quality and strategic leverage",
+      "cost efficiency and reliability",
+      "orchestration quality and agent coordination",
+      "capability-gap detection and self-improvement velocity"
+    ],
+    "capabilityLanes": [
+      "Directive engine materialization - one reusable executable core that hosts can embed cleanly",
+      "Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior",
+      "Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions",
+      "Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement",
+      "Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)",
+      "Evaluation quality - dimensional measurement (evaluators), not just binary gates",
+      "Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling"
+    ]
+  },
+  "openGaps": [
+    {
+      "gapId": "gap-directive-engine-materialization",
+      "description": "Canonical Directive engine surface is only partially materialized as one reusable executable core with clear lane boundaries and host-adapter seams",
+      "priority": "high",
+      "relatedMissionObjective": "Directive engine materialization",
+      "currentState": "A first engine slice exists, but real source intake still falls back to host helpers, Markdown-first assets, and manual post-decision lane handoff",
+      "desiredState": "Engine owns substantially more intake, routing, adaptation/improvement, proof, decision, and handoff state while Discovery, Runtime, and Architecture operate as clear Engine lanes",
+      "detectedAt": "2026-03-24",
+      "resolvedAt": null,
+      "resolutionNotes": null
+    }
+  ],
+  "selectedLane": {
+    "laneId": "architecture",
+    "label": "Architecture",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true
+  },
+  "candidate": {
+    "candidateId": "dw-source-dependency-cruiser-rules-reference-2026-03-30",
+    "candidateName": "dependency-cruiser Rules Reference",
+    "recommendedLaneId": "architecture",
+    "recommendedLaneLabel": "Architecture",
+    "recommendedRecordShape": "split_case",
+    "usefulnessLevel": "structural",
+    "missionPriorityScore": 58,
+    "confidence": "high",
+    "matchedGapId": "gap-directive-engine-materialization",
+    "matchedGapRank": 1,
+    "requiresHumanReview": false,
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
+      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Split-case is recommended because the proposed boundary must be validated against the actual repo import graph before any rule proposal is retained."
+    ]
+  },
+  "analysis": {
+    "missionFitSummary": "Assess whether dependency-cruiser's narrow forbidden-rule surface can truthfully protect the canonical dw-state facade and private implementation split without opening repo-wide linting or dependency-policy work.",
+    "primaryAdoptionQuestion": "What is the primary adoption target of the extracted value?",
+    "matchedCapabilityGapId": "gap-directive-engine-materialization",
+    "usefulnessRationale": "Structural usefulness: the source offers a bounded mechanism for preserving Engine-owned facade/private boundaries around the canonical dw-state read surface.",
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
+      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Split-case is recommended because the proposed boundary must be validated against the actual repo import graph before any rule proposal is retained."
+    ]
+  },
+  "routingAssessment": {
+    "recommendedLaneId": "architecture",
+    "recommendedRecordShape": "split_case",
+    "missionPriorityScore": 58,
+    "confidence": "high",
+    "matchedGapId": "gap-directive-engine-materialization",
+    "matchedGapRank": 1,
+    "explicitRouteDestination": null,
+    "routeConflict": false,
+    "needsHumanReview": false,
+    "scoreBreakdown": {
+      "missionFit": 4,
+      "gapAlignment": 4,
+      "laneScores": {
+        "discovery": 9,
+        "architecture": 22,
+        "runtime": 7
+      },
+      "metaUsefulnessSignal": 1,
+      "patternExtractionSignal": 2,
+      "transformationSignal": 0,
+      "runtimeSignal": 0,
+      "ambiguityPenalty": 0,
+      "total": 58
+    },
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
+      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Split-case is recommended because the proposed boundary must be validated against the actual repo import graph before any rule proposal is retained."
+    ]
+  },
+  "extractionPlan": {
+    "extractedValue": [
+      "dependency-cruiser configs center custom dependency rules in the forbidden array and validate configs against a schema.",
+      "A narrow facade-boundary rule can be expressed with forbidden plus from.pathNot and to.path in a JavaScript config module."
+    ],
+    "excludedBaggage": [
+      "repo-wide dependency-cruiser rollout",
+      "generic dependency policy beyond the dw-state facade"
+    ]
+  },
+  "adaptationPlan": {
+    "directiveOwnedForm": "Directive-owned Architecture proposal or boundary-config artifact that protects the canonical dw-state facade only if the current import graph makes that boundary truthful.",
+    "adaptedValue": [
+      "Translate dependency-cruiser rule vocabulary into one Engine-owned boundary proposal around shared/lib/dw-state.ts.",
+      "Reject the proposal if current repo truth shows the requested importer set is inaccurate."
+    ]
+  },
+  "improvementPlan": {
+    "improvementGoals": [
+      "improve engine structure clarity around canonical read surfaces",
+      "improve future boundary hardening by grounding rule proposals in actual repo truth"
+    ],
+    "intendedDelta": "Turn an external dependency-rule reference into one bounded Architecture judgment about the dw-state facade boundary."
+  },
+  "proofPlan": {
+    "proofKind": "architecture_validation",
+    "objective": "Prove whether the requested dw-state facade-only importer boundary is truthful enough to express as a bounded Architecture artifact.",
+    "requiredEvidence": [
+      "actual import consumers of shared/lib/dw-state.ts, shared/lib/dw-state/shared.ts, and shared/lib/dw-state/runtime.ts are recorded",
+      "the dependency-cruiser rule shape is described in Directive-owned terms",
+      "the result clearly states whether the requested boundary matches current repo truth"
+    ],
+    "requiredGates": [
+      "adaptation_complete",
+      "engine_boundary_preserved",
+      "decision_review"
+    ],
+    "rollbackPrompt": "Keep the result at experiment status and do not integrate any boundary enforcement until the target rule matches current repo truth."
+  },
+  "decision": {
+    "decisionState": "accept_for_architecture",
+    "adoptionTargetLaneId": "architecture",
+    "adoptionTargetLaneLabel": "Architecture",
+    "requiresHumanApproval": true,
+    "summary": "Preliminary engine decision: accept_for_architecture for Architecture, pending bounded truth-check of the requested facade boundary.",
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
+      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Record one bounded Architecture result deciding whether the requested dw-state facade-only importer boundary is truthful enough to materialize."
+    ]
+  },
+  "integrationProposal": {
+    "targetLaneId": "architecture",
+    "targetLaneLabel": "Architecture",
+    "integrationMode": "adapt",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true,
+    "handoffArtifactFamily": "architecture_adoption",
+    "nextAction": "Record one bounded Architecture result that either materializes the single dw-state facade-boundary proposal or stops because the requested boundary is false in current repo truth.",
+    "requiresHumanReview": false
+  },
+  "reportPlan": {
+    "reportKind": "architecture_adaptation_report",
+    "summary": "Sync the accept_for_architecture decision and bounded dw-state facade-boundary evaluation into Directive Workspace reporting surfaces.",
+    "usefulnessRationale": "Structural usefulness: the source offers a bounded mechanism for preserving Engine-owned facade/private boundaries around the canonical dw-state read surface.",
+    "requiredDestinations": [
+      "directive_workspace_record",
+      "directive_workspace_report_sync"
+    ],
+    "syncRequired": true
+  },
+  "events": [
+    {
+      "type": "source_ingested",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Source captured for candidate dw-source-dependency-cruiser-rules-reference-2026-03-30."
+    },
+    {
+      "type": "source_analyzed",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "dependency-cruiser rules reference analyzed as one possible boundary-rule source for the dw-state facade."
+    },
+    {
+      "type": "candidate_routed",
+      "at": "2026-03-30T00:00:00.000Z",
+      "summary": "Candidate routed to architecture with usefulness level structural."
+    }
+  ]
+}

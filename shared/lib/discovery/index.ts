@@ -16,3 +16,4 @@ export * from "../discovery-submission-router.ts";
 export * from "../discovery-mission-routing.ts";
 export * from "../discovery-front-door.ts";
 export * from "../discovery-route-opener.ts";
+export * from "../research-engine-discovery-import.ts";

@@ -11,7 +11,7 @@
 
 ## bounded runtime usefulness
 - Runtime value to operationalize: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed integration mode: reimplement
 - Reusable capability target surface: `bounded runtime capability`, `callable capability boundary`
 - Origin track: `discovery-routing-approval`

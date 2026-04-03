@@ -68,7 +68,7 @@ now account for almost the entire file volume of the active experiment surface.
 That causes three problems:
 - it makes `architecture/02-experiments/` look like a giant corpus when most of its volume is actually local execution scratch
 - it blurs active Architecture workflow artifacts with local tool/runtime state
-- it makes future folder-shape reasoning noisier because one lane corpus is being distorted by non-product workdirs
+- it makes future folder-shape reasoning noisier because one lane corpus is being distorted by non-product scratch
 
 No high-authority doctrine or control surfaces reference those `.venv-*` directories as product surfaces.
 

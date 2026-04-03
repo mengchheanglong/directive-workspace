@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-openclaw-runtime-verification-freshness-2026-03-22",
+  "candidateId": "dw-openclaw-runtime-verification-freshness-2026-03-22",
+  "candidateName": "OpenClaw Runtime Verification Freshness Signal",
+  "sourceType": "internal-signal",
+  "sourceReference": "reports/ops/openclaw-runtime-regression-latest.json + runtime/telegram-soak/daily-latest.json",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "standard",
+  "queueStatus": "completed",
+  "createdAt": "2026-03-22T00:00:00.000Z",
+  "updatedAt": "2026-03-22T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/intake/2026-03-22-openclaw-runtime-verification-freshness-intake.md",
+    "triageRecordPath": null,
+    "routingRecordPath": null,
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/03-adopted/2026-03-22-openclaw-runtime-verification-freshness-adopted.md"
+  },
+  "projectionInputs": null
+}

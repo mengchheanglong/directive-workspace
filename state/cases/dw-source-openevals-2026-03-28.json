@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-source-openevals-2026-03-28",
+  "candidateId": "dw-source-openevals-2026-03-28",
+  "candidateName": "OpenEvals",
+  "sourceType": "github-repo",
+  "sourceReference": "https://github.com/langchain-ai/openevals",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "note",
+  "queueStatus": "completed",
+  "createdAt": "2026-03-28T00:00:00.000Z",
+  "updatedAt": "2026-03-28T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": null,
+    "triageRecordPath": null,
+    "routingRecordPath": "discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md",
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md"
+  },
+  "projectionInputs": null
+}

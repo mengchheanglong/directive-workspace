@@ -85,7 +85,8 @@ A host must not redefine:
 
 ### Runtime canonical core
 
-- `runtime/core/v0.ts`
+- `runtime/core/runtime-core-contract.ts`
+- `runtime/core/v0.ts` (legacy compatibility alias)
 - `runtime/core/decision-policy.ts`
 - `runtime/core/workflow-contract.ts`
 - `runtime/core/proof-contract.ts`

@@ -1,0 +1,25 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-source-dependency-cruiser-rules-reference-2026-03-30",
+  "adoption_date": "2026-03-30",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-30-dw-source-dependency-cruiser-rules-reference-2026-03-30-engine-handoff.md",
+  "usefulness_level": "structural",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": false,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": false,
+    "no_unresolved_baggage": false
+  },
+  "artifact_type": "reference-pattern",
+  "artifact_path": "architecture/02-experiments/2026-03-30-dw-source-dependency-cruiser-rules-reference-2026-03-30-bounded-result.md",
+  "adaptation_quality": "adequate",
+  "improvement_quality": "skipped",
+  "decision": {
+    "verdict": "stay_experimental",
+    "rationale": "The source produced a real narrow dependency-boundary rule pattern, but the exact dw-state facade-only importer boundary requested for this slice is false in current repo truth.",
+    "completion_status": "doc_only_or_planned",
+    "stay_experimental_reason": "Current repo truth contradicts the requested boundary: shared/lib/dw-state/runtime.ts legitimately imports shared/lib/dw-state/shared.ts, so a rule allowing only shared/lib/dw-state.ts to import both private files would be false as written.",
+    "runtime_threshold_check": "yes - the boundary-rule pattern remains valuable as Engine structure guidance even without a runtime surface"
+  }
+}

@@ -11,4 +11,4 @@ export {
   DIRECTIVE_USEFULNESS_LEVELS,
   DIRECTIVE_WORKSPACE_V0,
   type DirectiveCapabilitySourceType,
-} from "./runtime/core/v0";
+} from "./runtime/core/runtime-core-contract";

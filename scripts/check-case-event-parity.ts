@@ -10,6 +10,7 @@ import {
   readDirectiveMirroredDiscoveryCaseRecord,
 } from "../shared/lib/case-store.ts";
 import { submitDirectiveDiscoveryFrontDoor } from "../shared/lib/discovery-front-door.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -22,20 +23,8 @@ function writeJson(filePath: string, value: unknown) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
-async function withTempDirectiveRoot(run: (directiveRoot: string) => Promise<void> | void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-case-event-parity-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    await run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
-}
-
 async function main() {
-  await withTempDirectiveRoot(async (directiveRoot) => {
+  await withTempDirectiveRoot({ prefix: "directive-case-event-parity-" }, async (directiveRoot) => {
     writeJson(path.join(directiveRoot, "discovery", "intake-queue.json"), {
       status: "primary",
       updatedAt: "2026-03-29",
@@ -93,6 +82,13 @@ async function main() {
       routingRecordPath: result.createdPaths.routingRecordPath,
       engineRunRecordPath: result.engine.recordRelativePath,
       engineRunReportPath: result.engine.reportRelativePath,
+      architectureHandoffPath: null,
+      architectureDecisionPath: null,
+      runtimeFollowUpPath: null,
+      runtimeRecordPath: null,
+      runtimeProofPath: null,
+      runtimeCapabilityBoundaryPath: null,
+      runtimePromotionReadinessPath: null,
       resultRecordPath: null,
     });
 

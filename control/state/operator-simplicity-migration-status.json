@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-03",
+  "anchorPath": "operator-simplicity-migration.md",
+  "currentTargetId": "operator_simplicity_migration_complete",
+  "currentTargetDescription": "All operator-simplicity migration slices are completed.",
+  "selectionRule": "Select the lowest-priority-rank pending migration slice whose dependencies are completed. Blocked slices remain parked until a completed audit or proof slice explicitly reopens them. If multiple eligible pending slices share the same best priority rank, stop for decision instead of picking arbitrarily.",
+  "lastCompletedSliceId": "dead_surface_reference_audit",
+  "lastContextArtifactPath": "control/logs/2026-04/2026-04-03-discovery-front-door-coverage-dead-surface-cleanup.md"
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-source-eslint-custom-rules-2026-03-30",
+  "candidateId": "dw-source-eslint-custom-rules-2026-03-30",
+  "candidateName": "ESLint Custom Rule System",
+  "sourceType": "product-doc",
+  "sourceReference": "https://eslint.org/docs/latest/extend/custom-rules",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "standard",
+  "queueStatus": "routed",
+  "createdAt": "2026-03-30T00:00:00.000Z",
+  "updatedAt": "2026-03-30T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/intake/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-intake.md",
+    "triageRecordPath": "discovery/triage/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-triage.md",
+    "routingRecordPath": "discovery/routing-log/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-eslint-custom-rules-2026-03-30-82144c93.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-eslint-custom-rules-2026-03-30-82144c93.md",
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": null
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-03-30",
+      "decisionState": "adopt",
+      "intake": {
+        "intake_date": "2026-03-30",
+        "source_type": "product-doc",
+        "source_reference": "https://eslint.org/docs/latest/extend/custom-rules",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Engine-building mission pressure: extract one Architecture-owned checker-definition schema pattern with explicit metadata, option-shape validation, severity posture, suppression boundaries, and self-test expectations so Directive Workspace can improve proof/evaluator quality without reopening runtime execution, planner-driven execution, host-admin seams, or structural-mapping expansion.",
+        "initial_relevance_to_workspace": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "suspected_adoption_target": "engine-owned product logic",
+        "immediate_notes": "Engine run 82144c93-1e15-43fa-847d-7376a884e6c7 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-03-30",
+        "first_pass_summary": "Engine-building mission pressure: extract one Architecture-owned checker-definition schema pattern with explicit metadata, option-shape validation, severity posture, suppression boundaries, and self-test expectations so Directive Workspace can improve proof/evaluator quality without reopening runtime execution, planner-driven execution, host-admin seams, or structural-mapping expansion.",
+        "problem_it_appears_to_solve": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.",
+        "extractable_value_hypothesis": "Engine-building mission pressure: extract one Architecture-owned checker-definition schema pattern with explicit metadata, option-shape validation, severity posture, suppression boundaries, and self-test expectations so Directive Workspace can improve proof/evaluator quality without reopening runtime execution, planner-driven execution, host-admin seams, or structural-mapping expansion. | selected_via:mcp-outside-pass | stronger_than:dropbox-data-checking-note,gpt-researcher-mcp-server-monitor,repo-ask-note,spectral-rulesets-lower-score,opa-policy-testing-broader-policy-engine | supporting_sources:https://eslint.org/docs/latest/use/suppressions,https://eslint.org/docs/latest/use/configure/rules,https://eslint.org/docs/latest/integrate/nodejs-api#ruletester | retained_value:checker-definition-schema-pattern",
+        "routing_recommendation": "Shared Engine routing selected architecture with usefulness level meta.",
+        "proposed_adoption_target": "engine-owned product logic",
+        "stack_shape_summary": "product-doc source; host dependence engine_only; integration mode adapt.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: non-mission-relevant source detail, unadapted source terminology.",
+        "suggested_decision_state": "accept_for_architecture",
+        "fit_to_current_direction": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "reusability_across_surfaces": "Value remains useful without a host runtime surface.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "low",
+        "can_current_gates_validate_safely": "partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "missing_evidence": "adapted mechanism described, excluded baggage described, engine or product boundary improvement explained, improvement delta stays anchored to prior extraction, adaptation, and improvement stages",
+        "next_action": "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete.",
+        "monitor_defer_trigger_conditions": "If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.",
+        "reentry_conditions": "Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer."
+      },
+      "routing": {
+        "route_date": "2026-03-30",
+        "source_type": "product-doc",
+        "decision_state": "adopt",
+        "adoption_target": "engine-owned product logic",
+        "route_destination": "architecture",
+        "why_this_route": "Recommended architecture because its lane score (24) exceeded the alternatives.",
+        "why_not_alternatives": "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure. Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+        "receiving_track_owner": "architecture",
+        "required_next_artifact": "architecture/02-experiments/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-engine-handoff.md",
+        "linked_intake_record": "discovery/intake/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-intake.md",
+        "linked_triage_record": "discovery/triage/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-triage.md",
+        "reentry_or_promotion_conditions": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "review_cadence": "before any downstream execution or promotion"
+      }
+    }
+  }
+}

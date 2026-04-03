@@ -37,7 +37,7 @@ Useful means anything that materially improves:
 ## Recently Resolved Gaps
 
 - gap: Discovery as actual front door for most work - RESOLVED 2026-03-23
-  resolution: `check:discovery-front-door-coverage` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.
+  resolution: `shared/lib/discovery-front-door-coverage.ts` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.
 
 - gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22
   resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.

@@ -7,7 +7,7 @@ import type {
   DirectiveFrameworkStatus,
   DirectiveIntegrationProof,
   DirectiveRuntimeStatus,
-} from "./v0";
+} from "./runtime-core-contract";
 import type {
   DirectiveAnalysisContract,
 } from "./workflow-contract";

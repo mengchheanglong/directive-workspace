@@ -6,7 +6,7 @@ import {
   type DirectiveIntegrationMode,
   type DirectiveIntegrationProof,
   type DirectiveIntegrationStatus,
-} from "./v0.js";
+} from "./runtime-core-contract.js";
 import {
   normalizeDirectiveAdoptDueAt,
   normalizeDirectiveRequiredGates,

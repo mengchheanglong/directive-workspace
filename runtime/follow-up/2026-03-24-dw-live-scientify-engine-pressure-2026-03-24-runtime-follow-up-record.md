@@ -6,7 +6,7 @@
 - Current decision state: `route_to_runtime_follow_up`
 - Origin track: `discovery-engine-handoff`
 - Runtime value to operationalize: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.
-- Proposed host: `mission-control`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed integration mode: reimplement
 - Source-pack allowlist profile: n/a
 - Allowed export surfaces:
@@ -42,6 +42,5 @@
 
 Linked handoff:
 - `discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md`
-
 
 

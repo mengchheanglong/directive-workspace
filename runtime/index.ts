@@ -13,7 +13,7 @@ export {
   normalizeDirectiveRuntimeStatus,
   normalizeDirectiveSourceType,
   parseDirectiveIntegrationProof,
-} from "./core/v0.js";
+} from "./core/runtime-core-contract.js";
 
 export type {
   DirectiveCapabilityRecommendation,
@@ -27,4 +27,4 @@ export type {
   DirectiveIntegrationProof,
   DirectiveIntegrationStatus,
   DirectiveRuntimeStatus,
-} from "./core/v0.js";
+} from "./core/runtime-core-contract.js";

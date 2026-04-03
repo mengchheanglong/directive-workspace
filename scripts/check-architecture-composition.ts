@@ -31,6 +31,7 @@ import {
   readDirectiveFrontendArchitectureResultDetail,
   readDirectiveFrontendArchitectureRetentionDetail,
 } from "../hosts/web-host/data.ts";
+import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "../shared/lib/directive-workspace-artifact-storage.ts";
 
 type ProofReport = {
   workspace: {
@@ -91,7 +92,11 @@ function normalizePath(filePath: string) {
 }
 
 function stageRealArtifact(sourceRoot: string, tempRoot: string, relativePath: string) {
-  const source = path.join(sourceRoot, relativePath);
+  const source = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot: sourceRoot,
+    relativePath,
+    mode: "read",
+  });
   if (!fs.existsSync(source)) {
     throw new Error(`setup: missing real artifact ${relativePath}`);
   }

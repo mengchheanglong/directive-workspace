@@ -38,6 +38,8 @@ type CommandName =
   | "runtime-promotion-write"
   | "runtime-registry-write"
   | "runtime-scientify-bundle"
+  | "runtime-scientify-invoke"
+  | "runtime-live-mini-swe-agent"
   | "runtime-overview"
   | "serve";
 
@@ -59,6 +61,8 @@ Commands:
   runtime-promotion-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
   runtime-registry-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
   runtime-scientify-bundle (--directive-root <path> | --config <path>) [--persistence-sqlite-path <path>]
+  runtime-scientify-invoke (--directive-root <path> | --config <path>) --tool <tool> --input-json-path <path> [--timeout-ms <n>] [--execution-at <iso>] [--persist-artifacts <true|false>] [--persistence-sqlite-path <path>]
+  runtime-live-mini-swe-agent (--directive-root <path> | --config <path>) [--persistence-sqlite-path <path>]
   runtime-overview (--directive-root <path> | --config <path>) [--max-entries <n>] [--persistence-sqlite-path <path>]
   serve (--directive-root <path> | --config <path>) [--host <host>] [--port <port>] [--received-at <yyyy-mm-dd>] [--unresolved-gap-id <id> ...] [--auth-bearer-token <token>] [--persistence-sqlite-path <path>]
 `);
@@ -394,6 +398,60 @@ async function main() {
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
       const descriptor = await host.readScientifyLiteratureAccessBundle();
+      process.stdout.write(`${JSON.stringify({ ok: true, descriptor }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-scientify-invoke") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+    const timeoutMsRaw = readOptionalFlag(flags, "timeout-ms");
+    const timeoutMs = timeoutMsRaw ? Number(timeoutMsRaw) : undefined;
+    if (timeoutMsRaw && (!Number.isFinite(timeoutMs) || timeoutMs <= 0)) {
+      throw new Error("Invalid value for --timeout-ms");
+    }
+    const persistArtifactsRaw = readOptionalFlag(flags, "persist-artifacts");
+    if (
+      persistArtifactsRaw
+      && persistArtifactsRaw !== "true"
+      && persistArtifactsRaw !== "false"
+    ) {
+      throw new Error("Invalid value for --persist-artifacts");
+    }
+
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const input = readJsonFile<Record<string, unknown>>(
+        readRequiredFlag(flags, "input-json-path"),
+      );
+      const result = await host.invokeScientifyLiteratureAccessTool({
+        tool: readRequiredFlag(flags, "tool") as
+          | "arxiv-search"
+          | "arxiv-download"
+          | "openalex-search"
+          | "unpaywall-download",
+        input,
+        timeoutMs,
+        executionAt: readOptionalFlag(flags, "execution-at"),
+        persistArtifacts: persistArtifactsRaw
+          ? persistArtifactsRaw === "true"
+          : undefined,
+      });
+      process.stdout.write(`${JSON.stringify({ ok: true, result }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-live-mini-swe-agent") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const descriptor = await host.readLiveMiniSweAgentDescriptor();
       process.stdout.write(`${JSON.stringify({ ok: true, descriptor }, null, 2)}\n`);
     } finally {
       host.close();

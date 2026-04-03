@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import path from "node:path";
+import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "../shared/lib/directive-workspace-artifact-storage.ts";
 
 export type DirectiveArtifactLinkValidationState = {
   missingExpectedArtifacts: string[];
@@ -22,7 +22,11 @@ export function fileExistsInDirectiveWorkspace(
   if (!relativePath) {
     return false;
   }
-  return fs.existsSync(path.join(directiveRoot, relativePath));
+  return fs.existsSync(resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot,
+    relativePath,
+    mode: "read",
+  }));
 }
 
 export function isDirectiveWorkspaceArtifactReference(relativePath: string | null | undefined) {

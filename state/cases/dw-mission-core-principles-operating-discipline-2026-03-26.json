@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-mission-core-principles-operating-discipline-2026-03-26",
+  "candidateId": "dw-mission-core-principles-operating-discipline-2026-03-26",
+  "candidateName": "Autoresearch Core Principles for Operating Discipline",
+  "sourceType": "technical-essay",
+  "sourceReference": "sources/intake/autoresearch/skills/autoresearch/references/core-principles.md",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "note",
+  "queueStatus": "routed",
+  "createdAt": "2026-03-26T00:00:00.000Z",
+  "updatedAt": "2026-03-26T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": null,
+    "triageRecordPath": null,
+    "routingRecordPath": "discovery/routing-log/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-routing-record.md",
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/02-experiments/2026-03-26-dw-mission-core-principles-operating-discipline-2026-03-26-engine-handoff.md"
+  },
+  "projectionInputs": null
+}

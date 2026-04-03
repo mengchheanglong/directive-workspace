@@ -10,6 +10,14 @@
       "types": "./index.d.ts",
       "default": "./index.js"
     },
+    "./core/runtime-core-contract": {
+      "types": "./core/runtime-core-contract.d.ts",
+      "default": "./core/runtime-core-contract.js"
+    },
+    "./core/runtime-core-contract.js": {
+      "types": "./core/runtime-core-contract.d.ts",
+      "default": "./core/runtime-core-contract.js"
+    },
     "./core/v0": {
       "types": "./core/v0.d.ts",
       "default": "./core/v0.js"

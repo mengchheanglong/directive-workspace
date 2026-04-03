@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-02T02:12:48.606Z",
+  "candidateId": "dw-source-scientify-research-workflow-plugin-2026-03-27",
+  "candidateName": "Scientify Literature-Access Tool Bundle",
+  "sourcePromotionReadinessPath": "runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md",
+  "integrationMode": "reimplement",
+  "targetRuntimeSurface": "Reimplement Scientify's 4 literature-access tools (arxiv-search, arxiv-download, openalex-search, unpaywall-download) as Directive-owned callable runtime capability for automated literature discovery and retrieval.",
+  "owner": "directive-workspace",
+  "sourceIntentArtifact": "runtime/04-capability-boundaries/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-capability-boundary.md",
+  "compileContractArtifact": "shared/contracts/runtime-to-host.md",
+  "runtimePermissionsProfile": {
+    "readOnlyLane": "read_only",
+    "writeLane": null
+  },
+  "safeOutputScope": null,
+  "sanitizePolicy": null,
+  "requiredGates": [
+    "behavior_preservation",
+    "metric_improvement_or_equivalent_value",
+    "runtime_boundary_review"
+  ],
+  "rollbackPlan": "Revert proposed host selection to `pending_host_selection`, remove the standalone-host pre-promotion slice, implementation slice, and implementation-result references, and keep the candidate in follow-up status until a more truthful host target is available.",
+  "proofArtifactPath": "runtime/03-proof/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-proof.md",
+  "proposedHost": "Directive Workspace standalone host (hosts/standalone-host/)",
+  "hostDependence": "host_adapter_required",
+  "executionState": "bounded standalone-host descriptor implementation opened, not executing, not host-integrated, not promoted",
+  "linkedArtifacts": {
+    "capabilityBoundaryPath": "runtime/04-capability-boundaries/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-capability-boundary.md",
+    "runtimeProofPath": "runtime/03-proof/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-proof.md",
+    "runtimeRecordPath": "runtime/02-records/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-record.md",
+    "followUpPath": "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md",
+    "routingPath": "discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
+    "callableStubPath": "runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts",
+    "promotionRecordPath": "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md"
+  },
+  "openDecisions": [
+    "Host integration: host integration has not been opened."
+  ],
+  "hostConsumableDescription": "If promoted, Directive Workspace standalone host (hosts/standalone-host/) would receive a reimplement integration of \"Scientify Literature-Access Tool Bundle\" (Reimplement Scientify's 4 literature-access tools (arxiv-search, arxiv-download, openalex-search, unpaywall-download) as Directive-owned callable runtime capability for automated literature discovery and retrieval.). The host would need to provide a runtime surface for the integration mode \"reimplement\" with the required gates: behavior_preservation, metric_improvement_or_equivalent_value, runtime_boundary_review."
+}

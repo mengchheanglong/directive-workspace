@@ -32,7 +32,7 @@
   - `behavior_preservation`
   - `metric_improvement_or_equivalent_value`
   - `runtime_boundary_review`
-- This artifact does not approve host-facing promotion, runtime execution, callable implementation, or host integration.
+- This artifact still does not approve registry acceptance, runtime execution, host integration, or promotion automation.
 
 ## standalone-host pre-promotion implementation slice
 - Slice decision: `standalone_host_pre_promotion_slice_explicit`
@@ -54,14 +54,28 @@
   - one local/shareable descriptor surface for the Scientify literature-access bundle through the existing standalone-host CLI/API/read-model layer
   - visibility of candidate identity, runtime objective, execution state, blockers, linked artifacts, and approved tool/module references only
 - Remaining blockers after making the host explicit:
-  - `host_facing_promotion_unopened`
-- Bounded conclusion: keep Scientify at `promotion_readiness_opened`, record the standalone-host descriptor slice as materially complete and worth keeping, and do not open host-facing promotion, runtime execution, host integration, callable rollout, or automation.
+  - none at the promotion-readiness layer once the bounded manual promotion record is linked
+- Bounded conclusion: keep Scientify bounded at the first manual promotion-record stop and do not open registry acceptance, host integration, runtime execution, callable rollout, or automation.
+
+## bounded manual promotion chain
+- Host-facing promotion record: `runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
+- Promotion decision state: `manual_scientify_promotion_record_opened`
+- Why this bounded promotion step is now legal:
+  - pre-host promotion-record prerequisites were explicitly proved
+  - the Runtime-owned callable boundary is explicit and checked
+  - the canonical promotion specification exists and is checked
+  - the standalone host consumes the capability through a bounded adapter path only
+- This bounded promotion step does not approve:
+  - registry acceptance
+  - host integration
+  - runtime execution
+  - promotion automation
 
 ## validation boundary
 - Validate against the bounded runtime capability boundary, Runtime proof artifact, Runtime v0 record, source follow-up record, and linked Discovery routing record only.
 - Validate the host choice against the standalone-host boundary only: `hosts/standalone-host/README.md` and `hosts/standalone-host/EXPANSION_DIRECTION.md` establish the standalone host as Directive Workspace's bounded local/shareable Runtime host surface without Mission Control.
 - Do not infer runtime readiness, host readiness, or automatic promotion from this artifact.
-- A separate host-facing promotion record remains unopened and out of scope.
+- Registry acceptance remains unopened and out of scope.
 
 ## rollback boundary
 - Rollback: Revert proposed host selection to `pending_host_selection`, remove the standalone-host pre-promotion slice, implementation slice, and implementation-result references, and keep the candidate in follow-up status until a more truthful host target is available.
@@ -70,9 +84,11 @@
 
 ## artifact linkage
 - Promotion-readiness artifact: `runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md`
+- Host-facing promotion record: `runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
 - Implementation-result artifact: `runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-standalone-host-runtime-implementation-slice-01-result.md`
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-capability-boundary.md`
 - Runtime proof artifact: `runtime/03-proof/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-record.md`
 - Source Runtime follow-up record: `runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
 - Linked Discovery routing record: `discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
+- Linked callable stub: `runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts`

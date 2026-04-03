@@ -1,0 +1,23 @@
+# Discovery Intake Record: Temporal Durable Execution Platform
+
+- Candidate id: dw-source-temporal-durable-execution-2026-04-01
+- Candidate name: Temporal Durable Execution Platform
+- Intake date: 2026-04-01
+- Source type: external-system
+- Source reference: sources/intake/source-temporal-durable-execution.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Engine-building mission pressure: assess whether Temporal's durable workflow model, task queues, workflow history, signals, queries, retries, and operator-visible run state should inform Directive Workspace durability/control-surface design without opening runtime rollout, planner-driven execution, or host-admin execution.
+- Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run a3c77d39-277e-445b-8c5b-3fc556491a1f selected runtime. Matched capability gap gap-engine-lane-boundary-enforcement. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/triage/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-triage.md

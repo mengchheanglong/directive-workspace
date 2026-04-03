@@ -17,6 +17,7 @@ import {
   fileExistsInDirectiveWorkspace,
   isDirectiveWorkspaceArtifactReference,
 } from "../../../engine/artifact-link-validation.ts";
+import { listDirectiveWorkspaceArtifactRelativePaths } from "../directive-workspace-artifact-storage.ts";
 type QueueEntry = {
   candidate_id: string;
   candidate_name: string;
@@ -798,7 +799,11 @@ export function zeroLinkedArtifacts(): DirectiveWorkspaceLinkedArtifacts {
     runtimeProofPath: null,
     runtimeRuntimeCapabilityBoundaryPath: null,
     runtimePromotionReadinessPath: null,
+    runtimePromotionRecordPath: null,
+    runtimePromotionSpecificationPath: null,
     runtimeCallableStubPath: null,
+    runtimeHostConsumptionReportPath: null,
+    runtimeCallableStatus: null as "callable" | "not_implemented" | null,
   };
 }
 
@@ -930,6 +935,18 @@ function deriveDirectiveWorkspaceCurrentHead(
     });
   }
 
+  if (linked.runtimePromotionRecordPath) {
+    candidates.push({
+      artifactPath: linked.runtimePromotionRecordPath,
+      artifactKind: "runtime_promotion_record",
+      lane: "runtime",
+      artifactStage: matchStagePrefix(
+        currentStage,
+        "runtime.promotion_record.",
+        "runtime.promotion_record.opened",
+      ),
+    });
+  }
   if (linked.runtimePromotionReadinessPath) {
     candidates.push({
       artifactPath: linked.runtimePromotionReadinessPath,
@@ -1097,7 +1114,9 @@ function deriveDirectiveWorkspaceCurrentHead(
       artifactPath: linked.runtimeCallableStubPath,
       artifactKind: "runtime_callable_integration",
       lane: "runtime",
-      artifactStage: "runtime.callable_stub.not_implemented",
+      artifactStage: linked.runtimeCallableStatus === "callable"
+        ? "runtime.callable.executing"
+        : "runtime.callable_stub.not_implemented",
     });
   }
 
@@ -1155,6 +1174,7 @@ function shouldDowngradeStaleArtifactNextStep(input: {
     || input.artifactKind === "runtime_record_follow_up_review"
     || input.artifactKind === "runtime_proof_follow_up_review"
     || input.artifactKind === "runtime_runtime_capability_boundary"
+    || input.artifactKind === "runtime_promotion_readiness"
     || input.artifactKind === "architecture_handoff"
     || input.artifactKind === "architecture_bounded_start"
     || input.artifactKind === "architecture_bounded_result"
@@ -1217,16 +1237,11 @@ export function listFiles(input: {
   relativeDir: string;
   suffix: string;
 }) {
-  const root = path.join(input.directiveRoot, input.relativeDir);
-  if (!fs.existsSync(root)) {
-    return [] as string[];
-  }
-
-  return fs
-    .readdirSync(root, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith(input.suffix))
-    .map((entry) => normalizeRelativePath(path.join(input.relativeDir, entry.name)))
-    .sort((left, right) => right.localeCompare(left));
+  return listDirectiveWorkspaceArtifactRelativePaths({
+    directiveRoot: input.directiveRoot,
+    relativeDir: input.relativeDir,
+    suffix: input.suffix,
+  });
 }
 
 function loadQueueEntries(directiveRoot: string) {
@@ -2361,4 +2376,3 @@ export function readGenericDiscoveryMonitorArtifact(input: {
     ),
   };
 }
-

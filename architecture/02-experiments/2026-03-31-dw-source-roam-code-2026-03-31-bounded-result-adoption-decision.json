@@ -1,0 +1,25 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-source-roam-code-2026-03-31",
+  "adoption_date": "2026-03-31",
+  "source_analysis_ref": "architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": false,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "template",
+  "artifact_path": "architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md",
+  "adaptation_quality": "weak",
+  "improvement_quality": "weak",
+  "decision": {
+    "verdict": "stay_experimental",
+    "rationale": "The local-first spike completed, but Roam's graph, caller, callee, importer, and dependency outputs were materially weaker than the repo-native baseline on the target Engine/control/state surfaces.",
+    "completion_status": "doc_only_or_planned",
+    "stay_experimental_reason": "The spike proved local installation and indexing are possible, but `roam understand`, `roam map`, `roam context`, and `roam deps` failed to recover the dependency and caller graph needed to reduce blind rediscovery on this workspace. The remaining retained value is only fast symbol skeleton output, which does not justify immediate adoption or another bounded slice.",
+    "runtime_threshold_check": "yes - the evaluation remains valuable without a runtime surface because it closes the Architecture source case honestly"
+  }
+}

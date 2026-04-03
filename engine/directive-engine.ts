@@ -1,4 +1,6 @@
 import crypto from "node:crypto";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { createMemoryDirectiveEngineStore, type DirectiveEngineStore } from "./storage.ts";
 import { assessDirectiveEngineRouting } from "./routing.ts";
@@ -35,6 +37,10 @@ import {
   type DirectiveEngineSelectedLane,
   type DirectiveEngineSourceItem,
 } from "./types.ts";
+import { buildRuntimeCallableExecutionEvidenceReport } from "../shared/lib/runtime-callable-execution-evidence.ts";
+import { buildDirectiveRuntimePromotionAssistanceReport } from "../shared/lib/runtime-promotion-assistance.ts";
+
+const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function normalizeText(value: unknown) {
   return String(value ?? "").trim();
@@ -429,6 +435,20 @@ type DirectiveEngineImprovementStageInput = {
   planningInput: DirectiveEngineLanePlanningInput;
   extractionPlan: DirectiveEngineExtractionPlan;
   adaptationPlan: DirectiveEngineAdaptationPlan;
+  runtimePromotionFeedbackSignal?: DirectiveEngineRuntimePromotionFeedbackSignal | null;
+  runtimeExecutionEvidenceSignal?: DirectiveEngineRuntimeExecutionEvidenceSignal | null;
+};
+
+type DirectiveEngineRuntimePromotionFeedbackSignal = {
+  summary: string;
+  integrationHint: string;
+  improvementHint: string;
+};
+
+type DirectiveEngineRuntimeExecutionEvidenceSignal = {
+  summary: string;
+  integrationHint: string;
+  improvementHint: string;
 };
 
 function readExtractionPlanSummary(
@@ -536,6 +556,97 @@ function buildAdaptationPlan(
           "Keep host-specific behavior behind the adapter boundary.",
         ],
       };
+  }
+}
+
+function readRuntimePromotionFeedbackSignal():
+  | DirectiveEngineRuntimePromotionFeedbackSignal
+  | null {
+  try {
+    const assistance = buildDirectiveRuntimePromotionAssistanceReport();
+    const validatedManualPromotionCycles =
+      assistance.manualRuntimePromotionCycles.validatedLocallyCount;
+    if (
+      validatedManualPromotionCycles < 2
+      || !assistance.topRecommendation
+    ) {
+      return null;
+    }
+
+    const externalHostPressure =
+      assistance.topRecommendation.recommendedActionKind
+      === "keep_parked_external_host_candidate";
+    const repoNativeHostPressure =
+      assistance.topRecommendation.hostScope === "directive_workspace_host"
+      && (
+        assistance.topRecommendation.recommendedActionKind
+          === "request_manual_promotion_seam_decision"
+        || assistance.topRecommendation.recommendedActionKind
+          === "clarify_repo_native_host_target"
+      );
+    const callableBoundaryPressure =
+      assistance.topRecommendation.recommendedActionKind
+        === "clarify_callable_boundary";
+    const hostTargetClarityPressure =
+      repoNativeHostPressure
+      || assistance.topRecommendation.recommendedActionKind
+        === "clarify_repo_native_host_target";
+    const summary = externalHostPressure
+      ? `Runtime promotion evidence signal: ${validatedManualPromotionCycles} validated manual promotion cycles exist, and the strongest remaining pre-host-ready candidate still stays parked because its proposed host is external.`
+      : repoNativeHostPressure
+        ? `Runtime promotion evidence signal: ${validatedManualPromotionCycles} validated manual promotion cycles exist, and the current top recommendation is "${assistance.topRecommendation.recommendedActionKind}" for ${assistance.topRecommendation.candidateId} with a repo-native host target.`
+        : `Runtime promotion evidence signal: ${validatedManualPromotionCycles} validated manual promotion cycles exist, and the current top recommendation is "${assistance.topRecommendation.recommendedActionKind}" for ${assistance.topRecommendation.candidateId}.`;
+
+    return {
+      summary,
+      integrationHint: externalHostPressure
+        ? "Use promotion assistance only as a reviewable soft signal; prefer explicit repo-native host targeting before any later promotion follow-through."
+        : hostTargetClarityPressure
+        ? "Use promotion assistance only as a reviewable soft signal; keep explicit host-target clarity before any later promotion follow-through."
+        : callableBoundaryPressure
+        ? "Use promotion assistance only as a reviewable soft signal; keep explicit callable-boundary clarity before any later promotion follow-through."
+        : "Use promotion assistance only as a reviewable soft signal before any later promotion follow-through.",
+      improvementHint: externalHostPressure || hostTargetClarityPressure
+        ? "Improve host-target clarity before suggesting promotion follow-through for new Runtime candidates."
+        : callableBoundaryPressure
+        ? "Improve callable-boundary clarity before suggesting promotion follow-through for new Runtime candidates."
+        : "Reuse promotion assistance as a soft planning signal instead of manual reinspection.",
+    };
+  } catch {
+    return null;
+  }
+}
+
+function readRuntimeExecutionEvidenceSignal():
+  | DirectiveEngineRuntimeExecutionEvidenceSignal
+  | null {
+  try {
+    const evidence = buildRuntimeCallableExecutionEvidenceReport({
+      directiveRoot: DIRECTIVE_ROOT,
+    });
+    if (evidence.totalExecutionRecords < 2) {
+      return null;
+    }
+
+    const latestFailure = evidence.failurePatterns[evidence.failurePatterns.length - 1] ?? null;
+    const nonSuccessLabel = evidence.nonSuccessCount === 1
+      ? "non-success result"
+      : "non-success results";
+    const summary = latestFailure
+      ? `Runtime callable execution evidence signal: ${evidence.totalExecutionRecords} bounded execution records exist across ${evidence.capabilityCount} capabilities, and ${evidence.nonSuccessCount} ${nonSuccessLabel} ${evidence.nonSuccessCount === 1 ? "is" : "are"} already captured as ${latestFailure.status} for ${latestFailure.capabilityId}.`
+      : `Runtime callable execution evidence signal: ${evidence.totalExecutionRecords} bounded execution records exist across ${evidence.capabilityCount} capabilities, all currently successful.`;
+
+    return {
+      summary,
+      integrationHint: latestFailure
+        ? "Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims."
+        : "Use callable execution evidence only as a reviewable soft signal before widening host consumption or broader Runtime surface claims.",
+      improvementHint: latestFailure
+        ? `Improve callable input-boundary clarity where bounded execution evidence already shows ${latestFailure.status} patterns.`
+        : "Reuse bounded callable execution evidence as a soft planning signal instead of re-arguing runtime viability from scratch.",
+    };
+  } catch {
+    return null;
   }
 }
 
@@ -660,15 +771,23 @@ function buildImprovementPlan(
         improvementGoals: [
           "improve runtime reuse",
           "improve speed, cost, reliability, or structure while preserving behavior",
+          ...(input.runtimePromotionFeedbackSignal
+            ? [input.runtimePromotionFeedbackSignal.improvementHint]
+            : []),
+          ...(input.runtimeExecutionEvidenceSignal
+            ? [input.runtimeExecutionEvidenceSignal.improvementHint]
+            : []),
         ],
         intendedDelta:
-          "Operationalize the value in a reusable runtime shape with stronger boundaries than the source.",
+          `Operationalize the value in a reusable runtime shape with stronger boundaries than the source.${input.runtimePromotionFeedbackSignal ? ` ${input.runtimePromotionFeedbackSignal.summary}` : ""}${input.runtimeExecutionEvidenceSignal ? ` ${input.runtimeExecutionEvidenceSignal.summary}` : ""}`,
       };
   }
 }
 
 function buildIntegrationProposal(
   input: DirectiveEngineLaneIntegrationPlanningInput,
+  runtimePromotionFeedbackSignal?: DirectiveEngineRuntimePromotionFeedbackSignal | null,
+  runtimeExecutionEvidenceSignal?: DirectiveEngineRuntimeExecutionEvidenceSignal | null,
 ): DirectiveEngineIntegrationProposal {
   const integrationMode = deriveIntegrationMode({
     source: input.planningInput.source,
@@ -683,7 +802,16 @@ function buildIntegrationProposal(
     hostDependence: input.planningInput.lane.hostDependence,
     valuableWithoutHostRuntime: input.planningInput.lane.valuableWithoutHostRuntime,
     handoffArtifactFamily: input.planningInput.lane.handoffArtifactFamily,
-    nextAction: input.planningInput.lane.nextAction,
+    nextAction:
+      input.planningInput.lane.laneId === "runtime"
+        ? [
+            input.planningInput.lane.nextAction,
+            runtimePromotionFeedbackSignal?.integrationHint,
+            runtimeExecutionEvidenceSignal?.integrationHint,
+          ]
+            .filter(Boolean)
+            .join(" ")
+        : input.planningInput.lane.nextAction,
     requiresHumanReview: input.planningInput.routingAssessment.needsHumanReview,
   };
 
@@ -910,6 +1038,14 @@ export class DirectiveEngine {
       usefulnessRationale,
     });
     const extractionPlan = buildExtractionPlan(planningInput);
+    const runtimePromotionFeedbackSignal =
+      selectedLane.laneId === "runtime"
+        ? readRuntimePromotionFeedbackSignal()
+        : null;
+    const runtimeExecutionEvidenceSignal =
+      selectedLane.laneId === "runtime"
+        ? readRuntimeExecutionEvidenceSignal()
+        : null;
     // First bounded chaining slice: adaptation now consumes extraction output.
     const adaptationPlan = buildAdaptationPlan({
       planningInput,
@@ -919,6 +1055,8 @@ export class DirectiveEngine {
       planningInput,
       extractionPlan,
       adaptationPlan,
+      runtimePromotionFeedbackSignal,
+      runtimeExecutionEvidenceSignal,
     });
     const proofPlan = lane.planProof
       ? lane.planProof({
@@ -939,7 +1077,7 @@ export class DirectiveEngine {
       adaptationPlan,
       improvementPlan,
       proofPlan,
-    });
+    }, runtimePromotionFeedbackSignal, runtimeExecutionEvidenceSignal);
     const decision = buildDecision({
       lane: selectedLane,
       candidate,

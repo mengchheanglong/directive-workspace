@@ -13,6 +13,7 @@ import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
 import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
 import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
 import { runDirectiveRuntimeProofOpenWithRunner } from "../shared/lib/runtime-proof-open-runner.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type QueueEntry = {
   candidate_id: string;
@@ -52,17 +53,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
   const targetPath = path.join(tempRoot, relativePath);
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
   fs.copyFileSync(sourcePath, targetPath);
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-proof-runner-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
 }
 
 function extractOpenedBy(markdown: string) {
@@ -133,6 +123,7 @@ function copyDownstreamProofChain(directiveRoot: string, liveFocus: NonNullable<
   for (const relativePath of uniqueRelativePaths([
     liveFocus.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
     liveFocus.linkedArtifacts.runtimePromotionReadinessPath,
+    liveFocus.linkedArtifacts.runtimePromotionRecordPath,
     liveFocus.linkedArtifacts.runtimeCallableStubPath,
   ])) {
     copyRelativeFile(relativePath, directiveRoot);
@@ -154,7 +145,7 @@ function assertResolvedStateMatchesLive(input: {
 }
 
 function scenarioDirectBaseline() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-proof-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimeProofDirectiveRoot(directiveRoot);
     const result = openDirectiveRuntimeRecordProof({
       directiveRoot,
@@ -178,7 +169,7 @@ function scenarioDirectBaseline() {
 }
 
 function scenarioFreshRunner() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-proof-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimeProofDirectiveRoot(directiveRoot);
     const runnerId = "runtime-proof-runner-fresh";
     const result = runDirectiveRuntimeProofOpenWithRunner({
@@ -225,7 +216,7 @@ function scenarioFreshRunner() {
 }
 
 function scenarioInterruptedBeforeActionThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-proof-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimeProofDirectiveRoot(directiveRoot);
     const runnerId = "runtime-proof-runner-before-action";
     const interrupted = runDirectiveRuntimeProofOpenWithRunner({
@@ -277,7 +268,7 @@ function scenarioInterruptedBeforeActionThenResumed() {
 }
 
 function scenarioInterruptedAfterActionThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-proof-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimeProofDirectiveRoot(directiveRoot);
     const runnerId = "runtime-proof-runner-after-action";
     const interrupted = runDirectiveRuntimeProofOpenWithRunner({
@@ -330,7 +321,7 @@ function scenarioInterruptedAfterActionThenResumed() {
 }
 
 function scenarioApprovalAndStaleHeadGuards() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-proof-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimeProofDirectiveRoot(directiveRoot);
     const missingApprovalRunnerId = "runtime-proof-runner-missing-approval";
     assert.throws(

@@ -12,6 +12,7 @@ import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-pr
 import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type QueueEntry = {
   candidate_id: string;
@@ -44,6 +45,34 @@ const RUNTIME_CAPABILITY_CASES = [
     runtimeProofPath: "runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md",
     runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-capability-boundary.md",
   },
+  {
+    candidateId: "dw-pressure-openmoss-architecture-loop-2026-03-26",
+    followUpPath: "runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md",
+    runtimeRecordPath: "runtime/02-records/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-record.md",
+    runtimeProofPath: "runtime/03-proof/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-proof.md",
+    runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-capability-boundary.md",
+  },
+  {
+    candidateId: "dw-source-temporal-durable-execution-2026-04-01",
+    followUpPath: "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+    runtimeRecordPath: "runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md",
+    runtimeProofPath: "runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md",
+    runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md",
+  },
+  {
+    candidateId: "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
+    followUpPath: "runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+    runtimeRecordPath: "runtime/02-records/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-record.md",
+    runtimeProofPath: "runtime/03-proof/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-proof.md",
+    runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-capability-boundary.md",
+  },
+  {
+    candidateId: "dw-live-scientify-engine-pressure-2026-03-24",
+    followUpPath: "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+    runtimeRecordPath: "runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md",
+    runtimeProofPath: "runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md",
+    runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-capability-boundary.md",
+  },
 ] as const;
 
 function readJson<T>(filePath: string) {
@@ -63,17 +92,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
   fs.copyFileSync(sourcePath, targetPath);
 }
 
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-capability-boundary-projection-parity-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
-}
-
 function extractOpenedBy(markdown: string) {
   const match = markdown.match(/- Opened by: `([^`]+)`/u);
   assert.ok(match?.[1], "Unable to parse Runtime opened-by actor");
@@ -89,7 +107,7 @@ function main() {
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
 
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-capability-boundary-projection-parity-" }, (directiveRoot) => {
     const tempQueue = {
       status: "primary",
       updatedAt: "2026-03-29",
@@ -219,6 +237,7 @@ function main() {
 
       for (const relativePath of uniqueRelativePaths([
         liveFocus.linkedArtifacts.runtimePromotionReadinessPath,
+        liveFocus.linkedArtifacts.runtimePromotionRecordPath,
         liveFocus.linkedArtifacts.runtimeCallableStubPath,
       ])) {
         copyRelativeFile(relativePath, directiveRoot);

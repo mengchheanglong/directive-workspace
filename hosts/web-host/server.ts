@@ -27,6 +27,7 @@ import {
 import {
   evaluateDirectiveArchitectureConsumption,
 } from "../../shared/lib/architecture-post-consumption-evaluation.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGES } from "../../shared/lib/architecture-deep-tail-stage-map.ts";
 import {
   reopenDirectiveArchitectureFromEvaluation,
 } from "../../shared/lib/architecture-reopen-from-evaluation.ts";
@@ -269,41 +270,24 @@ export function startDirectiveFrontendServer(
           relativePath: String(url.searchParams.get("path") || "").trim(),
         }));
       }
-      if (method === "GET" && pathname === "/api/architecture-implementation-targets/detail") {
-        return void writeJson(res, 200, readDirectiveFrontendArchitectureImplementationTargetDetail({
-          directiveRoot,
-          relativePath: String(url.searchParams.get("path") || "").trim(),
-        }));
-      }
-      if (method === "GET" && pathname === "/api/architecture-implementation-results/detail") {
-        return void writeJson(res, 200, readDirectiveFrontendArchitectureImplementationResultDetail({
-          directiveRoot,
-          relativePath: String(url.searchParams.get("path") || "").trim(),
-        }));
-      }
-      if (method === "GET" && pathname === "/api/architecture-retained/detail") {
-        return void writeJson(res, 200, readDirectiveFrontendArchitectureRetentionDetail({
-          directiveRoot,
-          relativePath: String(url.searchParams.get("path") || "").trim(),
-        }));
-      }
-      if (method === "GET" && pathname === "/api/architecture-integration-records/detail") {
-        return void writeJson(res, 200, readDirectiveFrontendArchitectureIntegrationRecordDetail({
-          directiveRoot,
-          relativePath: String(url.searchParams.get("path") || "").trim(),
-        }));
-      }
-      if (method === "GET" && pathname === "/api/architecture-consumption-records/detail") {
-        return void writeJson(res, 200, readDirectiveFrontendArchitectureConsumptionRecordDetail({
-          directiveRoot,
-          relativePath: String(url.searchParams.get("path") || "").trim(),
-        }));
-      }
-      if (method === "GET" && pathname === "/api/architecture-post-consumption-evaluations/detail") {
-        return void writeJson(res, 200, readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail({
-          directiveRoot,
-          relativePath: String(url.searchParams.get("path") || "").trim(),
-        }));
+      // Architecture deep-tail detail routes — dispatched via canonical stage map
+      {
+        const deepTailDetailHandlers: Record<string, (input: { directiveRoot: string; relativePath: string }) => unknown> = {
+          [ARCHITECTURE_DEEP_TAIL_STAGES[0].apiRouteSegment]: readDirectiveFrontendArchitectureImplementationTargetDetail,
+          [ARCHITECTURE_DEEP_TAIL_STAGES[1].apiRouteSegment]: readDirectiveFrontendArchitectureImplementationResultDetail,
+          [ARCHITECTURE_DEEP_TAIL_STAGES[2].apiRouteSegment]: readDirectiveFrontendArchitectureRetentionDetail,
+          [ARCHITECTURE_DEEP_TAIL_STAGES[3].apiRouteSegment]: readDirectiveFrontendArchitectureIntegrationRecordDetail,
+          [ARCHITECTURE_DEEP_TAIL_STAGES[4].apiRouteSegment]: readDirectiveFrontendArchitectureConsumptionRecordDetail,
+          [ARCHITECTURE_DEEP_TAIL_STAGES[5].apiRouteSegment]: readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail,
+        };
+        for (const [segment, handler] of Object.entries(deepTailDetailHandlers)) {
+          if (method === "GET" && pathname === `/api/${segment}/detail`) {
+            return void writeJson(res, 200, handler({
+              directiveRoot,
+              relativePath: String(url.searchParams.get("path") || "").trim(),
+            }));
+          }
+        }
       }
       if (method === "GET" && pathname === "/api/artifacts") {
         return void writeJson(res, 200, readDirectiveFrontendArtifactText({

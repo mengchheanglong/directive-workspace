@@ -1,0 +1,23 @@
+# Discovery Intake Record: Roam-code
+
+- Candidate id: dw-source-roam-code-2026-03-31
+- Candidate name: Roam-code
+- Intake date: 2026-03-31
+- Source type: github-repo
+- Source reference: sources/intake/source-roam-code.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: Phase A / Roam-code begins only through Discovery, and the phased plan explicitly limits this thread to source capture and preservation before any spike-planning or downstream lane work.
+- Claimed value: assess whether Roam-code's local semantic graph, architecture intelligence, and agent-context surfaces should later inform one bounded local-first Architecture spike around repo understanding for agents without opening adoption, runtime rollout, or a broad tool-comparison loop.
+- Initial relevance to the workspace: Meta-usefulness: the source appears capable of improving how Directive Workspace agents understand repo structure, code relationships, and bounded architecture questions before they open larger downstream work.
+- Suspected adoption target: discovery-held candidate
+- Stack language: Python
+- Stack runtime: Python 3.9+
+- Stack framework: local CLI plus MCP server over a local semantic graph
+- Stack package tool: pip, pipx, uv
+- Stack deployment: local CLI / local MCP
+- Stack external dependencies: tree-sitter, SQLite, optional MCP extras
+- Stack data model assumptions: local semantic graph over symbols, dependencies, call graphs, architecture layers, git history, and runtime traces
+- Stack integration shape: Discovery-held source preservation plus a later bounded local-first spike plan only if Phase A / Phase 2 is explicitly opened
+- Immediate notes: Engine run 4d4f5f1b-4a17-40ea-bbbf-2efcaed040f5 selected discovery. Current repo pressure includes the canonical `shared/lib/dw-state.ts` read surface, `scripts/report-directive-workspace-state.ts` reporting surface, and the existing control/check structure. This thread does not decide a downstream Architecture artifact yet.
+- Linked triage record: discovery/triage/2026-03-31-dw-source-roam-code-2026-03-31-triage.md

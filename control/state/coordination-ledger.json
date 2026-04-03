@@ -1,0 +1,360 @@
+{
+  "version": 1,
+  "maxEntries": 20,
+  "entries": [
+    {
+      "snapshotAt": "2026-04-02T07:10:03.187Z",
+      "totalLiveCases": 32,
+      "topPressureBucket": "architecture_experimental_parked",
+      "bucketCounts": {
+        "runtime_promotion_readiness_parked": 5,
+        "runtime_manual_promotion_stop": 5,
+        "architecture_retention_confirmation_due": 6,
+        "architecture_experimental_parked": 10,
+        "architecture_note_stop_carried_in_queue": 0,
+        "architecture_keep_stop_carried_in_queue": 4,
+        "discovery_monitor_hold": 2,
+        "other_live_case": 0
+      },
+      "caseStates": [
+        {
+          "candidateId": "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-pressure-mini-swe-agent-2026-03-25",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-pressure-scientify-2026-03-25",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-source-temporal-durable-execution-2026-04-01",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-pressure-agentics-reporting-boundary-2026-03-26",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-autoresearch-loop-protocol-2026-03-26",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-autoresearch-ship-control-boundary-2026-03-26",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-genetic-mutation-2026-03-25",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-gpt-researcher-evaluator-quality-2026-03-25",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-papercoder-2026-03-25",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-autoresearch-proof-boundary-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-pressure-karpathy-autoresearch-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-pressure-rag-architecture-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-real-gpt-researcher-engine-handoff-2026-03-24",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-dependency-cruiser-rules-reference-2026-03-30",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-eslint-custom-rules-2026-03-30",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-paper2code-2026-03-27",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-roam-code-2026-03-31",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-ts-edge-2026-03-27",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-mission-agentics-issue-triage-discovery-restart-2026-03-26",
+          "bucketId": "discovery_monitor_hold",
+          "currentStage": "discovery.monitor.active"
+        },
+        {
+          "candidateId": "dw-source-gpt-researcher-mcp-server-2026-03-30",
+          "bucketId": "discovery_monitor_hold",
+          "currentStage": "discovery.monitor.active"
+        },
+        {
+          "candidateId": "dw-live-scientify-engine-pressure-2026-03-24",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-mission-openmoss-runtime-orchestration-2026-03-26",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-pressure-openmoss-architecture-loop-2026-03-26",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-pressure-puppeteer-bounded-tool-2026-03-25",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-source-scientify-research-workflow-plugin-2026-03-27",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-mission-autoloop-persistent-orchestration-2026-03-26",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        },
+        {
+          "candidateId": "dw-mission-core-principles-operating-discipline-2026-03-26",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        },
+        {
+          "candidateId": "dw-pressure-results-logging-contract-quality-2026-03-26",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        },
+        {
+          "candidateId": "dw-real-karpathy-autoresearch-discovery-v0-2026-03-25",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        }
+      ]
+    },
+    {
+      "snapshotAt": "2026-04-02T07:10:28.289Z",
+      "totalLiveCases": 32,
+      "topPressureBucket": "architecture_experimental_parked",
+      "bucketCounts": {
+        "runtime_promotion_readiness_parked": 5,
+        "runtime_manual_promotion_stop": 5,
+        "architecture_retention_confirmation_due": 6,
+        "architecture_experimental_parked": 10,
+        "architecture_note_stop_carried_in_queue": 0,
+        "architecture_keep_stop_carried_in_queue": 4,
+        "discovery_monitor_hold": 2,
+        "other_live_case": 0
+      },
+      "caseStates": [
+        {
+          "candidateId": "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-pressure-mini-swe-agent-2026-03-25",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-pressure-scientify-2026-03-25",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-source-temporal-durable-execution-2026-04-01",
+          "bucketId": "runtime_promotion_readiness_parked",
+          "currentStage": "runtime.promotion_readiness.opened"
+        },
+        {
+          "candidateId": "dw-pressure-agentics-reporting-boundary-2026-03-26",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-autoresearch-loop-protocol-2026-03-26",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-autoresearch-ship-control-boundary-2026-03-26",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-genetic-mutation-2026-03-25",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-gpt-researcher-evaluator-quality-2026-03-25",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-papercoder-2026-03-25",
+          "bucketId": "architecture_retention_confirmation_due",
+          "currentStage": "architecture.bounded_result.adopt"
+        },
+        {
+          "candidateId": "dw-pressure-autoresearch-proof-boundary-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-pressure-daily-qa-quiet-proof-boundary-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-pressure-karpathy-autoresearch-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-pressure-rag-architecture-2026-03-25",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-real-gpt-researcher-engine-handoff-2026-03-24",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-dependency-cruiser-rules-reference-2026-03-30",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-eslint-custom-rules-2026-03-30",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-paper2code-2026-03-27",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-roam-code-2026-03-31",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-source-ts-edge-2026-03-27",
+          "bucketId": "architecture_experimental_parked",
+          "currentStage": "architecture.bounded_result.stay_experimental"
+        },
+        {
+          "candidateId": "dw-mission-agentics-issue-triage-discovery-restart-2026-03-26",
+          "bucketId": "discovery_monitor_hold",
+          "currentStage": "discovery.monitor.active"
+        },
+        {
+          "candidateId": "dw-source-gpt-researcher-mcp-server-2026-03-30",
+          "bucketId": "discovery_monitor_hold",
+          "currentStage": "discovery.monitor.active"
+        },
+        {
+          "candidateId": "dw-live-scientify-engine-pressure-2026-03-24",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-mission-openmoss-runtime-orchestration-2026-03-26",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-pressure-openmoss-architecture-loop-2026-03-26",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-pressure-puppeteer-bounded-tool-2026-03-25",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-source-scientify-research-workflow-plugin-2026-03-27",
+          "bucketId": "runtime_manual_promotion_stop",
+          "currentStage": "runtime.promotion_record.opened"
+        },
+        {
+          "candidateId": "dw-mission-autoloop-persistent-orchestration-2026-03-26",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        },
+        {
+          "candidateId": "dw-mission-core-principles-operating-discipline-2026-03-26",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        },
+        {
+          "candidateId": "dw-pressure-results-logging-contract-quality-2026-03-26",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        },
+        {
+          "candidateId": "dw-real-karpathy-autoresearch-discovery-v0-2026-03-25",
+          "bucketId": "architecture_keep_stop_carried_in_queue",
+          "currentStage": "architecture.post_consumption_evaluation.keep"
+        }
+      ]
+    }
+  ]
+}

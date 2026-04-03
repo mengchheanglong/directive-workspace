@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "schemaRef": "shared/schemas/checker-definition-registry.schema.json",
+  "owningLane": "architecture",
+  "registryIntent": "bounded_pilot",
+  "pilotPolicy": {
+    "maxDefinitions": 3,
+    "approvedCheckerIds": [
+      "control_authority",
+      "directive_engine_stage_chaining",
+      "case_planner_parity"
+    ]
+  },
+  "definitions": [
+    {
+      "checkerId": "control_authority",
+      "npmScript": "check:control-authority",
+      "entryPoint": "scripts/check-control-authority.ts",
+      "targetSurface": "Directive Workspace control entrypoint and active control surfaces",
+      "purpose": "Keep the thin control entrypoint and required run-control surfaces aligned.",
+      "successSemantics": "Exit zero after verifying the required control surfaces and emit a bounded JSON summary.",
+      "failureSemantics": "Fail closed with `ok: false`, failureContractVersion `1`, and structured violations when required control content drifts.",
+      "failureExpectation": {
+        "kind": "json_failure_probe",
+        "probeArgs": [
+          "--probe=missing_required_content"
+        ],
+        "expectedExitCode": 1,
+        "requiredJsonPaths": [
+          {
+            "path": "ok",
+            "equals": false
+          },
+          {
+            "path": "checkerId",
+            "equals": "control_authority"
+          },
+          {
+            "path": "failureContractVersion",
+            "equals": 1
+          },
+          {
+            "path": "violations.0.code",
+            "equals": "missing_required_content"
+          },
+          {
+            "path": "violations.0.path",
+            "equals": "implement.md"
+          }
+        ]
+      },
+      "proofExpectation": {
+        "kind": "json_summary",
+        "mustInclude": [
+          "\"ok\": true",
+          "\"implementSectionCount\": 1"
+        ],
+        "requiredJsonPaths": [
+          {
+            "path": "ok",
+            "equals": true
+          },
+          {
+            "path": "checked.implement",
+            "equals": "implement.md"
+          },
+          {
+            "path": "checked.implementSectionCount",
+            "equals": 1
+          }
+        ]
+      }
+    },
+    {
+      "checkerId": "directive_engine_stage_chaining",
+      "npmScript": "check:directive-engine-stage-chaining",
+      "entryPoint": "scripts/check-directive-engine-stage-chaining.ts",
+      "targetSurface": "Directive Engine stage chaining, lane routing, and stored Architecture replay proofs",
+      "purpose": "Preserve staged Engine reasoning boundaries and Architecture routing behavior for structural sources.",
+      "successSemantics": "Exit zero after replaying the staged Engine control cases and emit a bounded JSON summary.",
+      "failureSemantics": "Fail closed with `ok: false`, failureContractVersion `1`, and structured violations when staged routing or proof chaining regresses.",
+      "failureExpectation": {
+        "kind": "json_failure_probe",
+        "probeArgs": [
+          "--probe=structural_control_runtime_skew"
+        ],
+        "expectedExitCode": 1,
+        "requiredJsonPaths": [
+          {
+            "path": "ok",
+            "equals": false
+          },
+          {
+            "path": "checkerId",
+            "equals": "directive_engine_stage_chaining"
+          },
+          {
+            "path": "failureContractVersion",
+            "equals": 1
+          },
+          {
+            "path": "violations.0.code",
+            "equals": "selected_lane_mismatch"
+          },
+          {
+            "path": "violations.0.caseId",
+            "equals": "structural_control"
+          },
+          {
+            "path": "violations.0.path",
+            "equals": "selectedLane.laneId"
+          },
+          {
+            "path": "violations.0.expected",
+            "equals": "architecture"
+          },
+          {
+            "path": "violations.0.actual",
+            "equals": "runtime"
+          }
+        ]
+      },
+      "proofExpectation": {
+        "kind": "json_summary",
+        "mustInclude": [
+          "\"ok\": true",
+          "\"selectedLane\": \"architecture\"",
+          "\"runtimeControl\": {"
+        ],
+        "requiredJsonPaths": [
+          {
+            "path": "ok",
+            "equals": true
+          },
+          {
+            "path": "selectedLane",
+            "equals": "architecture"
+          },
+          {
+            "path": "runtimeControl.selectedLane",
+            "equals": "runtime"
+          }
+        ]
+      }
+    },
+    {
+      "checkerId": "case_planner_parity",
+      "npmScript": "check:case-planner-parity",
+      "entryPoint": "scripts/check-case-planner-parity.ts",
+      "targetSurface": "Mirrored case planning parity across routed Discovery, Architecture, and Runtime stop boundaries",
+      "purpose": "Keep planner next-step outcomes deterministic and aligned with authoritative mirrored case state.",
+      "successSemantics": "Exit zero after replaying the golden parity set and emit a bounded JSON summary with both positive and blocked planner outcomes.",
+      "failureSemantics": "Fail closed with `ok: false`, failureContractVersion `1`, and structured violations when mirrored snapshot planning drifts from the authoritative bounded outcomes.",
+      "failureExpectation": {
+        "kind": "json_failure_probe",
+        "probeArgs": [
+          "--probe=recommend_task_stop_skew"
+        ],
+        "expectedExitCode": 1,
+        "requiredJsonPaths": [
+          {
+            "path": "ok",
+            "equals": false
+          },
+          {
+            "path": "checkerId",
+            "equals": "case_planner_parity"
+          },
+          {
+            "path": "failureContractVersion",
+            "equals": 1
+          },
+          {
+            "path": "violations.0.code",
+            "equals": "planner_outcome_mismatch"
+          },
+          {
+            "path": "violations.0.candidateId",
+            "equals": "dw-mission-core-principles-operating-discipline-2026-03-26"
+          },
+          {
+            "path": "violations.0.path",
+            "equals": "plan.outcome"
+          },
+          {
+            "path": "violations.0.expected",
+            "equals": "stop"
+          },
+          {
+            "path": "violations.0.actual",
+            "equals": "recommend_task"
+          }
+        ]
+      },
+      "proofExpectation": {
+        "kind": "json_summary",
+        "mustInclude": [
+          "\"candidateId\": \"dw-mission-core-principles-operating-discipline-2026-03-26\"",
+          "\"blockedFixture\": {"
+        ],
+        "requiredJsonPaths": [
+          {
+            "path": "ok",
+            "equals": true
+          },
+          {
+            "path": "checked.6.outcome",
+            "equals": "parked"
+          },
+          {
+            "path": "blockedFixture.outcome",
+            "equals": "blocked"
+          }
+        ]
+      }
+    }
+  ]
+}

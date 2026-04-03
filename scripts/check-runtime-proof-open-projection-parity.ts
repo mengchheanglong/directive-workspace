@@ -11,6 +11,7 @@ import {
 import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type QueueEntry = {
   candidate_id: string;
@@ -60,17 +61,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
   fs.copyFileSync(sourcePath, targetPath);
 }
 
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-proof-open-projection-parity-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
-}
-
 function extractOpenedBy(markdown: string) {
   const match = markdown.match(/- Opened by: `([^`]+)`/u);
   assert.ok(match?.[1], "Unable to parse Runtime proof actor from proof artifact");
@@ -86,7 +76,7 @@ function main() {
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
 
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-proof-open-projection-parity-" }, (directiveRoot) => {
     const tempQueue = {
       status: "primary",
       updatedAt: "2026-03-29",
@@ -192,6 +182,7 @@ function main() {
       for (const relativePath of uniqueRelativePaths([
         liveFocus.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
         liveFocus.linkedArtifacts.runtimePromotionReadinessPath,
+        liveFocus.linkedArtifacts.runtimePromotionRecordPath,
         liveFocus.linkedArtifacts.runtimeCallableStubPath,
       ])) {
         copyRelativeFile(relativePath, directiveRoot);

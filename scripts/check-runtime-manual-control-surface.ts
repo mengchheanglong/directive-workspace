@@ -24,6 +24,7 @@ import {
   type DirectiveRuntimeSharedInvocationResult,
 } from "../shared/lib/runtime-runner-invocation.ts";
 import {
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
   runDirectiveRuntimeNamedSequenceByExplicitInvocation,
   type DirectiveRuntimeNamedSequenceInput,
   type DirectiveRuntimeNamedSequenceResult,
@@ -100,17 +101,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
 function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
   for (const relativePath of uniqueRelativePaths(relativePaths)) {
     copyRelativeFile(relativePath, directiveRoot);
-  }
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-manual-control-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
   }
 }
 
@@ -390,7 +380,7 @@ function buildSequenceCliArgs(input: {
 }
 
 function scenarioManualActionMatchesDirectPath() {
-  withTempDirectiveRoot((directRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (directRoot) => {
     seedFollowUpRoot(directRoot);
     const declared = buildFollowUpActionInput();
     const directResult = runDirectiveRuntimeActionByExplicitInvocation({
@@ -400,7 +390,7 @@ function scenarioManualActionMatchesDirectPath() {
     });
     assertSharedActionSuccess(directResult);
 
-    withTempDirectiveRoot((manualRoot) => {
+    withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (manualRoot) => {
       seedFollowUpRoot(manualRoot);
       const manualResult = runManualControlCliExpectSuccess(
         buildActionCliArgs({
@@ -496,7 +486,7 @@ function scenarioManualActionMatchesDirectPath() {
 }
 
 function scenarioManualSequenceMatchesDirectPath() {
-  withTempDirectiveRoot((directRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (directRoot) => {
     seedProofToCapabilityBoundaryRoot(directRoot);
     const declared = buildProofToCapabilityBoundarySequenceInput();
     const directResult = runDirectiveRuntimeNamedSequenceByExplicitInvocation({
@@ -506,7 +496,7 @@ function scenarioManualSequenceMatchesDirectPath() {
     });
     assertSharedSequenceSuccess(directResult);
 
-    withTempDirectiveRoot((manualRoot) => {
+    withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (manualRoot) => {
       seedProofToCapabilityBoundaryRoot(manualRoot);
       const manualResult = runManualControlCliExpectSuccess(
         buildSequenceCliArgs({
@@ -583,7 +573,7 @@ function scenarioManualSequenceMatchesDirectPath() {
 }
 
 function scenarioManualSurfaceRequiresExplicitChoiceAndApproval() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (directiveRoot) => {
     seedFollowUpRoot(directiveRoot);
     const declaredAction = buildFollowUpActionInput();
 
@@ -618,7 +608,7 @@ function scenarioManualSurfaceRequiresExplicitChoiceAndApproval() {
     );
   });
 
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (directiveRoot) => {
     seedProofToCapabilityBoundaryRoot(directiveRoot);
     const declaredSequence = buildProofToCapabilityBoundarySequenceInput();
     const stepsJsonPath = writeStepsJsonFile({
@@ -658,7 +648,7 @@ function scenarioManualSurfaceRequiresExplicitChoiceAndApproval() {
 }
 
 function scenarioManualSurfacePreservesStaleHeadGuards() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (directiveRoot) => {
     seedFollowUpRoot(directiveRoot);
     const declared = buildFollowUpActionInput();
 
@@ -691,7 +681,7 @@ function scenarioManualSurfacePreservesStaleHeadGuards() {
     assert.equal(staleRecord.checkpointStage, "before_action");
   });
 
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-manual-control-" }, (directiveRoot) => {
     seedProofToCapabilityBoundaryRoot(directiveRoot);
     const declared = buildProofToCapabilityBoundarySequenceInput();
 

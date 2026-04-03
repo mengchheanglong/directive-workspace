@@ -10,7 +10,7 @@
 - Candidate name: `Scientify Runtime Generalization Run`
 - Capability form: bounded runtime capability boundary
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
 - Execution state: not executing, not host-integrated, not implemented, not promoted
 
@@ -20,7 +20,7 @@
 - Source Runtime follow-up record: `runtime/follow-up/2026-03-25-dw-pressure-scientify-2026-03-25-runtime-follow-up-record.md`
 - Linked Discovery routing record: `discovery/routing-log/2026-03-25-dw-pressure-scientify-2026-03-25-routing-record.md`
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
 
 ## capability boundary
@@ -45,7 +45,7 @@
 - Host-facing promotion remains out of scope and unopened.
 
 ## rollback boundary
-- Rollback: Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.
+- Rollback: Revert proposed host selection to `pending_host_selection`, then keep the candidate at promotion-readiness until a more truthful host target is available.
 - No-op path: Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.
 - Review cadence: before any downstream execution or promotion
 

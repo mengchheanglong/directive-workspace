@@ -1,10 +1,19 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
+import {
+  getDefaultDirectiveWorkspaceRoot,
+  normalizePath,
+  optionalString,
+  readDirectiveArchitectureDeepTailArtifact,
+  resolveArchitectureDeepTailRelativePath,
+  resolveDirectiveRelativePath,
+} from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureIntegrationRecordDetail,
 } from "./architecture-integration-record.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
+import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type RecordDirectiveArchitectureConsumptionInput = {
   integrationPath: string;
@@ -57,58 +66,14 @@ export type DirectiveArchitectureConsumptionRecordDetail = {
   content: string;
 };
 
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
-}
-
-function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
-
-function optionalString(value: string | null | undefined) {
-  if (typeof value !== "string") {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-function normalizeRelativePath(inputPath: string) {
-  return requiredString(inputPath, "path").replace(/\\/g, "/");
-}
-
-function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
-  const normalizedInput = normalizeRelativePath(inputPath);
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error("invalid_input: path must stay within directive-workspace");
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
-}
-
 function resolveConsumptionRelativePath(integrationRelativePath: string) {
-  const fileName = path.posix.basename(integrationRelativePath);
-  if (!fileName.endsWith("-integration-record.md")) {
-    throw new Error("invalid_input: integrationPath must point to an integration record artifact");
-  }
-
-  return path.posix.join(
-    "architecture/08-consumption-records",
-    fileName.replace(/-integration-record\.md$/u, "-consumption.md"),
-  );
+  return resolveArchitectureDeepTailRelativePath({
+    sourceRelativePath: integrationRelativePath,
+    expectedSourceSuffix: "-integration-record.md",
+    targetStage: "consumption_record",
+    inputFieldName: "integrationPath",
+    targetSuffix: "-consumption.md",
+  });
 }
 
 function renderConsumptionMarkdown(input: {
@@ -183,7 +148,11 @@ export function recordDirectiveArchitectureConsumption(
     integrationPath: integrationRelativePath,
   });
   const consumptionRelativePath = resolveConsumptionRelativePath(integrationRelativePath);
-  const consumptionAbsolutePath = normalizePath(path.join(directiveRoot, consumptionRelativePath));
+  const consumptionAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot,
+    relativePath: consumptionRelativePath,
+    mode: "write",
+  });
   const created = !fs.existsSync(consumptionAbsolutePath);
   const snapshotAt = new Date().toISOString();
   const recordedBy = String(input.recordedBy || "directive-frontend-operator").trim()
@@ -248,17 +217,15 @@ export function readDirectiveArchitectureConsumptionRecordDetail(input: {
   directiveRoot?: string;
 }): DirectiveArchitectureConsumptionRecordDetail {
   const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const consumptionRelativePath = resolveDirectiveRelativePath(directiveRoot, input.consumptionPath);
-  if (!consumptionRelativePath.startsWith("architecture/08-consumption-records/")) {
-    throw new Error("invalid_input: consumptionPath must point to architecture/08-consumption-records/");
-  }
-
-  const consumptionAbsolutePath = normalizePath(path.join(directiveRoot, consumptionRelativePath));
-  if (!fs.existsSync(consumptionAbsolutePath)) {
-    throw new Error(`invalid_input: consumptionPath not found: ${consumptionRelativePath}`);
-  }
-
-  const content = fs.readFileSync(consumptionAbsolutePath, "utf8");
+  const consumptionArtifact = readDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    artifactPath: input.consumptionPath,
+    stage: ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record,
+    fieldName: "consumptionPath",
+  });
+  const consumptionRelativePath = consumptionArtifact.relativePath;
+  const consumptionAbsolutePath = consumptionArtifact.absolutePath;
+  const content = consumptionArtifact.content;
   const integrationRelativePath = content.match(/- Source integration record: `([^`]+)`/)?.[1] || "";
   const integrationDetail = readDirectiveArchitectureIntegrationRecordDetail({
     directiveRoot,

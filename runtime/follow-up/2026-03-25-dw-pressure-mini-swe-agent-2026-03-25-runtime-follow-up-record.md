@@ -6,7 +6,7 @@
 - Current decision state: `route_to_runtime_follow_up`
 - Origin track: `discovery-routing-approval`
 - Runtime value to operationalize: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed integration mode: reimplement
 - Source-pack allowlist profile: n/a
 - Allowed export surfaces:
@@ -42,6 +42,5 @@
 
 Linked handoff:
 - `discovery/routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md`
-
 
 

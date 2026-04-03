@@ -32,6 +32,7 @@ import {
   runDirectiveRuntimePromotionReadinessWithRunner,
   type DirectiveRuntimePromotionReadinessRunnerResult,
 } from "../shared/lib/runtime-promotion-readiness-runner.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import {
   runDirectiveRuntimeProofOpenWithRunner,
   type DirectiveRuntimeProofOpenRunnerResult,
@@ -116,17 +117,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
 function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
   for (const relativePath of uniqueRelativePaths(relativePaths)) {
     copyRelativeFile(relativePath, directiveRoot);
-  }
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-shared-runner-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
   }
 }
 
@@ -466,6 +456,7 @@ const ACTION_CONFIGS: RuntimeActionConfig[] = [
       seed.liveFocus.linkedArtifacts.runtimeProofPath,
       seed.liveFocus.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
       seed.liveFocus.linkedArtifacts.runtimePromotionReadinessPath,
+      seed.liveFocus.linkedArtifacts.runtimePromotionRecordPath,
       seed.liveFocus.linkedArtifacts.runtimeCallableStubPath,
     ],
   },
@@ -493,6 +484,7 @@ const ACTION_CONFIGS: RuntimeActionConfig[] = [
     downstreamPaths: (seed) => [
       seed.liveFocus.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
       seed.liveFocus.linkedArtifacts.runtimePromotionReadinessPath,
+      seed.liveFocus.linkedArtifacts.runtimePromotionRecordPath,
       seed.liveFocus.linkedArtifacts.runtimeCallableStubPath,
     ],
   },
@@ -516,6 +508,7 @@ const ACTION_CONFIGS: RuntimeActionConfig[] = [
     nextAutomaticArtifactPaths: () => [CASE_UNDER_TEST.runtimePromotionReadinessPath],
     downstreamPaths: (seed) => [
       seed.liveFocus.linkedArtifacts.runtimePromotionReadinessPath,
+      seed.liveFocus.linkedArtifacts.runtimePromotionRecordPath,
       seed.liveFocus.linkedArtifacts.runtimeCallableStubPath,
     ],
   },
@@ -539,12 +532,12 @@ const ACTION_CONFIGS: RuntimeActionConfig[] = [
     nextAutomaticArtifactPaths: (seed) => [
       seed.liveFocus.linkedArtifacts.runtimeCallableStubPath,
     ],
-    downstreamPaths: () => [],
+    downstreamPaths: (seed) => [seed.liveFocus.linkedArtifacts.runtimePromotionRecordPath],
   },
 ];
 
 function scenarioSharedDispatchMatchesDirectRunner(config: RuntimeActionConfig) {
-  withTempDirectiveRoot((directRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-shared-runner-" }, (directRoot) => {
     const directSeed = config.seed(directRoot);
     config.prepare(directRoot, directSeed);
     const directResult = config.runDirect({
@@ -554,7 +547,7 @@ function scenarioSharedDispatchMatchesDirectRunner(config: RuntimeActionConfig) 
     });
     assertSuccess(directResult);
 
-    withTempDirectiveRoot((sharedRoot) => {
+    withTempDirectiveRoot({ prefix: "directive-runtime-shared-runner-" }, (sharedRoot) => {
       const sharedSeed = config.seed(sharedRoot);
       config.prepare(sharedRoot, sharedSeed);
       const sharedResult = runDirectiveRuntimeActionByExplicitInvocation({
@@ -604,7 +597,7 @@ function scenarioSharedDispatchMatchesDirectRunner(config: RuntimeActionConfig) 
 }
 
 function scenarioSharedAfterActionResumeDoesNotDuplicate(config: RuntimeActionConfig) {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-shared-runner-" }, (directiveRoot) => {
     const seed = config.seed(directiveRoot);
     config.prepare(directiveRoot, seed);
     const runnerId = `${config.actionKind}-shared-after-action`;
@@ -657,7 +650,7 @@ function scenarioSharedAfterActionResumeDoesNotDuplicate(config: RuntimeActionCo
 }
 
 function scenarioSharedApprovalAndStaleHeadGuards(config: RuntimeActionConfig) {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-shared-runner-" }, (directiveRoot) => {
     const seed = config.seed(directiveRoot);
     config.prepare(directiveRoot, seed);
 

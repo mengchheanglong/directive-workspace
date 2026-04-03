@@ -23,10 +23,11 @@ Prefer:
 2. broken or missing workflow wiring
 3. missing proof / report / validation coverage for real workflow pressure
 4. bounded Engine seam improvements
-5. Architecture / Runtime / Discovery progress that increases shared system value
+5. the shortest truthful completion that increases shared system value
 6. record or handoff correction only when it materially improves code-truth alignment
 
 Do not start broad new work when a smaller high-value continuation is clearly available.
+Do not continue a chain just because another stage exists; prefer the earliest truthful stop-line unless the next stage adds concrete new product value.
 
 ## Current product root after relocation
 

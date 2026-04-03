@@ -1,10 +1,19 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
+import {
+  getDefaultDirectiveWorkspaceRoot,
+  normalizePath,
+  optionalString,
+  readDirectiveArchitectureDeepTailArtifact,
+  resolveArchitectureDeepTailRelativePath,
+  resolveDirectiveRelativePath,
+} from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureConsumptionRecordDetail,
 } from "./architecture-consumption-record.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
+import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type EvaluateDirectiveArchitectureConsumptionInput = {
   consumptionPath: string;
@@ -58,58 +67,13 @@ export type DirectiveArchitecturePostConsumptionEvaluationDetail = {
   content: string;
 };
 
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
-}
-
-function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
-
-function optionalString(value: string | null | undefined) {
-  if (typeof value !== "string") {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-function normalizeRelativePath(inputPath: string) {
-  return requiredString(inputPath, "path").replace(/\\/g, "/");
-}
-
-function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
-  const normalizedInput = normalizeRelativePath(inputPath);
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error("invalid_input: path must stay within directive-workspace");
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
-}
-
 function resolveEvaluationRelativePath(consumptionRelativePath: string) {
-  const fileName = path.posix.basename(consumptionRelativePath);
-  if (!fileName.endsWith("-consumption.md")) {
-    throw new Error("invalid_input: consumptionPath must point to a consumption record artifact");
-  }
-
-  return path.posix.join(
-    "architecture/09-post-consumption-evaluations",
-    fileName.replace(/-consumption\.md$/u, "-evaluation.md"),
-  );
+  return resolveArchitectureDeepTailRelativePath({
+    sourceRelativePath: consumptionRelativePath,
+    expectedSourceSuffix: "-consumption.md",
+    targetStage: "post_consumption_evaluation",
+    inputFieldName: "consumptionPath",
+  });
 }
 
 function renderEvaluationMarkdown(input: {
@@ -186,7 +150,11 @@ export function evaluateDirectiveArchitectureConsumption(
     consumptionPath: consumptionRelativePath,
   });
   const evaluationRelativePath = resolveEvaluationRelativePath(consumptionRelativePath);
-  const evaluationAbsolutePath = normalizePath(path.join(directiveRoot, evaluationRelativePath));
+  const evaluationAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot,
+    relativePath: evaluationRelativePath,
+    mode: "write",
+  });
   const created = !fs.existsSync(evaluationAbsolutePath);
   const snapshotAt = new Date().toISOString();
   const evaluatedBy = String(input.evaluatedBy || "directive-frontend-operator").trim()
@@ -258,17 +226,15 @@ export function readDirectiveArchitecturePostConsumptionEvaluationDetail(input: 
   directiveRoot?: string;
 }): DirectiveArchitecturePostConsumptionEvaluationDetail {
   const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const evaluationRelativePath = resolveDirectiveRelativePath(directiveRoot, input.evaluationPath);
-  if (!evaluationRelativePath.startsWith("architecture/09-post-consumption-evaluations/")) {
-    throw new Error("invalid_input: evaluationPath must point to architecture/09-post-consumption-evaluations/");
-  }
-
-  const evaluationAbsolutePath = normalizePath(path.join(directiveRoot, evaluationRelativePath));
-  if (!fs.existsSync(evaluationAbsolutePath)) {
-    throw new Error(`invalid_input: evaluationPath not found: ${evaluationRelativePath}`);
-  }
-
-  const content = fs.readFileSync(evaluationAbsolutePath, "utf8");
+  const evaluationArtifact = readDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    artifactPath: input.evaluationPath,
+    stage: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation,
+    fieldName: "evaluationPath",
+  });
+  const evaluationRelativePath = evaluationArtifact.relativePath;
+  const evaluationAbsolutePath = evaluationArtifact.absolutePath;
+  const content = evaluationArtifact.content;
   const consumptionRelativePath = content.match(/- Source consumption record: `([^`]+)`/)?.[1] || "";
   const consumptionDetail = readDirectiveArchitectureConsumptionRecordDetail({
     directiveRoot,

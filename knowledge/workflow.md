@@ -11,6 +11,10 @@ Workflow precedence note:
 
 The goal is to keep the system fast by default and only expand the process when complexity or risk actually requires it.
 
+Default rule:
+- start from the shortest truthful path
+- escalate only when the next stage adds concrete new product value or opens a real seam
+
 ## OpenClaw note
 
 OpenClaw-native rescue/recovery work is not owned by this workflow.
@@ -28,6 +32,9 @@ The default fast loop below is an operator compression of this canonical flow.
 It must not drop `Decide` or `Report`.
 
 ## Default Fast Loop
+
+Default mode:
+- `NOTE`, unless current repo truth clearly justifies `STANDARD` or `DEEP`
 
 1. Capture + Analyze
 - record the candidate once.
@@ -69,6 +76,8 @@ Use the smallest artifact set that preserves clarity.
 ### Architecture default
 - one experiment slice in `architecture/02-experiments/`
 - one adopted or deferred outcome only if the slice survives the decision
+- default stop at bounded-result
+- downstream materialization stages are DEEP-only unless the next step adds a concrete new Directive-owned artifact or required consumption proof
 
 ### Architecture source-driven work
 When Architecture processes a source (repo, paper, framework, tool, workflow, method), use the source-adaptation chain:
@@ -136,6 +145,7 @@ The corpus normalization record (`architecture/02-experiments/2026-03-22-archite
 ### Runtime default
 - one follow-up record in `runtime/follow-up/`
 - one promotion record only when host/runtime delivery is real
+- if the case is exploratory or lacks delivery pressure, park at follow-up review or capability-boundary instead of extending the chain
 
 ## Escalate To Full Workflow When
 
@@ -149,6 +159,16 @@ Split the process into extra records only when one of these is true:
 - the work touches Mission Control runtime behavior directly
 
 If none of those conditions are true, stay on the fast path.
+
+For Architecture, the full downstream chain after bounded-result:
+- implementation-target
+- implementation-result
+- retained
+- integration-record
+- consumption-record
+- post-consumption-evaluation
+
+should be treated as DEEP-mode only.
 
 ## Fast Stop Rules
 
@@ -197,3 +217,5 @@ Do not create three records when one record is enough.
 Do not run the heaviest gate bundle when a narrower gate bundle proves the change safely.
 
 Do not continue a slice after the adoption target becomes unclear.
+
+Do not continue a slice after bounded-result unless the next step adds a concrete product artifact that does not already exist.

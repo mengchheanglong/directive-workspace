@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-pressure-scientify-2026-03-25",
+  "candidateId": "dw-pressure-scientify-2026-03-25",
+  "candidateName": "Scientify Runtime Generalization Run",
+  "sourceType": "github-repo",
+  "sourceReference": "https://github.com/user/scientify",
+  "decisionState": "adopt",
+  "routeTarget": "runtime",
+  "operatingMode": "note",
+  "queueStatus": "routed",
+  "createdAt": "2026-03-25T00:00:00.000Z",
+  "updatedAt": "2026-03-25T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": null,
+    "triageRecordPath": null,
+    "routingRecordPath": "discovery/routing-log/2026-03-25-dw-pressure-scientify-2026-03-25-routing-record.md",
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "runtime/follow-up/2026-03-25-dw-pressure-scientify-2026-03-25-runtime-follow-up-record.md"
+  },
+  "projectionInputs": null
+}

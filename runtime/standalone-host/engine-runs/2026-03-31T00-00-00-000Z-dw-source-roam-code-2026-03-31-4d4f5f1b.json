@@ -1,0 +1,243 @@
+{
+  "runId": "4d4f5f1b-4a17-40ea-bbbf-2efcaed040f5",
+  "receivedAt": "2026-03-31T00:00:00.000Z",
+  "source": {
+    "sourceId": "dw-source-roam-code-2026-03-31",
+    "sourceType": "github-repo",
+    "sourceRef": "sources/intake/source-roam-code.md",
+    "title": "Roam-code",
+    "summary": "Phase A first-investigation pressure: assess whether Roam-code's local semantic graph and architecture intelligence for AI coding agents should later inform one bounded local-first Roam-code spike for Directive Workspace without opening immediate adoption, runtime rollout, or broad tool comparison.",
+    "notes": [
+      "Upstream Roam-code describes itself as an architectural intelligence layer for AI coding agents with a local semantic graph over symbols, dependencies, call graphs, architecture layers, git history, and runtime traces. Phase A / Phase 1 retains only source capture and preservation."
+    ],
+    "missionAlignmentHint": "Phase A first-investigation pressure: preserve one concrete local-first architecture-intelligence source for agents before any spike planning starts.",
+    "capabilityGapId": "gap-directive-engine-materialization"
+  },
+  "mission": {
+    "missionId": "directive-workspace-discovery-front-door",
+    "currentObjective": "Build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.",
+    "usefulnessSignals": [
+      "Useful means anything that materially improves:",
+      "revenue and conversion",
+      "execution speed and automation strength",
+      "decision quality and strategic leverage",
+      "cost efficiency and reliability",
+      "orchestration quality and agent coordination",
+      "capability-gap detection and self-improvement velocity"
+    ],
+    "capabilityLanes": [
+      "Directive engine materialization - one reusable executable core that hosts can embed cleanly",
+      "Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior",
+      "Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions",
+      "Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement",
+      "Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)",
+      "Evaluation quality - dimensional measurement (evaluators), not just binary gates",
+      "Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling"
+    ]
+  },
+  "openGaps": [
+    {
+      "gapId": "gap-directive-engine-materialization",
+      "description": "Canonical Directive engine surface is only partially materialized as one reusable executable core with clear lane boundaries and host-adapter seams",
+      "priority": "high",
+      "relatedMissionObjective": "Directive engine materialization",
+      "currentState": "A first engine slice exists, but real source intake still falls back to host helpers, Markdown-first assets, and manual post-decision lane handoff",
+      "desiredState": "Engine owns substantially more intake, routing, adaptation/improvement, proof, decision, and handoff state while Discovery, Runtime, and Architecture operate as clear Engine lanes",
+      "detectedAt": "2026-03-24",
+      "resolvedAt": null,
+      "resolutionNotes": null
+    }
+  ],
+  "selectedLane": {
+    "laneId": "discovery",
+    "label": "Discovery",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true
+  },
+  "candidate": {
+    "candidateId": "dw-source-roam-code-2026-03-31",
+    "candidateName": "Roam-code",
+    "recommendedLaneId": "discovery",
+    "recommendedLaneLabel": "Discovery",
+    "recommendedRecordShape": "fast_path",
+    "usefulnessLevel": "meta",
+    "missionPriorityScore": 58,
+    "confidence": "high",
+    "matchedGapId": "gap-directive-engine-materialization",
+    "matchedGapRank": 1,
+    "requiresHumanReview": false,
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended discovery because the source is promising but the active phased plan only authorizes capture and preservation in Phase A / Phase 1.",
+      "Meta-usefulness signal is present because the source may improve how agents understand repo structure before they open downstream work.",
+      "Fast-path is recommended because the current thread should stop at source capture, routing, and preservation."
+    ]
+  },
+  "analysis": {
+    "missionFitSummary": "Phase A first-investigation pressure: assess whether Roam-code's local semantic graph and architecture intelligence for AI coding agents should later inform one bounded local-first Roam-code spike for Directive Workspace without opening immediate adoption, runtime rollout, or broad tool comparison.",
+    "primaryAdoptionQuestion": "What is the primary adoption target of the extracted value?",
+    "matchedCapabilityGapId": "gap-directive-engine-materialization",
+    "usefulnessRationale": "Meta-usefulness: the source may improve how Directive Workspace agents discover, judge, and prepare repo-structure questions before later Architecture work is opened.",
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended discovery because the source is promising but the active phased plan only authorizes capture and preservation in Phase A / Phase 1.",
+      "Meta-usefulness signal is present because the source may improve how agents understand repo structure before they open downstream work.",
+      "Fast-path is recommended because the current thread should stop at source capture, routing, and preservation."
+    ]
+  },
+  "routingAssessment": {
+    "recommendedLaneId": "discovery",
+    "recommendedRecordShape": "fast_path",
+    "missionPriorityScore": 58,
+    "confidence": "high",
+    "matchedGapId": "gap-directive-engine-materialization",
+    "matchedGapRank": 1,
+    "explicitRouteDestination": null,
+    "routeConflict": false,
+    "needsHumanReview": false,
+    "scoreBreakdown": {
+      "missionFit": 5,
+      "gapAlignment": 4,
+      "laneScores": {
+        "discovery": 18,
+        "architecture": 15,
+        "runtime": 9
+      },
+      "metaUsefulnessSignal": 2,
+      "patternExtractionSignal": 1,
+      "transformationSignal": 0,
+      "runtimeSignal": 0,
+      "ambiguityPenalty": 0,
+      "total": 58
+    },
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended discovery because the source is promising but the active phased plan only authorizes capture and preservation in Phase A / Phase 1.",
+      "Meta-usefulness signal is present because the source may improve how agents understand repo structure before they open downstream work.",
+      "Fast-path is recommended because the current thread should stop at source capture, routing, and preservation."
+    ]
+  },
+  "extractionPlan": {
+    "extractedValue": [
+      "Roam-code offers local semantic indexing and architecture-level graph queries for AI coding agents.",
+      "The source may later support one bounded local-first Architecture spike around repo understanding for agents."
+    ],
+    "excludedBaggage": [
+      "direct Roam-code adoption",
+      "repo-wide rollout, CI integration, and broad tool comparison"
+    ]
+  },
+  "adaptationPlan": {
+    "directiveOwnedForm": "Mission-aware Discovery source case with explicit phase gating and later bounded-spike eligibility.",
+    "adaptedValue": [
+      "Normalize the source into a Discovery-owned preserved case.",
+      "Keep later Architecture work gated behind Phase A / Phase 2."
+    ]
+  },
+  "improvementPlan": {
+    "improvementGoals": [
+      "improve intake efficiency",
+      "improve future repo-understanding question framing for agents"
+    ],
+    "intendedDelta": "Make the Roam-code question explicit without opening the spike early."
+  },
+  "proofPlan": {
+    "proofKind": "discovery_review",
+    "objective": "Confirm the source is captured, preserved, and phase-gated correctly for Phase A / Phase 1.",
+    "requiredEvidence": [
+      "source preservation recorded",
+      "routing rationale recorded",
+      "next bounded action kept phase-gated"
+    ],
+    "requiredGates": [
+      "routing_review",
+      "human_decision_required"
+    ],
+    "rollbackPrompt": "Keep the candidate in Discovery monitor and do not open downstream work."
+  },
+  "decision": {
+    "decisionState": "hold_in_discovery",
+    "adoptionTargetLaneId": "discovery",
+    "adoptionTargetLaneLabel": "Discovery",
+    "requiresHumanApproval": true,
+    "summary": "Preliminary engine decision: hold_in_discovery for Discovery so Phase A / Phase 1 can stop at source capture and preservation.",
+    "rationale": [
+      "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
+      "Recommended discovery because the source is promising but the active phased plan only authorizes capture and preservation in Phase A / Phase 1.",
+      "Meta-usefulness signal is present because the source may improve how agents understand repo structure before they open downstream work.",
+      "Keep the candidate in Discovery until Phase A / Phase 2 is explicitly opened."
+    ]
+  },
+  "integrationProposal": {
+    "targetLaneId": "discovery",
+    "targetLaneLabel": "Discovery",
+    "integrationMode": "none",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true,
+    "handoffArtifactFamily": "discovery_backlog",
+    "nextAction": "Keep the candidate in Discovery monitor until Phase A / Phase 2 is explicitly opened.",
+    "requiresHumanReview": false
+  },
+  "reportPlan": {
+    "reportKind": "discovery_routing_report",
+    "summary": "Sync the hold_in_discovery decision and the phase-gated next action into Directive Workspace reporting surfaces.",
+    "usefulnessRationale": "Meta-usefulness: the source may improve how Directive Workspace agents discover, judge, and prepare repo-structure questions before later Architecture work is opened.",
+    "requiredDestinations": [
+      "directive_workspace_record",
+      "directive_workspace_report_sync"
+    ],
+    "syncRequired": true
+  },
+  "events": [
+    {
+      "type": "source_ingested",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Source captured for candidate dw-source-roam-code-2026-03-31."
+    },
+    {
+      "type": "source_analyzed",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Roam-code analyzed as a possible local-first architecture-intelligence source for agents."
+    },
+    {
+      "type": "candidate_routed",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Candidate routed to discovery with usefulness level meta."
+    },
+    {
+      "type": "value_extracted",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Extracted 2 value signals and excluded 2 baggage signals."
+    },
+    {
+      "type": "value_adapted",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Mission-aware Discovery source case with explicit phase gating."
+    },
+    {
+      "type": "value_improved",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Made the Roam-code Phase A question explicit without opening the later spike."
+    },
+    {
+      "type": "proof_planned",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Proof plan discovery_review prepared."
+    },
+    {
+      "type": "decision_recorded",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Preliminary engine decision: hold_in_discovery for Discovery so Phase A / Phase 1 can stop at source capture and preservation."
+    },
+    {
+      "type": "integration_proposed",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Integration proposal targets discovery via discovery_backlog."
+    },
+    {
+      "type": "report_planned",
+      "at": "2026-03-31T00:00:00.000Z",
+      "summary": "Sync the hold_in_discovery decision and the phase-gated next action into Directive Workspace reporting surfaces."
+    }
+  ]
+}

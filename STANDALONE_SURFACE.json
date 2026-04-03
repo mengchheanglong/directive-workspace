@@ -14,6 +14,7 @@
     "activeExportKeys": [
       ".",
       "./engine",
+      "./runtime/core/runtime-core-contract",
       "./runtime/core/v0",
       "./integration-kit",
       "./integration-kit/cli",
@@ -82,6 +83,11 @@
       "id": "shared-architecture-barrel",
       "path": "shared/lib/architecture/index.ts",
       "kind": "shared_barrel"
+    },
+    {
+      "id": "runtime-core-contract-entry",
+      "path": "runtime/core/runtime-core-contract.ts",
+      "kind": "runtime_core_entry"
     },
     {
       "id": "runtime-core-v0-entry",

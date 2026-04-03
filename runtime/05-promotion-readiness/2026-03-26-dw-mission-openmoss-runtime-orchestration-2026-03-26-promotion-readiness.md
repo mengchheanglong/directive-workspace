@@ -36,14 +36,15 @@
 
 ## host-facing promotion review decision
 - Reviewed target host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
-- Reviewed decision: `host_facing_promotion_remains_unopened`
-- Decision reason: Runtime doctrine creates a promotion record only when host activation or host-owned integration is actually being proposed. That threshold is not met yet for OpenMOSS.
+- Reviewed decision: `manual_openmoss_dw_web_host_promotion_record_opened`
+- Decision reason: Phase 5 repeatability work selected OpenMOSS as the strongest second manual promotion candidate because host selection, the bounded DW web-host seam-review slice, the explicit compile-contract bundle, and the canonical promotion specification are already real while the remaining downstream seams still stay closed.
 - Evidence already satisfied:
   - the non-executing Runtime record, proof artifact, capability boundary, and promotion-readiness artifact all resolve cleanly
   - the target host is now explicit: `Directive Workspace web host (frontend/ + hosts/web-host/)`
   - the candidate remains bounded and non-executing
+  - the DW web-host seam-review implementation/result/package/checker bundle is explicit and checker-backed
 - Remaining blockers:
-  - `host_facing_promotion_unopened`
+  - none at the promotion-readiness layer once the bounded manual promotion record is linked
 - Explicit opened runtime-implementation slice:
   - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
 - Explicit implementation result for that slice:
@@ -69,10 +70,12 @@
   - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
 - Explicit keep confirmation for the completed implementation slice:
   - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-keep-confirmation.md`
+- Host-facing promotion record:
+  - `runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - Remaining unopened seams after that explicit bundle:
-  - host-facing promotion record remains unopened
+  - registry acceptance remains unopened
   - host integration, callable implementation, and runtime execution remain unopened
-- Bounded conclusion: keep the case at `promotion_readiness_opened`, with `Directive Workspace web host (frontend/ + hosts/web-host/)` recorded as the proposed host, and do not open a host-facing promotion record yet.
+- Bounded conclusion: keep the case at the bounded manual promotion-record stop, with `Directive Workspace web host (frontend/ + hosts/web-host/)` still recorded as the proposed host, and do not open registry acceptance, host integration, callable implementation, or runtime execution.
 
 ## Directive Workspace frontend seam decision
 - Reviewed frontend surface: `Directive Workspace frontend app (frontend/) + thin web host (hosts/web-host/)`
@@ -147,6 +150,7 @@
 
 ## artifact linkage
 - Promotion-readiness artifact: `runtime/05-promotion-readiness/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-readiness.md`
+- Host-facing promotion record: `runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-capability-boundary.md`
 - Runtime proof artifact: `runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`

@@ -94,6 +94,7 @@ export function determineDiscoverySubmissionShape(
 export function toDiscoveryIntakeSubmission(
   request: DiscoverySubmissionRequest,
 ): DiscoveryIntakeSubmission {
+  const submissionOrigin = request.submission_origin ?? null;
   return {
     candidate_id: requiredString(request.candidate_id, "candidate_id"),
     candidate_name: requiredString(request.candidate_name, "candidate_name"),
@@ -102,5 +103,15 @@ export function toDiscoveryIntakeSubmission(
     mission_alignment: request.mission_alignment ?? null,
     capability_gap_id: request.capability_gap_id ?? null,
     notes: request.notes ?? null,
+    ...(submissionOrigin ? { submission_origin: submissionOrigin } : {}),
+    ...(typeof request.discovery_signal_band === "string" && request.discovery_signal_band.trim()
+      ? { discovery_signal_band: request.discovery_signal_band }
+      : {}),
+    ...(typeof request.signal_total_score === "number" && Number.isFinite(request.signal_total_score)
+      ? { signal_total_score: request.signal_total_score }
+      : {}),
+    ...(typeof request.signal_score_summary === "string" && request.signal_score_summary.trim()
+      ? { signal_score_summary: request.signal_score_summary }
+      : {}),
   };
 }

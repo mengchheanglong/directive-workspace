@@ -15,6 +15,7 @@ import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-pr
 import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
 import { openDirectiveRuntimePromotionReadiness } from "../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
 import { runDirectiveRuntimePromotionReadinessWithRunner } from "../shared/lib/runtime-promotion-readiness-runner.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type QueueEntry = {
   candidate_id: string;
@@ -56,17 +57,6 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
   const targetPath = path.join(tempRoot, relativePath);
   fs.mkdirSync(path.dirname(targetPath), { recursive: true });
   fs.copyFileSync(sourcePath, targetPath);
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-promotion-runner-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
 }
 
 function extractOpenedBy(markdown: string) {
@@ -177,7 +167,7 @@ function primeCapabilityBoundaryOpen(directiveRoot: string, proofOpenedBy: strin
 }
 
 function scenarioDirectBaseline() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-promotion-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimePromotionDirectiveRoot(directiveRoot);
     primeCapabilityBoundaryOpen(directiveRoot, seeded.proofOpenedBy, seeded.boundaryOpenedBy);
     const result = openDirectiveRuntimePromotionReadiness({
@@ -200,7 +190,7 @@ function scenarioDirectBaseline() {
 }
 
 function scenarioFreshRunner() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-promotion-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimePromotionDirectiveRoot(directiveRoot);
     primeCapabilityBoundaryOpen(directiveRoot, seeded.proofOpenedBy, seeded.boundaryOpenedBy);
     const runnerId = "runtime-promotion-runner-fresh";
@@ -247,7 +237,7 @@ function scenarioFreshRunner() {
 }
 
 function scenarioInterruptedBeforeActionThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-promotion-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimePromotionDirectiveRoot(directiveRoot);
     primeCapabilityBoundaryOpen(directiveRoot, seeded.proofOpenedBy, seeded.boundaryOpenedBy);
     const runnerId = "runtime-promotion-runner-before-action";
@@ -299,7 +289,7 @@ function scenarioInterruptedBeforeActionThenResumed() {
 }
 
 function scenarioInterruptedAfterActionThenResumed() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-promotion-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimePromotionDirectiveRoot(directiveRoot);
     primeCapabilityBoundaryOpen(directiveRoot, seeded.proofOpenedBy, seeded.boundaryOpenedBy);
     const runnerId = "runtime-promotion-runner-after-action";
@@ -352,7 +342,7 @@ function scenarioInterruptedAfterActionThenResumed() {
 }
 
 function scenarioApprovalAndStaleHeadGuards() {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-promotion-runner-" }, (directiveRoot) => {
     const seeded = seedRuntimePromotionDirectiveRoot(directiveRoot);
     primeCapabilityBoundaryOpen(directiveRoot, seeded.proofOpenedBy, seeded.boundaryOpenedBy);
 

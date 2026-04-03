@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-transform-code-intel-snapshot-consolidation",
+  "candidateId": "dw-transform-code-intel-snapshot-consolidation",
+  "candidateName": "Code Intel Snapshot Consolidation",
+  "sourceType": "internal-signal",
+  "sourceReference": "mission-control/src/server/services/workspace-intel-service.ts collectCodeIntelSnapshot language probe branch",
+  "decisionState": "adopt",
+  "routeTarget": "runtime",
+  "operatingMode": "standard",
+  "queueStatus": "completed",
+  "createdAt": "2026-03-22T00:00:00.000Z",
+  "updatedAt": "2026-03-22T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/intake/2026-03-22-code-intel-snapshot-transformation-intake.md",
+    "triageRecordPath": null,
+    "routingRecordPath": null,
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "runtime/records/2026-03-22-code-intel-snapshot-transformation-record.md"
+  },
+  "projectionInputs": null
+}

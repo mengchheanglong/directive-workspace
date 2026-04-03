@@ -10,6 +10,7 @@ import {
 } from "../shared/lib/discovery-front-door-projections.ts";
 import { submitDirectiveDiscoveryFrontDoor } from "../shared/lib/discovery-front-door.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -22,24 +23,12 @@ function writeJson(filePath: string, value: unknown) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
-async function withTempDirectiveRoot(run: (directiveRoot: string) => Promise<void> | void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-discovery-projection-parity-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    await run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
-  }
-}
-
 function readUtf8(filePath: string) {
   return fs.readFileSync(filePath, "utf8");
 }
 
 async function main() {
-  await withTempDirectiveRoot(async (directiveRoot) => {
+  await withTempDirectiveRoot({ prefix: "directive-discovery-projection-parity-" }, async (directiveRoot) => {
     writeJson(path.join(directiveRoot, "discovery", "intake-queue.json"), {
       status: "primary",
       updatedAt: "2026-03-29",

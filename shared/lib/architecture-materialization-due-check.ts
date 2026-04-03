@@ -1,4 +1,3 @@
-import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -21,6 +20,8 @@ import {
 import {
   readDirectiveArchitectureAdoptionDetail,
 } from "./architecture-result-adoption.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
+import { listDirectiveWorkspaceArtifactRelativePaths } from "./directive-workspace-artifact-storage.ts";
 
 export type DirectiveArchitectureMaterializationDueKind =
   | "create_implementation_target"
@@ -86,15 +87,16 @@ function getDefaultDirectiveWorkspaceRoot() {
 }
 
 function listMarkdownRelativePaths(directiveRoot: string, relativeDir: string) {
-  const absoluteDir = path.join(directiveRoot, relativeDir);
-  if (!fs.existsSync(absoluteDir)) {
-    return [] as string[];
-  }
+  return listDirectiveWorkspaceArtifactRelativePaths({
+    directiveRoot,
+    relativeDir,
+    suffix: ".md",
+  });
+}
 
-  return fs.readdirSync(absoluteDir)
-    .filter((entry) => entry.endsWith(".md"))
-    .sort((left, right) => right.localeCompare(left))
-    .map((entry) => normalizeRelativePath(path.join(relativeDir, entry)));
+function listImplementationTargetRelativePaths(directiveRoot: string) {
+  return listMarkdownRelativePaths(directiveRoot, ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir)
+    .filter((relativePath) => relativePath.endsWith(ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.artifactSuffix));
 }
 
 function extractRetainedObjective(content: string) {
@@ -210,7 +212,7 @@ export function readDirectiveArchitectureMaterializationDueCheck(input: {
 
     const fileName = path.posix.basename(adoptionRelativePath);
     const nextArtifactPath = normalizeRelativePath(path.posix.join(
-      "architecture/04-implementation-targets",
+      ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir,
       fileName.replace(/-adopted(?:-planned-next)?\.md$/u, "-implementation-target.md"),
     ));
 
@@ -250,7 +252,7 @@ export function readDirectiveArchitectureMaterializationDueCheck(input: {
     }
   }
 
-  for (const targetRelativePath of listMarkdownRelativePaths(directiveRoot, "architecture/04-implementation-targets")) {
+  for (const targetRelativePath of listImplementationTargetRelativePaths(directiveRoot)) {
     let targetDetail: ReturnType<typeof readDirectiveArchitectureImplementationTargetDetail>;
     try {
       targetDetail = readDirectiveArchitectureImplementationTargetDetail({
@@ -273,7 +275,7 @@ export function readDirectiveArchitectureMaterializationDueCheck(input: {
 
     const fileName = path.posix.basename(targetRelativePath);
     const nextArtifactPath = normalizeRelativePath(path.posix.join(
-      "architecture/05-implementation-results",
+      ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.relativeDir,
       fileName.replace(/-implementation-target\.md$/u, "-implementation-result.md"),
     ));
 

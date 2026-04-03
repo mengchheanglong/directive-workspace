@@ -11,7 +11,7 @@
 
 ## bounded runtime usefulness
 - Runtime value to operationalize: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
-- Proposed host: `pending_host_selection`
+- Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed integration mode: reimplement
 - Reusable capability target surface: `bounded runtime capability`, `callable capability boundary`
 - Origin track: `discovery-routing-approval`
@@ -41,7 +41,7 @@
   - host-local assumptions from the original source
 
 ## rollback boundary
-- Rollback: Revert to the baseline implementation and keep the candidate in follow-up status until proof is stronger.
+- Rollback: Revert proposed host selection to `pending_host_selection`, remove the bounded manual promotion record and linked DW web-host prep bundle references, then keep the candidate at promotion-readiness until a more truthful host target is available.
 - No-op path: Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.
 - Review cadence: before any downstream execution or promotion
 

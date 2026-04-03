@@ -19,6 +19,7 @@ import {
   runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence,
   type DirectiveRuntimeProofCapabilityBoundarySequenceResult,
 } from "../shared/lib/runtime-proof-capability-boundary-sequence.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import {
   DIRECTIVE_RUNTIME_NAMED_SEQUENCE_KINDS,
   runDirectiveRuntimeNamedSequenceByExplicitInvocation,
@@ -91,17 +92,6 @@ function uniqueRelativePaths(items: Array<string | null | undefined>) {
 function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
   for (const relativePath of uniqueRelativePaths(relativePaths)) {
     copyRelativeFile(relativePath, directiveRoot);
-  }
-}
-
-function withTempDirectiveRoot(run: (directiveRoot: string) => void) {
-  const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "directive-runtime-named-sequence-"));
-  const directiveRoot = path.join(tempRoot, "directive-workspace");
-  try {
-    fs.mkdirSync(directiveRoot, { recursive: true });
-    run(directiveRoot);
-  } finally {
-    fs.rmSync(tempRoot, { recursive: true, force: true });
   }
 }
 
@@ -410,7 +400,7 @@ const SEQUENCE_CONFIGS: SequenceConfig[] = [
 ];
 
 function scenarioNamedDispatchMatchesDirectSequence(config: SequenceConfig) {
-  withTempDirectiveRoot((directRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-named-sequence-" }, (directRoot) => {
     config.seed(directRoot);
     const directResult = config.runDirect({
       directiveRoot: directRoot,
@@ -418,7 +408,7 @@ function scenarioNamedDispatchMatchesDirectSequence(config: SequenceConfig) {
     });
     assertSuccess(directResult);
 
-    withTempDirectiveRoot((sharedRoot) => {
+    withTempDirectiveRoot({ prefix: "directive-runtime-named-sequence-" }, (sharedRoot) => {
       config.seed(sharedRoot);
       const declared = config.buildInput();
       const sharedResult = runDirectiveRuntimeNamedSequenceByExplicitInvocation({
@@ -472,7 +462,7 @@ function scenarioNamedDispatchMatchesDirectSequence(config: SequenceConfig) {
 }
 
 function scenarioNamedAfterStep2ResumeDoesNotDuplicate(config: SequenceConfig) {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-named-sequence-" }, (directiveRoot) => {
     config.seed(directiveRoot);
     const declared = config.buildInput();
     const interrupted = runDirectiveRuntimeNamedSequenceByExplicitInvocation({
@@ -519,7 +509,7 @@ function scenarioNamedAfterStep2ResumeDoesNotDuplicate(config: SequenceConfig) {
 }
 
 function scenarioNamedApprovalAndStaleHeadGuards(config: SequenceConfig) {
-  withTempDirectiveRoot((directiveRoot) => {
+  withTempDirectiveRoot({ prefix: "directive-runtime-named-sequence-" }, (directiveRoot) => {
     config.seed(directiveRoot);
     const declared = config.buildInput();
 

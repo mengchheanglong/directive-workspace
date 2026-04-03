@@ -63,6 +63,31 @@ export function planDirectiveMirroredCaseNextStep(input: {
   const nextLegalStep = normalizeText(input.snapshot.nextLegalStep);
   const operatingMode = normalizeText(input.snapshot.operatingMode);
 
+  if (!stage && !nextLegalStep) {
+    return {
+      outcome: "stop",
+      reason: "Legacy entry with no canonical stage or next-step data. Completed before the case modeling system existed.",
+      legalBecause: "No workflow state is available to plan from.",
+      highestConfidenceWhy: "The case has no stage or legal-next-step, indicating it is a pre-system terminal entry.",
+    };
+  }
+
+  if (
+    stage === "architecture.bounded_result.adopt"
+    || (stage.startsWith("architecture.bounded_result") && containsAny(nextLegalStep, ["confirm retention", "open the retained"]))
+  ) {
+    return {
+      outcome: "recommend_task",
+      task: {
+        kind: "confirm_retention",
+        reason: "The case adopted its bounded result and the next explicit step is retention confirmation.",
+        requiredPreconditionsSatisfied: ["snapshot_current_stage_known", "bounded_result_adopted"],
+        legalBecause: input.snapshot.nextLegalStep ?? "Adoption opens the retention confirmation boundary.",
+        highestConfidenceWhy: "The adopted bounded result explicitly opens a retention confirmation step.",
+      },
+    };
+  }
+
   if (
     containsAny(nextLegalStep, [
       "no workflow advancement is legal",
@@ -140,6 +165,15 @@ export function planDirectiveMirroredCaseNextStep(input: {
     };
   }
 
+  if (stage === "runtime.promotion_record.opened") {
+    return {
+      outcome: "parked",
+      reason: "The first manual Runtime promotion record is a bounded stop until a later evidence-to-decision loop is explicitly opened.",
+      legalBecause: input.snapshot.nextLegalStep ?? "The manual Runtime promotion record does not authorize automatic continuation.",
+      highestConfidenceWhy: "Current doctrine still keeps registry acceptance, host integration, and runtime execution closed after the bounded manual promotion step.",
+    };
+  }
+
   if (stage === "architecture.post_consumption_evaluation.keep") {
     return {
       outcome: "stop",
@@ -166,6 +200,45 @@ export function planDirectiveMirroredCaseNextStep(input: {
         reason: "The current boundary explicitly opens a bounded retention confirmation step.",
         requiredPreconditionsSatisfied: ["snapshot_current_stage_known", "legal_next_step_explicit"],
         legalBecause: input.snapshot.nextLegalStep ?? "Retention confirmation is the explicit next legal step.",
+        highestConfidenceWhy: "The snapshot exposes a concrete bounded product artifact that does not yet exist.",
+      },
+    };
+  }
+
+  if (containsAny(nextLegalStep, ["record integration", "create the integration record"])) {
+    return {
+      outcome: "recommend_task",
+      task: {
+        kind: "record_integration",
+        reason: "The current boundary explicitly opens a bounded integration-record step.",
+        requiredPreconditionsSatisfied: ["snapshot_current_stage_known", "legal_next_step_explicit"],
+        legalBecause: input.snapshot.nextLegalStep ?? "Integration recording is the explicit next legal step.",
+        highestConfidenceWhy: "The snapshot exposes a concrete bounded product artifact that does not yet exist.",
+      },
+    };
+  }
+
+  if (containsAny(nextLegalStep, ["record consumption", "create the consumption record"])) {
+    return {
+      outcome: "recommend_task",
+      task: {
+        kind: "record_consumption",
+        reason: "The current boundary explicitly opens a bounded consumption-record step.",
+        requiredPreconditionsSatisfied: ["snapshot_current_stage_known", "legal_next_step_explicit"],
+        legalBecause: input.snapshot.nextLegalStep ?? "Consumption recording is the explicit next legal step.",
+        highestConfidenceWhy: "The snapshot exposes a concrete bounded product artifact that does not yet exist.",
+      },
+    };
+  }
+
+  if (containsAny(nextLegalStep, ["evaluate the applied architecture output after use"])) {
+    return {
+      outcome: "recommend_task",
+      task: {
+        kind: "evaluate_post_consumption",
+        reason: "The current boundary explicitly opens a bounded post-consumption evaluation step.",
+        requiredPreconditionsSatisfied: ["snapshot_current_stage_known", "legal_next_step_explicit"],
+        legalBecause: input.snapshot.nextLegalStep ?? "Post-consumption evaluation is the explicit next legal step.",
         highestConfidenceWhy: "The snapshot exposes a concrete bounded product artifact that does not yet exist.",
       },
     };

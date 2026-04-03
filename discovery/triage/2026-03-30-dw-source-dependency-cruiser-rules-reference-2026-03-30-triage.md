@@ -1,0 +1,24 @@
+# Discovery Triage Record: dependency-cruiser Rules Reference
+
+- Candidate id: dw-source-dependency-cruiser-rules-reference-2026-03-30
+- Candidate name: dependency-cruiser Rules Reference
+- Triage date: 2026-03-30
+- First-pass summary: dependency-cruiser exposes a narrow dependency-boundary rule surface that could protect the canonical `shared/lib/dw-state.ts` facade from private implementation bypass imports if the current repo graph actually matches the requested boundary.
+- Problem it appears to solve: Preserve an Engine-owned facade/private split around `dw-state` without broadening into repo-wide linting or enforcement wiring.
+- Extractable value hypothesis: dependency-cruiser can express one bounded `forbidden` rule in JavaScript config using `from.pathNot` plus `to.path` to block imports to private implementation files from callers outside the allowed facade. The same source also confirms schema-validated config structure and JS config composition. Current repo truth must verify whether the requested single-importer boundary is factual before any proposal is materialized.
+- Routing recommendation: Shared Engine routing selected architecture with usefulness level structural.
+- Proposed adoption target: engine-owned product logic
+- Stack-shape summary: product-doc source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: a bounded Engine-structure boundary proposal or config artifact that protects the `dw-state` facade only. Excluded baggage: repo-wide dependency-cruiser adoption, generic dependency policy, enforcement wiring, and any boundary unrelated to `dw-state`.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Structural usefulness: clearer ownership around the canonical `dw-state` read surface improves Engine structure and keeps private implementation details from leaking into consumers.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: If the requested importer boundary is false in current repo truth, forcing the rule would misdescribe the product and create a fake Architecture artifact.
+- Integration cost: low
+- Can current gates validate it safely: yes - repo-local import inspection plus one bounded Architecture result are enough to decide whether the rule is truthful.
+- Immediate risks: adaptation_complete, engine_boundary_preserved, decision_review
+- Missing evidence: exact current importer set for `shared/lib/dw-state/shared.ts` and `shared/lib/dw-state/runtime.ts`; confirmation that the requested one-importer rule matches real repo structure
+- Monitor/Defer trigger conditions: If the private-file importer set is broader than the requested facade-only boundary, stop at bounded result and record that the concrete proposal is not yet justified.
+- Re-entry conditions: Reopen only if the `dw-state` implementation is refactored or the target boundary is restated in a way that matches repo truth.
+- Next action: Materialize one bounded Architecture result that either produces the single dw-state facade-boundary proposal or records why the requested proposal is not truthful in the current repo.
+- Linked intake record: discovery/intake/2026-03-30-dw-source-dependency-cruiser-rules-reference-2026-03-30-intake.md

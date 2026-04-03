@@ -1,4 +1,4 @@
-import { type DirectiveIntegrationProof } from "./v0";
+import { type DirectiveIntegrationProof } from "./runtime-core-contract";
 import { proofTimestampSuffix } from "./presentation-contract";
 
 export type DirectiveProofRequestInput = {

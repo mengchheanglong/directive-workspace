@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-03",
+  "policy": {
+    "selectionRule": "Use the canonical selector to choose the next bounded operator-simplicity slice from the lowest priority rank with satisfied dependencies and pending state.",
+    "syncRule": "Update slice state only when repo truth materially changes. Completed means the simplification is already real in code/docs/logs/checks."
+  },
+  "items": [
+    {
+      "sliceId": "scratch_surface_rename_and_roadmap_cleanup",
+      "title": "Rename the non-authoritative workdirs surface to scratch and remove the obsolete CLAUDE completion roadmap draft",
+      "kind": "cleanup",
+      "owningLane": "architecture",
+      "priorityRank": 10,
+      "state": "completed",
+      "dependsOn": [],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check:directive-workspace-composition",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        ".gitignore",
+        "scratch/README.md",
+        "control/logs/2026-04/2026-04-02-scratch-surface-rename-and-roadmap-cleanup.md"
+      ],
+      "selectionHint": "Completed anchor slice: the old non-authoritative workdir surface was renamed and the obsolete roadmap draft removed."
+    },
+    {
+      "sliceId": "operator_start_truth_surface_clarity",
+      "title": "Add one operator start surface and clarify truth-vs-history boundaries",
+      "kind": "clarity",
+      "owningLane": "architecture",
+      "priorityRank": 20,
+      "state": "completed",
+      "dependsOn": [
+        "scratch_surface_rename_and_roadmap_cleanup"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check:control-authority",
+        "npm run check:directive-workspace-composition",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "operator-start.md",
+        "control/README.md",
+        "control/state/README.md",
+        "state/README.md",
+        "control/logs/2026-04/2026-04-02-operator-start-and-truth-surface-clarity.md"
+      ],
+      "selectionHint": "Completed anchor slice: one shortest operator map now exists and authority boundaries are explicit."
+    },
+    {
+      "sliceId": "runtime_follow_up_history_vs_active_boundary",
+      "title": "Clarify runtime/follow-up as a mixed support corpus rather than the canonical live-head selector",
+      "kind": "clarity",
+      "owningLane": "architecture",
+      "priorityRank": 30,
+      "state": "completed",
+      "dependsOn": [
+        "operator_start_truth_surface_clarity"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check:control-authority",
+        "npm run check:directive-workspace-composition",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "runtime/follow-up/README.md",
+        "operator-start.md",
+        "control/logs/2026-04/2026-04-02-runtime-follow-up-history-vs-active-boundary.md"
+      ],
+      "selectionHint": "Completed anchor slice: operators are told to resolve live continuation through the canonical shared resolver instead of follow-up folder recency."
+    },
+    {
+      "sliceId": "knowledge_sources_ownership_clarity",
+      "title": "Clarify knowledge versus sources ownership in the operator-facing start surface",
+      "kind": "clarity",
+      "owningLane": "architecture",
+      "priorityRank": 40,
+      "state": "completed",
+      "dependsOn": [
+        "operator_start_truth_surface_clarity"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check:control-authority",
+        "npm run check:directive-workspace-composition",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "operator-start.md",
+        "control/logs/2026-04/2026-04-02-knowledge-and-sources-ownership-clarity.md"
+      ],
+      "selectionHint": "Completed anchor slice: operators can now distinguish Directive-owned doctrine from raw upstream inputs quickly."
+    },
+    {
+      "sliceId": "runtime_follow_up_checker_family_grouping",
+      "title": "Group the runtime follow-up checker trio under one scripts family",
+      "kind": "organization",
+      "owningLane": "architecture",
+      "priorityRank": 50,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_follow_up_history_vs_active_boundary"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check:runtime-follow-up-projection-parity",
+        "npm run check:runtime-follow-up-runner-kernel",
+        "npm run check:runtime-follow-up-proof-sequence",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "scripts/runtime-follow-up",
+        "package.json",
+        "control/logs/2026-04/2026-04-03-runtime-follow-up-checker-family-grouping.md"
+      ],
+      "selectionHint": "Completed anchor slice: the first checker family moved into a grouped folder without changing operator commands."
+    },
+    {
+      "sliceId": "runtime_follow_up_archive_feasibility_audit",
+      "title": "Audit direct checker and package references that currently block the first runtime/follow-up archive move",
+      "kind": "audit",
+      "owningLane": "architecture",
+      "priorityRank": 60,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_follow_up_history_vs_active_boundary",
+        "runtime_follow_up_checker_family_grouping"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "rg -n \"runtime/follow-up/\" scripts package.json shared control runtime -g '!node_modules'",
+        "npm run check:directive-workspace-composition",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "runtime/follow-up",
+        "scripts",
+        "package.json",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Completed audit slice: active Runtime and checker references still block broad archive moves, but one exact reference-free candidate is now proven safe for the first bounded archive move."
+    },
+    {
+      "sliceId": "first_runtime_follow_up_archive_move",
+      "title": "Move the first verified superseded runtime/follow-up support bundle into archive without breaking direct references",
+      "kind": "archive",
+      "owningLane": "architecture",
+      "priorityRank": 70,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_follow_up_archive_feasibility_audit"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check:directive-workspace-composition",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "runtime/follow-up",
+        "scripts",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Completed anchor slice: the first archive move relocated only the verified reference-free Hermes cutover note and left all directly referenced bundles in place."
+    },
+    {
+      "sliceId": "next_checker_family_grouping_audit",
+      "title": "Audit the next safe checker-family grouping candidate under scripts/",
+      "kind": "audit",
+      "owningLane": "architecture",
+      "priorityRank": 80,
+      "state": "completed",
+      "dependsOn": [
+        "runtime_follow_up_checker_family_grouping"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "Get-ChildItem scripts",
+        "rg -n \"scripts/.*check-.*\" package.json control shared README.md -g '!node_modules'",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "scripts",
+        "package.json",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Completed audit slice: the `openclaw` checker trio is the next safe grouping candidate because only package.json references the exact script paths and the family has no sibling-script coupling."
+    },
+    {
+      "sliceId": "next_checker_family_grouping_move",
+      "title": "Move one additional audited checker family into a grouped scripts subfolder",
+      "kind": "organization",
+      "owningLane": "architecture",
+      "priorityRank": 90,
+      "state": "completed",
+      "dependsOn": [
+        "next_checker_family_grouping_audit"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "npm run check",
+        "npm run check:directive-workspace-composition"
+      ],
+      "rollbackSurface": [
+        "scripts",
+        "package.json",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Completed anchor slice: the `openclaw` checker trio now lives under one grouped scripts folder and the npm command surface stayed stable."
+    },
+    {
+      "sliceId": "dead_surface_reference_audit",
+      "title": "Audit one additional dead-surface cleanup candidate with repo-local references only",
+      "kind": "audit",
+      "owningLane": "architecture",
+      "priorityRank": 100,
+      "state": "completed",
+      "dependsOn": [
+        "scratch_surface_rename_and_roadmap_cleanup"
+      ],
+      "blockingReason": null,
+      "proofCommands": [
+        "rg -n \"deprecated|obsolete|superseded|mission-control\" scripts shared runtime control -g '!node_modules'",
+        "npm run check"
+      ],
+      "rollbackSurface": [
+        "scripts",
+        "shared",
+        "runtime",
+        "control/logs/2026-04"
+      ],
+      "selectionHint": "Completed anchor slice: active Discovery front-door coverage docs now point to the repo-native analysis surface instead of a dead Mission Control checker command."
+    }
+  ]
+}

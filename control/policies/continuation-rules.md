@@ -41,18 +41,19 @@ Do not mix unrelated tasks into the same cycle unless they are tightly required 
 
 ## Run persistence rule
 
-This run is intended to continue through many bounded cycles, not stop after the first safe verified slice.
+Continuation is allowed, not required.
 
-Do not stop merely because one bounded slice is complete.
+Do not continue merely because one bounded slice completed cleanly.
 
 After each completed cycle:
 1. refresh repo truth
 2. identify the next best bounded step
-3. continue if there is any reasonable high-ROI task that is:
+3. continue only if the next bounded step:
    - aligned with doctrine
    - bounded
    - verifiable
    - lower risk than broad redesign
+   - and produces a concrete new product artifact, proof result, or seam decision that does not already exist
 
 Only stop when:
 - there are no more reasonable bounded tasks left
@@ -60,12 +61,4 @@ Only stop when:
 - the next tasks all require external access or approval not available
 - the next useful move would require a broad redesign
 - validation is blocked in a way that cannot be resolved safely
-
-## Minimum continuation target
-
-Aim to complete at least 5 bounded cycles before considering early stop, unless a true hard stop is reached.
-
-A true hard stop means:
-- no credible bounded high-ROI task remains
-- all remaining paths are blocked by missing authority, missing access, or unresolved doctrine conflict
-- further work would likely create regressions or false progress
+- the current slice has reached its truthful stop-line and the next move would add more formality than value

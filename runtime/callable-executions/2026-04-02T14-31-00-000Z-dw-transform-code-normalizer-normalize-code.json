@@ -1,0 +1,56 @@
+{
+  "version": "bounded_callable_execution_record/v1",
+  "executionId": "2026-04-02T14-31-00-000Z-dw-transform-code-normalizer-normalize-code",
+  "executionAt": "2026-04-02T14:31:00.000Z",
+  "capability": {
+    "capabilityId": "dw-transform-code-normalizer",
+    "title": "Code Normalizer (Behavior-Preserving Transformation)",
+    "form": "runtime_owned_behavior_preserving_transformation",
+    "toolCount": 1,
+    "tools": [
+      "normalize-code"
+    ]
+  },
+  "invocation": {
+    "tool": "normalize-code",
+    "timeoutMs": 10000,
+    "status": "success",
+    "ok": true
+  },
+  "metadata": {
+    "startedAt": "2026-04-02T14:21:17.405Z",
+    "completedAt": "2026-04-02T14:21:17.405Z",
+    "durationMs": 0,
+    "timeoutMs": 10000,
+    "capabilityId": "dw-transform-code-normalizer"
+  },
+  "boundary": {
+    "executionSurface": "shared_runtime_callable_executor",
+    "hostIntegrated": false,
+    "promotionAutomation": false,
+    "automaticWorkflowAdvancement": false
+  },
+  "inputSummary": {
+    "kind": "object",
+    "topLevelCount": 1,
+    "keys": [
+      "code"
+    ],
+    "preview": "{\"code\":\"export const answer = 42;  \\n\\n\\nexport function square(value: number) {\\n  return value * value;\\n}\\n\"}",
+    "sizeBytes": 113
+  },
+  "resultSummary": {
+    "kind": "object",
+    "topLevelCount": 3,
+    "keys": [
+      "ok",
+      "normalizedCode",
+      "preservationProof"
+    ],
+    "preview": "{\"ok\":true,\"normalizedCode\":\"export const answer = 42;\\n\\nexport function square(value: number) {\\n  return value * value;\\n}\\n\",\"preservationProof\":{\"inputLines\":7,\"outputLines\":6,\"inputNonBlankLines\":4,\"outputNonBlankLines\":4,\"transfor..."
+  },
+  "artifacts": {
+    "recordPath": "runtime/callable-executions/2026-04-02T14-31-00-000Z-dw-transform-code-normalizer-normalize-code.json",
+    "reportPath": "runtime/callable-executions/2026-04-02T14-31-00-000Z-dw-transform-code-normalizer-normalize-code.md"
+  }
+}

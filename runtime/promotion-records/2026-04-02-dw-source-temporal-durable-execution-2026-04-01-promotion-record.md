@@ -1,0 +1,40 @@
+# Promotion Record: Temporal Durable Execution Platform
+
+- Candidate id: dw-source-temporal-durable-execution-2026-04-01
+- Candidate name: Temporal Durable Execution Platform
+- Promotion date: 2026-04-02
+- Linked Runtime record: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
+- Target host: Directive Workspace web host (frontend/ + hosts/web-host/)
+- Target runtime surface: bounded DW web-host seam-review promotion review
+- Integration mode: reimplement
+- Source intent artifact: `runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md`
+- Compile contract artifact: `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md`
+- Runtime permissions profile: read_only_lane = canonical Directive Workspace state plus linked Runtime artifacts through the existing DW thin-host reader; write_lane = none
+- Safe output scope: Temporal durable-execution seam-review page plus thin-host response payloads only; no execution, no host integration writes, no callable activation
+- Sanitize policy: manual Temporal durable-execution promotion record only; no registry write, activation, dispatch, or downstream automation side effects
+- Proposed runtime status: manual_temporal_durable_execution_dw_web_host_promotion_record_opened
+- Proof path: `runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md`
+- Quality gate profile: temporal_durable_execution_dw_web_host_manual_promotion_guard/v1
+- Promotion profile family: bounded_temporal_durable_execution_dw_web_host_manual_promotion
+- Proof shape: temporal_durable_execution_dw_web_host_manual_promotion_snapshot/v1
+- Primary host checker: `npm run check:directive-temporal-durable-execution-dw-web-host-runtime-promotion`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: validated_locally
+- Quality gate fail reasons:
+  - none
+- Required gates:
+  - `npm run check:directive-temporal-durable-execution-dw-web-host-runtime-promotion`
+  - `npm run check:directive-temporal-durable-execution-dw-web-host-runtime-implementation-slice`
+  - `npm run check:pre-host-promotion-record-prerequisites`
+  - `npm run check:frontend-host`
+  - `npm run check:directive-workspace-composition`
+- Validation result: The first manual Temporal durable-execution Directive Workspace web-host promotion record is now explicit and checked, while registry acceptance, host integration, runtime execution, and promotion automation remain closed.
+- Rollback plan: remove this promotion record, unlink it from the Temporal durable-execution promotion-readiness artifact, update the linked promotion specification back to an unopened promotion record state, and keep the case at the bounded DW web-host implementation stop.
+- Owner: Directive Runtime
+- Promotion decision: approved for one bounded manual Temporal durable-execution Directive Workspace web-host promotion review

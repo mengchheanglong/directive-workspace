@@ -1,3 +1,5 @@
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../../shared/lib/architecture-deep-tail-stage-map.ts";
+
 export const DW_GPT_RESEARCHER_ENGINE_HANDOFF_PRESSURE_INTEGRATION_V0 = {
   capabilityId: "dw-real-gpt-researcher-engine-handoff-2026-03-24",
   callableId:
@@ -11,13 +13,13 @@ export const DW_GPT_RESEARCHER_ENGINE_HANDOFF_PRESSURE_INTEGRATION_V0 = {
     runtimeRuntimeCapabilityBoundaryPath:
       "runtime/04-capability-boundaries/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-runtime-capability-boundary.md",
     integrationRecordPath:
-      "architecture/07-integration-records/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-integration-record.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-integration-record.md`,
     retainedArtifactPath:
-      "architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md`,
     implementationResultPath:
-      "architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md`,
     implementationTargetPath:
-      "architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md",
+      `${ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`,
     adoptionArtifactPath:
       "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md",
     boundedResultPath:

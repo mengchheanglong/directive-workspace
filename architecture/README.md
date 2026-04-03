@@ -14,7 +14,7 @@ It owns:
 
 It does not own:
 - runtime/callable capability delivery (that is Runtime)
-- host runtime code, database, or APIs (that is Mission Control)
+- external host runtime code, database, or APIs
 - intake, triage, or routing (that is Discovery)
 - raw upstream repo storage (that is `directive-workspace/sources/`)
 - OpenClaw-native rescue role ownership (that belongs to OpenClaw)
@@ -28,17 +28,32 @@ Handoff rule:
 
 Completion rule:
 - Architecture is complete only when extracted value is materialized as product-owned Directive Workspace artifacts (contracts, schemas, templates, policies, rules).
-- Mission Control host consumption can validate the result, but it does not define Architecture completion by itself.
-- Canonical reference: `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\architecture-completion-rubric.md`
+- Host-side consumption can validate the result, but it does not define Architecture completion by itself.
+- Canonical reference: `C:\Users\User\projects\directive-workspace\knowledge\architecture-completion-rubric.md`
 
-Default fast path:
+Default path (NOTE/STANDARD):
 - one routed candidate
-- one bounded experiment slice
-- one adopted or deferred outcome
+- one bounded experiment/result slice
+- one adopted or deferred outcome only when the result justifies extension
+- normal finish line: `bounded-result`
 
-Escalate beyond that only when the output becomes reusable doctrine, shared contract, or cross-track handoff.
+DEEP-only continuation bundle:
+- `implementation-target` (logical artifact paths stay under `architecture/04-implementation-targets/`; physical storage lives under `architecture/deep-materialization/04-implementation-targets/`)
+- `implementation-result` (logical artifact paths stay under `architecture/05-implementation-results/`; physical storage lives under `architecture/deep-materialization/05-implementation-results/`)
+- `retained` (logical artifact paths stay under `architecture/06-retained/`; physical storage lives under `architecture/deep-materialization/06-retained/`)
+- `integration-record` (logical artifact paths stay under `architecture/07-integration-records/`; physical storage lives under `architecture/deep-materialization/07-integration-records/`)
+- `consumption-record` (logical artifact paths stay under `architecture/08-consumption-records/`; physical storage lives under `architecture/deep-materialization/08-consumption-records/`)
+- `post-consumption-evaluation` (logical artifact paths stay under `architecture/09-post-consumption-evaluations/`; physical storage lives under `architecture/deep-materialization/09-post-consumption-evaluations/`)
+
+Only continue into this bundle when the next stage adds a concrete new Directive-owned artifact or required consumption proof.
+
+Operator navigation map:
+- Start and stop by default in `architecture/02-experiments/`.
+- Use `architecture/03-adopted/` or `architecture/04-deferred-or-rejected/` only when the bounded result requires an explicit decision surface.
+- Do not open the DEEP materialization bundle under `architecture/deep-materialization/` unless the case is explicitly DEEP-mode.
+- Deep-tail logical artifact links remain stable at `architecture/04-...` through `architecture/09-...` even though the physical files now live under `architecture/deep-materialization/`.
 
 Canonical references:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\workflow.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\knowledge\architecture-completion-rubric.md`
-- `C:\Users\User\.openclaw\workspace\directive-workspace\architecture\ARCHITECTURE_EXPLORATION.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\workflow.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\architecture-completion-rubric.md`
+- `C:\Users\User\projects\directive-workspace\architecture\ARCHITECTURE_EXPLORATION.md`

@@ -1,6 +1,6 @@
 {
   "status": "active",
-  "updatedAt": "2026-03-24",
+  "updatedAt": "2026-04-01",
   "policy": {
     "sourceRule": "Gaps are derived from active-mission.md and from operational observations.",
     "linkRule": "When a Discovery candidate addresses a known gap, tag the candidate with the gap_id.",
@@ -12,16 +12,112 @@
       "description": "Canonical Directive engine surface is only partially materialized as one reusable executable core with clear lane boundaries and host-adapter seams",
       "priority": "high",
       "related_mission_objective": "Directive engine materialization",
-      "current_state": "A first engine slice exists, but real source intake still falls back to host helpers, Markdown-first assets, and manual post-decision lane handoff",
+      "current_state": "Engine owns canonical state resolution (dw-state.ts), case planning from mirrored snapshots, negative-path validation across all architecture stages, structured checker output with failure contracts, a meta-checker (checker-definition-pilot), canonical-read-surface coverage enforcement, route-supersession logic, and case event tracking. Remaining sub-gaps decomposed into gap-engine-adaptation-logic, gap-engine-host-adapter-contract, and gap-engine-lane-boundary-enforcement.",
       "desired_state": "Engine owns substantially more intake, routing, adaptation/improvement, proof, decision, and handoff state while Discovery, Runtime, and Architecture operate as clear Engine lanes",
       "candidate_ids": [
         "dw-live-gpt-researcher-engine-pressure-2026-03-24",
         "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
-        "dw-live-scientify-engine-pressure-2026-03-24"
+        "dw-live-scientify-engine-pressure-2026-03-24",
+        "dw-pressure-results-logging-contract-quality-2026-03-26",
+        "dw-mission-core-principles-operating-discipline-2026-03-26",
+        "dw-source-eslint-custom-rules-2026-03-30",
+        "dw-source-dependency-cruiser-rules-reference-2026-03-30"
       ],
       "detected_at": "2026-03-24",
-      "resolved_at": null,
-      "resolution_notes": null
+      "resolved_at": "2026-03-31",
+      "resolution_notes": "Substantially achieved: Engine now owns state resolution, case planning, negative-path validation, structured checker output, meta-checker, canonical-read-surface coverage enforcement, route-supersession logic, and case event tracking. Remaining work decomposed into three specific sub-gaps: gap-engine-adaptation-logic, gap-engine-host-adapter-contract, gap-engine-lane-boundary-enforcement."
+    },
+    {
+      "gap_id": "gap-engine-adaptation-logic",
+      "description": "Extract/Adapt/Improve workflow steps have no engine-owned logic; adaptation decisions are unstructured",
+      "priority": "high",
+      "related_mission_objective": "Directive engine materialization",
+      "current_state": "Engine owns buildExtractionPlan, buildAdaptationPlan, and buildImprovementPlan in engine/directive-engine.ts with real lane-specific logic. Extraction feeds adaptation which feeds improvement (structured chaining). Events value_extracted, value_adapted, value_improved are tracked in run records. All three are exercised on every processSource call.",
+      "desired_state": "Engine owns adaptation planning with structured extraction, adaptation, and improvement steps that can be tracked, evaluated, and reported through the canonical workflow",
+      "candidate_ids": [],
+      "detected_at": "2026-03-31",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Already built: buildExtractionPlan (line 380), buildAdaptationPlan (line 456), buildImprovementPlan (line 542) in engine/directive-engine.ts. These are private functions chained in processSource with structured stage input/output. The gap description was written before the existing logic was discovered during investigation."
+    },
+    {
+      "gap_id": "gap-engine-host-adapter-contract",
+      "description": "No formal host-adapter boundary contract exists; hosts import engine and shared/lib internals freely",
+      "priority": "medium",
+      "related_mission_objective": "Directive engine materialization",
+      "current_state": "npm run check:host-adapter-boundary declares a 35-prefix adapter surface and validates all 26 host TS files across 4 host directories (integration-kit, standalone-host, web-host, workbench) only import from the declared surface. Any new host import from engine/ or shared/ must be added to the ALLOWED_HOST_IMPORT_PREFIXES list, making the boundary explicit and auditable.",
+      "desired_state": "Explicit adapter surface that hosts must use, with at least one machine-checkable proof that host imports stay within the adapter boundary",
+      "candidate_ids": [
+        "dw-source-dependency-cruiser-rules-reference-2026-03-30"
+      ],
+      "detected_at": "2026-03-31",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Created scripts/check-host-adapter-boundary.ts — a host adapter boundary checker that declares the full adapter surface as an explicit allowlist of 35 import prefixes and validates all 26 host TS files only import from the declared surface. Replaces the rejected dependency-cruiser approach with a targeted allowlist check."
+    },
+    {
+      "gap_id": "gap-engine-lane-boundary-enforcement",
+      "description": "Lane boundaries between Discovery, Runtime, and Architecture are doctrine-documented but not programmatically enforced",
+      "priority": "medium",
+      "related_mission_objective": "Directive engine materialization",
+      "current_state": "npm run check:lane-boundary-imports enforces directional import rules: engine must not import from hosts, shared must not import from hosts. Scans 12 engine files and 81 shared files. The shared-to-engine direction is allowed by design (canonical read surface composes engine truth). Discovery, Architecture directories have 0 TS files so no cross-lane import is possible there.",
+      "desired_state": "At least one machine-checkable proof that lane-local logic stays lane-local and shared logic stays in Engine",
+      "candidate_ids": [
+        "dw-source-eslint-custom-rules-2026-03-30",
+        "dw-source-dependency-cruiser-rules-reference-2026-03-30"
+      ],
+      "detected_at": "2026-03-31",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Created scripts/check-lane-boundary-imports.ts — a lightweight directional import checker that validates engine/ does not import from hosts/ and shared/lib/ does not import from hosts/. Scans all 93 product TS files with zero violations. Replaces the rejected dependency-cruiser and ESLint approaches with a targeted zero-dependency check."
+    },
+    {
+      "gap_id": "gap-case-catalog-coverage",
+      "description": "Case modeling surface covers only 6 of 61 queue entries; case planner covers only 8; no unified case catalog exists",
+      "priority": "medium",
+      "related_mission_objective": "Directive engine materialization",
+      "current_state": "All 62 queue entries have case model files in state/cases/ with event logs in state/case-events/. Case planner covers 62/62 entries: 37 stop, 14 parked, 6 recommend_task, 5 waiting_review, 0 blocked. 40 entries have canonical resolution with currentStage and nextLegalStep. npm run report:case-catalog provides the unified catalog surface.",
+      "desired_state": "Every active queue entry has a corresponding case model accessible through a unified catalog surface, and the case planner can recommend next steps for all non-terminal cases",
+      "candidate_ids": [],
+      "detected_at": "2026-03-31",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Backfilled 55 case models via scripts/backfill-case-models.ts. 33 with canonical resolution (state_materialized events), 22 minimal (legacy pre-routing). Added two planner rules: null-stage legacy entries map to stop, architecture.bounded_result.adopt maps to recommend_task(confirm_retention). Coverage went from 6/62 case files and 8 plannable to 62/62 case files and 62/62 plannable."
+    },
+    {
+      "gap_id": "gap-run-evidence-aggregation",
+      "description": "39 engine runs exist as individual records with no cross-run trend analysis or performance pattern detection",
+      "priority": "medium",
+      "related_mission_objective": "Directive engine materialization",
+      "current_state": "npm run report:run-evidence-aggregation produces structured cross-run aggregation: lane distribution, usefulness distribution, source type diversity, confidence distribution, decision outcome patterns, integration mode patterns, temporal trend buckets, case lifecycle durations, and mission priority score stats.",
+      "desired_state": "A report or check surface that aggregates run evidence over time: routing decision patterns, outcome distributions, case lifecycle durations, and adaptation quality indicators",
+      "candidate_ids": [],
+      "detected_at": "2026-03-31",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Created shared/lib/run-evidence-aggregation.ts with aggregateRunEvidence function and scripts/report-run-evidence-aggregation.ts report script. Aggregates all 39 runs across 7 dimensions plus temporal trends and lifecycle summary."
+    },
+    {
+      "gap_id": "gap-runtime-promotion-seam",
+      "description": "Runtime chain complete through promotion-readiness but no host-facing promotion mechanism exists; cases are permanently parked at the boundary",
+      "priority": "medium",
+      "related_mission_objective": "Runtime operationalization",
+      "current_state": "npm run generate:promotion-specifications produces 6 structured JSON promotion specification artifacts at runtime/06-promotion-specifications/. Each spec fills promotion contract fields (integrationMode, targetRuntimeSurface, owner, sourceIntentArtifact, requiredGates, rollbackPlan, proofArtifactPath, proposedHost) from the promotion-readiness chain and explicitly lists openDecisions. The Scientify case has a concrete host (standalone-host), integration mode (reimplement), and implementation slices. npm run check:runtime-promotion-specification separately validates contract completeness.",
+      "desired_state": "At least one bounded promotion pathway from promotion-readiness to a host-consumable artifact, even if non-executing",
+      "candidate_ids": [],
+      "detected_at": "2026-03-31",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Created scripts/generate-promotion-specifications.ts which produces actual host-consumable JSON promotion specifications at runtime/06-promotion-specifications/. Each file fills promotion contract fields from the promotion-readiness artifact chain, identifies open decisions, and describes what the host would receive. This is the bounded forward pathway from promotion-readiness to a host-consumable artifact — non-executing but structurally complete."
+    },
+    {
+      "gap_id": "gap-repeatable-runtime-promotions",
+      "description": "The first manual Scientify Runtime promotion cycle is explicit and checked, but Runtime promotion is still singleton evidence rather than a repeatable bounded operating path",
+      "priority": "medium",
+      "related_mission_objective": "Runtime operationalization",
+      "current_state": "Manual Runtime promotion is now proved across two bounded non-executing cases: the Scientify standalone-host promotion record and the OpenMOSS Directive Workspace web-host promotion record.",
+      "desired_state": "At least one additional Runtime candidate advances through the same bounded manual promotion chain so Runtime promotion can be treated as repeatable operating truth instead of a one-off Scientify-only exception.",
+      "candidate_ids": [
+        "dw-source-scientify-research-workflow-plugin-2026-03-27",
+        "dw-mission-openmoss-runtime-orchestration-2026-03-26"
+      ],
+      "detected_at": "2026-04-01",
+      "resolved_at": "2026-04-01",
+      "resolution_notes": "Repeatability is now real: the second manual OpenMOSS DW web-host promotion record advances a different Runtime candidate through the same bounded non-executing promotion path, so Runtime promotion is no longer singleton Scientify-only evidence."
     },
     {
       "gap_id": "gap-discovery-queue",
@@ -81,7 +177,7 @@
       "candidate_ids": ["dw-openclaw-discovery-submission-flow", "dw-openclaw-runtime-verification-freshness-2026-03-22", "dw-openclaw-maintenance-watchdog-signal-lane"],
       "detected_at": "2026-03-22",
       "resolved_at": "2026-03-22",
-      "resolution_notes": "Root helpers at scripts/submit-openclaw-discovery-candidate.ps1, scripts/submit-openclaw-runtime-verification-signal.ps1, and scripts/submit-openclaw-maintenance-watchdog-signal.ps1 plus their Mission Control checkers are active. Candidates dw-openclaw-discovery-submission-flow and dw-openclaw-runtime-verification-freshness-2026-03-22 exercised the first two paths; dw-openclaw-maintenance-watchdog-signal-lane materialized the third lane without fabricating a live incident."
+      "resolution_notes": "Root helpers at scripts/submit-openclaw-discovery-candidate.ps1, scripts/submit-openclaw-runtime-verification-signal.ps1, and scripts/submit-openclaw-maintenance-watchdog-signal.ps1 are active alongside the repo-native adapter checks in scripts/openclaw/. Candidates dw-openclaw-discovery-submission-flow and dw-openclaw-runtime-verification-freshness-2026-03-22 exercised the first two paths; dw-openclaw-maintenance-watchdog-signal-lane materialized the third lane without fabricating a live incident."
     },
     {
       "gap_id": "gap-monitor-review-enforcement",
@@ -93,7 +189,7 @@
       "candidate_ids": [],
       "detected_at": "2026-03-22",
       "resolved_at": "2026-03-22",
-      "resolution_notes": "Checker created at mission-control/scripts/check-discovery-monitor-review-cadence.ts"
+      "resolution_notes": "Resolved historically through a Discovery monitor-review cadence checker during the earlier external-host era. This gap remains closed, but the retired Mission Control script path is no longer the active repo-native operator surface."
     },
     {
       "gap_id": "gap-queue-underexercised",
@@ -117,7 +213,7 @@
       "candidate_ids": [],
       "detected_at": "2026-03-22",
       "resolved_at": "2026-03-22",
-      "resolution_notes": "Checker created at mission-control/scripts/check-discovery-intake-queue.ts; registered as npm run check:discovery-intake-queue"
+      "resolution_notes": "Discovery queue writes and transitions are now repo-native through shared/lib/discovery-intake-queue-writer.ts and shared/lib/discovery-intake-queue-transition.ts. The older Mission Control checker reference is retired; active queue truth is carried by the canonical queue artifact plus repo-native composition/read surfaces."
     },
     {
       "gap_id": "gap-architecture-to-runtime-handoff",
@@ -153,7 +249,7 @@
       "candidate_ids": ["dw-discovery-gap-driven-priority-loop", "dw-openclaw-discovery-submission-flow", "dw-openclaw-runtime-verification-freshness-2026-03-22", "dw-openclaw-maintenance-watchdog-signal-lane"],
       "detected_at": "2026-03-22",
       "resolved_at": "2026-03-23",
-      "resolution_notes": "Executable checker `npm run check:discovery-front-door-coverage` now measures front-door routine usage from the live corpus. Current metrics: queue in primary mode, 22 total entries, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The lone post-primary missing intake link is a backfill candidate (`al-parked-cli-anything`), so Discovery-first routine usage is confirmed for native work."
+      "resolution_notes": "The canonical front-door coverage analysis now lives at shared/lib/discovery-front-door-coverage.ts and measures routine usage from the live corpus. Current metrics: queue in primary mode, 22 total entries, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The lone post-primary missing intake link is a backfill candidate (`al-parked-cli-anything`), so Discovery-first routine usage is confirmed for native work."
     },
     {
       "gap_id": "gap-agent-lab-legacy-dependency",

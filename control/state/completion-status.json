@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "updatedAt": "2026-04-02",
+  "anchorPath": "road-to-completion.md",
+  "currentTargetId": "phase_complete",
+  "currentTargetDescription": "All completion slices have been completed. The roadmap phases 0-9 are done.",
+  "selectionRule": "Select the lowest-priority-rank pending slice whose dependencies are completed and whose blockedByClosedSeam set does not intersect the currently closed seams. If multiple eligible slices share the same best priority rank, stop for decision instead of picking arbitrarily.",
+  "closedSeams": [
+    "host_facing_promotion",
+    "callable_implementation",
+    "host_integration",
+    "runtime_execution",
+    "promotion_automation",
+    "automatic_downstream_advancement"
+  ],
+  "lastCompletedSliceId": "bounded_persistent_orchestration",
+  "lastContextArtifactPath": "control/logs/2026-04/2026-04-02-bounded-persistent-orchestration.md"
+}

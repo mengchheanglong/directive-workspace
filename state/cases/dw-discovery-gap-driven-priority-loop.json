@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-discovery-gap-driven-priority-loop",
+  "candidateId": "dw-discovery-gap-driven-priority-loop",
+  "candidateName": "Discovery Gap-Driven Priority Loop",
+  "sourceType": "internal-signal",
+  "sourceReference": "knowledge/active-mission.md + discovery/capability-gaps.json + discovery/intake-queue.json",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "standard",
+  "queueStatus": "completed",
+  "createdAt": "2026-03-22T00:00:00.000Z",
+  "updatedAt": "2026-03-22T00:00:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/intake/2026-03-22-discovery-gap-driven-priority-loop-intake.md",
+    "triageRecordPath": null,
+    "routingRecordPath": null,
+    "engineRunRecordPath": null,
+    "engineRunReportPath": null,
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": "architecture/03-adopted/2026-03-22-discovery-gap-priority-worklist-adopted.md"
+  },
+  "projectionInputs": null
+}

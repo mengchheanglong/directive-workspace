@@ -4,41 +4,52 @@ import path from "node:path";
 import type { DiscoveryHostStorageBridge } from "../integration-kit/starter/discovery-submission-adapter.template";
 import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
 import {
+  DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
+  readDirectiveRuntimePromotionSpecification,
+} from "../../shared/lib/runtime-promotion-specification.ts";
+import {
   renderRuntimeFollowUpRecord,
   resolveRuntimeFollowUpRecordPath,
   type RuntimeFollowUpRecordRequest,
-} from "../../shared/lib/runtime-follow-up-record-writer";
+} from "../../shared/lib/runtime-follow-up-record-writer.ts";
 import {
   renderRuntimeRecord,
   resolveRuntimeRecordPath,
   type RuntimeRecordRequest,
-} from "../../shared/lib/runtime-record-writer";
+} from "../../shared/lib/runtime-record-writer.ts";
 import {
   renderRuntimeProofChecklist,
   resolveRuntimeProofChecklistPath,
   resolveRuntimeProofGateSnapshotPath,
   type RuntimeProofBundleRequest,
-} from "../../shared/lib/runtime-proof-bundle-writer";
+} from "../../shared/lib/runtime-proof-bundle-writer.ts";
 import {
   renderRuntimeTransformationProof,
   resolveRuntimeTransformationProofPath,
   type RuntimeTransformationProofRequest,
-} from "../../shared/lib/runtime-transformation-proof-writer";
+} from "../../shared/lib/runtime-transformation-proof-writer.ts";
 import {
   renderRuntimeTransformationRecord,
   resolveRuntimeTransformationRecordPath,
   type RuntimeTransformationRecordRequest,
-} from "../../shared/lib/runtime-transformation-record-writer";
+} from "../../shared/lib/runtime-transformation-record-writer.ts";
 import {
   renderRuntimePromotionRecord,
   resolveRuntimePromotionRecordPath,
   type RuntimePromotionRecordRequest,
-} from "../../shared/lib/runtime-promotion-record-writer";
+} from "../../shared/lib/runtime-promotion-record-writer.ts";
 import {
   renderRuntimeRegistryEntry,
   resolveRuntimeRegistryEntryPath,
   type RuntimeRegistryEntryRequest,
-} from "../../shared/lib/runtime-registry-entry-writer";
+} from "../../shared/lib/runtime-registry-entry-writer.ts";
+import {
+  runDirectiveRuntimeCallableExecution,
+  type DirectiveRuntimeCallableExecutionRunResult,
+} from "../../runtime/core/callable-execution.ts";
+import {
+  runDirectiveRuntimeV0LiveMiniSweAgentCallableIntegration,
+} from "../../runtime/01-callable-integrations/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-callable-integration.ts";
 
 function normalizeAbsolutePath(filePath: string) {
   return path.resolve(filePath).replace(/\\/g, "/");
@@ -129,6 +140,13 @@ export type StandaloneScientifyToolDescriptor = {
   modulePath: string;
 };
 
+export type StandaloneLiveMiniSweCallableBoundaryDescriptor = {
+  inputShape: string[];
+  outputShape: string[];
+  description: string;
+  safetyRules: string[];
+};
+
 export type StandaloneScientifyBundleDescriptor = {
   candidateId: string;
   candidateName: string;
@@ -146,8 +164,91 @@ export type StandaloneScientifyBundleDescriptor = {
     runtimeProofPath: string | null;
     runtimeCapabilityBoundaryPath: string | null;
     runtimePromotionReadinessPath: string | null;
+    runtimePromotionRecordPath: string | null;
+    runtimePromotionSpecificationPath: string | null;
+    runtimeCallableStubPath: string | null;
+  };
+  adapter: {
+    adapterId: string;
+    loadMode: "read_promotion_specification_only";
+    compileContractArtifact: string;
+    promotionSpecificationPath: string;
+    callableStubPath: string | null;
+    integrationMode: string | null;
+    targetRuntimeSurface: string | null;
+    requiredGates: string[];
+    openDecisions: string[];
+    hostConsumableDescription: string;
   };
   tools: StandaloneScientifyToolDescriptor[];
+  runtimeOwnedBoundary: string[];
+  standaloneHostOwnedBoundary: string[];
+};
+
+export type StandaloneScientifyHostInvocationRequest = {
+  tool: StandaloneScientifyToolDescriptor["tool"];
+  input: Record<string, unknown>;
+  timeoutMs?: number;
+  executionAt?: string;
+  persistArtifacts?: boolean;
+};
+
+export type StandaloneScientifyHostInvocationResult = {
+  candidateId: string;
+  candidateName: string;
+  hostSurface: string;
+  currentStage: string;
+  proposedHost: string | null;
+  linkedArtifacts: StandaloneScientifyBundleDescriptor["linkedArtifacts"];
+  adapter: {
+    adapterId: string;
+    invokeSurface: "standalone_host_runtime_scientify_invoke";
+    compileContractArtifact: string;
+    promotionSpecificationPath: string;
+    callableStubPath: string | null;
+    runtimeExecutorSurface: "runtime/core/callable-execution.ts";
+    runtimeInternalsBypassed: false;
+    hostIntegrated: true;
+    promotionAutomation: false;
+    automaticWorkflowAdvancement: false;
+  };
+  execution: DirectiveRuntimeCallableExecutionRunResult;
+};
+
+export type StandaloneLiveMiniSweAgentDescriptor = {
+  candidateId: string;
+  candidateName: string;
+  hostSurface: string;
+  currentStage: string;
+  nextLegalStep: string;
+  proposedHost: string | null;
+  executionState: string | null;
+  promotionReadinessBlockers: string[];
+  prePromotionSlicePath: string;
+  implementationSlicePath: string;
+  artifactPath: string;
+  linkedArtifacts: {
+    runtimeRecordPath: string | null;
+    runtimeProofPath: string | null;
+    runtimeCapabilityBoundaryPath: string | null;
+    runtimePromotionReadinessPath: string | null;
+    runtimePromotionRecordPath: string | null;
+    runtimePromotionSpecificationPath: string | null;
+    runtimeCallableStubPath: string | null;
+  };
+  adapter: {
+    adapterId: string;
+    loadMode: "read_promotion_specification_only";
+    compileContractArtifact: string;
+    promotionSpecificationPath: string;
+    callableStubPath: string | null;
+    integrationMode: string | null;
+    targetRuntimeSurface: string | null;
+    requiredGates: string[];
+    openDecisions: string[];
+    hostConsumableDescription: string;
+  };
+  callableBoundary: StandaloneLiveMiniSweCallableBoundaryDescriptor;
   runtimeOwnedBoundary: string[];
   standaloneHostOwnedBoundary: string[];
 };
@@ -158,6 +259,8 @@ const SCIENTIFY_PRE_PROMOTION_SLICE_RELATIVE_PATH =
   "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-standalone-host-pre-promotion-implementation-slice-01.md";
 const SCIENTIFY_IMPLEMENTATION_SLICE_RELATIVE_PATH =
   "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-standalone-host-runtime-implementation-slice-01.md";
+const STANDALONE_HOST_TARGET =
+  "Directive Workspace standalone host (hosts/standalone-host/)";
 const SCIENTIFY_DESCRIPTOR_TOOLS: StandaloneScientifyToolDescriptor[] = [
   {
     tool: "arxiv-search",
@@ -180,6 +283,13 @@ const SCIENTIFY_DESCRIPTOR_TOOLS: StandaloneScientifyToolDescriptor[] = [
     modulePath: "runtime/capabilities/literature-access/unpaywall-download.ts",
   },
 ];
+
+const LIVE_MINI_SWE_PROMOTION_READINESS_RELATIVE_PATH =
+  "runtime/05-promotion-readiness/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-readiness.md";
+const LIVE_MINI_SWE_PRE_PROMOTION_SLICE_RELATIVE_PATH =
+  "runtime/follow-up/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-standalone-host-pre-promotion-implementation-slice-01.md";
+const LIVE_MINI_SWE_IMPLEMENTATION_SLICE_RELATIVE_PATH =
+  "runtime/follow-up/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-standalone-host-runtime-implementation-slice-01.md";
 
 export async function writeStandaloneRuntimeFollowUp(input: {
   storage: DiscoveryHostStorageBridge;
@@ -603,6 +713,15 @@ export function readStandaloneScientifyLiteratureAccessBundle(input: {
   if (!resolved || !resolved.runtime) {
     throw new Error("scientify_runtime_descriptor_unavailable");
   }
+  const promotionSpecificationPath =
+    resolved.linkedArtifacts.runtimePromotionSpecificationPath;
+  if (!promotionSpecificationPath) {
+    throw new Error("scientify_runtime_promotion_specification_unavailable");
+  }
+  const promotionSpecification = readDirectiveRuntimePromotionSpecification({
+    directiveRoot: input.directiveRoot,
+    promotionSpecificationPath,
+  });
 
   return {
     candidateId: resolved.candidateId ?? "dw-source-scientify-research-workflow-plugin-2026-03-27",
@@ -621,6 +740,21 @@ export function readStandaloneScientifyLiteratureAccessBundle(input: {
       runtimeProofPath: resolved.linkedArtifacts.runtimeProofPath,
       runtimeCapabilityBoundaryPath: resolved.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
       runtimePromotionReadinessPath: resolved.linkedArtifacts.runtimePromotionReadinessPath,
+      runtimePromotionRecordPath: resolved.linkedArtifacts.runtimePromotionRecordPath,
+      runtimePromotionSpecificationPath: promotionSpecificationPath,
+      runtimeCallableStubPath: resolved.linkedArtifacts.runtimeCallableStubPath,
+    },
+    adapter: {
+      adapterId: `${promotionSpecification.candidateId}:standalone_host:promotion_spec_adapter`,
+      loadMode: "read_promotion_specification_only",
+      compileContractArtifact: DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
+      promotionSpecificationPath,
+      callableStubPath: promotionSpecification.linkedArtifacts.callableStubPath,
+      integrationMode: promotionSpecification.integrationMode,
+      targetRuntimeSurface: promotionSpecification.targetRuntimeSurface,
+      requiredGates: [...promotionSpecification.requiredGates],
+      openDecisions: [...promotionSpecification.openDecisions],
+      hostConsumableDescription: promotionSpecification.hostConsumableDescription,
     },
     tools: [...SCIENTIFY_DESCRIPTOR_TOOLS],
     runtimeOwnedBoundary: [
@@ -631,6 +765,143 @@ export function readStandaloneScientifyLiteratureAccessBundle(input: {
     ],
     standaloneHostOwnedBoundary: [
       "read-only descriptor surface for the approved 4-tool bundle",
+      "promotion-specification reader for the approved Runtime-owned capability",
+      "host-visible summary of current Runtime truth and linked artifacts",
+    ],
+  };
+}
+
+export async function invokeStandaloneScientifyLiteratureAccessTool(input: {
+  directiveRoot: string;
+  request: StandaloneScientifyHostInvocationRequest;
+}): Promise<StandaloneScientifyHostInvocationResult> {
+  const descriptor = readStandaloneScientifyLiteratureAccessBundle({
+    directiveRoot: input.directiveRoot,
+  });
+  const promotionSpecificationPath =
+    descriptor.linkedArtifacts.runtimePromotionSpecificationPath;
+  if (!promotionSpecificationPath) {
+    throw new Error("scientify_runtime_promotion_specification_unavailable");
+  }
+  if (descriptor.currentStage !== "runtime.promotion_record.opened") {
+    throw new Error("scientify_host_invoke_requires_promotion_record");
+  }
+  if (descriptor.proposedHost !== STANDALONE_HOST_TARGET) {
+    throw new Error("scientify_host_invoke_requires_standalone_host_target");
+  }
+
+  const promotionSpecification = readDirectiveRuntimePromotionSpecification({
+    directiveRoot: input.directiveRoot,
+    promotionSpecificationPath,
+  });
+  const execution = await runDirectiveRuntimeCallableExecution({
+    directiveRoot: input.directiveRoot,
+    capabilityId: descriptor.candidateId,
+    tool: input.request.tool,
+    input: input.request.input,
+    timeoutMs: input.request.timeoutMs,
+    executionAt: input.request.executionAt,
+    persistArtifacts: input.request.persistArtifacts,
+  });
+
+  return {
+    candidateId: descriptor.candidateId,
+    candidateName: descriptor.candidateName,
+    hostSurface: "Directive Workspace standalone host callable invoke adapter",
+    currentStage: descriptor.currentStage,
+    proposedHost: descriptor.proposedHost,
+    linkedArtifacts: descriptor.linkedArtifacts,
+    adapter: {
+      adapterId: `${promotionSpecification.candidateId}:standalone_host:runtime_callable_invoke_adapter`,
+      invokeSurface: "standalone_host_runtime_scientify_invoke",
+      compileContractArtifact: DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
+      promotionSpecificationPath,
+      callableStubPath: promotionSpecification.linkedArtifacts.callableStubPath,
+      runtimeExecutorSurface: "runtime/core/callable-execution.ts",
+      runtimeInternalsBypassed: false,
+      hostIntegrated: true,
+      promotionAutomation: false,
+      automaticWorkflowAdvancement: false,
+    },
+    execution,
+  };
+}
+
+export function readStandaloneLiveMiniSweAgentDescriptor(input: {
+  directiveRoot: string;
+}): StandaloneLiveMiniSweAgentDescriptor {
+  const resolved = resolveDirectiveWorkspaceState({
+    directiveRoot: input.directiveRoot,
+    artifactPath: LIVE_MINI_SWE_PROMOTION_READINESS_RELATIVE_PATH,
+    includeAnchors: false,
+  }).focus;
+
+  if (!resolved || !resolved.runtime) {
+    throw new Error("live_mini_swe_runtime_descriptor_unavailable");
+  }
+  const promotionSpecificationPath =
+    resolved.linkedArtifacts.runtimePromotionSpecificationPath;
+  const callableStubPath = resolved.linkedArtifacts.runtimeCallableStubPath;
+  if (!promotionSpecificationPath) {
+    throw new Error("live_mini_swe_runtime_promotion_specification_unavailable");
+  }
+  if (!callableStubPath) {
+    throw new Error("live_mini_swe_runtime_callable_stub_unavailable");
+  }
+  const promotionSpecification = readDirectiveRuntimePromotionSpecification({
+    directiveRoot: input.directiveRoot,
+    promotionSpecificationPath,
+  });
+  const callable = runDirectiveRuntimeV0LiveMiniSweAgentCallableIntegration();
+
+  return {
+    candidateId: resolved.candidateId ?? "dw-live-mini-swe-agent-engine-pressure-2026-03-24",
+    candidateName: resolved.candidateName ?? "mini-swe-agent Runtime Capability Pressure",
+    hostSurface: "Directive Workspace standalone host CLI descriptor",
+    currentStage: resolved.currentStage,
+    nextLegalStep: resolved.nextLegalStep,
+    proposedHost: resolved.runtime.proposedHost,
+    executionState: resolved.runtime.executionState,
+    promotionReadinessBlockers: [...resolved.runtime.promotionReadinessBlockers],
+    prePromotionSlicePath: LIVE_MINI_SWE_PRE_PROMOTION_SLICE_RELATIVE_PATH,
+    implementationSlicePath: LIVE_MINI_SWE_IMPLEMENTATION_SLICE_RELATIVE_PATH,
+    artifactPath: LIVE_MINI_SWE_PROMOTION_READINESS_RELATIVE_PATH,
+    linkedArtifacts: {
+      runtimeRecordPath: resolved.linkedArtifacts.runtimeRecordPath,
+      runtimeProofPath: resolved.linkedArtifacts.runtimeProofPath,
+      runtimeCapabilityBoundaryPath: resolved.linkedArtifacts.runtimeRuntimeCapabilityBoundaryPath,
+      runtimePromotionReadinessPath: resolved.linkedArtifacts.runtimePromotionReadinessPath,
+      runtimePromotionRecordPath: resolved.linkedArtifacts.runtimePromotionRecordPath,
+      runtimePromotionSpecificationPath: promotionSpecificationPath,
+      runtimeCallableStubPath: callableStubPath,
+    },
+    adapter: {
+      adapterId: `${promotionSpecification.candidateId}:standalone_host:promotion_spec_adapter`,
+      loadMode: "read_promotion_specification_only",
+      compileContractArtifact: DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
+      promotionSpecificationPath,
+      callableStubPath: promotionSpecification.linkedArtifacts.callableStubPath,
+      integrationMode: promotionSpecification.integrationMode,
+      targetRuntimeSurface: promotionSpecification.targetRuntimeSurface,
+      requiredGates: [...promotionSpecification.requiredGates],
+      openDecisions: [...promotionSpecification.openDecisions],
+      hostConsumableDescription: promotionSpecification.hostConsumableDescription,
+    },
+    callableBoundary: {
+      inputShape: [...callable.callableBoundary.inputShape],
+      outputShape: [...callable.callableBoundary.outputShape],
+      description: callable.callableBoundary.description,
+      safetyRules: [...callable.callableBoundary.safetyRules],
+    },
+    runtimeOwnedBoundary: [
+      "lifecycle truth",
+      "blocker judgment",
+      "callable legality",
+      "promotion/execution/integration legality",
+    ],
+    standaloneHostOwnedBoundary: [
+      "read-only descriptor surface for the approved live mini-swe callable boundary",
+      "promotion-specification reader for the approved Runtime-owned capability",
       "host-visible summary of current Runtime truth and linked artifacts",
     ],
   };

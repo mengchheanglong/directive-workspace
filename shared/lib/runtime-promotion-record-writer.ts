@@ -1,4 +1,11 @@
+import fs from "node:fs";
 import path from "node:path";
+
+import {
+  DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
+  parseDirectiveRuntimePromotionReadinessFields,
+  resolveDirectiveRuntimePromotionSpecificationPath,
+} from "./runtime-promotion-specification.ts";
 
 function requiredString(value: string, fieldName: string) {
   const normalized = value.trim();
@@ -56,6 +63,219 @@ export type RuntimePromotionRecordRequest = {
   promotion_decision: string;
   output_relative_path?: string | null;
 };
+
+export type RuntimePromotionRecordPrerequisiteArtifact = {
+  relativePath: string | null;
+  present: boolean;
+  required: boolean;
+};
+
+export type PreHostRuntimePromotionRecordPrerequisites = {
+  candidateId: string;
+  candidateName: string;
+  sourcePromotionReadinessPath: string;
+  proposedHost: string | null;
+  integrationMode: string | null;
+  targetRuntimeSurface: string | null;
+  executionState: string | null;
+  requiredGates: string[];
+  compileContractArtifact: RuntimePromotionRecordPrerequisiteArtifact;
+  promotionSpecificationArtifact: RuntimePromotionRecordPrerequisiteArtifact;
+  linkedArtifacts: {
+    capabilityBoundary: RuntimePromotionRecordPrerequisiteArtifact;
+    runtimeProof: RuntimePromotionRecordPrerequisiteArtifact;
+    runtimeRecord: RuntimePromotionRecordPrerequisiteArtifact;
+    followUp: RuntimePromotionRecordPrerequisiteArtifact;
+    routing: RuntimePromotionRecordPrerequisiteArtifact;
+    callableStub: RuntimePromotionRecordPrerequisiteArtifact;
+  };
+  executionGuards: {
+    hostSelected: boolean;
+    notPromoted: boolean;
+    notHostIntegrated: boolean;
+    nonExecuting: boolean;
+  };
+  promotionRecordState: {
+    existingPaths: string[];
+    unopened: boolean;
+  };
+  missingPrerequisites: string[];
+  readyForPreHostPromotionRecordPreparation: boolean;
+};
+
+function isCallableBundleCapability(fields: {
+  candidateName: string;
+  targetRuntimeSurface: string | null;
+  linkedArtifacts: {
+    callableStubPath: string | null;
+  };
+}) {
+  if (fields.linkedArtifacts.callableStubPath) {
+    return true;
+  }
+
+  const combined = [
+    fields.candidateName,
+    fields.targetRuntimeSurface,
+  ]
+    .filter((value): value is string => Boolean(value))
+    .join(" ")
+    .toLowerCase();
+
+  return combined.includes("callable");
+}
+
+function checkRelativeArtifact(
+  directiveRoot: string,
+  relativePath: string | null,
+  required: boolean,
+): RuntimePromotionRecordPrerequisiteArtifact {
+  if (!relativePath) {
+    return {
+      relativePath: null,
+      present: false,
+      required,
+    };
+  }
+  return {
+    relativePath,
+    present: fs.existsSync(path.join(directiveRoot, relativePath)),
+    required,
+  };
+}
+
+function findExistingPromotionRecordPaths(
+  directiveRoot: string,
+  candidateId: string,
+) {
+  const promotionRecordDir = path.join(directiveRoot, "runtime", "promotion-records");
+  if (!fs.existsSync(promotionRecordDir)) {
+    return [];
+  }
+
+  return fs
+    .readdirSync(promotionRecordDir, { withFileTypes: true })
+    .filter((entry) =>
+      entry.isFile()
+      && entry.name.endsWith(`-${candidateId}-promotion-record.md`)
+    )
+    .map((entry) => path.join("runtime", "promotion-records", entry.name).replace(/\\/g, "/"))
+    .sort((left, right) => left.localeCompare(right));
+}
+
+export function evaluatePreHostRuntimePromotionRecordPrerequisites(input: {
+  directiveRoot: string;
+  promotionReadinessPath: string;
+}): PreHostRuntimePromotionRecordPrerequisites {
+  const fields = parseDirectiveRuntimePromotionReadinessFields(input);
+  const promotionSpecificationPath = resolveDirectiveRuntimePromotionSpecificationPath({
+    promotionReadinessPath: input.promotionReadinessPath,
+  });
+  const callableStubRequired = isCallableBundleCapability(fields);
+
+  const compileContractArtifact = checkRelativeArtifact(
+    input.directiveRoot,
+    DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
+    true,
+  );
+  const promotionSpecificationArtifact = checkRelativeArtifact(
+    input.directiveRoot,
+    promotionSpecificationPath,
+    true,
+  );
+  const linkedArtifacts = {
+    capabilityBoundary: checkRelativeArtifact(
+      input.directiveRoot,
+      fields.linkedArtifacts.capabilityBoundaryPath,
+      true,
+    ),
+    runtimeProof: checkRelativeArtifact(
+      input.directiveRoot,
+      fields.linkedArtifacts.runtimeProofPath,
+      true,
+    ),
+    runtimeRecord: checkRelativeArtifact(
+      input.directiveRoot,
+      fields.linkedArtifacts.runtimeRecordPath,
+      true,
+    ),
+    followUp: checkRelativeArtifact(
+      input.directiveRoot,
+      fields.linkedArtifacts.followUpPath,
+      true,
+    ),
+    routing: checkRelativeArtifact(
+      input.directiveRoot,
+      fields.linkedArtifacts.routingPath,
+      true,
+    ),
+    callableStub: checkRelativeArtifact(
+      input.directiveRoot,
+      fields.linkedArtifacts.callableStubPath,
+      callableStubRequired,
+    ),
+  };
+
+  const executionState = fields.executionState ?? "";
+  const executionGuards = {
+    hostSelected: Boolean(fields.proposedHost && fields.proposedHost !== "pending_host_selection"),
+    notPromoted: executionState.includes("not promoted"),
+    notHostIntegrated: executionState.includes("not host-integrated"),
+    nonExecuting: executionState.includes("not executing"),
+  };
+
+  const promotionRecordState = {
+    existingPaths: findExistingPromotionRecordPaths(input.directiveRoot, fields.candidateId),
+    unopened: true,
+  };
+  promotionRecordState.unopened = promotionRecordState.existingPaths.length === 0;
+
+  const missingPrerequisites: string[] = [];
+  if (!executionGuards.hostSelected) {
+    missingPrerequisites.push("proposedHost");
+  }
+  if (!compileContractArtifact.present) {
+    missingPrerequisites.push("compileContractArtifact");
+  }
+  if (!promotionSpecificationArtifact.present) {
+    missingPrerequisites.push("promotionSpecificationArtifact");
+  }
+  for (const [label, artifact] of Object.entries(linkedArtifacts)) {
+    if (artifact.required && !artifact.present) {
+      missingPrerequisites.push(label);
+    }
+  }
+  if (!executionGuards.nonExecuting) {
+    missingPrerequisites.push("executionState.nonExecuting");
+  }
+  if (!executionGuards.notPromoted) {
+    missingPrerequisites.push("executionState.notPromoted");
+  }
+  if (!executionGuards.notHostIntegrated) {
+    missingPrerequisites.push("executionState.notHostIntegrated");
+  }
+  if (!promotionRecordState.unopened) {
+    missingPrerequisites.push("promotionRecordState.unopened");
+  }
+
+  return {
+    candidateId: fields.candidateId,
+    candidateName: fields.candidateName,
+    sourcePromotionReadinessPath: fields.sourcePromotionReadinessPath,
+    proposedHost: fields.proposedHost,
+    integrationMode: fields.integrationMode,
+    targetRuntimeSurface: fields.targetRuntimeSurface,
+    executionState: fields.executionState,
+    requiredGates: [...fields.requiredGates],
+    compileContractArtifact,
+    promotionSpecificationArtifact,
+    linkedArtifacts,
+    executionGuards,
+    promotionRecordState,
+    missingPrerequisites,
+    readyForPreHostPromotionRecordPreparation: missingPrerequisites.length === 0,
+  };
+}
 
 export function resolveRuntimePromotionRecordPath(input: {
   candidate_id: string;

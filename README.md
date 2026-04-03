@@ -88,7 +88,8 @@ Stable root export lanes:
 - `@directive-workspace/product/shared/discovery`
 - `@directive-workspace/product/shared/architecture`
 - `@directive-workspace/product/shared/workspace-state`
-- `@directive-workspace/product/runtime/core/v0`
+- `@directive-workspace/product/runtime/core/runtime-core-contract`
+- `@directive-workspace/product/runtime/core/v0` (legacy compatibility alias)
 
 Initial Engine surface:
 
@@ -201,19 +202,48 @@ Focused report output now distinguishes:
 - `currentStage` / `nextLegalStep` = the latest known case state reachable from that artifact's linked chain
 - `currentHead.artifactPath` / `currentHead.artifactStage` = the current live artifact to continue from, derived from the canonical linked chain rather than queue-owned workflow state
 
+## Research Engine Discovery Skill
+
+Directive Workspace now treats `research-engine` as a bounded Discovery capability. It ingests a Discovery-only `research-engine` bundle through the canonical Discovery front door without granting it route or adoption authority.
+
+Use:
+
+```bash
+npm run import:research-engine-discovery-bundle -- --bundle ../research-engine/artifacts/dw_import_bundle.json
+```
+
+Defaults:
+
+- imports only the `research-engine` packet's `strong_signals`
+- adapts them into `queue_only` Discovery submissions
+- preserves `Discovery` as the route/adoption decision-maker
+- keeps imported entries in `note` operating mode
+- records imported entries with `submission_origin = research-engine` in canonical queue/state truth
+- consumes only the Discovery-facing packet pair (`source_intelligence_packet.json` and `dw_discovery_packet.json`) plus the manifest refs that point at them
+
+Optional bounded selection:
+
+```bash
+npm run import:research-engine-discovery-bundle -- --bundle ../research-engine/artifacts/dw_import_bundle.json --candidate-id paperqa2 --candidate-id langgraph
+```
+
 ## Structure
 
 - `engine/` - shared core machinery and default Directive Workspace lane definitions
 - `sources/` - raw source snapshots, parked upstream material, and source notes that feed the Engine
 - `discovery/` - Discovery lane operating surfaces and records
 - `runtime/` - Runtime lane operating surfaces, proofs, records, and registry
-- `architecture/` - Architecture lane experiments, adoptions, and deferred decisions
+- `architecture/` - Architecture lane experiments, adoptions, deferred decisions, and DEEP-only materialization storage under `architecture/deep-materialization/`
 - `shared/` - product-owned contracts, schemas, templates, and shared vocabulary
 - `knowledge/` - canonical doctrine, workflow, mission definition, and operating policy
+- `control/` - active run-control surfaces, policies, logs, and machine-readable control state
+- `state/` - case/event persistence
 - `hosts/` - host adapters, reference hosts, and integration state
+- `scratch/` - local non-authoritative scratch only
 
 ## Start Here
 
+- [operator-start.md](./operator-start.md)
 - [engine-direction.md](./knowledge/engine-direction.md)
 - [doctrine.md](./knowledge/doctrine.md)
 - [workflow.md](./knowledge/workflow.md)
@@ -222,3 +252,9 @@ Focused report output now distinguishes:
 - [execution-plan.md](./knowledge/execution-plan.md)
 - [architecture-completion-rubric.md](./knowledge/architecture-completion-rubric.md)
 - [technology-policy.md](./knowledge/technology-policy.md)
+
+Useful operator reports:
+
+- `npm run report:directive-workspace-state`
+- `npm run report:runtime-follow-up-navigation`
+- `npm run report:runtime-loop-control`

@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../shared/lib/architecture-deep-tail-stage-map.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTINUATION_ROOT = path.join(DIRECTIVE_ROOT, "knowledge", "continuation");
@@ -13,7 +14,7 @@ const CANONICAL_EXAMPLES = {
   discoveryRuntimeRoute:
     "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
   architectureKeepEvaluation:
-    "architecture/09-post-consumption-evaluations/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md",
+    `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md`,
   architectureBoundedResult:
     "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
   runtimeFollowUp:

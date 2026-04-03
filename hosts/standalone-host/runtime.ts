@@ -473,6 +473,27 @@ export function createStandaloneFilesystemHost(
         directiveRoot: harness.directiveRoot,
       });
     },
+    async invokeScientifyLiteratureAccessTool(input: {
+      tool: "arxiv-search" | "arxiv-download" | "openalex-search" | "unpaywall-download";
+      input: Record<string, unknown>;
+      timeoutMs?: number;
+      executionAt?: string;
+      persistArtifacts?: boolean;
+    }) {
+      const { invokeStandaloneScientifyLiteratureAccessTool } =
+        await loadStandaloneRuntimeLaneModule();
+      return invokeStandaloneScientifyLiteratureAccessTool({
+        directiveRoot: harness.directiveRoot,
+        request: input,
+      });
+    },
+    async readLiveMiniSweAgentDescriptor() {
+      const { readStandaloneLiveMiniSweAgentDescriptor } =
+        await loadStandaloneRuntimeLaneModule();
+      return readStandaloneLiveMiniSweAgentDescriptor({
+        directiveRoot: harness.directiveRoot,
+      });
+    },
     readQueue() {
       return harness.readQueue();
     },
