@@ -26,6 +26,11 @@ export type DirectiveEngineUsefulnessLevel = "direct" | "structural" | "meta";
 
 export type DirectiveEngineRoutingConfidence = "high" | "medium" | "low";
 
+export type DirectiveEnginePrimaryAdoptionTarget =
+  | "discovery"
+  | "architecture"
+  | "runtime";
+
 export type DirectiveEngineHostDependence =
   | "engine_only"
   | "host_adapter_required";
@@ -55,6 +60,9 @@ export type DirectiveEngineSourceItem = {
   notes?: string[] | null;
   missionAlignmentHint?: string | null;
   capabilityGapId?: string | null;
+  primaryAdoptionTarget?: DirectiveEnginePrimaryAdoptionTarget | null;
+  containsExecutableCode?: boolean | null;
+  containsWorkflowPattern?: boolean | null;
 };
 
 export type DirectiveEngineMissionInput = {

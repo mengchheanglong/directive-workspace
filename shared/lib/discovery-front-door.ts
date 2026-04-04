@@ -177,6 +177,9 @@ function buildDirectiveEngineSourceFromDiscoverySubmission(
     notes,
     missionAlignmentHint: request.mission_alignment ?? null,
     capabilityGapId: request.capability_gap_id ?? null,
+    primaryAdoptionTarget: request.primary_adoption_target ?? null,
+    containsExecutableCode: request.contains_executable_code ?? null,
+    containsWorkflowPattern: request.contains_workflow_pattern ?? null,
   };
 }
 

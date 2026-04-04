@@ -5,7 +5,20 @@ export function classifyDirectiveEngineUsefulness(
   input: DirectiveEngineLanePlanningInput,
 ): DirectiveEngineUsefulnessLevel {
   if (input.lane.laneId === "runtime") {
+    if (
+      input.source.primaryAdoptionTarget === "runtime"
+      || input.source.containsExecutableCode
+    ) {
+      return "direct";
+    }
     return "direct";
+  }
+
+  if (
+    input.source.primaryAdoptionTarget === "architecture"
+    && input.source.containsWorkflowPattern
+  ) {
+    return "meta";
   }
 
   if (input.routingAssessment.scoreBreakdown.metaUsefulnessSignal > 0) {
@@ -28,6 +41,12 @@ export function explainDirectiveEngineUsefulness(
   }
 
   if (usefulnessLevel === "meta") {
+    if (
+      input.source.primaryAdoptionTarget === "architecture"
+      && input.source.containsWorkflowPattern
+    ) {
+      return "Meta-usefulness: structured source metadata marks the candidate as an Architecture-targeted workflow pattern, so the value is primarily about improving how Directive Workspace works rather than exposing repeated host-call value.";
+    }
     return "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.";
   }
 

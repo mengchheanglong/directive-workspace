@@ -1,19 +1,14 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
   optionalString,
-  readDirectiveArchitectureDeepTailArtifact,
+  prepareDirectiveArchitectureDeepTailWrite,
+  readDirectiveArchitectureDeepTailDetailArtifact,
   resolveArchitectureDeepTailRelativePath,
-  resolveDirectiveRelativePath,
+  writeDirectiveArchitectureDeepTailArtifact,
 } from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureConsumptionRecordDetail,
 } from "./architecture-consumption-record.ts";
 import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
-import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type EvaluateDirectiveArchitectureConsumptionInput = {
   consumptionPath: string;
@@ -143,22 +138,24 @@ function renderEvaluationMarkdown(input: {
 export function evaluateDirectiveArchitectureConsumption(
   input: EvaluateDirectiveArchitectureConsumptionInput,
 ): DirectiveArchitecturePostConsumptionEvaluationResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const consumptionRelativePath = resolveDirectiveRelativePath(directiveRoot, input.consumptionPath);
+  const writePreparation = prepareDirectiveArchitectureDeepTailWrite({
+    directiveRoot: input.directiveRoot,
+    sourcePath: input.consumptionPath,
+    sourceFieldName: "consumptionPath",
+    resolveTargetRelativePath: resolveEvaluationRelativePath,
+    actor: input.evaluatedBy,
+  });
+  const directiveRoot = writePreparation.directiveRoot;
+  const consumptionRelativePath = writePreparation.sourceRelativePath;
   const consumptionDetail = readDirectiveArchitectureConsumptionRecordDetail({
     directiveRoot,
     consumptionPath: consumptionRelativePath,
   });
-  const evaluationRelativePath = resolveEvaluationRelativePath(consumptionRelativePath);
-  const evaluationAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
-    directiveRoot,
-    relativePath: evaluationRelativePath,
-    mode: "write",
-  });
-  const created = !fs.existsSync(evaluationAbsolutePath);
-  const snapshotAt = new Date().toISOString();
-  const evaluatedBy = String(input.evaluatedBy || "directive-frontend-operator").trim()
-    || "directive-frontend-operator";
+  const evaluationRelativePath = writePreparation.targetRelativePath;
+  const evaluationAbsolutePath = writePreparation.targetAbsolutePath;
+  const created = writePreparation.created;
+  const snapshotAt = writePreparation.snapshotAt;
+  const evaluatedBy = writePreparation.actor;
   const decision = input.decision === "reopen" ? "reopen" : "keep";
   const rationale = optionalString(input.rationale)
     || (decision === "keep"
@@ -202,8 +199,14 @@ export function evaluateDirectiveArchitectureConsumption(
     rollbackNote,
   });
 
-  fs.mkdirSync(path.dirname(evaluationAbsolutePath), { recursive: true });
-  fs.writeFileSync(evaluationAbsolutePath, markdown, "utf8");
+  writeDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    stageId: "post_consumption_evaluation",
+    sourceRelativePath: consumptionRelativePath,
+    targetRelativePath: evaluationRelativePath,
+    targetAbsolutePath: evaluationAbsolutePath,
+    markdown,
+  });
 
   return {
     ok: true,
@@ -225,13 +228,13 @@ export function readDirectiveArchitecturePostConsumptionEvaluationDetail(input: 
   evaluationPath: string;
   directiveRoot?: string;
 }): DirectiveArchitecturePostConsumptionEvaluationDetail {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const evaluationArtifact = readDirectiveArchitectureDeepTailArtifact({
-    directiveRoot,
+  const evaluationArtifact = readDirectiveArchitectureDeepTailDetailArtifact({
+    directiveRoot: input.directiveRoot,
     artifactPath: input.evaluationPath,
     stage: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation,
     fieldName: "evaluationPath",
   });
+  const directiveRoot = evaluationArtifact.directiveRoot;
   const evaluationRelativePath = evaluationArtifact.relativePath;
   const evaluationAbsolutePath = evaluationArtifact.absolutePath;
   const content = evaluationArtifact.content;

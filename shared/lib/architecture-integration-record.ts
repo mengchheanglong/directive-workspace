@@ -1,19 +1,14 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
   optionalString,
-  readDirectiveArchitectureDeepTailArtifact,
+  prepareDirectiveArchitectureDeepTailWrite,
+  readDirectiveArchitectureDeepTailDetailArtifact,
   resolveArchitectureDeepTailRelativePath,
-  resolveDirectiveRelativePath,
+  writeDirectiveArchitectureDeepTailArtifact,
 } from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureRetentionDetail,
 } from "./architecture-retention.ts";
 import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
-import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type CreateDirectiveArchitectureIntegrationRecordInput = {
   retainedPath: string;
@@ -143,22 +138,24 @@ function renderIntegrationRecordMarkdown(input: {
 export function createDirectiveArchitectureIntegrationRecord(
   input: CreateDirectiveArchitectureIntegrationRecordInput,
 ): DirectiveArchitectureIntegrationRecordCreateResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const retainedRelativePath = resolveDirectiveRelativePath(directiveRoot, input.retainedPath);
+  const writePreparation = prepareDirectiveArchitectureDeepTailWrite({
+    directiveRoot: input.directiveRoot,
+    sourcePath: input.retainedPath,
+    sourceFieldName: "retainedPath",
+    resolveTargetRelativePath: resolveIntegrationRecordRelativePath,
+    actor: input.createdBy,
+  });
+  const directiveRoot = writePreparation.directiveRoot;
+  const retainedRelativePath = writePreparation.sourceRelativePath;
   const retainedDetail = readDirectiveArchitectureRetentionDetail({
     directiveRoot,
     retainedPath: retainedRelativePath,
   });
-  const integrationRelativePath = resolveIntegrationRecordRelativePath(retainedRelativePath);
-  const integrationAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
-    directiveRoot,
-    relativePath: integrationRelativePath,
-    mode: "write",
-  });
-  const created = !fs.existsSync(integrationAbsolutePath);
-  const snapshotAt = new Date().toISOString();
-  const createdBy = String(input.createdBy || "directive-frontend-operator").trim()
-    || "directive-frontend-operator";
+  const integrationRelativePath = writePreparation.targetRelativePath;
+  const integrationAbsolutePath = writePreparation.targetAbsolutePath;
+  const created = writePreparation.created;
+  const snapshotAt = writePreparation.snapshotAt;
+  const createdBy = writePreparation.actor;
   const integrationTargetSurface = optionalString(input.integrationTargetSurface)
     || "Directive Workspace engine-owned product logic within the current Architecture boundary.";
   const readinessSummary = optionalString(input.readinessSummary)
@@ -193,8 +190,14 @@ export function createDirectiveArchitectureIntegrationRecord(
     rollbackBoundary,
   });
 
-  fs.mkdirSync(path.dirname(integrationAbsolutePath), { recursive: true });
-  fs.writeFileSync(integrationAbsolutePath, markdown, "utf8");
+  writeDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    stageId: "integration_record",
+    sourceRelativePath: retainedRelativePath,
+    targetRelativePath: integrationRelativePath,
+    targetAbsolutePath: integrationAbsolutePath,
+    markdown,
+  });
 
   return {
     ok: true,
@@ -215,13 +218,13 @@ export function readDirectiveArchitectureIntegrationRecordDetail(input: {
   integrationPath: string;
   directiveRoot?: string;
 }): DirectiveArchitectureIntegrationRecordDetail {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const integrationArtifact = readDirectiveArchitectureDeepTailArtifact({
-    directiveRoot,
+  const integrationArtifact = readDirectiveArchitectureDeepTailDetailArtifact({
+    directiveRoot: input.directiveRoot,
     artifactPath: input.integrationPath,
     stage: ARCHITECTURE_DEEP_TAIL_STAGE.integration_record,
     fieldName: "integrationPath",
   });
+  const directiveRoot = integrationArtifact.directiveRoot;
   const integrationRelativePath = integrationArtifact.relativePath;
   const integrationAbsolutePath = integrationArtifact.absolutePath;
   const content = integrationArtifact.content;

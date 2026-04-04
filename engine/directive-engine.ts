@@ -32,6 +32,7 @@ import {
   type DirectiveEngineProcessSourceInput,
   type DirectiveEngineProcessSourceResult,
   type DirectiveEngineProofPlan,
+  type DirectiveEnginePrimaryAdoptionTarget,
   type DirectiveEngineReportPlan,
   type DirectiveEngineRunRecord,
   type DirectiveEngineSelectedLane,
@@ -48,6 +49,22 @@ function normalizeText(value: unknown) {
 
 function normalizeNotes(notes: string[] | null | undefined) {
   return (notes ?? []).map((note) => normalizeText(note)).filter(Boolean);
+}
+
+function normalizeOptionalBoolean(value: unknown) {
+  if (value === true || value === false) {
+    return value;
+  }
+  return null;
+}
+
+function normalizePrimaryAdoptionTarget(
+  value: unknown,
+): DirectiveEnginePrimaryAdoptionTarget | null {
+  if (value === "discovery" || value === "architecture" || value === "runtime") {
+    return value;
+  }
+  return null;
 }
 
 function sanitizeIdSegment(value: string) {
@@ -218,6 +235,9 @@ function flattenSourceSignals(source: DirectiveEngineSourceItem) {
     source.title,
     source.summary ?? "",
     source.missionAlignmentHint ?? "",
+    source.primaryAdoptionTarget ? `primary-adoption-target:${source.primaryAdoptionTarget}` : "",
+    source.containsExecutableCode ? "contains executable code" : "",
+    source.containsWorkflowPattern ? "contains workflow pattern" : "",
     ...(source.notes ?? []),
   ]
     .filter(Boolean)
@@ -984,6 +1004,9 @@ export class DirectiveEngine {
       summary: normalizeText(input.source.summary) || null,
       missionAlignmentHint: normalizeText(input.source.missionAlignmentHint) || null,
       capabilityGapId: normalizeText(input.source.capabilityGapId) || null,
+      primaryAdoptionTarget: normalizePrimaryAdoptionTarget(input.source.primaryAdoptionTarget),
+      containsExecutableCode: normalizeOptionalBoolean(input.source.containsExecutableCode),
+      containsWorkflowPattern: normalizeOptionalBoolean(input.source.containsWorkflowPattern),
       notes: normalizeNotes(input.source.notes),
     };
     const candidateId = deriveCandidateId(source);

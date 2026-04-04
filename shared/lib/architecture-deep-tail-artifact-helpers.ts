@@ -7,6 +7,7 @@ import {
   type ArchitectureDeepTailStageDefinition,
   type ArchitectureDeepTailStageId,
 } from "./architecture-deep-tail-stage-map.ts";
+import { recordArchitectureDeepTailLinkedArtifactPath } from "./architecture-deep-tail-linkage-index.ts";
 import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export function normalizePath(filePath: string) {
@@ -15,6 +16,10 @@ export function normalizePath(filePath: string) {
 
 export function getDefaultDirectiveWorkspaceRoot() {
   return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
+}
+
+export function resolveDirectiveWorkspaceRoot(directiveRoot?: string) {
+  return normalizePath(directiveRoot || getDefaultDirectiveWorkspaceRoot());
 }
 
 export function requiredString(value: string | null | undefined, fieldName: string) {
@@ -97,6 +102,86 @@ export function readDirectiveArchitectureDeepTailArtifact(input: {
     absolutePath,
     content: fs.readFileSync(absolutePath, "utf8"),
   };
+}
+
+export function readDirectiveArchitectureDeepTailDetailArtifact(input: {
+  directiveRoot?: string;
+  artifactPath: string;
+  stage: ArchitectureDeepTailStageDefinition;
+  fieldName: string;
+}) {
+  const directiveRoot = resolveDirectiveWorkspaceRoot(input.directiveRoot);
+  const artifact = readDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    artifactPath: input.artifactPath,
+    stage: input.stage,
+    fieldName: input.fieldName,
+  });
+
+  return {
+    directiveRoot,
+    relativePath: artifact.relativePath,
+    absolutePath: artifact.absolutePath,
+    content: artifact.content,
+  };
+}
+
+export function prepareDirectiveArchitectureDeepTailWrite(input: {
+  directiveRoot?: string;
+  sourcePath: string;
+  sourceFieldName: string;
+  resolveTargetRelativePath: (sourceRelativePath: string) => string;
+  actor?: string | null;
+  defaultActor?: string;
+}) {
+  const directiveRoot = resolveDirectiveWorkspaceRoot(input.directiveRoot);
+  const sourceRelativePath = resolveDirectiveRelativePath(
+    directiveRoot,
+    input.sourcePath,
+    input.sourceFieldName,
+  );
+  const targetRelativePath = input.resolveTargetRelativePath(sourceRelativePath);
+  const targetAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+    directiveRoot,
+    relativePath: targetRelativePath,
+    mode: "write",
+  });
+  const created = !fs.existsSync(targetAbsolutePath);
+  const snapshotAt = new Date().toISOString();
+  const actor = String(input.actor || input.defaultActor || "directive-frontend-operator").trim()
+    || "directive-frontend-operator";
+
+  return {
+    directiveRoot,
+    sourceRelativePath,
+    targetRelativePath,
+    targetAbsolutePath,
+    created,
+    snapshotAt,
+    actor,
+  };
+}
+
+export function writeDirectiveArtifactMarkdown(absolutePath: string, markdown: string) {
+  fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+  fs.writeFileSync(absolutePath, markdown, "utf8");
+}
+
+export function writeDirectiveArchitectureDeepTailArtifact(input: {
+  directiveRoot: string;
+  stageId: ArchitectureDeepTailStageId;
+  sourceRelativePath: string;
+  targetRelativePath: string;
+  targetAbsolutePath: string;
+  markdown: string;
+}) {
+  writeDirectiveArtifactMarkdown(input.targetAbsolutePath, input.markdown);
+  recordArchitectureDeepTailLinkedArtifactPath({
+    directiveRoot: input.directiveRoot,
+    stageId: input.stageId,
+    sourceRelativePath: input.sourceRelativePath,
+    targetRelativePath: input.targetRelativePath,
+  });
 }
 
 function escapeRegExp(value: string) {

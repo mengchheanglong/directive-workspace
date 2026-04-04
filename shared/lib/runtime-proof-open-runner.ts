@@ -3,18 +3,21 @@ import {
   requireDirectiveExplicitApproval,
 } from "../../engine/approval-boundary.ts";
 import {
-  appendDirectiveActionRunnerEvents,
-  nextDirectiveActionRunnerEventSequence,
   readDirectiveActionRunnerRecord,
-  type DirectiveActionRunnerEvent,
   type DirectiveActionRunnerRecord,
   type DirectiveRunnerActionResult,
-  writeDirectiveActionRunnerRecord,
 } from "./directive-runner-state.ts";
 import {
   openDirectiveRuntimeRecordProof,
   readDirectiveRuntimeRecordArtifact,
 } from "./runtime-record-proof-opener.ts";
+import {
+  appendDirectiveRuntimeRunnerEvent,
+  buildDirectiveRuntimeRunnerId,
+  createDirectiveRuntimeRunnerRecord,
+  writeDirectiveRuntimeRunnerRecord,
+  writeInterruptedDirectiveRuntimeRunnerRecord,
+} from "./runtime-runner-shared.ts";
 
 export type DirectiveRuntimeProofOpenRunnerInterruptionPoint =
   | "after_before_action_checkpoint"
@@ -46,41 +49,21 @@ export type DirectiveRuntimeProofOpenRunnerResult =
   | DirectiveRuntimeProofOpenRunnerSuccessResult
   | DirectiveRuntimeProofOpenRunnerInterruptedResult;
 
-function buildDefaultRunnerId(caseId: string) {
-  return `runtime-proof-open-${caseId}`;
-}
+const RUNNER_ID_PREFIX = "runtime-proof-open";
+const RUNNER_ACTION_KIND = "runtime_proof_open";
 
 function appendRunnerEvent(input: {
   directiveRoot: string;
   runnerId: string;
   caseId: string;
   record: DirectiveActionRunnerRecord;
-  eventType: DirectiveActionRunnerEvent["eventType"];
+  eventType: "runner_started" | "runner_resumed" | "runner_completed" | "runner_interrupted";
   occurredAt: string;
   message: string;
 }) {
-  const sequence = nextDirectiveActionRunnerEventSequence({
-    directiveRoot: input.directiveRoot,
-    runnerId: input.runnerId,
-  });
-  appendDirectiveActionRunnerEvents({
-    directiveRoot: input.directiveRoot,
-    runnerId: input.runnerId,
-    events: [
-      {
-        schemaVersion: 1,
-        eventId: `${input.runnerId}:${sequence}:${input.eventType}`,
-        runnerId: input.runnerId,
-        caseId: input.caseId,
-        actionKind: "runtime_proof_open",
-        sequence,
-        eventType: input.eventType,
-        occurredAt: input.occurredAt,
-        lifecycleState: input.record.lifecycleState,
-        checkpointStage: input.record.checkpointStage,
-        message: input.message,
-      },
-    ],
+  appendDirectiveRuntimeRunnerEvent({
+    ...input,
+    actionKind: RUNNER_ACTION_KIND,
   });
 }
 
@@ -96,30 +79,17 @@ function createRunnerRecord(input: {
   lastError: DirectiveActionRunnerRecord["lastError"];
   actionResult: DirectiveActionRunnerRecord["actionResult"];
 }) {
-  return {
-    schemaVersion: 1,
-    runnerId: input.runnerId,
-    caseId: input.caseId,
-    actionKind: "runtime_proof_open",
-    lifecycleState: input.lifecycleState,
-    checkpointStage: input.checkpointStage,
-    actionPath: input.actionPath,
-    startedAt: input.startedAt,
-    updatedAt: input.updatedAt,
-    attempts: input.attempts,
-    lastError: input.lastError,
-    actionResult: input.actionResult,
-  } satisfies DirectiveActionRunnerRecord;
+  return createDirectiveRuntimeRunnerRecord({
+    ...input,
+    actionKind: RUNNER_ACTION_KIND,
+  });
 }
 
 function writeRunnerRecord(input: {
   directiveRoot: string;
   record: DirectiveActionRunnerRecord;
 }) {
-  return writeDirectiveActionRunnerRecord({
-    directiveRoot: input.directiveRoot,
-    record: input.record,
-  }).record;
+  return writeDirectiveRuntimeRunnerRecord(input);
 }
 
 function toRunnerActionResult(input: {
@@ -148,27 +118,10 @@ function writeInterruptedRecord(input: {
   occurredAt: string;
   reason: string;
 }) {
-  const interruptedRecord = writeRunnerRecord({
-    directiveRoot: input.directiveRoot,
-    record: {
-      ...input.record,
-      lifecycleState: "interrupted",
-      checkpointStage: input.checkpointStage,
-      updatedAt: input.occurredAt,
-    },
+  return writeInterruptedDirectiveRuntimeRunnerRecord({
+    ...input,
+    actionKind: RUNNER_ACTION_KIND,
   });
-
-  appendRunnerEvent({
-    directiveRoot: input.directiveRoot,
-    runnerId: input.runnerId,
-    caseId: input.caseId,
-    record: interruptedRecord,
-    eventType: "runner_interrupted",
-    occurredAt: input.occurredAt,
-    message: input.reason,
-  });
-
-  return interruptedRecord;
 }
 
 export function runDirectiveRuntimeProofOpenWithRunner(input: {
@@ -190,7 +143,7 @@ export function runDirectiveRuntimeProofOpenWithRunner(input: {
     runtimeRecordPath: input.runtimeRecordPath,
   });
   const caseId = artifact.candidateId;
-  const runnerId = (input.runnerId || "").trim() || buildDefaultRunnerId(caseId);
+  const runnerId = (input.runnerId || "").trim() || buildDirectiveRuntimeRunnerId(RUNNER_ID_PREFIX, caseId);
   const existing = readDirectiveActionRunnerRecord({
     directiveRoot,
     runnerId,

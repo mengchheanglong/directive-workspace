@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,30 +10,23 @@ import {
   type DirectiveRunnerActionResult,
 } from "../../shared/lib/directive-runner-state.ts";
 import { readDirectiveCaseMirrorEvents } from "../../shared/lib/case-event-log.ts";
+import type { DiscoveryIntakeQueueEntry } from "../../shared/lib/discovery-intake-queue-writer.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
 import { runDirectiveRuntimeActionByExplicitInvocation } from "../../shared/lib/runtime-runner-invocation.ts";
+import {
+  copyRelativeFiles,
+  extractOpenedBy,
+  extractReviewedBy,
+  readJson,
+  writeJson,
+} from "../checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "../temp-directive-root.ts";
 import {
   runDirectiveRuntimeFollowUpProofTwoStepSequence,
   type DirectiveRuntimeFollowUpProofSequenceInput,
   type DirectiveRuntimeFollowUpProofSequenceResult,
 } from "../../shared/lib/runtime-follow-up-proof-sequence.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-  operating_mode?: string | null;
-};
 
 type RuntimeFocus = NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
 
@@ -48,47 +40,8 @@ const CASE_UNDER_TEST = {
   runtimePromotionReadinessPath: "runtime/05-promotion-readiness/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-promotion-readiness.md",
 } as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function copyRelativeFile(relativePath: string, tempRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
-  assert.ok(fs.existsSync(sourcePath), `Missing source file for two-step copy: ${relativePath}`);
-  const targetPath = path.join(tempRoot, relativePath);
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
-}
-
-function uniqueRelativePaths(items: Array<string | null | undefined>) {
-  return [...new Set(items.filter((value): value is string => Boolean(value)))];
-}
-
-function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
-  for (const relativePath of uniqueRelativePaths(relativePaths)) {
-    copyRelativeFile(relativePath, directiveRoot);
-  }
-}
-
-function extractReviewedBy(markdown: string) {
-  const match = markdown.match(/- Reviewed by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime review actor");
-  return match[1];
-}
-
-function extractOpenedBy(markdown: string) {
-  const match = markdown.match(/- Opened by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime opened-by actor");
-  return match[1];
-}
-
 function seedDirectiveRoot(directiveRoot: string) {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
   const queueEntry = queueDocument.entries.find(
@@ -107,7 +60,7 @@ function seedDirectiveRoot(directiveRoot: string) {
     routing.engineRunRecordPath,
     routing.engineRunReportPath,
     CASE_UNDER_TEST.followUpPath,
-  ], directiveRoot);
+  ], DIRECTIVE_ROOT, directiveRoot, "Missing source file for two-step copy");
 
   writeJson(path.join(directiveRoot, "discovery", "intake-queue.json"), {
     status: "primary",
@@ -163,12 +116,12 @@ function buildDeclaredSteps(): DirectiveRuntimeFollowUpProofSequenceInput["steps
     {
       actionKind: "runtime_follow_up_open",
       targetPath: CASE_UNDER_TEST.followUpPath,
-      approvedBy: extractReviewedBy(liveRuntimeRecord),
+      approvedBy: extractReviewedBy(liveRuntimeRecord, "Unable to parse Runtime review actor"),
     },
     {
       actionKind: "runtime_proof_open",
       targetPath: CASE_UNDER_TEST.runtimeRecordPath,
-      approvedBy: extractOpenedBy(liveRuntimeProof),
+      approvedBy: extractOpenedBy(liveRuntimeProof, "Unable to parse Runtime opened-by actor"),
     },
   ];
 }

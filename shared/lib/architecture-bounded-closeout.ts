@@ -1,11 +1,18 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 import {
   buildDirectiveArchitectureCloseoutFile,
   type DirectiveArchitectureCloseoutWriteRequest,
 } from "./architecture-closeout.ts";
+import {
+  getDefaultDirectiveWorkspaceRoot,
+  normalizePath,
+  normalizeRelativePath,
+  optionalString,
+  requiredString,
+  resolveDirectiveRelativePath,
+} from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureHandoffArtifact,
   type DirectiveArchitectureHandoffArtifact,
@@ -39,6 +46,7 @@ import {
   writeDirectiveNoteArchitectureCloseoutProjectionSet,
   type DirectiveMirroredNoteArchitectureCloseoutProjectionInput,
 } from "./architecture-note-closeout-projections.ts";
+import { readRuntimeOpenerJson as readJson } from "./runtime-opener-shared.ts";
 
 export type DirectiveArchitectureBoundedStartArtifact = {
   title: string;
@@ -361,29 +369,6 @@ type DirectiveArchitectureCloseoutAssistEngineRun = {
   };
 };
 
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../../", import.meta.url)));
-}
-
-function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
-
-function optionalString(value: string | null | undefined) {
-  if (typeof value !== "string") {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
 function optionalStringList(value: unknown) {
   if (!Array.isArray(value)) {
     return [] as string[];
@@ -393,10 +378,6 @@ function optionalStringList(value: unknown) {
     .filter((entry): entry is string => Boolean(entry));
 }
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
 function writeJson(filePath: string, value: unknown) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
@@ -404,25 +385,6 @@ function writeJson(filePath: string, value: unknown) {
 
 function stripBackticks(value: string) {
   return value.trim().replace(/^`|`$/g, "");
-}
-
-function normalizeRelativePath(inputPath: string) {
-  return requiredString(inputPath, "path").replace(/\\/g, "/");
-}
-
-function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string) {
-  const normalizedInput = normalizeRelativePath(inputPath);
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error("invalid_input: path must stay within directive-workspace");
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
 }
 
 function parseLabeledBulletFields(markdown: string) {

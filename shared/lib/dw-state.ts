@@ -59,6 +59,10 @@ import {
   zeroLinkedArtifacts,
 } from "./dw-state/shared.ts";
 import {
+  lookupArchitectureDeepTailLinkedArtifactPath,
+  recordArchitectureDeepTailLinkedArtifactPath,
+} from "./architecture-deep-tail-linkage-index.ts";
+import {
   readDirectiveEngineRunsOverview,
   type StoredDirectiveEngineRunRecord,
 } from "./engine-run-artifacts.ts";
@@ -73,6 +77,7 @@ import {
   recordMissingLinkedArtifactIfAbsent,
 } from "../../engine/artifact-link-validation.ts";
 import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
+import type { ArchitectureDeepTailStageId } from "./architecture-deep-tail-stage-map.ts";
 export type DirectiveWorkspaceFocusLane =
   | "discovery"
   | "engine"
@@ -254,24 +259,58 @@ export type DirectiveWorkspaceStateReport = {
   focus: DirectiveWorkspaceResolvedFocus | null;
 };
 
-function findArchitectureAdoptionForResult(directiveRoot: string, resultPath: string) {
-  if (typeof resultPath !== "string" || resultPath.trim().length === 0) {
+function findLinkedArchitectureArtifact<Detail>(input: {
+  directiveRoot: string;
+  relativeDir: string;
+  expectedLinkedPath: string;
+  stageId?: ArchitectureDeepTailStageId;
+  suffix?: string;
+  readDetail: (artifactPath: string) => Detail;
+  readLinkedPath: (detail: Detail) => string | null | undefined;
+}) {
+  if (typeof input.expectedLinkedPath !== "string" || input.expectedLinkedPath.trim().length === 0) {
     return null;
   }
 
-  for (const adoptionPath of listFiles({
-    directiveRoot,
-    relativeDir: "architecture/03-adopted",
-    suffix: ".md",
+  if (input.stageId) {
+    const indexedPath = lookupArchitectureDeepTailLinkedArtifactPath({
+      directiveRoot: input.directiveRoot,
+      stageId: input.stageId,
+      sourceRelativePath: input.expectedLinkedPath,
+    });
+    if (indexedPath) {
+      try {
+        const detail = input.readDetail(indexedPath);
+        if (input.readLinkedPath(detail) === input.expectedLinkedPath) {
+          return {
+            path: indexedPath,
+            detail,
+          };
+        }
+      } catch {
+        // fall through to scan
+      }
+    }
+  }
+
+  for (const artifactPath of listFiles({
+    directiveRoot: input.directiveRoot,
+    relativeDir: input.relativeDir,
+    suffix: input.suffix ?? ".md",
   })) {
     try {
-      const detail = readDirectiveArchitectureAdoptionDetail({
-        directiveRoot,
-        adoptionPath,
-      });
-      if (detail.sourceResultRelativePath === resultPath) {
+      const detail = input.readDetail(artifactPath);
+      if (input.readLinkedPath(detail) === input.expectedLinkedPath) {
+        if (input.stageId) {
+          recordArchitectureDeepTailLinkedArtifactPath({
+            directiveRoot: input.directiveRoot,
+            stageId: input.stageId,
+            sourceRelativePath: input.expectedLinkedPath,
+            targetRelativePath: artifactPath,
+          });
+        }
         return {
-          path: adoptionPath,
+          path: artifactPath,
           detail,
         };
       }
@@ -279,7 +318,21 @@ function findArchitectureAdoptionForResult(directiveRoot: string, resultPath: st
       continue;
     }
   }
+
   return null;
+}
+
+function findArchitectureAdoptionForResult(directiveRoot: string, resultPath: string) {
+  return findLinkedArchitectureArtifact({
+    directiveRoot,
+    relativeDir: "architecture/03-adopted",
+    readDetail: (adoptionPath) => readDirectiveArchitectureAdoptionDetail({
+      directiveRoot,
+      adoptionPath,
+    }),
+    readLinkedPath: (detail) => detail.sourceResultRelativePath,
+    expectedLinkedPath: resultPath,
+  });
 }
 
 function readArchitectureUpstreamChainFromAdoption(input: {
@@ -321,171 +374,108 @@ function readArchitectureUpstreamChainFromAdoption(input: {
 }
 
 function findArchitectureImplementationTargetForAdoption(directiveRoot: string, adoptionPath: string) {
-  for (const targetPath of listFiles({
+  return findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir,
-    suffix: ".md",
-  })) {
-    try {
-      const detail = readDirectiveArchitectureImplementationTargetDetail({
-        directiveRoot,
-        targetPath,
-      });
-      if (detail.adoptionRelativePath === adoptionPath) {
-        return {
-          path: targetPath,
-          detail,
-        };
-      }
-    } catch {
-      continue;
-    }
-  }
-  return null;
+    stageId: "implementation_target",
+    readDetail: (targetPath) => readDirectiveArchitectureImplementationTargetDetail({
+      directiveRoot,
+      targetPath,
+    }),
+    readLinkedPath: (detail) => detail.adoptionRelativePath,
+    expectedLinkedPath: adoptionPath,
+  });
 }
 
 function findArchitectureImplementationResultForTarget(directiveRoot: string, targetPath: string) {
-  for (const resultPath of listFiles({
+  return findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.relativeDir,
-    suffix: ".md",
-  })) {
-    try {
-      const detail = readDirectiveArchitectureImplementationResultDetail({
-        directiveRoot,
-        resultPath,
-      });
-      if (detail.targetRelativePath === targetPath) {
-        return {
-          path: resultPath,
-          detail,
-        };
-      }
-    } catch {
-      continue;
-    }
-  }
-  return null;
+    stageId: "implementation_result",
+    readDetail: (resultPath) => readDirectiveArchitectureImplementationResultDetail({
+      directiveRoot,
+      resultPath,
+    }),
+    readLinkedPath: (detail) => detail.targetRelativePath,
+    expectedLinkedPath: targetPath,
+  });
 }
 
 function findArchitectureRetentionForResult(directiveRoot: string, implementationResultPath: string) {
-  for (const retainedPath of listFiles({
+  return findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir,
-    suffix: ".md",
-  })) {
-    try {
-      const detail = readDirectiveArchitectureRetentionDetail({
-        directiveRoot,
-        retainedPath,
-      });
-      if (detail.resultRelativePath === implementationResultPath) {
-        return {
-          path: retainedPath,
-          detail,
-        };
-      }
-    } catch {
-      continue;
-    }
-  }
-  return null;
+    stageId: "retained",
+    readDetail: (retainedPath) => readDirectiveArchitectureRetentionDetail({
+      directiveRoot,
+      retainedPath,
+    }),
+    readLinkedPath: (detail) => detail.resultRelativePath,
+    expectedLinkedPath: implementationResultPath,
+  });
 }
 
 function findArchitectureIntegrationForRetention(directiveRoot: string, retainedPath: string) {
-  for (const integrationPath of listFiles({
+  return findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.relativeDir,
-    suffix: ".md",
-  })) {
-    try {
-      const detail = readDirectiveArchitectureIntegrationRecordDetail({
-        directiveRoot,
-        integrationPath,
-      });
-      if (detail.retainedRelativePath === retainedPath) {
-        return {
-          path: integrationPath,
-          detail,
-        };
-      }
-    } catch {
-      continue;
-    }
-  }
-  return null;
+    stageId: "integration_record",
+    readDetail: (integrationPath) => readDirectiveArchitectureIntegrationRecordDetail({
+      directiveRoot,
+      integrationPath,
+    }),
+    readLinkedPath: (detail) => detail.retainedRelativePath,
+    expectedLinkedPath: retainedPath,
+  });
 }
 
 function findArchitectureConsumptionForIntegration(directiveRoot: string, integrationPath: string) {
-  for (const consumptionPath of listFiles({
+  return findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.relativeDir,
-    suffix: ".md",
-  })) {
-    try {
-      const detail = readDirectiveArchitectureConsumptionRecordDetail({
-        directiveRoot,
-        consumptionPath,
-      });
-      if (detail.integrationRelativePath === integrationPath) {
-        return {
-          path: consumptionPath,
-          detail,
-        };
-      }
-    } catch {
-      continue;
-    }
-  }
-  return null;
+    stageId: "consumption_record",
+    readDetail: (consumptionPath) => readDirectiveArchitectureConsumptionRecordDetail({
+      directiveRoot,
+      consumptionPath,
+    }),
+    readLinkedPath: (detail) => detail.integrationRelativePath,
+    expectedLinkedPath: integrationPath,
+  });
 }
 
 function findArchitectureEvaluationForConsumption(directiveRoot: string, consumptionPath: string) {
-  for (const evaluationPath of listFiles({
+  return findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir,
-    suffix: ".md",
-  })) {
-    try {
-      const detail = readDirectiveArchitecturePostConsumptionEvaluationDetail({
-        directiveRoot,
-        evaluationPath,
-      });
-      if (detail.consumptionRelativePath === consumptionPath) {
-        return {
-          path: evaluationPath,
-          detail,
-        };
-      }
-    } catch {
-      continue;
-    }
-  }
-  return null;
+    stageId: "post_consumption_evaluation",
+    readDetail: (evaluationPath) => readDirectiveArchitecturePostConsumptionEvaluationDetail({
+      directiveRoot,
+      evaluationPath,
+    }),
+    readLinkedPath: (detail) => detail.consumptionRelativePath,
+    expectedLinkedPath: consumptionPath,
+  });
 }
 
 function findArchitectureReopenedStartForEvaluation(directiveRoot: string, evaluationPath: string) {
-  for (const startPath of listFiles({
+  const match = findLinkedArchitectureArtifact({
     directiveRoot,
     relativeDir: "architecture/01-bounded-starts",
     suffix: "-bounded-start.md",
-  })) {
-    try {
-      const artifact = readDirectiveArchitectureBoundedStartArtifact({
-        directiveRoot,
-        startPath,
-      });
-      if (artifact.sourceAnalysisRef === evaluationPath) {
-        return {
-          path: startPath,
-          artifact,
-        };
-      }
-    } catch {
-      continue;
+    readDetail: (startPath) => readDirectiveArchitectureBoundedStartArtifact({
+      directiveRoot,
+      startPath,
+    }),
+    readLinkedPath: (artifact) => artifact.sourceAnalysisRef,
+    expectedLinkedPath: evaluationPath,
+  });
+
+  return match
+    ? {
+      path: match.path,
+      artifact: match.detail,
     }
-  }
-  return null;
+    : null;
 }
 
 function buildArchitectureState(input: {
@@ -1933,4 +1923,3 @@ export function resolveDirectiveWorkspaceState(input: {
     focus,
   };
 }
-

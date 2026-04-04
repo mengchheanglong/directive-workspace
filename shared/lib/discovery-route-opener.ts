@@ -15,6 +15,11 @@ import {
 } from "./runtime-follow-up-record-writer.ts";
 import { type DiscoveryIntakeQueueDocument } from "./discovery-intake-queue-writer.ts";
 import { syncDiscoveryIntakeLifecycle } from "./discovery-intake-lifecycle-sync.ts";
+import {
+  extractRuntimeOpenerMarkdownTitle as extractMarkdownTitle,
+  extractRuntimeOpenerOptionalBulletValue as extractOptionalBulletValue,
+  extractRuntimeOpenerRequiredBulletValue as extractBulletValue,
+} from "./runtime-opener-shared.ts";
 
 type DiscoveryRouteDestination = "architecture" | "runtime" | "monitor" | "defer" | "reject" | "reference";
 
@@ -127,72 +132,37 @@ function writeJson(filePath: string, value: unknown) {
   fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
-function extractMarkdownTitle(markdown: string) {
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.startsWith("# "));
-  return requireDirectiveString(line?.replace(/^# /, ""), "routing record title");
-}
-
-function extractBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    throw new Error(`invalid_input: missing "${label}" in Discovery routing record`);
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
-}
-
-function extractOptionalBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    return null;
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
-}
-
 function parseDiscoveryRoutingMarkdown(markdown: string) {
   const dateLine = markdown
     .split(/\r?\n/)
     .find((entry) => entry.startsWith("Date: "));
-  const title = extractMarkdownTitle(markdown).replace(/^Discovery Routing Record:\s*/, "").trim();
+  const title = extractMarkdownTitle(markdown, "routing record title")
+    .replace(/^Discovery Routing Record:\s*/, "")
+    .trim();
 
   return {
     title,
     date: requireDirectiveString(dateLine?.replace(/^Date:\s*/, ""), "routing record date"),
-    candidateId: extractBulletValue(markdown, "Candidate id"),
-    candidateName: extractBulletValue(markdown, "Candidate name"),
-    routingDate: extractBulletValue(markdown, "Routing date"),
-    sourceType: extractBulletValue(markdown, "Source type"),
-    decisionState: extractBulletValue(markdown, "Decision state"),
-    adoptionTarget: extractBulletValue(markdown, "Adoption target"),
-    routeDestination: extractBulletValue(markdown, "Route destination") as DiscoveryRouteDestination,
+    candidateId: extractBulletValue(markdown, "Candidate id", 'invalid_input: missing "Candidate id" in Discovery routing record'),
+    candidateName: extractBulletValue(markdown, "Candidate name", 'invalid_input: missing "Candidate name" in Discovery routing record'),
+    routingDate: extractBulletValue(markdown, "Routing date", 'invalid_input: missing "Routing date" in Discovery routing record'),
+    sourceType: extractBulletValue(markdown, "Source type", 'invalid_input: missing "Source type" in Discovery routing record'),
+    decisionState: extractBulletValue(markdown, "Decision state", 'invalid_input: missing "Decision state" in Discovery routing record'),
+    adoptionTarget: extractBulletValue(markdown, "Adoption target", 'invalid_input: missing "Adoption target" in Discovery routing record'),
+    routeDestination: extractBulletValue(markdown, "Route destination", 'invalid_input: missing "Route destination" in Discovery routing record') as DiscoveryRouteDestination,
     usefulnessLevel: optionalString(extractOptionalBulletValue(markdown, "Usefulness level")),
     usefulnessRationale: optionalString(extractOptionalBulletValue(markdown, "Usefulness rationale")),
-    whyThisRoute: extractBulletValue(markdown, "Why this route"),
-    whyNotAlternatives: extractBulletValue(markdown, "Why not the alternatives"),
-    handoffContractUsed: optionalString(extractBulletValue(markdown, "Handoff contract used")),
-    receivingTrackOwner: extractBulletValue(markdown, "Receiving track owner"),
-    requiredNextArtifact: extractBulletValue(markdown, "Required next artifact"),
+    whyThisRoute: extractBulletValue(markdown, "Why this route", 'invalid_input: missing "Why this route" in Discovery routing record'),
+    whyNotAlternatives: extractBulletValue(markdown, "Why not the alternatives", 'invalid_input: missing "Why not the alternatives" in Discovery routing record'),
+    handoffContractUsed: optionalString(extractBulletValue(markdown, "Handoff contract used", 'invalid_input: missing "Handoff contract used" in Discovery routing record')),
+    receivingTrackOwner: extractBulletValue(markdown, "Receiving track owner", 'invalid_input: missing "Receiving track owner" in Discovery routing record'),
+    requiredNextArtifact: extractBulletValue(markdown, "Required next artifact", 'invalid_input: missing "Required next artifact" in Discovery routing record'),
     reentryOrPromotionConditions: optionalString(
-      extractBulletValue(markdown, "Re-entry/Promotion trigger conditions"),
+      extractBulletValue(markdown, "Re-entry/Promotion trigger conditions", 'invalid_input: missing "Re-entry/Promotion trigger conditions" in Discovery routing record'),
     ),
-    reviewCadence: optionalString(extractBulletValue(markdown, "Review cadence")),
-    linkedIntakeRecord: extractBulletValue(markdown, "Linked intake record"),
-    linkedTriageRecord: optionalString(extractBulletValue(markdown, "Linked triage record")),
+    reviewCadence: optionalString(extractBulletValue(markdown, "Review cadence", 'invalid_input: missing "Review cadence" in Discovery routing record')),
+    linkedIntakeRecord: extractBulletValue(markdown, "Linked intake record", 'invalid_input: missing "Linked intake record" in Discovery routing record'),
+    linkedTriageRecord: optionalString(extractBulletValue(markdown, "Linked triage record", 'invalid_input: missing "Linked triage record" in Discovery routing record')),
   };
 }
 

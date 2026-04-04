@@ -11,7 +11,7 @@ Define one bounded manual host-facing promotion record for the Puppeteer pressur
 
 This guard opens one explicit manual promotion-record seam only. It does not open:
 - registry acceptance
-- host integration rollout
+- host integration
 - runtime execution
 - promotion automation
 
@@ -29,7 +29,7 @@ This guard opens one explicit manual promotion-record seam only. It does not ope
 - the linked promotion specification remains canonical and checked
 - the Directive Workspace web host still exposes the bounded seam-review route and detail payload without fake integration or execution controls
 - no registry entry exists yet for the Puppeteer pressure candidate
-- no host integration, runtime execution, or automation claim is introduced
+- no host integration, runtime execution, promotion automation claim is introduced
 
 ## Required Host Artifacts
 
@@ -64,7 +64,7 @@ This guard opens one explicit manual promotion-record seam only. It does not ope
 
 1. This guard validates one manual Puppeteer pressure promotion record only.
 2. Passing this guard does not imply registry acceptance.
-3. Passing this guard does not imply host integration, runtime execution, or automation.
+3. Passing this guard does not imply host integration, runtime execution, promotion automation.
 4. Any later registry entry must still prove explicit host acceptance and linked proof.
 
 ## Validation Hooks

@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -8,6 +7,7 @@ import {
   readDirectiveActionRunnerRecord,
   type DirectiveRunnerActionResult,
 } from "../shared/lib/directive-runner-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
 import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
@@ -32,26 +32,20 @@ import {
   runDirectiveRuntimePromotionReadinessWithRunner,
   type DirectiveRuntimePromotionReadinessRunnerResult,
 } from "../shared/lib/runtime-promotion-readiness-runner.ts";
+import {
+  copyRelativeFile,
+  copyRelativeFiles,
+  extractOpenedBy,
+  extractReviewedBy,
+  readJson,
+  uniqueRelativePaths,
+  writeJson,
+} from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import {
   runDirectiveRuntimeProofOpenWithRunner,
   type DirectiveRuntimeProofOpenRunnerResult,
 } from "../shared/lib/runtime-proof-open-runner.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-  operating_mode?: string | null;
-};
 
 type RuntimeFocus = NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
 
@@ -88,6 +82,8 @@ type RuntimeActionConfig = {
 };
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const EXPECTED_PRE_PROMOTION_NEXT_STEP =
+  "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.";
 const CASE_UNDER_TEST = {
   candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
   followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
@@ -97,50 +93,45 @@ const CASE_UNDER_TEST = {
   runtimePromotionReadinessPath: "runtime/05-promotion-readiness/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-promotion-readiness.md",
 } as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
+function assertPromotionReadinessBaseContract(input: {
+  markdown: string;
+  approvedBy: string;
+}) {
+  const expectedNeedles = [
+    "## runtime capability boundary identity",
+    `- Candidate id: \`${CASE_UNDER_TEST.candidateId}\``,
+    `- Runtime capability boundary path: \`${CASE_UNDER_TEST.runtimeCapabilityBoundaryPath}\``,
+    `- Source Runtime proof artifact: \`${CASE_UNDER_TEST.runtimeProofPath}\``,
+    `- Source Runtime v0 record: \`${CASE_UNDER_TEST.runtimeRecordPath}\``,
+    `- Source Runtime follow-up record: \`${CASE_UNDER_TEST.followUpPath}\``,
+    "- Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`",
+    `- Opened by: \`${input.approvedBy}\``,
+    "- Current status: `promotion_readiness_opened`",
+    "## bounded runtime usefulness preserved",
+    "## what is now explicit",
+    "## validation boundary",
+    "## rollback boundary",
+    "## artifact linkage",
+    `- Promotion-readiness artifact: \`${CASE_UNDER_TEST.runtimePromotionReadinessPath}\``,
+    `- Runtime capability boundary: \`${CASE_UNDER_TEST.runtimeCapabilityBoundaryPath}\``,
+    `- Runtime proof artifact: \`${CASE_UNDER_TEST.runtimeProofPath}\``,
+    `- Runtime v0 record: \`${CASE_UNDER_TEST.runtimeRecordPath}\``,
+    `- Source Runtime follow-up record: \`${CASE_UNDER_TEST.followUpPath}\``,
+  ];
 
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function copyRelativeFile(relativePath: string, tempRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
-  assert.ok(fs.existsSync(sourcePath), `Missing source file for shared-runner copy: ${relativePath}`);
-  const targetPath = path.join(tempRoot, relativePath);
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
-}
-
-function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
-  for (const relativePath of uniqueRelativePaths(relativePaths)) {
-    copyRelativeFile(relativePath, directiveRoot);
+  for (const needle of expectedNeedles) {
+    assert.ok(
+      input.markdown.includes(needle),
+      `Promotion-readiness base contract missing expected content: ${needle}`,
+    );
   }
-}
-
-function extractReviewedBy(markdown: string) {
-  const match = markdown.match(/- Reviewed by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime review actor");
-  return match[1];
-}
-
-function extractOpenedBy(markdown: string) {
-  const match = markdown.match(/- Opened by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime opened-by actor");
-  return match[1];
-}
-
-function uniqueRelativePaths(items: Array<string | null | undefined>) {
-  return [...new Set(items.filter((value): value is string => Boolean(value)))];
 }
 
 function seedQueueBackedDirectiveRoot(input: {
   directiveRoot: string;
   extraRelativePaths?: Array<string | null | undefined>;
 }) {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
   const queueEntry = queueDocument.entries.find(
@@ -161,7 +152,7 @@ function seedQueueBackedDirectiveRoot(input: {
     routing.engineRunReportPath,
     CASE_UNDER_TEST.followUpPath,
     ...(input.extraRelativePaths ?? []),
-  ], input.directiveRoot);
+  ], DIRECTIVE_ROOT, input.directiveRoot, "Missing source file for shared-runner copy");
 
   writeJson(path.join(input.directiveRoot, "discovery", "intake-queue.json"), {
     status: "primary",
@@ -229,6 +220,7 @@ function assertRunnerStateMatchesLive(input: {
   sharedRoot: string;
   artifactPath: string;
   liveFocus: RuntimeFocus;
+  actionKind: DirectiveRuntimeSharedInvocationActionKind;
 }) {
   const directFocus = resolveFocusOrThrow({
     directiveRoot: input.directRoot,
@@ -244,6 +236,32 @@ function assertRunnerStateMatchesLive(input: {
   assert.equal(directFocus.currentHead.artifactPath, sharedFocus.currentHead.artifactPath);
   assert.equal(directFocus.currentStage, sharedFocus.currentStage);
   assert.equal(directFocus.nextLegalStep, sharedFocus.nextLegalStep);
+
+  if (input.actionKind === "runtime_promotion_readiness_open") {
+    assert.ok(
+      [
+        CASE_UNDER_TEST.runtimePromotionReadinessPath,
+        input.liveFocus.currentHead.artifactPath,
+      ].includes(sharedFocus.currentHead.artifactPath),
+      "Promotion-readiness shared runner should stay at the bounded promotion head or resolve to the same later live head",
+    );
+    assert.ok(
+      [
+        "runtime.promotion_readiness.opened",
+        input.liveFocus.currentStage,
+      ].includes(sharedFocus.currentStage),
+      "Promotion-readiness shared runner should preserve the bounded promotion stage or the same later live stage",
+    );
+    assert.ok(
+      [
+        EXPECTED_PRE_PROMOTION_NEXT_STEP,
+        input.liveFocus.nextLegalStep,
+      ].includes(sharedFocus.nextLegalStep),
+      "Promotion-readiness shared runner should preserve the bounded pre-promotion next step or the same later live next step",
+    );
+    assert.equal(sharedFocus.runtime?.proposedHost, input.liveFocus.runtime?.proposedHost);
+    return;
+  }
 
   assert.equal(sharedFocus.currentHead.artifactPath, input.liveFocus.currentHead.artifactPath);
   assert.equal(sharedFocus.currentStage, input.liveFocus.currentStage);
@@ -573,10 +591,17 @@ function scenarioSharedDispatchMatchesDirectRunner(config: RuntimeActionConfig) 
         readRelativeContent(sharedRoot, config.expectedArtifactPath),
         readRelativeContent(directRoot, config.expectedArtifactPath),
       );
-      assert.equal(
-        readRelativeContent(sharedRoot, config.expectedArtifactPath),
-        sharedSeed.liveMarkdown,
-      );
+      if (config.actionKind === "runtime_promotion_readiness_open") {
+        assertPromotionReadinessBaseContract({
+          markdown: readRelativeContent(sharedRoot, config.expectedArtifactPath),
+          approvedBy: sharedSeed.approvedBy,
+        });
+      } else {
+        assert.equal(
+          readRelativeContent(sharedRoot, config.expectedArtifactPath),
+          sharedSeed.liveMarkdown,
+        );
+      }
 
       assertSharedLayerDidNotChain({
         directiveRoot: sharedRoot,
@@ -584,13 +609,24 @@ function scenarioSharedDispatchMatchesDirectRunner(config: RuntimeActionConfig) 
         seed: sharedSeed,
       });
 
-      copyRelativeFiles(config.downstreamPaths(directSeed), directRoot);
-      copyRelativeFiles(config.downstreamPaths(sharedSeed), sharedRoot);
+      copyRelativeFiles(
+        config.downstreamPaths(directSeed),
+        DIRECTIVE_ROOT,
+        directRoot,
+        "Missing source file for shared-runner copy",
+      );
+      copyRelativeFiles(
+        config.downstreamPaths(sharedSeed),
+        DIRECTIVE_ROOT,
+        sharedRoot,
+        "Missing source file for shared-runner copy",
+      );
       assertRunnerStateMatchesLive({
         directRoot,
         sharedRoot,
         artifactPath: config.expectedArtifactPath,
         liveFocus: sharedSeed.liveFocus,
+        actionKind: config.actionKind,
       });
     });
   });
@@ -613,10 +649,17 @@ function scenarioSharedAfterActionResumeDoesNotDuplicate(config: RuntimeActionCo
 
     assert.equal(interrupted.ok, false);
     assert.equal(interrupted.checkpointStage, "after_action");
-    assert.equal(
-      readRelativeContent(directiveRoot, config.expectedArtifactPath),
-      seed.liveMarkdown,
-    );
+    if (config.actionKind === "runtime_promotion_readiness_open") {
+      assertPromotionReadinessBaseContract({
+        markdown: readRelativeContent(directiveRoot, config.expectedArtifactPath),
+        approvedBy: seed.approvedBy,
+      });
+    } else {
+      assert.equal(
+        readRelativeContent(directiveRoot, config.expectedArtifactPath),
+        seed.liveMarkdown,
+      );
+    }
 
     const resumed = runDirectiveRuntimeActionByExplicitInvocation({
       directiveRoot,

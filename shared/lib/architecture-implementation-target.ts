@@ -2,11 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {
-  getDefaultDirectiveWorkspaceRoot,
   normalizePath,
-  readDirectiveArchitectureDeepTailArtifact,
+  prepareDirectiveArchitectureDeepTailWrite,
   requiredString,
+  readDirectiveArchitectureDeepTailDetailArtifact,
   resolveDirectiveRelativePath,
+  resolveDirectiveWorkspaceRoot,
+  writeDirectiveArchitectureDeepTailArtifact,
 } from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   loadDirectiveArchitectureAdoptionDecisionArtifact,
@@ -187,7 +189,7 @@ export function readDirectiveArchitectureImplementationTargetPathForAdoption(inp
   directiveRoot: string;
   adoptionRelativePath: string;
 }) {
-  const directiveRoot = normalizePath(input.directiveRoot);
+  const directiveRoot = resolveDirectiveWorkspaceRoot(input.directiveRoot);
   const adoptionRelativePath = resolveDirectiveRelativePath(
     directiveRoot,
     input.adoptionRelativePath,
@@ -565,8 +567,15 @@ function renderImplementationTargetMarkdown(input: {
 export function createDirectiveArchitectureImplementationTarget(
   input: CreateDirectiveArchitectureImplementationTargetInput,
 ): DirectiveArchitectureImplementationTargetResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const adoptionRelativePath = resolveDirectiveRelativePath(directiveRoot, input.adoptionPath);
+  const writePreparation = prepareDirectiveArchitectureDeepTailWrite({
+    directiveRoot: input.directiveRoot,
+    sourcePath: input.adoptionPath,
+    sourceFieldName: "adoptionPath",
+    resolveTargetRelativePath: resolveImplementationTargetRelativePath,
+    actor: input.createdBy,
+  });
+  const directiveRoot = writePreparation.directiveRoot;
+  const adoptionRelativePath = writePreparation.sourceRelativePath;
   const adoptionDetail = readDirectiveArchitectureAdoptionDetail({
     directiveRoot,
     adoptionPath: adoptionRelativePath,
@@ -576,16 +585,11 @@ export function createDirectiveArchitectureImplementationTarget(
     recordRelativePath: adoptionRelativePath,
   });
 
-  const targetRelativePath = resolveImplementationTargetRelativePath(adoptionRelativePath);
-  const targetAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
-    directiveRoot,
-    relativePath: targetRelativePath,
-    mode: "write",
-  });
-  const createdBy = String(input.createdBy || "directive-frontend-operator").trim()
-    || "directive-frontend-operator";
-  const snapshotAt = new Date().toISOString();
-  const created = !fs.existsSync(targetAbsolutePath);
+  const targetRelativePath = writePreparation.targetRelativePath;
+  const targetAbsolutePath = writePreparation.targetAbsolutePath;
+  const createdBy = writePreparation.actor;
+  const snapshotAt = writePreparation.snapshotAt;
+  const created = writePreparation.created;
   const sourceContext = resolveImplementationTargetSourceContext({
     directiveRoot,
     adoptionDetail,
@@ -649,8 +653,14 @@ export function createDirectiveArchitectureImplementationTarget(
     legacyAdoptionFallback: sourceContext.legacyAdoptionFallback,
   });
 
-  fs.mkdirSync(path.dirname(targetAbsolutePath), { recursive: true });
-  fs.writeFileSync(targetAbsolutePath, markdown, "utf8");
+  writeDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    stageId: "implementation_target",
+    sourceRelativePath: adoptionRelativePath,
+    targetRelativePath,
+    targetAbsolutePath,
+    markdown,
+  });
 
   return {
     ok: true,
@@ -674,13 +684,13 @@ export function readDirectiveArchitectureImplementationTargetDetail(input: {
   targetPath: string;
   directiveRoot?: string;
 }): DirectiveArchitectureImplementationTargetDetail {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const targetArtifact = readDirectiveArchitectureDeepTailArtifact({
-    directiveRoot,
+  const targetArtifact = readDirectiveArchitectureDeepTailDetailArtifact({
+    directiveRoot: input.directiveRoot,
     artifactPath: input.targetPath,
     stage: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target,
     fieldName: "targetPath",
   });
+  const directiveRoot = targetArtifact.directiveRoot;
   const targetRelativePath = targetArtifact.relativePath;
   const targetAbsolutePath = targetArtifact.absolutePath;
   const content = targetArtifact.content;

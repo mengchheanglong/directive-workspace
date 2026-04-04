@@ -30,6 +30,12 @@
     "mission_alignment": { "type": ["string", "null"] },
     "capability_gap_id": { "type": ["string", "null"] },
     "notes": { "type": ["string", "null"] },
+    "primary_adoption_target": {
+      "type": ["string", "null"],
+      "enum": ["discovery", "architecture", "runtime", null]
+    },
+    "contains_executable_code": { "type": ["boolean", "null"] },
+    "contains_workflow_pattern": { "type": ["boolean", "null"] },
     "record_shape": {
       "type": ["string", "null"],
       "enum": ["auto", "queue_only", "fast_path", "split_case", null]

@@ -7,7 +7,6 @@ import {
   normalizeDirectiveWorkspaceRoot,
   requireDirectiveEligibleStatus,
   requireDirectiveExplicitApproval,
-  requireDirectiveString,
   resolveDirectiveWorkspaceRelativePath,
 } from "../../engine/approval-boundary.ts";
 import { appendDirectiveCaseMirrorEvents, readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
@@ -21,10 +20,15 @@ import {
   writeDirectiveRuntimeFollowUpOpenProjectionSet,
   type DirectiveMirroredRuntimeFollowUpOpenProjectionInput,
 } from "./runtime-follow-up-projections.ts";
-
-function normalizeRelativePath(filePath: string) {
-  return filePath.replace(/\\/g, "/");
-}
+import {
+  extractRuntimeOpenerBulletList as extractBulletList,
+  extractRuntimeOpenerMarkdownTitle as extractMarkdownTitle,
+  extractRuntimeOpenerRequiredBulletValue as extractBulletValue,
+  normalizeRuntimeOpenerRelativePath as normalizeRelativePath,
+  readDirectiveRuntimeRoutingBackfillCompatWithDecisionState as readDirectiveRuntimeRoutingBackfillCompat,
+  readRuntimeOpenerJson as readJson,
+  readRuntimeOpenerUtf8 as readUtf8,
+} from "./runtime-opener-shared.ts";
 
 function optionalString(value: string | null | undefined) {
   if (typeof value !== "string") {
@@ -35,98 +39,6 @@ function optionalString(value: string | null | undefined) {
     return null;
   }
   return normalized;
-}
-
-function readUtf8(filePath: string) {
-  return fs.readFileSync(filePath, "utf8");
-}
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function extractOptionalBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    return null;
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
-}
-
-function readDirectiveRuntimeRoutingBackfillCompat(input: {
-  directiveRoot: string;
-  routingPath: string;
-}) {
-  const routingRelativePath = resolveDirectiveWorkspaceRelativePath(
-    input.directiveRoot,
-    input.routingPath,
-    "routingPath",
-  );
-  const routingAbsolutePath = path.resolve(input.directiveRoot, routingRelativePath).replace(/\\/g, "/");
-  const content = readUtf8(routingAbsolutePath);
-
-  return {
-    sourceType: extractBulletValue(content, "Source type"),
-    decisionState: extractBulletValue(content, "Decision state"),
-    linkedIntakeRecord: extractBulletValue(content, "Linked intake record"),
-    linkedTriageRecord: extractOptionalBulletValue(content, "Linked triage record"),
-    routingRelativePath,
-    engineRunRecordPath: null,
-    engineRunReportPath: null,
-  };
-}
-
-function extractMarkdownTitle(markdown: string) {
-  return requireDirectiveString(
-    markdown
-      .split(/\r?\n/)
-      .find((entry) => entry.startsWith("# "))
-      ?.replace(/^# /, ""),
-    "follow-up title",
-  );
-}
-
-function extractBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    throw new Error(`invalid_input: missing "${label}" in Runtime follow-up record`);
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
-}
-
-function extractBulletList(markdown: string, label: string) {
-  const lines = markdown.split(/\r?\n/);
-  const startIndex = lines.findIndex((entry) => entry.trim() === `- ${label}:`);
-  if (startIndex === -1) {
-    throw new Error(`invalid_input: missing "${label}" list in Runtime follow-up record`);
-  }
-
-  const values: string[] = [];
-  for (let index = startIndex + 1; index < lines.length; index += 1) {
-    const line = lines[index];
-    if (!line.startsWith("  - ")) {
-      break;
-    }
-    const normalized = line.replace(/^  - /, "").trim().replace(/^`|`$/g, "");
-    if (normalized) {
-      values.push(normalized);
-    }
-  }
-  return values;
 }
 
 function extractLinkedSinglePath(markdown: string, label: string) {
@@ -296,23 +208,33 @@ export function readDirectiveRuntimeFollowUpArtifact(input: {
   const currentStatus = extractBulletValue(content, "Current status");
 
   const artifact: DirectiveRuntimeFollowUpArtifact = {
-    title: extractMarkdownTitle(content),
+    title: extractMarkdownTitle(content, "follow-up title"),
     candidateId,
-    candidateName: extractBulletValue(content, "Candidate name"),
+    candidateName: extractBulletValue(content, "Candidate name", 'invalid_input: missing "Candidate name" in Runtime follow-up record'),
     followUpDate,
-    currentDecisionState: extractBulletValue(content, "Current decision state"),
-    originTrack: extractBulletValue(content, "Origin track"),
-    runtimeValueToOperationalize: extractBulletValue(content, "Runtime value to operationalize"),
-    proposedHost: extractBulletValue(content, "Proposed host"),
-    proposedIntegrationMode: extractBulletValue(content, "Proposed integration mode"),
-    allowedExportSurfaces: extractBulletList(content, "Allowed export surfaces"),
-    excludedBaggage: extractBulletList(content, "Excluded baggage"),
-    requiredProof: extractBulletList(content, "Required proof"),
-    requiredGates: extractBulletList(content, "Required gates"),
-    risks: extractBulletList(content, "Risks"),
-    rollback: extractBulletValue(content, "Rollback"),
-    noOpPath: extractBulletValue(content, "No-op path"),
-    reviewCadence: extractBulletValue(content, "Review cadence"),
+    currentDecisionState: extractBulletValue(content, "Current decision state", 'invalid_input: missing "Current decision state" in Runtime follow-up record'),
+    originTrack: extractBulletValue(content, "Origin track", 'invalid_input: missing "Origin track" in Runtime follow-up record'),
+    runtimeValueToOperationalize: extractBulletValue(content, "Runtime value to operationalize", 'invalid_input: missing "Runtime value to operationalize" in Runtime follow-up record'),
+    proposedHost: extractBulletValue(content, "Proposed host", 'invalid_input: missing "Proposed host" in Runtime follow-up record'),
+    proposedIntegrationMode: extractBulletValue(content, "Proposed integration mode", 'invalid_input: missing "Proposed integration mode" in Runtime follow-up record'),
+    allowedExportSurfaces: extractBulletList(content, "Allowed export surfaces", {
+      missingMessage: 'invalid_input: missing "Allowed export surfaces" list in Runtime follow-up record',
+    }),
+    excludedBaggage: extractBulletList(content, "Excluded baggage", {
+      missingMessage: 'invalid_input: missing "Excluded baggage" list in Runtime follow-up record',
+    }),
+    requiredProof: extractBulletList(content, "Required proof", {
+      missingMessage: 'invalid_input: missing "Required proof" list in Runtime follow-up record',
+    }),
+    requiredGates: extractBulletList(content, "Required gates", {
+      missingMessage: 'invalid_input: missing "Required gates" list in Runtime follow-up record',
+    }),
+    risks: extractBulletList(content, "Risks", {
+      missingMessage: 'invalid_input: missing "Risks" list in Runtime follow-up record',
+    }),
+    rollback: extractBulletValue(content, "Rollback", 'invalid_input: missing "Rollback" in Runtime follow-up record'),
+    noOpPath: extractBulletValue(content, "No-op path", 'invalid_input: missing "No-op path" in Runtime follow-up record'),
+    reviewCadence: extractBulletValue(content, "Review cadence", 'invalid_input: missing "Review cadence" in Runtime follow-up record'),
     currentStatus,
     linkedHandoffPath: extractLinkedSinglePath(content, "Linked handoff"),
     followUpRelativePath,
@@ -389,6 +311,8 @@ export function openDirectiveRuntimeFollowUp(input: {
     const routing = readDirectiveRuntimeRoutingBackfillCompat({
       directiveRoot,
       routingPath,
+      extractRequiredBulletValue: (markdown, label) =>
+        extractBulletValue(markdown, label, `invalid_input: missing "${label}" in Runtime follow-up record`),
     });
     writeDirectiveMirroredDiscoveryCaseRecord({
       directiveRoot,

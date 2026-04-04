@@ -74,10 +74,12 @@ import {
   type DirectiveEngineRunsOverview,
 } from "../../shared/lib/engine-run-artifacts.ts";
 import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
-import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../../shared/lib/architecture-deep-tail-stage-map.ts";
+import {
+  ARCHITECTURE_DEEP_TAIL_STAGE,
+  type ArchitectureDeepTailStageId,
+} from "../../shared/lib/architecture-deep-tail-stage-map.ts";
 import {
   resolveDirectiveWorkspaceArtifactAbsolutePath,
-  resolveDirectiveWorkspaceArtifactDirectoryAbsolutePath,
 } from "../../shared/lib/directive-workspace-artifact-storage.ts";
 import { createStandaloneFilesystemHost } from "../standalone-host/runtime.ts";
 
@@ -2337,112 +2339,44 @@ function readDirectiveArchitectureAdoptionPathForResult(input: {
   return null;
 }
 
-function readDirectiveArchitectureRetentionPathForResult(input: {
+function readExistingArchitectureDeepTailPath(input: {
   directiveRoot: string;
-  resultRelativePath: string;
+  sourceRelativePath: string;
+  sourceStage: ArchitectureDeepTailStageId;
+  targetStage: ArchitectureDeepTailStageId;
+  sourceSuffix?: string;
+  targetSuffix?: string;
 }) {
-  const retainedRoot = resolveDirectiveWorkspaceArtifactDirectoryAbsolutePath({
-    directiveRoot: input.directiveRoot,
-    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir,
-    mode: "read",
-  });
-  if (!fs.existsSync(retainedRoot)) {
+  try {
+    const fileName = path.posix.basename(input.sourceRelativePath);
+    const sourceStage = ARCHITECTURE_DEEP_TAIL_STAGE[input.sourceStage];
+    const sourceSuffix = input.sourceSuffix ?? sourceStage.artifactSuffix;
+    if (!fileName.endsWith(sourceSuffix)) {
+      return null;
+    }
+
+    const targetStage = ARCHITECTURE_DEEP_TAIL_STAGE[input.targetStage];
+    const candidateRelativePath = path.posix.join(
+      targetStage.relativeDir,
+      fileName.replace(
+        new RegExp(`${escapeRegExp(sourceSuffix)}$`, "u"),
+        input.targetSuffix ?? targetStage.artifactSuffix,
+      ),
+    );
+    const absolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
+      directiveRoot: input.directiveRoot,
+      relativePath: candidateRelativePath,
+      mode: "read",
+    });
+
+    return fs.existsSync(absolutePath) ? normalizeRelativePath(candidateRelativePath) : null;
+  } catch {
     return null;
   }
-
-  const fileName = path.basename(input.resultRelativePath);
-  if (!fileName.endsWith("-implementation-result.md")) {
-    return null;
-  }
-
-  const candidate = fileName.replace(/-implementation-result\.md$/u, "-retained.md");
-  const absolute = path.join(retainedRoot, candidate);
-  if (!fs.existsSync(absolute)) {
-    return null;
-  }
-
-  return normalizeRelativePath(path.join(ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir, candidate));
 }
 
-function readDirectiveArchitectureIntegrationRecordPathForRetention(input: {
-  directiveRoot: string;
-  retainedRelativePath: string;
-}) {
-  const integrationRoot = resolveDirectiveWorkspaceArtifactDirectoryAbsolutePath({
-    directiveRoot: input.directiveRoot,
-    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.relativeDir,
-    mode: "read",
-  });
-  if (!fs.existsSync(integrationRoot)) {
-    return null;
-  }
-
-  const fileName = path.basename(input.retainedRelativePath);
-  if (!fileName.endsWith("-retained.md")) {
-    return null;
-  }
-
-  const candidate = fileName.replace(/-retained\.md$/u, "-integration-record.md");
-  const absolute = path.join(integrationRoot, candidate);
-  if (!fs.existsSync(absolute)) {
-    return null;
-  }
-
-  return normalizeRelativePath(path.join(ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.relativeDir, candidate));
-}
-
-function readDirectiveArchitectureConsumptionPathForIntegration(input: {
-  directiveRoot: string;
-  integrationRelativePath: string;
-}) {
-  const consumptionRoot = resolveDirectiveWorkspaceArtifactDirectoryAbsolutePath({
-    directiveRoot: input.directiveRoot,
-    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.relativeDir,
-    mode: "read",
-  });
-  if (!fs.existsSync(consumptionRoot)) {
-    return null;
-  }
-
-  const fileName = path.basename(input.integrationRelativePath);
-  if (!fileName.endsWith("-integration-record.md")) {
-    return null;
-  }
-
-  const candidate = fileName.replace(/-integration-record\.md$/u, "-consumption.md");
-  const absolute = path.join(consumptionRoot, candidate);
-  if (!fs.existsSync(absolute)) {
-    return null;
-  }
-
-  return normalizeRelativePath(path.join(ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.relativeDir, candidate));
-}
-
-function readDirectiveArchitecturePostConsumptionEvaluationPathForConsumption(input: {
-  directiveRoot: string;
-  consumptionRelativePath: string;
-}) {
-  const evaluationRoot = resolveDirectiveWorkspaceArtifactDirectoryAbsolutePath({
-    directiveRoot: input.directiveRoot,
-    relativeDir: ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir,
-    mode: "read",
-  });
-  if (!fs.existsSync(evaluationRoot)) {
-    return null;
-  }
-
-  const fileName = path.basename(input.consumptionRelativePath);
-  if (!fileName.endsWith("-consumption.md")) {
-    return null;
-  }
-
-  const candidate = fileName.replace(/-consumption\.md$/u, "-evaluation.md");
-  const absolute = path.join(evaluationRoot, candidate);
-  if (!fs.existsSync(absolute)) {
-    return null;
-  }
-
-  return normalizeRelativePath(path.join(ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir, candidate));
+function escapeRegExp(value: string) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function readDirectiveArchitectureReopenedStartPathForEvaluation(input: {
@@ -2547,10 +2481,43 @@ export function readDirectiveFrontendArchitectureAdoptionDetail(input: {
   }
 }
 
-export function readDirectiveFrontendArchitectureImplementationTargetDetail(input: {
+function buildDirectiveFrontendCurrentHead(input: {
+  artifactPath: string;
+  artifactKind: string;
+  artifactStage: string;
+  lane: string;
+}): FrontendCurrentHead {
+  return {
+    artifact_path: input.artifactPath,
+    artifact_kind: input.artifactKind,
+    artifact_stage: input.artifactStage,
+    artifact_lane: input.lane,
+    view_path: buildDirectiveFrontendArtifactViewPath({
+      relativePath: input.artifactPath,
+      artifactKind: input.artifactKind,
+    }),
+  };
+}
+
+function extractMarkdownTitleOrFilename(content: string, relativePath: string) {
+  return content.split(/\r?\n/).find((line) => line.startsWith("# "))?.replace(/^# /, "").trim()
+    || path.basename(relativePath);
+}
+
+function readDirectiveFrontendArchitectureDeepTailDetail<TSuccess extends { ok: true; relativePath: string }>(input: {
   directiveRoot: string;
   relativePath: string;
-}): DirectiveFrontendArchitectureImplementationTargetDetail {
+  stage: ArchitectureDeepTailStageId;
+  invalidPathError: string;
+  focusError: string;
+  readDetail: (relativePath: string) => Record<string, unknown>;
+  absolutePath: (detail: Record<string, unknown>) => string;
+  buildSuccess: (detail: Record<string, unknown>, context: {
+    directiveRoot: string;
+    relativePath: string;
+    focus: NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
+  }) => Omit<TSuccess, "ok" | "relativePath" | "absolutePath" | "artifactStage" | "artifactNextLegalStep" | "currentStage" | "nextLegalStep" | "currentHead">;
+}): TSuccess | { ok: false; error: string; relativePath: string } {
   const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
   if (!relativePath) {
     return {
@@ -2560,13 +2527,11 @@ export function readDirectiveFrontendArchitectureImplementationTargetDetail(inpu
     };
   }
 
-  if (
-    !relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.pathPrefix)
-    || !relativePath.endsWith(".md")
-  ) {
+  const stage = ARCHITECTURE_DEEP_TAIL_STAGE[input.stage];
+  if (!relativePath.startsWith(stage.pathPrefix) || !relativePath.endsWith(".md")) {
     return {
       ok: false,
-      error: "invalid_implementation_target_path",
+      error: input.invalidPathError,
       relativePath,
     };
   }
@@ -2577,64 +2542,27 @@ export function readDirectiveFrontendArchitectureImplementationTargetDetail(inpu
       artifactPath: relativePath,
       includeAnchors: false,
     }).focus;
-    const detail = readDirectiveArchitectureImplementationTargetDetail({
-      directiveRoot: input.directiveRoot,
-      targetPath: relativePath,
-    });
+    const detail = input.readDetail(relativePath);
 
     if (!focus || focus.lane !== "architecture") {
-      throw new Error("architecture_implementation_target_focus_not_resolved");
+      throw new Error(input.focusError);
     }
 
     return {
       ok: true,
       relativePath,
-      absolutePath: detail.targetAbsolutePath,
-      title: detail.content.split(/\r?\n/).find((line) => line.startsWith("# "))?.replace(/^# /, "").trim()
-        || path.basename(relativePath),
-      candidateId: detail.candidateId,
-      candidateName: detail.candidateName,
-      usefulnessLevel: detail.usefulnessLevel,
-      artifactType: detail.artifactType,
-      finalStatus: detail.finalStatus,
-      objective: detail.objective,
-      expectedOutcome: detail.expectedOutcome,
-      selectedBoundedSlice: detail.selectedBoundedSlice,
-      mechanicalSuccessCriteria: detail.mechanicalSuccessCriteria,
-      explicitLimitations: detail.explicitLimitations,
-      sourceAdoptionVerdict: detail.sourceAdoptionVerdict,
-      sourceReadinessPassed: detail.sourceReadinessPassed,
-      sourceFailedReadinessChecks: detail.sourceFailedReadinessChecks,
-      sourceRuntimeHandoffRequired: detail.sourceRuntimeHandoffRequired,
-      sourceRuntimeHandoffRationale: detail.sourceRuntimeHandoffRationale,
-      sourceArtifactPath: detail.sourceArtifactPath,
-      sourcePrimaryEvidencePath: detail.sourcePrimaryEvidencePath,
-      sourceSelfImprovementCategory: detail.sourceSelfImprovementCategory,
-      sourceSelfImprovementVerificationMethod: detail.sourceSelfImprovementVerificationMethod,
-      sourceSelfImprovementVerificationResult: detail.sourceSelfImprovementVerificationResult,
-      adoptionRelativePath: detail.adoptionRelativePath,
-      decisionRelativePath: detail.decisionRelativePath,
-      sourceResultRelativePath: detail.sourceResultRelativePath,
-      implementationResultRelativePath: readDirectiveArchitectureImplementationResultPathForTarget({
-        directiveRoot: input.directiveRoot,
-        targetRelativePath: relativePath,
-      }),
+      absolutePath: input.absolutePath(detail),
       artifactStage: focus.artifactStage,
       artifactNextLegalStep: focus.artifactNextLegalStep,
       currentStage: focus.currentStage,
       nextLegalStep: focus.nextLegalStep,
-      currentHead: {
-        artifact_path: focus.currentHead.artifactPath,
-        artifact_kind: focus.currentHead.artifactKind,
-        artifact_stage: focus.currentHead.artifactStage,
-        artifact_lane: focus.currentHead.lane,
-        view_path: buildDirectiveFrontendArtifactViewPath({
-          relativePath: focus.currentHead.artifactPath,
-          artifactKind: focus.currentHead.artifactKind,
-        }),
-      },
-      content: detail.content,
-    };
+      currentHead: buildDirectiveFrontendCurrentHead(focus.currentHead),
+      ...input.buildSuccess(detail, {
+        directiveRoot: input.directiveRoot,
+        relativePath,
+        focus,
+      }),
+    } as TSuccess;
   } catch (error) {
     return {
       ok: false,
@@ -2642,450 +2570,274 @@ export function readDirectiveFrontendArchitectureImplementationTargetDetail(inpu
       relativePath,
     };
   }
+}
+
+export function readDirectiveFrontendArchitectureImplementationTargetDetail(input: {
+  directiveRoot: string;
+  relativePath: string;
+}): DirectiveFrontendArchitectureImplementationTargetDetail {
+  return readDirectiveFrontendArchitectureDeepTailDetail<DirectiveFrontendArchitectureImplementationTargetDetail>({
+    directiveRoot: input.directiveRoot,
+    relativePath: input.relativePath,
+    stage: "implementation_target",
+    invalidPathError: "invalid_implementation_target_path",
+    focusError: "architecture_implementation_target_focus_not_resolved",
+    readDetail: (relativePath) => readDirectiveArchitectureImplementationTargetDetail({
+      directiveRoot: input.directiveRoot,
+      targetPath: relativePath,
+    }),
+    absolutePath: (detail) => String(detail.targetAbsolutePath),
+    buildSuccess: (detail, context) => ({
+      title: extractMarkdownTitleOrFilename(String(detail.content), context.relativePath),
+      candidateId: String(detail.candidateId),
+      candidateName: String(detail.candidateName),
+      usefulnessLevel: String(detail.usefulnessLevel),
+      artifactType: String(detail.artifactType),
+      finalStatus: String(detail.finalStatus),
+      objective: String(detail.objective),
+      expectedOutcome: String(detail.expectedOutcome),
+      selectedBoundedSlice: detail.selectedBoundedSlice as string[],
+      mechanicalSuccessCriteria: detail.mechanicalSuccessCriteria as string[],
+      explicitLimitations: detail.explicitLimitations as string[],
+      sourceAdoptionVerdict: String(detail.sourceAdoptionVerdict),
+      sourceReadinessPassed: Boolean(detail.sourceReadinessPassed),
+      sourceFailedReadinessChecks: detail.sourceFailedReadinessChecks as string[],
+      sourceRuntimeHandoffRequired: Boolean(detail.sourceRuntimeHandoffRequired),
+      sourceRuntimeHandoffRationale: String(detail.sourceRuntimeHandoffRationale),
+      sourceArtifactPath: String(detail.sourceArtifactPath),
+      sourcePrimaryEvidencePath: String(detail.sourcePrimaryEvidencePath),
+      sourceSelfImprovementCategory: String(detail.sourceSelfImprovementCategory),
+      sourceSelfImprovementVerificationMethod: String(detail.sourceSelfImprovementVerificationMethod),
+      sourceSelfImprovementVerificationResult: String(detail.sourceSelfImprovementVerificationResult),
+      adoptionRelativePath: String(detail.adoptionRelativePath),
+      decisionRelativePath: String(detail.decisionRelativePath),
+      sourceResultRelativePath: String(detail.sourceResultRelativePath),
+      implementationResultRelativePath: readDirectiveArchitectureImplementationResultPathForTarget({
+        directiveRoot: context.directiveRoot,
+        targetRelativePath: context.relativePath,
+      }),
+      content: String(detail.content),
+    }),
+  });
 }
 
 export function readDirectiveFrontendArchitectureImplementationResultDetail(input: {
   directiveRoot: string;
   relativePath: string;
 }): DirectiveFrontendArchitectureImplementationResultDetail {
-  const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
-  if (!relativePath) {
-    return {
-      ok: false,
-      error: "missing_relative_path",
-      relativePath,
-    };
-  }
-
-  if (
-    !relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result.pathPrefix)
-    || !relativePath.endsWith(".md")
-  ) {
-    return {
-      ok: false,
-      error: "invalid_implementation_result_path",
-      relativePath,
-    };
-  }
-
-  try {
-    const focus = resolveDirectiveWorkspaceState({
-      directiveRoot: input.directiveRoot,
-      artifactPath: relativePath,
-      includeAnchors: false,
-    }).focus;
-    const detail = readDirectiveArchitectureImplementationResultDetail({
+  return readDirectiveFrontendArchitectureDeepTailDetail<DirectiveFrontendArchitectureImplementationResultDetail>({
+    directiveRoot: input.directiveRoot,
+    relativePath: input.relativePath,
+    stage: "implementation_result",
+    invalidPathError: "invalid_implementation_result_path",
+    focusError: "architecture_implementation_result_focus_not_resolved",
+    readDetail: (relativePath) => readDirectiveArchitectureImplementationResultDetail({
       directiveRoot: input.directiveRoot,
       resultPath: relativePath,
-    });
-
-    if (!focus || focus.lane !== "architecture") {
-      throw new Error("architecture_implementation_result_focus_not_resolved");
-    }
-
-    return {
-      ok: true,
-      relativePath,
-      absolutePath: detail.resultAbsolutePath,
-      candidateId: detail.candidateId,
-      candidateName: detail.candidateName,
-      usefulnessLevel: detail.usefulnessLevel,
-      objective: detail.objective,
-      selectedBoundedSlice: detail.selectedBoundedSlice,
-      mechanicalSuccessCriteria: detail.mechanicalSuccessCriteria,
-      explicitLimitations: detail.explicitLimitations,
-      sourceAdoptionVerdict: detail.sourceAdoptionVerdict,
-      sourceReadinessPassed: detail.sourceReadinessPassed,
-      sourceFailedReadinessChecks: detail.sourceFailedReadinessChecks,
-      sourceRuntimeHandoffRequired: detail.sourceRuntimeHandoffRequired,
-      sourceRuntimeHandoffRationale: detail.sourceRuntimeHandoffRationale,
-      sourceArtifactPath: detail.sourceArtifactPath,
-      sourcePrimaryEvidencePath: detail.sourcePrimaryEvidencePath,
-      sourceSelfImprovementCategory: detail.sourceSelfImprovementCategory,
-      sourceSelfImprovementVerificationMethod: detail.sourceSelfImprovementVerificationMethod,
-      sourceSelfImprovementVerificationResult: detail.sourceSelfImprovementVerificationResult,
-      outcome: detail.outcome,
-      resultSummary: detail.resultSummary,
-      validationResult: detail.validationResult,
-      rollbackNote: detail.rollbackNote,
-      targetRelativePath: detail.targetRelativePath,
-      adoptionRelativePath: detail.adoptionRelativePath,
-      sourceResultRelativePath: detail.sourceResultRelativePath,
-      retainedRelativePath: readDirectiveArchitectureRetentionPathForResult({
-        directiveRoot: input.directiveRoot,
-        resultRelativePath: relativePath,
+    }),
+    absolutePath: (detail) => String(detail.resultAbsolutePath),
+    buildSuccess: (detail, context) => ({
+      candidateId: String(detail.candidateId),
+      candidateName: String(detail.candidateName),
+      usefulnessLevel: String(detail.usefulnessLevel),
+      objective: String(detail.objective),
+      selectedBoundedSlice: detail.selectedBoundedSlice as string[],
+      mechanicalSuccessCriteria: detail.mechanicalSuccessCriteria as string[],
+      explicitLimitations: detail.explicitLimitations as string[],
+      sourceAdoptionVerdict: String(detail.sourceAdoptionVerdict),
+      sourceReadinessPassed: Boolean(detail.sourceReadinessPassed),
+      sourceFailedReadinessChecks: detail.sourceFailedReadinessChecks as string[],
+      sourceRuntimeHandoffRequired: Boolean(detail.sourceRuntimeHandoffRequired),
+      sourceRuntimeHandoffRationale: String(detail.sourceRuntimeHandoffRationale),
+      sourceArtifactPath: String(detail.sourceArtifactPath),
+      sourcePrimaryEvidencePath: String(detail.sourcePrimaryEvidencePath),
+      sourceSelfImprovementCategory: String(detail.sourceSelfImprovementCategory),
+      sourceSelfImprovementVerificationMethod: String(detail.sourceSelfImprovementVerificationMethod),
+      sourceSelfImprovementVerificationResult: String(detail.sourceSelfImprovementVerificationResult),
+      outcome: detail.outcome as "success" | "failure",
+      resultSummary: String(detail.resultSummary),
+      validationResult: String(detail.validationResult),
+      rollbackNote: String(detail.rollbackNote),
+      targetRelativePath: String(detail.targetRelativePath),
+      adoptionRelativePath: String(detail.adoptionRelativePath),
+      sourceResultRelativePath: String(detail.sourceResultRelativePath),
+      retainedRelativePath: readExistingArchitectureDeepTailPath({
+        directiveRoot: context.directiveRoot,
+        sourceRelativePath: context.relativePath,
+        sourceStage: "implementation_result",
+        targetStage: "retained",
       }),
-      artifactStage: focus.artifactStage,
-      artifactNextLegalStep: focus.artifactNextLegalStep,
-      currentStage: focus.currentStage,
-      nextLegalStep: focus.nextLegalStep,
-      currentHead: {
-        artifact_path: focus.currentHead.artifactPath,
-        artifact_kind: focus.currentHead.artifactKind,
-        artifact_stage: focus.currentHead.artifactStage,
-        artifact_lane: focus.currentHead.lane,
-        view_path: buildDirectiveFrontendArtifactViewPath({
-          relativePath: focus.currentHead.artifactPath,
-          artifactKind: focus.currentHead.artifactKind,
-        }),
-      },
-      content: detail.content,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      error: String((error as Error).message || error),
-      relativePath,
-    };
-  }
+      content: String(detail.content),
+    }),
+  });
 }
 
 export function readDirectiveFrontendArchitectureRetentionDetail(input: {
   directiveRoot: string;
   relativePath: string;
 }): DirectiveFrontendArchitectureRetentionDetail {
-  const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
-  if (!relativePath) {
-    return {
-      ok: false,
-      error: "missing_relative_path",
-      relativePath,
-    };
-  }
-
-  if (
-    !relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.retained.pathPrefix)
-    || !relativePath.endsWith(".md")
-  ) {
-    return {
-      ok: false,
-      error: "invalid_retained_path",
-      relativePath,
-    };
-  }
-
-  try {
-    const focus = resolveDirectiveWorkspaceState({
-      directiveRoot: input.directiveRoot,
-      artifactPath: relativePath,
-      includeAnchors: false,
-    }).focus;
-    const detail = readDirectiveArchitectureRetentionDetail({
+  return readDirectiveFrontendArchitectureDeepTailDetail<DirectiveFrontendArchitectureRetentionDetail>({
+    directiveRoot: input.directiveRoot,
+    relativePath: input.relativePath,
+    stage: "retained",
+    invalidPathError: "invalid_retained_path",
+    focusError: "architecture_retention_focus_not_resolved",
+    readDetail: (relativePath) => readDirectiveArchitectureRetentionDetail({
       directiveRoot: input.directiveRoot,
       retainedPath: relativePath,
-    });
-
-    if (!focus || focus.lane !== "architecture") {
-      throw new Error("architecture_retention_focus_not_resolved");
-    }
-
-    return {
-      ok: true,
-      relativePath,
-      absolutePath: detail.retainedAbsolutePath,
-      candidateId: detail.candidateId,
-      candidateName: detail.candidateName,
-      usefulnessLevel: detail.usefulnessLevel,
-      objective: detail.objective,
-      stabilityLevel: detail.stabilityLevel,
-      reuseScope: detail.reuseScope,
-      confirmationDecision: detail.confirmationDecision,
-      rollbackBoundary: detail.rollbackBoundary,
-      resultRelativePath: detail.resultRelativePath,
-      targetRelativePath: detail.targetRelativePath,
-      adoptionRelativePath: detail.adoptionRelativePath,
-      sourceResultRelativePath: detail.sourceResultRelativePath,
-      integrationRecordRelativePath: readDirectiveArchitectureIntegrationRecordPathForRetention({
-        directiveRoot: input.directiveRoot,
-        retainedRelativePath: relativePath,
+    }),
+    absolutePath: (detail) => String(detail.retainedAbsolutePath),
+    buildSuccess: (detail, context) => ({
+      candidateId: String(detail.candidateId),
+      candidateName: String(detail.candidateName),
+      usefulnessLevel: String(detail.usefulnessLevel),
+      objective: String(detail.objective),
+      stabilityLevel: String(detail.stabilityLevel),
+      reuseScope: String(detail.reuseScope),
+      confirmationDecision: String(detail.confirmationDecision),
+      rollbackBoundary: String(detail.rollbackBoundary),
+      resultRelativePath: String(detail.resultRelativePath),
+      targetRelativePath: String(detail.targetRelativePath),
+      adoptionRelativePath: String(detail.adoptionRelativePath),
+      sourceResultRelativePath: String(detail.sourceResultRelativePath),
+      integrationRecordRelativePath: readExistingArchitectureDeepTailPath({
+        directiveRoot: context.directiveRoot,
+        sourceRelativePath: context.relativePath,
+        sourceStage: "retained",
+        targetStage: "integration_record",
       }),
-      artifactStage: focus.artifactStage,
-      artifactNextLegalStep: focus.artifactNextLegalStep,
-      currentStage: focus.currentStage,
-      nextLegalStep: focus.nextLegalStep,
-      currentHead: {
-        artifact_path: focus.currentHead.artifactPath,
-        artifact_kind: focus.currentHead.artifactKind,
-        artifact_stage: focus.currentHead.artifactStage,
-        artifact_lane: focus.currentHead.lane,
-        view_path: buildDirectiveFrontendArtifactViewPath({
-          relativePath: focus.currentHead.artifactPath,
-          artifactKind: focus.currentHead.artifactKind,
-        }),
-      },
-      content: detail.content,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      error: String((error as Error).message || error),
-      relativePath,
-    };
-  }
+      content: String(detail.content),
+    }),
+  });
 }
 
 export function readDirectiveFrontendArchitectureIntegrationRecordDetail(input: {
   directiveRoot: string;
   relativePath: string;
 }): DirectiveFrontendArchitectureIntegrationRecordDetail {
-  const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
-  if (!relativePath) {
-    return {
-      ok: false,
-      error: "missing_relative_path",
-      relativePath,
-    };
-  }
-
-  if (
-    !relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.integration_record.pathPrefix)
-    || !relativePath.endsWith(".md")
-  ) {
-    return {
-      ok: false,
-      error: "invalid_integration_record_path",
-      relativePath,
-    };
-  }
-
-  try {
-    const focus = resolveDirectiveWorkspaceState({
-      directiveRoot: input.directiveRoot,
-      artifactPath: relativePath,
-      includeAnchors: false,
-    }).focus;
-    const detail = readDirectiveArchitectureIntegrationRecordDetail({
+  return readDirectiveFrontendArchitectureDeepTailDetail<DirectiveFrontendArchitectureIntegrationRecordDetail>({
+    directiveRoot: input.directiveRoot,
+    relativePath: input.relativePath,
+    stage: "integration_record",
+    invalidPathError: "invalid_integration_record_path",
+    focusError: "architecture_integration_record_focus_not_resolved",
+    readDetail: (relativePath) => readDirectiveArchitectureIntegrationRecordDetail({
       directiveRoot: input.directiveRoot,
       integrationPath: relativePath,
-    });
-
-    if (!focus || focus.lane !== "architecture") {
-      throw new Error("architecture_integration_record_focus_not_resolved");
-    }
-
-    return {
-      ok: true,
-      relativePath,
-      absolutePath: detail.integrationAbsolutePath,
-      candidateId: detail.candidateId,
-      candidateName: detail.candidateName,
-      usefulnessLevel: detail.usefulnessLevel,
-      objective: detail.objective,
-      integrationTargetSurface: detail.integrationTargetSurface,
-      readinessSummary: detail.readinessSummary,
-      expectedEffect: detail.expectedEffect,
-      validationBoundary: detail.validationBoundary,
-      integrationDecision: detail.integrationDecision,
-      rollbackBoundary: detail.rollbackBoundary,
-      retainedRelativePath: detail.retainedRelativePath,
-      resultRelativePath: detail.resultRelativePath,
-      targetRelativePath: detail.targetRelativePath,
-      adoptionRelativePath: detail.adoptionRelativePath,
-      sourceResultRelativePath: detail.sourceResultRelativePath,
-      consumptionRelativePath: readDirectiveArchitectureConsumptionPathForIntegration({
-        directiveRoot: input.directiveRoot,
-        integrationRelativePath: relativePath,
+    }),
+    absolutePath: (detail) => String(detail.integrationAbsolutePath),
+    buildSuccess: (detail, context) => ({
+      candidateId: String(detail.candidateId),
+      candidateName: String(detail.candidateName),
+      usefulnessLevel: String(detail.usefulnessLevel),
+      objective: String(detail.objective),
+      integrationTargetSurface: String(detail.integrationTargetSurface),
+      readinessSummary: String(detail.readinessSummary),
+      expectedEffect: String(detail.expectedEffect),
+      validationBoundary: String(detail.validationBoundary),
+      integrationDecision: String(detail.integrationDecision),
+      rollbackBoundary: String(detail.rollbackBoundary),
+      retainedRelativePath: String(detail.retainedRelativePath),
+      resultRelativePath: String(detail.resultRelativePath),
+      targetRelativePath: String(detail.targetRelativePath),
+      adoptionRelativePath: String(detail.adoptionRelativePath),
+      sourceResultRelativePath: String(detail.sourceResultRelativePath),
+      consumptionRelativePath: readExistingArchitectureDeepTailPath({
+        directiveRoot: context.directiveRoot,
+        sourceRelativePath: context.relativePath,
+        sourceStage: "integration_record",
+        targetStage: "consumption_record",
+        targetSuffix: "-consumption.md",
       }),
-      artifactStage: focus.artifactStage,
-      artifactNextLegalStep: focus.artifactNextLegalStep,
-      currentStage: focus.currentStage,
-      nextLegalStep: focus.nextLegalStep,
-      currentHead: {
-        artifact_path: focus.currentHead.artifactPath,
-        artifact_kind: focus.currentHead.artifactKind,
-        artifact_stage: focus.currentHead.artifactStage,
-        artifact_lane: focus.currentHead.lane,
-        view_path: buildDirectiveFrontendArtifactViewPath({
-          relativePath: focus.currentHead.artifactPath,
-          artifactKind: focus.currentHead.artifactKind,
-        }),
-      },
-      content: detail.content,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      error: String((error as Error).message || error),
-      relativePath,
-    };
-  }
+      content: String(detail.content),
+    }),
+  });
 }
 
 export function readDirectiveFrontendArchitectureConsumptionRecordDetail(input: {
   directiveRoot: string;
   relativePath: string;
 }): DirectiveFrontendArchitectureConsumptionRecordDetail {
-  const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
-  if (!relativePath) {
-    return {
-      ok: false,
-      error: "missing_relative_path",
-      relativePath,
-    };
-  }
-
-  if (
-    !relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record.pathPrefix)
-    || !relativePath.endsWith(".md")
-  ) {
-    return {
-      ok: false,
-      error: "invalid_consumption_record_path",
-      relativePath,
-    };
-  }
-
-  try {
-    const focus = resolveDirectiveWorkspaceState({
-      directiveRoot: input.directiveRoot,
-      artifactPath: relativePath,
-      includeAnchors: false,
-    }).focus;
-    const detail = readDirectiveArchitectureConsumptionRecordDetail({
+  return readDirectiveFrontendArchitectureDeepTailDetail<DirectiveFrontendArchitectureConsumptionRecordDetail>({
+    directiveRoot: input.directiveRoot,
+    relativePath: input.relativePath,
+    stage: "consumption_record",
+    invalidPathError: "invalid_consumption_record_path",
+    focusError: "architecture_consumption_record_focus_not_resolved",
+    readDetail: (relativePath) => readDirectiveArchitectureConsumptionRecordDetail({
       directiveRoot: input.directiveRoot,
       consumptionPath: relativePath,
-    });
-
-    if (!focus || focus.lane !== "architecture") {
-      throw new Error("architecture_consumption_record_focus_not_resolved");
-    }
-
-    return {
-      ok: true,
-      relativePath,
-      absolutePath: detail.consumptionAbsolutePath,
-      candidateId: detail.candidateId,
-      candidateName: detail.candidateName,
-      usefulnessLevel: detail.usefulnessLevel,
-      objective: detail.objective,
-      appliedSurface: detail.appliedSurface,
-      applicationSummary: detail.applicationSummary,
-      observedEffect: detail.observedEffect,
-      validationResult: detail.validationResult,
-      outcome: detail.outcome,
-      rollbackNote: detail.rollbackNote,
-      integrationRelativePath: detail.integrationRelativePath,
-      retainedRelativePath: detail.retainedRelativePath,
-      resultRelativePath: detail.resultRelativePath,
-      targetRelativePath: detail.targetRelativePath,
-      adoptionRelativePath: detail.adoptionRelativePath,
-      sourceResultRelativePath: detail.sourceResultRelativePath,
-      evaluationRelativePath: readDirectiveArchitecturePostConsumptionEvaluationPathForConsumption({
-        directiveRoot: input.directiveRoot,
-        consumptionRelativePath: relativePath,
+    }),
+    absolutePath: (detail) => String(detail.consumptionAbsolutePath),
+    buildSuccess: (detail, context) => ({
+      candidateId: String(detail.candidateId),
+      candidateName: String(detail.candidateName),
+      usefulnessLevel: String(detail.usefulnessLevel),
+      objective: String(detail.objective),
+      appliedSurface: String(detail.appliedSurface),
+      applicationSummary: String(detail.applicationSummary),
+      observedEffect: String(detail.observedEffect),
+      validationResult: String(detail.validationResult),
+      outcome: detail.outcome as "success" | "failure",
+      rollbackNote: String(detail.rollbackNote),
+      integrationRelativePath: String(detail.integrationRelativePath),
+      retainedRelativePath: String(detail.retainedRelativePath),
+      resultRelativePath: String(detail.resultRelativePath),
+      targetRelativePath: String(detail.targetRelativePath),
+      adoptionRelativePath: String(detail.adoptionRelativePath),
+      sourceResultRelativePath: String(detail.sourceResultRelativePath),
+      evaluationRelativePath: readExistingArchitectureDeepTailPath({
+        directiveRoot: context.directiveRoot,
+        sourceRelativePath: context.relativePath,
+        sourceStage: "consumption_record",
+        sourceSuffix: "-consumption.md",
+        targetStage: "post_consumption_evaluation",
       }),
-      artifactStage: focus.artifactStage,
-      artifactNextLegalStep: focus.artifactNextLegalStep,
-      currentStage: focus.currentStage,
-      nextLegalStep: focus.nextLegalStep,
-      currentHead: {
-        artifact_path: focus.currentHead.artifactPath,
-        artifact_kind: focus.currentHead.artifactKind,
-        artifact_stage: focus.currentHead.artifactStage,
-        artifact_lane: focus.currentHead.lane,
-        view_path: buildDirectiveFrontendArtifactViewPath({
-          relativePath: focus.currentHead.artifactPath,
-          artifactKind: focus.currentHead.artifactKind,
-        }),
-      },
-      content: detail.content,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      error: String((error as Error).message || error),
-      relativePath,
-    };
-  }
+      content: String(detail.content),
+    }),
+  });
 }
 
 export function readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail(input: {
   directiveRoot: string;
   relativePath: string;
 }): DirectiveFrontendArchitecturePostConsumptionEvaluationDetail {
-  const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
-  if (!relativePath) {
-    return {
-      ok: false,
-      error: "missing_relative_path",
-      relativePath,
-    };
-  }
-
-  if (
-    !relativePath.startsWith(ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.pathPrefix)
-    || !relativePath.endsWith(".md")
-  ) {
-    return {
-      ok: false,
-      error: "invalid_post_consumption_evaluation_path",
-      relativePath,
-    };
-  }
-
-  try {
-    const focus = resolveDirectiveWorkspaceState({
-      directiveRoot: input.directiveRoot,
-      artifactPath: relativePath,
-      includeAnchors: false,
-    }).focus;
-    const detail = readDirectiveArchitecturePostConsumptionEvaluationDetail({
+  return readDirectiveFrontendArchitectureDeepTailDetail<DirectiveFrontendArchitecturePostConsumptionEvaluationDetail>({
+    directiveRoot: input.directiveRoot,
+    relativePath: input.relativePath,
+    stage: "post_consumption_evaluation",
+    invalidPathError: "invalid_post_consumption_evaluation_path",
+    focusError: "architecture_post_consumption_evaluation_focus_not_resolved",
+    readDetail: (relativePath) => readDirectiveArchitecturePostConsumptionEvaluationDetail({
       directiveRoot: input.directiveRoot,
       evaluationPath: relativePath,
-    });
-
-    if (!focus || focus.lane !== "architecture") {
-      throw new Error("architecture_post_consumption_evaluation_focus_not_resolved");
-    }
-
-    return {
-      ok: true,
-      relativePath,
-      absolutePath: detail.evaluationAbsolutePath,
-      candidateId: detail.candidateId,
-      candidateName: detail.candidateName,
-      usefulnessLevel: detail.usefulnessLevel,
-      objective: detail.objective,
-      decision: detail.decision,
-      rationale: detail.rationale,
-      observedStability: detail.observedStability,
-      retainedUsefulnessAssessment: detail.retainedUsefulnessAssessment,
-      nextBoundedAction: detail.nextBoundedAction,
-      rollbackNote: detail.rollbackNote,
+    }),
+    absolutePath: (detail) => String(detail.evaluationAbsolutePath),
+    buildSuccess: (detail, context) => ({
+      candidateId: String(detail.candidateId),
+      candidateName: String(detail.candidateName),
+      usefulnessLevel: String(detail.usefulnessLevel),
+      objective: String(detail.objective),
+      decision: detail.decision as "keep" | "reopen",
+      rationale: String(detail.rationale),
+      observedStability: String(detail.observedStability),
+      retainedUsefulnessAssessment: String(detail.retainedUsefulnessAssessment),
+      nextBoundedAction: String(detail.nextBoundedAction),
+      rollbackNote: String(detail.rollbackNote),
       reopenedStartRelativePath: readDirectiveArchitectureReopenedStartPathForEvaluation({
-        directiveRoot: input.directiveRoot,
-        evaluationRelativePath: relativePath,
+        directiveRoot: context.directiveRoot,
+        evaluationRelativePath: context.relativePath,
       }),
-      consumptionRelativePath: detail.consumptionRelativePath,
-      integrationRelativePath: detail.integrationRelativePath,
-      retainedRelativePath: detail.retainedRelativePath,
-      resultRelativePath: detail.resultRelativePath,
-      targetRelativePath: detail.targetRelativePath,
-      adoptionRelativePath: detail.adoptionRelativePath,
-      sourceResultRelativePath: detail.sourceResultRelativePath,
-      artifactStage: focus.artifactStage,
-      artifactNextLegalStep: focus.artifactNextLegalStep,
-      currentStage: focus.currentStage,
-      nextLegalStep: focus.nextLegalStep,
-      currentHead: {
-        artifact_path: focus.currentHead.artifactPath,
-        artifact_kind: focus.currentHead.artifactKind,
-        artifact_stage: focus.currentHead.artifactStage,
-        artifact_lane: focus.currentHead.lane,
-        view_path: buildDirectiveFrontendArtifactViewPath({
-          relativePath: focus.currentHead.artifactPath,
-          artifactKind: focus.currentHead.artifactKind,
-        }),
-      },
-      content: detail.content,
-    };
-  } catch (error) {
-    return {
-      ok: false,
-      error: String((error as Error).message || error),
-      relativePath,
-    };
-  }
+      consumptionRelativePath: String(detail.consumptionRelativePath),
+      integrationRelativePath: String(detail.integrationRelativePath),
+      retainedRelativePath: String(detail.retainedRelativePath),
+      resultRelativePath: String(detail.resultRelativePath),
+      targetRelativePath: String(detail.targetRelativePath),
+      adoptionRelativePath: String(detail.adoptionRelativePath),
+      sourceResultRelativePath: String(detail.sourceResultRelativePath),
+      content: String(detail.content),
+    }),
+  });
 }
 
 export type WorkbenchQueueEntry = FrontendQueueEntry;

@@ -13,9 +13,10 @@ Directive Workspace doctrine is governed first by:
 
 - [CLAUDE.md](./CLAUDE.md)
 - [OWNERSHIP.md](./OWNERSHIP.md)
-- [knowledge/doctrine.md](./knowledge/doctrine.md)
+- [control/runbook/current-priority.md](./control/runbook/current-priority.md)
+- [knowledge/README.md](./knowledge/README.md)
 
-The files under `knowledge/` operationalize that doctrine for this product surface.
+The files under `knowledge/` are supporting reference and historical context, not peer authority with `CLAUDE.md`.
 If adjacent OpenClaw workspace doctrine helpers are used during incubation, treat them as external environment aids rather than as ownership of the Directive Workspace product root.
 If a local Directive Workspace document drifts from the governing sources above, the governing sources win and the local document should be corrected.
 
@@ -253,7 +254,7 @@ npm run import:research-engine-discovery-bundle -- --bundle ../research-engine/a
 - `runtime/` - Runtime lane operating surfaces, proofs, records, and registry
 - `architecture/` - Architecture lane experiments, adoptions, deferred decisions, and DEEP-only materialization storage under `architecture/deep-materialization/`
 - `shared/` - product-owned contracts, schemas, templates, and shared vocabulary
-- `knowledge/` - canonical doctrine, workflow, mission definition, and operating policy
+- `knowledge/` - supporting reference material, mission framing, and historical planning context
 - `control/` - active run-control surfaces, policies, logs, and machine-readable control state
 - `state/` - case/event persistence
 - `hosts/` - host adapters, reference hosts, and integration state
@@ -263,11 +264,11 @@ npm run import:research-engine-discovery-bundle -- --bundle ../research-engine/a
 
 - [operator-start.md](./operator-start.md)
 - [engine-direction.md](./knowledge/engine-direction.md)
-- [doctrine.md](./knowledge/doctrine.md)
-- [workflow.md](./knowledge/workflow.md)
+- [CLAUDE.md](./CLAUDE.md)
+- [current-priority.md](./control/runbook/current-priority.md)
+- [knowledge/README.md](./knowledge/README.md)
 - [active-mission.md](./knowledge/active-mission.md)
 - [OWNERSHIP.md](./OWNERSHIP.md)
-- [execution-plan.md](./knowledge/execution-plan.md)
 - [architecture-completion-rubric.md](./knowledge/architecture-completion-rubric.md)
 - [technology-policy.md](./knowledge/technology-policy.md)
 

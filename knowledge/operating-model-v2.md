@@ -1,8 +1,10 @@
 # Directive Workspace Operating Model v2
 
 Date: 2026-03-27
-Status: Active reference document
+Status: historical/reference document
 Origin: Local truth analysis + internet research
+
+This document is preserved as historical diagnosis and design context. Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`. Use `./README.md` before treating any `knowledge/` document as current authority.
 
 ---
 

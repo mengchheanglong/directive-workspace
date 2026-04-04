@@ -7,7 +7,6 @@ import {
   requireDirectiveCurrentStageForOpening,
   requireDirectiveEligibleStatus,
   requireDirectiveExplicitApproval,
-  requireDirectiveString,
   resolveDirectiveWorkspaceRelativePath,
 } from "../../engine/approval-boundary.ts";
 import { appendDirectiveCaseMirrorEvents, readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
@@ -29,80 +28,14 @@ import {
   writeDirectiveRuntimePromotionReadinessProjectionSet,
   type DirectiveMirroredRuntimePromotionReadinessOpenProjectionInput,
 } from "./runtime-promotion-readiness-projections.ts";
-
-function normalizeRelativePath(filePath: string) {
-  return filePath.replace(/\\/g, "/");
-}
-
-function readUtf8(filePath: string) {
-  return fs.readFileSync(filePath, "utf8");
-}
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function extractOptionalBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    return null;
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
-}
-
-function readDirectiveRuntimeRoutingBackfillCompat(input: {
-  directiveRoot: string;
-  routingPath: string;
-}) {
-  const routingRelativePath = resolveDirectiveWorkspaceRelativePath(
-    input.directiveRoot,
-    input.routingPath,
-    "routingPath",
-  );
-  const routingAbsolutePath = path.resolve(input.directiveRoot, routingRelativePath).replace(/\\/g, "/");
-  const content = readUtf8(routingAbsolutePath);
-
-  return {
-    sourceType: extractBulletValue(content, "Source type"),
-    linkedIntakeRecord: extractBulletValue(content, "Linked intake record"),
-    linkedTriageRecord: extractOptionalBulletValue(content, "Linked triage record"),
-    routingRelativePath,
-    engineRunRecordPath: null,
-    engineRunReportPath: null,
-  };
-}
-
-function extractMarkdownTitle(markdown: string) {
-  return requireDirectiveString(
-    markdown
-      .split(/\r?\n/)
-      .find((entry) => entry.startsWith("# "))
-      ?.replace(/^# /, ""),
-    "runtime capability boundary title",
-  );
-}
-
-function extractBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    throw new Error(`invalid_input: missing "${label}" in Runtime runtime capability boundary`);
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
-}
+import {
+  extractRuntimeOpenerMarkdownTitle as extractMarkdownTitle,
+  extractRuntimeOpenerRequiredBulletValue as extractBulletValue,
+  normalizeRuntimeOpenerRelativePath as normalizeRelativePath,
+  readDirectiveRuntimeRoutingBackfillCompat,
+  readRuntimeOpenerJson as readJson,
+  readRuntimeOpenerUtf8 as readUtf8,
+} from "./runtime-opener-shared.ts";
 
 function buildPromotionReadinessRelativePath(input: {
   boundaryDate: string;
@@ -309,26 +242,26 @@ export function readDirectiveRuntimeRuntimeCapabilityBoundaryArtifact(input: {
   const currentProofStatus = extractBulletValue(content, "Current Runtime proof status");
 
   return {
-    title: extractMarkdownTitle(content),
+    title: extractMarkdownTitle(content, "runtime capability boundary title"),
     candidateId,
-    candidateName: extractBulletValue(content, "Candidate name"),
+    candidateName: extractBulletValue(content, "Candidate name", 'invalid_input: missing "Candidate name" in Runtime runtime capability boundary'),
     boundaryDate,
     currentProofStatus,
-    runtimeObjective: extractBulletValue(content, "Runtime objective"),
-    proposedHost: extractBulletValue(content, "Proposed host"),
-    proposedRuntimeSurface: extractBulletValue(content, "Proposed runtime surface"),
+    runtimeObjective: extractBulletValue(content, "Runtime objective", 'invalid_input: missing "Runtime objective" in Runtime runtime capability boundary'),
+    proposedHost: extractBulletValue(content, "Proposed host", 'invalid_input: missing "Proposed host" in Runtime runtime capability boundary'),
+    proposedRuntimeSurface: extractBulletValue(content, "Proposed runtime surface", 'invalid_input: missing "Proposed runtime surface" in Runtime runtime capability boundary'),
     linkedRuntimeProofPath,
     linkedRuntimeRecordPath,
-    linkedFollowUpPath: extractBulletValue(content, "Source Runtime follow-up record"),
+    linkedFollowUpPath: extractBulletValue(content, "Source Runtime follow-up record", 'invalid_input: missing "Source Runtime follow-up record" in Runtime runtime capability boundary'),
     linkedRoutingPath: content.includes("Linked Discovery routing record")
-      ? extractBulletValue(content, "Linked Discovery routing record")
+      ? extractBulletValue(content, "Linked Discovery routing record", 'invalid_input: missing "Linked Discovery routing record" in Runtime runtime capability boundary')
       : null,
     linkedCallableStubPath: content.includes("Callable stub")
-      ? extractBulletValue(content, "Callable stub")
+      ? extractBulletValue(content, "Callable stub", 'invalid_input: missing "Callable stub" in Runtime runtime capability boundary')
       : null,
-    rollback: extractBulletValue(content, "Rollback"),
-    noOpPath: extractBulletValue(content, "No-op path"),
-    reviewCadence: extractBulletValue(content, "Review cadence"),
+    rollback: extractBulletValue(content, "Rollback", 'invalid_input: missing "Rollback" in Runtime runtime capability boundary'),
+    noOpPath: extractBulletValue(content, "No-op path", 'invalid_input: missing "No-op path" in Runtime runtime capability boundary'),
+    reviewCadence: extractBulletValue(content, "Review cadence", 'invalid_input: missing "Review cadence" in Runtime runtime capability boundary'),
     requiredProofItems: [...proofArtifact.requiredProofItems],
     requiredGates: [...proofArtifact.requiredGates],
     capabilityBoundaryRelativePath,
@@ -401,6 +334,8 @@ export function openDirectiveRuntimePromotionReadiness(input: {
     const routing = readDirectiveRuntimeRoutingBackfillCompat({
       directiveRoot,
       routingPath,
+      extractRequiredBulletValue: (markdown, label) =>
+        extractBulletValue(markdown, label, `invalid_input: missing "${label}" in Runtime runtime capability boundary`),
     });
     writeDirectiveMirroredDiscoveryCaseRecord({
       directiveRoot,

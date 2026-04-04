@@ -67,7 +67,9 @@ That report is the canonical active/support/archive entry surface for Runtime fo
 
 ## Canonical references
 
-- `knowledge/workflow.md`
+- `../CLAUDE.md`
+- `../control/runbook/current-priority.md`
+- `../knowledge/README.md`
 - `core/callable-contract.ts`
 - `shared/contracts/runtime-to-host.md`
 - `shared/contracts/discovery-to-runtime.md`

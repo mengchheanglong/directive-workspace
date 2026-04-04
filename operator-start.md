@@ -23,8 +23,8 @@ Use this file as the shortest path to current repo truth and active work surface
 ## Doctrine vs source input
 
 - `knowledge/`
-  Directive-owned doctrine, workflow, mission, and operating policy.
-  Use this when you need product interpretation or operating rules.
+  Directive-owned reference and historical planning context beyond the active doctrine.
+  Use `knowledge/README.md` first, then only the specific supporting document you actually need.
 - `sources/`
   Raw upstream source material and source notes.
   Use this when you need the original input surface, not Directive-owned workflow or doctrine.

@@ -5,7 +5,8 @@ Directive Workspace is a product with strict boundaries.
 Governing doctrine comes first from:
 - `CLAUDE.md`
 - `OWNERSHIP.md`
-- `knowledge/doctrine.md`
+- `control/runbook/current-priority.md`
+- `knowledge/README.md`
 
 If adjacent OpenClaw workspace doctrine helpers are used during incubation, treat them as external environment aids rather than as ownership of the product root.
 Use the local Directive Workspace docs only insofar as they stay aligned with those governing sources.
@@ -62,13 +63,13 @@ When changes affect Mission Control integration:
 - run `npm run check:ops-stack` from the current Mission Control root
 
 When changes are docs-only inside Directive Workspace:
-- keep doctrine, ownership, execution plan, and migration state aligned
+- keep doctrine, ownership, current priority, and historical migration context aligned
 
 ## Canonical References
 
 - [README.md](./README.md)
 - [OWNERSHIP.md](./OWNERSHIP.md)
-- [doctrine.md](./knowledge/doctrine.md)
-- [execution-plan.md](./knowledge/execution-plan.md)
+- [current-priority.md](./control/runbook/current-priority.md)
+- [knowledge/README.md](./knowledge/README.md)
 - [decision-states.md](./shared/decision-states.md)
 - [adoption-targets.md](./shared/adoption-targets.md)

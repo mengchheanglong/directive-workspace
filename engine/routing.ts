@@ -309,21 +309,33 @@ function deriveLaneScores(input: {
     patternExtractionSignal > 0 &&
     metaUsefulnessSignal > 0 &&
     transformationSignal === 0;
+  const metadataRuntimeSignal =
+    (input.source.primaryAdoptionTarget === "runtime" ? 6 : 0)
+    + (input.source.containsExecutableCode ? 3 : 0)
+    + (input.source.containsExecutableCode && input.source.containsWorkflowPattern ? 1 : 0);
+  const metadataArchitectureSignal =
+    (input.source.primaryAdoptionTarget === "architecture" ? 6 : 0)
+    + (input.source.containsWorkflowPattern && !input.source.containsExecutableCode ? 3 : 0);
+  const metadataDiscoverySignal =
+    input.source.primaryAdoptionTarget === "discovery" ? 6 : 0;
 
   const laneScores = {
     discovery:
       discoverySignal * 3 +
       (input.source.sourceType === "internal-signal" ? 2 : 0) +
-      matchedGapDiscoverySignal * 2,
+      matchedGapDiscoverySignal * 2 +
+      metadataDiscoverySignal,
     architecture:
       structuralSignal * 3 +
       matchedGapArchitectureSignal * 2 +
-      (runtimeOverreadCorrectionEligible ? patternExtractionSignal * 4 : 0),
+      (runtimeOverreadCorrectionEligible ? patternExtractionSignal * 4 : 0) +
+      metadataArchitectureSignal,
     runtime:
       runtimeSignal * 3 +
       transformationSignal * 2 +
       matchedGapRuntimeSignal * 2 -
-      (runtimeOverreadCorrectionEligible ? patternExtractionSignal * 3 : 0),
+      (runtimeOverreadCorrectionEligible ? patternExtractionSignal * 3 : 0) +
+      metadataRuntimeSignal,
   };
 
   return {
@@ -449,6 +461,21 @@ export function assessDirectiveEngineRouting(input: {
   rationale.push(
     `Recommended ${recommendedLaneId} because its lane score (${laneScores[recommendedLaneId]}) exceeded the alternatives.`,
   );
+  if (input.source.primaryAdoptionTarget) {
+    rationale.push(
+      `Primary adoption target metadata is set to ${input.source.primaryAdoptionTarget}, which contributes directly to lane scoring instead of relying only on keyword overlap.`,
+    );
+  }
+  if (input.source.containsExecutableCode) {
+    rationale.push(
+      "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+    );
+  }
+  if (input.source.containsWorkflowPattern) {
+    rationale.push(
+      "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+    );
+  }
   if (transformationSignal > 0) {
     rationale.push(
       `Transformation signal is present (${transformationSignal}/5), which strengthens Runtime-style behavior-preserving work.`,

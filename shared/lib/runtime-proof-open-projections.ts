@@ -1,26 +1,12 @@
-import fs from "node:fs";
 import path from "node:path";
 
 import { readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
 import { readDirectiveMirroredDiscoveryCaseRecord } from "./case-store.ts";
-
-function renderListOrPlaceholder(values: string[], placeholder = "  - n/a") {
-  if (values.length === 0) {
-    return placeholder;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
-
-function writeUtf8(filePath: string, content: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
-}
-
-function sortEvents<T extends { sequence: number; occurredAt: string }>(events: T[]) {
-  return [...events].sort((left, right) =>
-    left.sequence - right.sequence || left.occurredAt.localeCompare(right.occurredAt),
-  );
-}
+import {
+  renderDirectiveProjectionListOrPlaceholder,
+  sortDirectiveProjectionEvents,
+  writeDirectiveProjectionUtf8,
+} from "./runtime-projection-shared.ts";
 
 export type DirectiveMirroredRuntimeProofOpenProjectionInput = {
   snapshotAt: string;
@@ -97,7 +83,7 @@ ${input.projectionInput.linkedHandoffPath ? `- Linked Discovery routing record: 
 - Proposed runtime surface: ${input.projectionInput.proposedRuntimeSurface}
 
 ## what must be proven before bounded runtime conversion
-${renderListOrPlaceholder(input.projectionInput.requiredProof)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredProof)}
 
 ## expected outputs
 - One bounded Runtime proof artifact that keeps the runtime-usefulness conversion scope inspectable and non-executing.
@@ -114,10 +100,10 @@ ${renderListOrPlaceholder(input.projectionInput.requiredProof)}
 - The runtime objective is explicit and remains bounded to reusable runtime usefulness conversion.
 - Required proof items are explicit and reviewable.
 - Required gates are explicit and bounded:
-${renderListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
 - Rollback remains explicit and returns cleanly to the Runtime v0 record and follow-up record.
 - Excluded baggage remains outside the proof boundary:
-${renderListOrPlaceholder(input.projectionInput.excludedBaggage)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.excludedBaggage)}
 
 ## proof opening boundary
 - Source record status: \`${input.projectionInput.sourceRecordStatus}\`
@@ -172,7 +158,7 @@ export function materializeDirectiveRuntimeProofOpenProjectionSet(input: {
   }
 
   const eventLog = readDirectiveCaseMirrorEvents(input);
-  const latestEvent = sortEvents(eventLog.events).at(-1) ?? null;
+  const latestEvent = sortDirectiveProjectionEvents(eventLog.events).at(-1) ?? null;
 
   return {
     ok: true,
@@ -210,7 +196,7 @@ export function writeDirectiveRuntimeProofOpenProjectionSet(input: {
     return projectionSet;
   }
 
-  writeUtf8(
+  writeDirectiveProjectionUtf8(
     path.resolve(input.directiveRoot, projectionSet.paths.runtimeProofPath),
     projectionSet.markdown.runtimeProof,
   );

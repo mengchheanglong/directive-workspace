@@ -1,14 +1,14 @@
 import fs from "node:fs";
-import path from "node:path";
 
 import {
-  getDefaultDirectiveWorkspaceRoot,
   normalizePath,
   optionalString,
-  readDirectiveArchitectureDeepTailArtifact,
+  prepareDirectiveArchitectureDeepTailWrite,
+  readDirectiveArchitectureDeepTailDetailArtifact,
   requiredString,
   resolveArchitectureDeepTailRelativePath,
   resolveDirectiveRelativePath,
+  writeDirectiveArchitectureDeepTailArtifact,
 } from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureImplementationTargetDetail,
@@ -261,22 +261,24 @@ function renderImplementationResultMarkdown(input: {
 export function createDirectiveArchitectureImplementationResult(
   input: CreateDirectiveArchitectureImplementationResultInput,
 ): DirectiveArchitectureImplementationResultCreateResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const targetRelativePath = resolveDirectiveRelativePath(directiveRoot, input.targetPath);
+  const writePreparation = prepareDirectiveArchitectureDeepTailWrite({
+    directiveRoot: input.directiveRoot,
+    sourcePath: input.targetPath,
+    sourceFieldName: "targetPath",
+    resolveTargetRelativePath: resolveImplementationResultRelativePath,
+    actor: input.completedBy,
+  });
+  const directiveRoot = writePreparation.directiveRoot;
+  const targetRelativePath = writePreparation.sourceRelativePath;
   const targetDetail = readDirectiveArchitectureImplementationTargetDetail({
     directiveRoot,
     targetPath: targetRelativePath,
   });
-  const resultRelativePath = resolveImplementationResultRelativePath(targetRelativePath);
-  const resultAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
-    directiveRoot,
-    relativePath: resultRelativePath,
-    mode: "write",
-  });
-  const created = !fs.existsSync(resultAbsolutePath);
-  const snapshotAt = new Date().toISOString();
-  const completedBy = String(input.completedBy || "directive-frontend-operator").trim()
-    || "directive-frontend-operator";
+  const resultRelativePath = writePreparation.targetRelativePath;
+  const resultAbsolutePath = writePreparation.targetAbsolutePath;
+  const created = writePreparation.created;
+  const snapshotAt = writePreparation.snapshotAt;
+  const completedBy = writePreparation.actor;
   const resultSummary = requiredString(input.resultSummary, "resultSummary");
   const outcome = input.outcome === "failure" ? "failure" : "success";
   const validationResult = optionalString(input.validationResult)
@@ -323,8 +325,14 @@ export function createDirectiveArchitectureImplementationResult(
     rollbackNote,
   });
 
-  fs.mkdirSync(path.dirname(resultAbsolutePath), { recursive: true });
-  fs.writeFileSync(resultAbsolutePath, markdown, "utf8");
+  writeDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    stageId: "implementation_result",
+    sourceRelativePath: targetRelativePath,
+    targetRelativePath: resultRelativePath,
+    targetAbsolutePath: resultAbsolutePath,
+    markdown,
+  });
 
   return {
     ok: true,
@@ -346,13 +354,13 @@ export function readDirectiveArchitectureImplementationResultDetail(input: {
   resultPath: string;
   directiveRoot?: string;
 }): DirectiveArchitectureImplementationResultDetail {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const resultArtifact = readDirectiveArchitectureDeepTailArtifact({
-    directiveRoot,
+  const resultArtifact = readDirectiveArchitectureDeepTailDetailArtifact({
+    directiveRoot: input.directiveRoot,
     artifactPath: input.resultPath,
     stage: ARCHITECTURE_DEEP_TAIL_STAGE.implementation_result,
     fieldName: "resultPath",
   });
+  const directiveRoot = resultArtifact.directiveRoot;
   const resultRelativePath = resultArtifact.relativePath;
   const resultAbsolutePath = resultArtifact.absolutePath;
   const content = resultArtifact.content;

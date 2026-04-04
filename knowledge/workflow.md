@@ -1,7 +1,9 @@
 # Directive Workspace Workflow
 
 Last updated: 2026-03-24
-Status: canonical
+Status: historical/reference only
+
+This document is preserved for workflow history and explanatory context. Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`. Use `./README.md` before treating any `knowledge/` document as current authority.
 
 This is the default operating workflow for Directive Workspace.
 

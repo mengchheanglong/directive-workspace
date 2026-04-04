@@ -1,7 +1,11 @@
-# Directive Workspace Execution Plan (Canonical)
+# Directive Workspace Execution Plan (Historical Reference)
 
 Last updated: 2026-03-24
 Owner: User (scope), Codex (implementation), OpenClaw (orchestration), Claude (planning/review)
+
+Status: historical/reference document
+
+This plan is preserved for execution-history context. Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`. Use `./README.md` before treating any `knowledge/` document as current authority.
 
 Primary doctrine reference: `../CLAUDE.md`
 Directive Workspace product doctrine guardrails:

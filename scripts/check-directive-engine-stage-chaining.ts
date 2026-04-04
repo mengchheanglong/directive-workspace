@@ -276,6 +276,32 @@ function runtimeInput(): EngineInput {
   };
 }
 
+function metadataOverrideRuntimeInput(): EngineInput {
+  return {
+    mission: {
+      currentObjective: "Improve the Directive Workspace engine.",
+      usefulnessSignals: [
+        "Prefer reusable runtime capability when repeated call value is explicit.",
+        "Do not let architecture-skewing title terms override a clearly runtime adoption target.",
+      ],
+      capabilityLanes: ["Runtime", "Architecture"],
+    },
+    source: {
+      sourceType: "github-repo",
+      sourceRef: "https://example.com/architecture-decision-records-runtime-plugin",
+      title: "Architecture Decision Records runtime plugin",
+      summary:
+        "A reusable plugin package with executable code for repeated runtime workflow execution and callable delivery.",
+      missionAlignmentHint: "Ship this as a reusable runtime capability, not as Architecture doctrine.",
+      primaryAdoptionTarget: "runtime",
+      containsExecutableCode: true,
+      containsWorkflowPattern: true,
+      notes: ["plugin", "runtime", "callable", "workflow", "architecture decision records"],
+    },
+    gaps: [],
+  };
+}
+
 function discoveryInput(): EngineInput {
   return {
     mission: {
@@ -383,6 +409,17 @@ async function validate(options: Options = {}): Promise<CheckResult> {
   }
   eq(violations, "runtime_control", "proof_kind_mismatch", "proofPlan.proofKind", runtime?.proofPlan.proofKind, "runtime_runtime_proof", "Runtime control proof should stay on the runtime proof path.");
   eq(violations, "runtime_control", "proof_gate_mismatch", "proofPlan.requiredGates", JSON.stringify(runtime?.proofPlan.requiredGates), JSON.stringify(["bounded_runtime_scope", "proof_artifact_present", "host_adapter_review"]), "Runtime control proof gates should remain unchanged by the staged Architecture refactor.");
+
+  const metadataOverrideRuntime = await processCase(
+    engine,
+    metadataOverrideRuntimeInput(),
+    "runtime_metadata_override",
+    "DirectiveEngine.processSource should succeed for a runtime-targeted source with architecture-skewing title terms.",
+    violations,
+  );
+  eq(violations, "runtime_metadata_override", "selected_lane_mismatch", "selectedLane.laneId", metadataOverrideRuntime?.selectedLane.laneId, "runtime", "Structured runtime metadata should override architecture-skewing title keywords.");
+  eq(violations, "runtime_metadata_override", "usefulness_level_mismatch", "candidate.usefulnessLevel", metadataOverrideRuntime?.candidate.usefulnessLevel, "direct", "A runtime-targeted executable source should keep direct usefulness.");
+  arrayMatch(violations, "runtime_metadata_override", "routing_rationale_mismatch", "routingAssessment.rationale", metadataOverrideRuntime?.routingAssessment.rationale, /Primary adoption target metadata is set to runtime/i, "Routing rationale should explain that structured adoption-target metadata influenced the decision.");
 
   const architectureProofCases = [
     {

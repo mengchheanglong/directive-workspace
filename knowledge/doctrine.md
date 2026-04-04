@@ -1,6 +1,10 @@
-# Workspace Operating Model (Canonical)
+# Workspace Operating Model (Historical Reference)
 
 Last updated: 2026-03-24
+
+Status: historical/reference only
+
+This document is preserved for audit context. Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`. Use `./README.md` before treating any `knowledge/` document as current authority.
 
 ## Doctrine Precedence
 

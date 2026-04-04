@@ -1,29 +1,15 @@
-import fs from "node:fs";
 import path from "node:path";
 
 import { readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
 import { readDirectiveMirroredDiscoveryCaseRecord } from "./case-store.ts";
+import {
+  renderDirectiveProjectionListOrPlaceholder,
+  sortDirectiveProjectionEvents,
+  writeDirectiveProjectionUtf8,
+} from "./runtime-projection-shared.ts";
 
 function toSentenceCase(value: string) {
   return value.replace(/[_-]+/g, " ").trim();
-}
-
-function renderListOrPlaceholder(values: string[], placeholder = "  - n/a") {
-  if (values.length === 0) {
-    return placeholder;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
-
-function writeUtf8(filePath: string, content: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
-}
-
-function sortEvents<T extends { sequence: number; occurredAt: string }>(events: T[]) {
-  return [...events].sort((left, right) =>
-    left.sequence - right.sequence || left.occurredAt.localeCompare(right.occurredAt),
-  );
 }
 
 export type DirectiveMirroredRuntimeFollowUpOpenProjectionInput = {
@@ -120,15 +106,15 @@ function renderDirectiveRuntimeFollowUpOpenProjection(input: {
 ## proof required before any further Runtime move
 - Required proof summary: ${proofSummary}
 - Required proof:
-${renderListOrPlaceholder(input.projectionInput.requiredProof)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredProof)}
 - Required gates:
-${renderListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
 
 ## validation boundary
 - Validate against the approved Runtime follow-up record, linked Discovery routing record, and Engine evidence only.
 - Do not imply runtime execution, host integration, orchestration, or background automation.
 - Keep excluded baggage out of the converted capability boundary:
-${renderListOrPlaceholder(input.projectionInput.excludedBaggage)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.excludedBaggage)}
 
 ## rollback boundary
 - Rollback: ${input.projectionInput.rollback}
@@ -136,7 +122,7 @@ ${renderListOrPlaceholder(input.projectionInput.excludedBaggage)}
 - Review cadence: ${input.projectionInput.reviewCadence}
 
 ## known risks
-${renderListOrPlaceholder(input.projectionInput.risks)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.risks)}
 
 ## artifact linkage
 - Runtime v0 record: \`${input.projectionInput.runtimeRecordRelativePath}\`
@@ -186,7 +172,7 @@ export function materializeDirectiveRuntimeFollowUpOpenProjectionSet(input: {
   }
 
   const eventLog = readDirectiveCaseMirrorEvents(input);
-  const latestEvent = sortEvents(eventLog.events).at(-1) ?? null;
+  const latestEvent = sortDirectiveProjectionEvents(eventLog.events).at(-1) ?? null;
 
   return {
     ok: true,
@@ -225,7 +211,7 @@ export function writeDirectiveRuntimeFollowUpOpenProjectionSet(input: {
     return projectionSet;
   }
 
-  writeUtf8(
+  writeDirectiveProjectionUtf8(
     path.resolve(input.directiveRoot, projectionSet.paths.runtimeRecordPath),
     projectionSet.markdown.runtimeRecord,
   );

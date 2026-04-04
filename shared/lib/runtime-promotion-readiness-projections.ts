@@ -1,26 +1,12 @@
-import fs from "node:fs";
 import path from "node:path";
 
 import { readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
 import { readDirectiveMirroredDiscoveryCaseRecord } from "./case-store.ts";
-
-function renderListOrPlaceholder(values: string[], placeholder = "  - n/a") {
-  if (values.length === 0) {
-    return placeholder;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
-
-function writeUtf8(filePath: string, content: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
-}
-
-function sortEvents<T extends { sequence: number; occurredAt: string }>(events: T[]) {
-  return [...events].sort((left, right) =>
-    left.sequence - right.sequence || left.occurredAt.localeCompare(right.occurredAt),
-  );
-}
+import {
+  renderDirectiveProjectionListOrPlaceholder,
+  sortDirectiveProjectionEvents,
+  writeDirectiveProjectionUtf8,
+} from "./runtime-projection-shared.ts";
 
 export type DirectiveMirroredRuntimePromotionReadinessOpenProjectionInput = {
   snapshotAt: string;
@@ -103,9 +89,9 @@ ${input.projectionInput.linkedRoutingPath ? `- Linked Discovery routing record: 
 ## what is now explicit
 - The bounded runtime capability boundary has been explicitly reviewed as a possible future promotion candidate.
 - Required proof items remain explicit:
-${renderListOrPlaceholder(input.projectionInput.requiredProofItems)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredProofItems)}
 - Required gates remain explicit:
-${renderListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
 - This artifact does not approve host-facing promotion, runtime execution, callable implementation, or host integration.
 
 ## validation boundary
@@ -163,7 +149,7 @@ export function materializeDirectiveRuntimePromotionReadinessProjectionSet(input
   }
 
   const eventLog = readDirectiveCaseMirrorEvents(input);
-  const latestEvent = sortEvents(eventLog.events).at(-1) ?? null;
+  const latestEvent = sortDirectiveProjectionEvents(eventLog.events).at(-1) ?? null;
 
   return {
     ok: true,
@@ -209,7 +195,7 @@ export function writeDirectiveRuntimePromotionReadinessProjectionSet(input: {
     return projectionSet;
   }
 
-  writeUtf8(
+  writeDirectiveProjectionUtf8(
     path.resolve(input.directiveRoot, projectionSet.paths.promotionReadinessPath),
     projectionSet.markdown.promotionReadiness,
   );

@@ -18,6 +18,29 @@ import {
   isDirectiveWorkspaceArtifactReference,
 } from "../../../engine/artifact-link-validation.ts";
 import { listDirectiveWorkspaceArtifactRelativePaths } from "../directive-workspace-artifact-storage.ts";
+import type {
+  GenericLegacyRuntimeFollowUpArtifact,
+  GenericLegacyRuntimeHandoffArtifact,
+  GenericLegacyRuntimeLiveFetchGateSnapshotArtifact,
+  GenericLegacyRuntimeLiveFetchProofArtifact,
+  GenericLegacyRuntimeLivePoolArtifact,
+  GenericLegacyRuntimePreconditionDecisionNoteArtifact,
+  GenericLegacyRuntimeProofChecklistArtifact,
+  GenericLegacyRuntimePromotionRecordArtifact,
+  GenericLegacyRuntimeRecordArtifact,
+  GenericLegacyRuntimeRegistryArtifact,
+  GenericLegacyRuntimeSamplePoolArtifact,
+  GenericLegacyRuntimeSliceExecutionArtifact,
+  GenericLegacyRuntimeSliceProofArtifact,
+  GenericLegacyRuntimeSystemBundleArtifact,
+  GenericLegacyRuntimeTransformationProofArtifact,
+  GenericLegacyRuntimeTransformationRecordArtifact,
+  GenericLegacyRuntimeValidationNoteArtifact,
+  GenericRuntimePromotionReadinessArtifactBase,
+  GenericRuntimeProofArtifact,
+  GenericRuntimeRecordArtifact,
+  GenericRuntimeRuntimeCapabilityBoundaryArtifact,
+} from "./runtime-artifact-types.ts";
 type QueueEntry = {
   candidate_id: string;
   candidate_name: string;
@@ -49,281 +72,7 @@ type GenericDiscoveryMonitorArtifact = {
   linkedRoutingRecord: string;
 };
 
-type GenericRuntimeRecordArtifact =
-  | {
-      kind: "follow_up_review";
-      candidateId: string;
-      candidateName: string;
-      currentStatus: string;
-      runtimeRecordRelativePath: string;
-      linkedFollowUpRecord: string;
-      linkedRoutingPath: string | null;
-      runtimeProofRelativePath: string | null;
-      runtimeRuntimeCapabilityBoundaryPath: string | null;
-      callableStubPath: null;
-      sourceIntegrationRecordPath: null;
-    }
-  | {
-      kind: "callable_integration_record";
-      candidateId: string;
-      candidateName: string;
-      currentStatus: string;
-      runtimeRecordRelativePath: string;
-      linkedFollowUpRecord: null;
-      linkedRoutingPath: null;
-      runtimeProofRelativePath: string | null;
-      runtimeRuntimeCapabilityBoundaryPath: string | null;
-      callableStubPath: string | null;
-      sourceIntegrationRecordPath: string | null;
-    };
-
-type GenericRuntimeProofArtifact =
-  | {
-      kind: "follow_up_review";
-      candidateId: string;
-      candidateName: string;
-      runtimeProofRelativePath: string;
-      linkedRuntimeRecordPath: string;
-      linkedFollowUpPath: string;
-      linkedRoutingPath: string | null;
-      promotionStatus: null;
-      runtimeRuntimeCapabilityBoundaryPath: null;
-      callableStubPath: null;
-    }
-  | {
-      kind: "callable_integration";
-      candidateId: string;
-      candidateName: string;
-      runtimeProofRelativePath: string;
-      linkedRuntimeRecordPath: string;
-      linkedFollowUpPath: null;
-      linkedRoutingPath: null;
-      promotionStatus: string | null;
-      runtimeRuntimeCapabilityBoundaryPath: string | null;
-      callableStubPath: string | null;
-    };
-
-type GenericRuntimeRuntimeCapabilityBoundaryArtifact = {
-  candidateId: string;
-  title: string;
-  runtimeRuntimeCapabilityBoundaryPath: string;
-  linkedRuntimeProofPath: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedCallableStubPath: string | null;
-  currentProofStatus: string | null;
-};
-
-type GenericRuntimePromotionReadinessArtifact = {
-  candidateId: string;
-  candidateName: string;
-  promotionReadinessPath: string;
-  linkedCapabilityBoundaryPath: string;
-  linkedRuntimeProofPath: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedCallableStubPath: string | null;
-  proposedHost: string | null;
-  executionState: string | null;
-  currentStatus: string | null;
-};
-
-type GenericLegacyRuntimeFollowUpArtifact = {
-  candidateId: string;
-  candidateName: string;
-  followUpRelativePath: string;
-  currentDecisionState: string | null;
-  runtimeValueToOperationalize: string;
-  proposedHost: string | null;
-  proposedIntegrationMode: string | null;
-  reentryContractPath: string | null;
-  currentStatus: string;
-  reviewCadence: string | null;
-};
-
-type GenericLegacyRuntimeHandoffArtifact = {
-  candidateId: string;
-  candidateName: string;
-  handoffRelativePath: string;
-  runtimeValueToOperationalize: string;
-  proposedHost: string | null;
-  proposedRuntimeSurface: string;
-  originatingArchitectureRecordPath: string | null;
-  runtimeFollowUpPath: string | null;
-  runtimeRecordPath: string | null;
-  runtimeProofPath: string | null;
-  promotionRecordPath: string | null;
-  registryEntryPath: string | null;
-};
-
-type GenericLegacyRuntimeRecordArtifact = {
-  candidateId: string;
-  candidateName: string;
-  runtimeRecordRelativePath: string;
-  originPath: string | null;
-  linkedFollowUpPath: string | null;
-  runtimeObjective: string;
-  proposedHost: string | null;
-  proposedRuntimeSurface: string | null;
-  executionSlice: string | null;
-  currentStatus: string;
-  nextDecisionPoint: string | null;
-};
-
-type GenericLegacyRuntimeSliceProofArtifact = {
-  candidateId: string;
-  candidateName: string;
-  runtimeSliceProofRelativePath: string;
-  proofDate: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedExecutionRecordPath: string | null;
-  primaryHostChecker: string | null;
-  promotionProfileFamily: string | null;
-  result: string | null;
-};
-
-type GenericLegacyRuntimeSliceExecutionArtifact = {
-  candidateId: string;
-  candidateName: string;
-  runtimeSliceExecutionRelativePath: string;
-  executionDate: string | null;
-  linkedRuntimeProofPath: string | null;
-  status: string | null;
-};
-
-type GenericLegacyRuntimeProofChecklistArtifact = {
-  candidateId: string;
-  candidateName: string;
-  proofChecklistRelativePath: string;
-  generatedAt: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedRuntimeProofPath: string | null;
-  linkedSupplementalProofPath: string | null;
-  gateSnapshotPath: string | null;
-  status: string | null;
-};
-
-type GenericLegacyRuntimeLiveFetchProofArtifact = {
-  candidateId: string;
-  candidateName: string;
-  liveFetchProofRelativePath: string;
-  proofDate: string | null;
-  linkedRuntimeRecordPath: string | null;
-  linkedProofChecklistPath: string | null;
-  gateSnapshotPath: string | null;
-  result: string | null;
-};
-
-type GenericLegacyRuntimeLiveFetchGateSnapshotArtifact = {
-  candidateId: string;
-  candidateName: string;
-  gateSnapshotRelativePath: string;
-  generatedAt: string | null;
-  workflowSurface: string | null;
-  deliveryTarget: string | null;
-  linkedLiveFetchProofPath: string | null;
-};
-
-type GenericLegacyRuntimeLivePoolArtifact = {
-  candidateId: string;
-  candidateName: string;
-  livePoolRelativePath: string;
-  artifactType: string | null;
-  generatedAt: string | null;
-  degraded: boolean;
-  evidenceQualityResult: string | null;
-  deliveryTarget: string | null;
-  withheldDelivery: boolean | null;
-  linkedGateSnapshotPath: string | null;
-  linkedLiveFetchProofPath: string | null;
-};
-
-type GenericLegacyRuntimeSamplePoolArtifact = {
-  candidateId: string;
-  candidateName: string;
-  samplePoolRelativePath: string;
-  artifactType: string | null;
-  generatedAt: string | null;
-  degraded: boolean;
-  evidenceQualityResult: string | null;
-  deliveryTarget: string | null;
-  withheldDelivery: boolean | null;
-};
-
-type GenericLegacyRuntimeSystemBundleArtifact = {
-  candidateId: string;
-  candidateName: string;
-  systemBundleRelativePath: string;
-  bundleDate: string | null;
-  owner: string | null;
-  status: string | null;
-  decisionState: string | null;
-  adoptionTarget: string | null;
-  nextStep: string | null;
-};
-
-type GenericLegacyRuntimeValidationNoteArtifact = {
-  candidateId: string;
-  candidateName: string;
-  validationNoteRelativePath: string;
-  noteDate: string | null;
-  mode: string | null;
-  verdict: string | null;
-  blocker: string | null;
-};
-
-type GenericLegacyRuntimePreconditionDecisionNoteArtifact = {
-  candidateId: string;
-  candidateName: string;
-  noteRelativePath: string;
-  noteKind: "precondition_proof" | "precondition_correction" | "host_adapter_decision";
-  noteDate: string | null;
-  status: string | null;
-  linkedFollowUpPath: string | null;
-};
-
-type GenericLegacyRuntimeTransformationRecordArtifact = {
-  candidateId: string;
-  candidateName: string;
-  transformationRecordRelativePath: string;
-  recordDate: string | null;
-  transformationType: string;
-  discoveryIntakePath: string | null;
-  baselineArtifactPath: string | null;
-  resultArtifactPath: string | null;
-  adoptionTarget: string | null;
-  promotionRecordPath: string | null;
-};
-
-type GenericLegacyRuntimeTransformationProofArtifact = {
-  candidateId: string;
-  transformationProofRelativePath: string;
-  generatedAt: string | null;
-  transformationType: string | null;
-  metric: string | null;
-  linkedTransformationRecordPath: string | null;
-};
-
-type GenericLegacyRuntimeRegistryArtifact = {
-  candidateId: string;
-  candidateName: string;
-  registryEntryRelativePath: string;
-  linkedPromotionRecordPath: string | null;
-  proofArtifactPath: string | null;
-  proposedHost: string | null;
-  runtimeSurface: string | null;
-  runtimeStatus: string;
-};
-
-type GenericLegacyRuntimePromotionRecordArtifact = {
-  candidateId: string;
-  candidateName: string;
-  promotionRecordRelativePath: string;
-  linkedRuntimeRecordPath: string | null;
-  sourceIntentArtifactPath: string | null;
-  proofArtifactPath: string | null;
-  targetHost: string | null;
-  targetRuntimeSurface: string | null;
-  proposedRuntimeStatus: string;
-};
+type GenericRuntimePromotionReadinessArtifact = GenericRuntimePromotionReadinessArtifactBase;
 
 export function normalizePath(filePath: string) {
   return path.resolve(filePath).replace(/\\/g, "/");

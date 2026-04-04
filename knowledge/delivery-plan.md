@@ -4,6 +4,7 @@ title: Directive Workspace Delivery Plan
 userId: 795edcca-fd18-4be3-8ba0-b86045af08ef
 createdAt: '2026-03-17T20:13:00.3320474+07:00'
 updatedAt: '2026-03-17T20:34:14.7463222+07:00'
+status: historical/reference document
 tags:
   - directive-workspace
   - delivery-plan
@@ -12,6 +13,10 @@ tags:
   - capability-integration
 ---
 # Directive Workspace Delivery Plan
+
+> Historical/reference note:
+> Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`.
+> Use `./README.md` before treating any `knowledge/` document as current authority.
 
 > **Status: superseded (2026-03-22)**
 > This file is a v0-era planning artifact. The milestones, tasks, and immediate next actions described below are all complete. The system has moved beyond v0 into operational proof mode.

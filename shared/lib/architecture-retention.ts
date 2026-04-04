@@ -1,14 +1,9 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
   optionalString,
-  readDirectiveArchitectureDeepTailArtifact,
-  requiredString,
+  prepareDirectiveArchitectureDeepTailWrite,
+  readDirectiveArchitectureDeepTailDetailArtifact,
   resolveArchitectureDeepTailRelativePath,
-  resolveDirectiveRelativePath,
+  writeDirectiveArchitectureDeepTailArtifact,
 } from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureImplementationResultDetail,
@@ -18,7 +13,6 @@ import {
   type ArchitectureReviewResolution,
 } from "./architecture-review-resolution.ts";
 import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
-import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type ConfirmDirectiveArchitectureRetentionInput = {
   resultPath: string;
@@ -202,22 +196,24 @@ function renderRetentionMarkdown(input: {
 export function confirmDirectiveArchitectureRetention(
   input: ConfirmDirectiveArchitectureRetentionInput,
 ): DirectiveArchitectureRetentionConfirmResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const resultRelativePath = resolveDirectiveRelativePath(directiveRoot, input.resultPath);
+  const writePreparation = prepareDirectiveArchitectureDeepTailWrite({
+    directiveRoot: input.directiveRoot,
+    sourcePath: input.resultPath,
+    sourceFieldName: "resultPath",
+    resolveTargetRelativePath: resolveRetentionRelativePath,
+    actor: input.confirmedBy,
+  });
+  const directiveRoot = writePreparation.directiveRoot;
+  const resultRelativePath = writePreparation.sourceRelativePath;
   const resultDetail = readDirectiveArchitectureImplementationResultDetail({
     directiveRoot,
     resultPath: resultRelativePath,
   });
-  const retainedRelativePath = resolveRetentionRelativePath(resultRelativePath);
-  const retainedAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
-    directiveRoot,
-    relativePath: retainedRelativePath,
-    mode: "write",
-  });
-  const created = !fs.existsSync(retainedAbsolutePath);
-  const snapshotAt = new Date().toISOString();
-  const confirmedBy = String(input.confirmedBy || "directive-frontend-operator").trim()
-    || "directive-frontend-operator";
+  const retainedRelativePath = writePreparation.targetRelativePath;
+  const retainedAbsolutePath = writePreparation.targetAbsolutePath;
+  const created = writePreparation.created;
+  const snapshotAt = writePreparation.snapshotAt;
+  const confirmedBy = writePreparation.actor;
   const stabilityLevel = input.stabilityLevel || "bounded-stable";
   const usefulnessAssessment = optionalString(input.usefulnessAssessment)
     || "The completed implementation result is worth retaining as Directive-owned Architecture output within the current bounded scope.";
@@ -250,8 +246,14 @@ export function confirmDirectiveArchitectureRetention(
     rollbackBoundary,
   });
 
-  fs.mkdirSync(path.dirname(retainedAbsolutePath), { recursive: true });
-  fs.writeFileSync(retainedAbsolutePath, markdown, "utf8");
+  writeDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    stageId: "retained",
+    sourceRelativePath: resultRelativePath,
+    targetRelativePath: retainedRelativePath,
+    targetAbsolutePath: retainedAbsolutePath,
+    markdown,
+  });
 
   return {
     ok: true,
@@ -273,13 +275,13 @@ export function readDirectiveArchitectureRetentionDetail(input: {
   retainedPath: string;
   directiveRoot?: string;
 }): DirectiveArchitectureRetentionDetail {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const retainedArtifact = readDirectiveArchitectureDeepTailArtifact({
-    directiveRoot,
+  const retainedArtifact = readDirectiveArchitectureDeepTailDetailArtifact({
+    directiveRoot: input.directiveRoot,
     artifactPath: input.retainedPath,
     stage: ARCHITECTURE_DEEP_TAIL_STAGE.retained,
     fieldName: "retainedPath",
   });
+  const directiveRoot = retainedArtifact.directiveRoot;
   const retainedRelativePath = retainedArtifact.relativePath;
   const retainedAbsolutePath = retainedArtifact.absolutePath;
   const content = retainedArtifact.content;

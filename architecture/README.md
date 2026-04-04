@@ -54,6 +54,8 @@ Operator navigation map:
 - Deep-tail logical artifact links remain stable at `architecture/04-...` through `architecture/09-...` even though the physical files now live under `architecture/deep-materialization/`.
 
 Canonical references:
-- `C:\Users\User\projects\directive-workspace\knowledge\workflow.md`
+- `C:\Users\User\projects\directive-workspace\CLAUDE.md`
+- `C:\Users\User\projects\directive-workspace\control\runbook\current-priority.md`
+- `C:\Users\User\projects\directive-workspace\knowledge\README.md`
 - `C:\Users\User\projects\directive-workspace\knowledge\architecture-completion-rubric.md`
 - `C:\Users\User\projects\directive-workspace\architecture\ARCHITECTURE_EXPLORATION.md`

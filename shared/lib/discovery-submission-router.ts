@@ -11,6 +11,7 @@ import type {
   DiscoveryRoutingDecisionState,
 } from "./discovery-routing-record-writer.ts";
 import type { DiscoveryRoutingTarget } from "./discovery-intake-queue-writer.ts";
+import type { DirectiveEnginePrimaryAdoptionTarget } from "../../engine/types.ts";
 
 export type DiscoverySubmissionShape = "queue_only" | "fast_path" | "split_case";
 
@@ -36,6 +37,9 @@ type DiscoveryCaseCompletionSection = Omit<
 >;
 
 export type DiscoverySubmissionRequest = DiscoveryIntakeSubmission & {
+  primary_adoption_target?: DirectiveEnginePrimaryAdoptionTarget | null;
+  contains_executable_code?: boolean | null;
+  contains_workflow_pattern?: boolean | null;
   record_shape?: DiscoverySubmissionShape | "auto" | null;
   fast_path?: Omit<
     DiscoveryFastPathRecordRequest,

@@ -1,26 +1,12 @@
-import fs from "node:fs";
 import path from "node:path";
 
 import { readDirectiveCaseMirrorEvents } from "./case-event-log.ts";
 import { readDirectiveMirroredDiscoveryCaseRecord } from "./case-store.ts";
-
-function renderListOrPlaceholder(values: string[], placeholder = "  - n/a") {
-  if (values.length === 0) {
-    return placeholder;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
-
-function writeUtf8(filePath: string, content: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
-}
-
-function sortEvents<T extends { sequence: number; occurredAt: string }>(events: T[]) {
-  return [...events].sort((left, right) =>
-    left.sequence - right.sequence || left.occurredAt.localeCompare(right.occurredAt),
-  );
-}
+import {
+  renderDirectiveProjectionListOrPlaceholder,
+  sortDirectiveProjectionEvents,
+  writeDirectiveProjectionUtf8,
+} from "./runtime-projection-shared.ts";
 
 export type DirectiveMirroredRuntimeCapabilityBoundaryOpenProjectionInput = {
   snapshotAt: string;
@@ -104,9 +90,9 @@ ${input.projectionInput.linkedRoutingPath ? `- Linked Discovery routing record: 
 ## capability boundary
 - Preserve the approved runtime objective only.
 - Preserve the bounded proof items:
-${renderListOrPlaceholder(input.projectionInput.requiredProofItems)}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredProofItems)}
 - Preserve the required gates:
-${renderListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
+${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
 - Do not add runtime triggers, host adapters, scheduling, background work, or callable implementation.
 - Do not claim promotion readiness, runtime execution, or host integration from this artifact.
 
@@ -166,7 +152,7 @@ export function materializeDirectiveRuntimeCapabilityBoundaryProjectionSet(input
   }
 
   const eventLog = readDirectiveCaseMirrorEvents(input);
-  const latestEvent = sortEvents(eventLog.events).at(-1) ?? null;
+  const latestEvent = sortDirectiveProjectionEvents(eventLog.events).at(-1) ?? null;
 
   return {
     ok: true,
@@ -207,7 +193,7 @@ export function writeDirectiveRuntimeCapabilityBoundaryProjectionSet(input: {
     return projectionSet;
   }
 
-  writeUtf8(
+  writeDirectiveProjectionUtf8(
     path.resolve(input.directiveRoot, projectionSet.paths.runtimeCapabilityBoundaryPath),
     projectionSet.markdown.runtimeCapabilityBoundary,
   );

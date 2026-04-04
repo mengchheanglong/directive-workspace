@@ -11,7 +11,7 @@ Define one bounded manual host-facing promotion record for the Temporal Durable 
 
 This guard opens one explicit manual promotion-record seam only. It does not open:
 - registry acceptance
-- host integration rollout
+- host integration
 - runtime execution
 - promotion automation
 
@@ -24,19 +24,19 @@ This guard opens one explicit manual promotion-record seam only. It does not ope
 
 ## Pass Conditions
 
-- the Temporal durable-execution promotion record exists and links the Runtime record, Runtime proof, Runtime capability boundary, and DW web-host compile-contract artifact truthfully
-- canonical state resolves the Temporal durable-execution current head to that promotion record
+- the Temporal Durable Execution Platform promotion record exists and links the Runtime record, Runtime proof, Runtime capability boundary, and DW web-host compile-contract artifact truthfully
+- canonical state resolves the Temporal Durable Execution Platform current head to that promotion record
 - the linked promotion specification remains canonical and checked
 - the Directive Workspace web host still exposes the bounded seam-review route and detail payload without fake integration or execution controls
 - no registry entry exists yet for the Temporal durable-execution candidate
-- no host integration, runtime execution, or automation claim is introduced
+- no host integration, runtime execution, promotion automation claim is introduced
 
 ## Required Host Artifacts
 
-- current Temporal durable-execution promotion-readiness artifact
-- current Temporal durable-execution promotion specification
-- current Temporal durable-execution promotion record
-- current Temporal durable-execution DW web-host seam-review compile-contract artifact
+- current Temporal Durable Execution Platform promotion-readiness artifact
+- current Temporal Durable Execution Platform promotion specification
+- current Temporal Durable Execution Platform promotion record
+- current Temporal Durable Execution Platform DW web-host seam-review compile-contract artifact
 - `shared/contracts/runtime-to-host.md`
 
 ## Required Host Commands
@@ -56,15 +56,15 @@ This guard opens one explicit manual promotion-record seam only. It does not ope
   - `Primary host checker: npm run check:directive-temporal-durable-execution-dw-web-host-runtime-promotion`
 - promotion record keeps:
   - target host bounded to `Directive Workspace web host (frontend/ + hosts/web-host/)`
-  - compile contract bounded to the existing Temporal durable-execution DW web-host seam-review compile-contract artifact
+  - compile contract bounded to the existing Temporal Durable Execution Platform DW web-host seam-review compile-contract artifact
   - rollback explicit
   - validation bounded to local/manual proof only
 
 ## Decision Rules
 
-1. This guard validates one manual Temporal durable-execution promotion record only.
+1. This guard validates one manual Temporal Durable Execution Platform promotion record only.
 2. Passing this guard does not imply registry acceptance.
-3. Passing this guard does not imply host integration, runtime execution, or automation.
+3. Passing this guard does not imply host integration, runtime execution, promotion automation.
 4. Any later registry entry must still prove explicit host acceptance and linked proof.
 
 ## Validation Hooks

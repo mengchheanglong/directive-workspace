@@ -56,7 +56,9 @@ It does not own:
 
 ## Canonical references
 
-- `knowledge/workflow.md`
+- `../CLAUDE.md`
+- `../control/runbook/current-priority.md`
+- `../knowledge/README.md`
 - `shared/templates/discovery-fast-path-record.md`
 - `shared/templates/intake-record.md`
 - `shared/contracts/discovery-to-architecture.md`

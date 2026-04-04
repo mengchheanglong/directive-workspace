@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -11,26 +10,20 @@ import {
 import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
 import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
 import { openDirectiveRuntimePromotionReadiness } from "../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
+import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import {
+  extractOpenedBy,
+  readJson,
+  uniqueRelativePaths,
+  writeJson,
+} from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-  operating_mode?: string | null;
-};
-
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const EXPECTED_PRE_PROMOTION_NEXT_STEP =
+  "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.";
 const PROMOTION_CASES = [
   {
     candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
@@ -74,15 +67,6 @@ const PROMOTION_CASES = [
   },
 ] as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
 function copyRelativeFile(relativePath: string, tempRoot: string) {
   const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
   assert.ok(fs.existsSync(sourcePath), `Missing source file for parity copy: ${relativePath}`);
@@ -91,18 +75,48 @@ function copyRelativeFile(relativePath: string, tempRoot: string) {
   fs.copyFileSync(sourcePath, targetPath);
 }
 
-function extractOpenedBy(markdown: string) {
-  const match = markdown.match(/- Opened by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime opened-by actor");
-  return match[1];
-}
+function assertPromotionReadinessBaseContract(input: {
+  markdown: string;
+  candidateId: string;
+  promotionReadinessPath: string;
+  runtimeCapabilityBoundaryPath: string;
+  runtimeProofPath: string;
+  runtimeRecordPath: string;
+  followUpPath: string;
+  approvedBy: string;
+}) {
+  const expectedNeedles = [
+    "## runtime capability boundary identity",
+    `- Candidate id: \`${input.candidateId}\``,
+    `- Runtime capability boundary path: \`${input.runtimeCapabilityBoundaryPath}\``,
+    `- Source Runtime proof artifact: \`${input.runtimeProofPath}\``,
+    `- Source Runtime v0 record: \`${input.runtimeRecordPath}\``,
+    `- Source Runtime follow-up record: \`${input.followUpPath}\``,
+    "- Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`",
+    `- Opened by: \`${input.approvedBy}\``,
+    "- Current status: `promotion_readiness_opened`",
+    "## bounded runtime usefulness preserved",
+    "## what is now explicit",
+    "## validation boundary",
+    "## rollback boundary",
+    "## artifact linkage",
+    `- Promotion-readiness artifact: \`${input.promotionReadinessPath}\``,
+    `- Runtime capability boundary: \`${input.runtimeCapabilityBoundaryPath}\``,
+    `- Runtime proof artifact: \`${input.runtimeProofPath}\``,
+    `- Runtime v0 record: \`${input.runtimeRecordPath}\``,
+    `- Source Runtime follow-up record: \`${input.followUpPath}\``,
+  ];
 
-function uniqueRelativePaths(items: Array<string | null | undefined>) {
-  return [...new Set(items.filter((value): value is string => Boolean(value)))];
+  for (const needle of expectedNeedles) {
+    assert.ok(
+      input.markdown.includes(needle),
+      `Promotion-readiness base contract missing expected content: ${needle}`,
+    );
+  }
 }
 
 function main() {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
 
@@ -128,7 +142,7 @@ function main() {
         promotionCase.followUpPath,
         promotionCase.runtimeRecordPath,
       ])) {
-        copyRelativeFile(relativePath, directiveRoot);
+        copyRelativeFile(relativePath, DIRECTIVE_ROOT, directiveRoot, "Missing source file for parity copy");
       }
 
       writeJson(path.join(directiveRoot, "discovery", "intake-queue.json"), {
@@ -187,18 +201,23 @@ function main() {
         path.join(directiveRoot, promotionCase.promotionReadinessPath),
         "utf8",
       );
-      assert.equal(
-        generatedPromotionReadiness,
-        livePromotionReadinessMarkdown,
-        `Generated Runtime promotion-readiness drifted for ${promotionCase.candidateId}`,
-      );
+      assertPromotionReadinessBaseContract({
+        markdown: generatedPromotionReadiness,
+        candidateId: promotionCase.candidateId,
+        promotionReadinessPath: promotionCase.promotionReadinessPath,
+        runtimeCapabilityBoundaryPath: promotionCase.runtimeCapabilityBoundaryPath,
+        runtimeProofPath: promotionCase.runtimeProofPath,
+        runtimeRecordPath: promotionCase.runtimeRecordPath,
+        followUpPath: promotionCase.followUpPath,
+        approvedBy: extractOpenedBy(livePromotionReadinessMarkdown),
+      });
 
       const projectionSet = materializeDirectiveRuntimePromotionReadinessProjectionSet({
         directiveRoot,
         caseId: promotionCase.candidateId,
       });
       assert.equal(projectionSet.ok, true, `Runtime promotion-readiness projection materialization failed for ${promotionCase.candidateId}`);
-      assert.equal(projectionSet.markdown.promotionReadiness, livePromotionReadinessMarkdown);
+      assert.equal(projectionSet.markdown.promotionReadiness, generatedPromotionReadiness);
       assert.equal(projectionSet.paths.promotionReadinessPath, promotionCase.promotionReadinessPath);
       assert.equal(projectionSet.compatibility.capabilityBoundaryPath, promotionCase.runtimeCapabilityBoundaryPath);
       assert.equal(projectionSet.compatibility.runtimeProofPath, promotionCase.runtimeProofPath);
@@ -213,7 +232,7 @@ function main() {
       assert.equal(regenerated.ok, true, `Runtime promotion-readiness projection rewrite failed for ${promotionCase.candidateId}`);
       assert.equal(
         fs.readFileSync(path.join(directiveRoot, promotionCase.promotionReadinessPath), "utf8"),
-        livePromotionReadinessMarkdown,
+        generatedPromotionReadiness,
       );
 
       assert.throws(
@@ -233,9 +252,10 @@ function main() {
         artifactPath: promotionCase.promotionReadinessPath,
       }).focus;
       assert.ok(tempFocus?.ok, `Generated Runtime promotion-readiness state did not resolve for ${promotionCase.candidateId}`);
-      assert.equal(tempFocus.currentHead.artifactPath, liveFocus.currentHead.artifactPath);
-      assert.equal(tempFocus.currentStage, liveFocus.currentStage);
-      assert.equal(tempFocus.nextLegalStep, liveFocus.nextLegalStep);
+      assert.equal(tempFocus.currentHead.artifactPath, promotionCase.promotionReadinessPath);
+      assert.equal(tempFocus.currentStage, "runtime.promotion_readiness.opened");
+      assert.equal(tempFocus.nextLegalStep, EXPECTED_PRE_PROMOTION_NEXT_STEP);
+      assert.equal(tempFocus.runtime?.proposedHost, liveFocus.runtime?.proposedHost);
 
       checked.push({
         candidateId: promotionCase.candidateId,

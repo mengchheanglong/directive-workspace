@@ -7,6 +7,7 @@ import {
   type DiscoveryRoutingTarget,
 } from "./discovery-intake-queue-writer.ts";
 import { transitionDiscoveryIntakeQueueEntry } from "./discovery-intake-queue-transition.ts";
+import { extractRuntimeOpenerRequiredBulletValue as extractBulletValue } from "./runtime-opener-shared.ts";
 
 export type DiscoveryLifecycleSyncTarget = "routed" | "completed";
 
@@ -50,21 +51,6 @@ function mergeNotes(existing: string | null, appended: string | null) {
 
 function readUtf8(filePath: string) {
   return fs.readFileSync(filePath, "utf8");
-}
-
-function extractBulletValue(markdown: string, label: string) {
-  const prefix = `- ${label}:`;
-  const line = markdown
-    .split(/\r?\n/)
-    .find((entry) => entry.trim().startsWith(prefix));
-  if (!line) {
-    throw new Error(`routing_record_path is missing "${label}"`);
-  }
-  return line
-    .trim()
-    .replace(prefix, "")
-    .trim()
-    .replace(/^`|`$/g, "");
 }
 
 function resolveArtifactPath(input: {
@@ -116,14 +102,22 @@ function validateRoutedLifecycleSyncAgainstRoutingRecord(input: {
 
   const routingAbsolutePath = path.resolve(input.directiveRoot, input.routingRecordPath);
   const markdown = readUtf8(routingAbsolutePath);
-  const routeDestination = extractBulletValue(markdown, "Route destination");
+  const routeDestination = extractBulletValue(
+    markdown,
+    "Route destination",
+    'routing_record_path is missing "Route destination"',
+  );
   if (routeDestination !== input.routingTarget) {
     throw new Error(
       `routing_target does not match routing_record_path route destination: ${routeDestination}`,
     );
   }
 
-  const requiredNextArtifact = extractBulletValue(markdown, "Required next artifact")
+  const requiredNextArtifact = extractBulletValue(
+    markdown,
+    "Required next artifact",
+    'routing_record_path is missing "Required next artifact"',
+  )
     .replace(/\\/g, "/");
   if (
     input.resultRecordPath

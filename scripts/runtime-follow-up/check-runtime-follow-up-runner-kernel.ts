@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -8,27 +7,20 @@ import {
   readDirectiveActionRunnerEvents,
   readDirectiveActionRunnerRecord,
 } from "../../shared/lib/directive-runner-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../../shared/lib/discovery-intake-queue-writer.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
 import { readDirectiveCaseMirrorEvents } from "../../shared/lib/case-event-log.ts";
 import { openDirectiveRuntimeFollowUp } from "../../shared/lib/runtime-follow-up-opener.ts";
 import { runDirectiveRuntimeFollowUpWithRunner } from "../../shared/lib/runtime-follow-up-runner.ts";
+import {
+  copyRelativeFile,
+  extractReviewedBy,
+  readJson,
+  uniqueRelativePaths,
+  writeJson,
+} from "../checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "../temp-directive-root.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-  operating_mode?: string | null;
-};
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const CASE_UNDER_TEST = {
@@ -37,35 +29,8 @@ const CASE_UNDER_TEST = {
   runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
 } as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function copyRelativeFile(relativePath: string, tempRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
-  assert.ok(fs.existsSync(sourcePath), `Missing source file for runner copy: ${relativePath}`);
-  const targetPath = path.join(tempRoot, relativePath);
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
-}
-
-function extractApprovedBy(markdown: string) {
-  const match = markdown.match(/- Reviewed by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime review actor from runtime record");
-  return match[1];
-}
-
-function uniqueRelativePaths(items: Array<string | null | undefined>) {
-  return [...new Set(items.filter((value): value is string => Boolean(value)))];
-}
-
 function seedRuntimeFollowUpDirectiveRoot(directiveRoot: string) {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
   const queueEntry = queueDocument.entries.find((item) => item.candidate_id === CASE_UNDER_TEST.candidateId) ?? null;
@@ -95,7 +60,7 @@ function seedRuntimeFollowUpDirectiveRoot(directiveRoot: string) {
     liveFocus.linkedArtifacts.runtimePromotionSpecificationPath,
     liveFocus.linkedArtifacts.runtimeCallableStubPath,
   ])) {
-    copyRelativeFile(relativePath, directiveRoot);
+    copyRelativeFile(relativePath, DIRECTIVE_ROOT, directiveRoot, "Missing source file for runner copy");
   }
 
   writeJson(path.join(directiveRoot, "discovery", "intake-queue.json"), {
@@ -118,8 +83,9 @@ function seedRuntimeFollowUpDirectiveRoot(directiveRoot: string) {
       path.join(DIRECTIVE_ROOT, CASE_UNDER_TEST.runtimeRecordPath),
       "utf8",
     ),
-    approvedBy: extractApprovedBy(
+    approvedBy: extractReviewedBy(
       fs.readFileSync(path.join(DIRECTIVE_ROOT, CASE_UNDER_TEST.runtimeRecordPath), "utf8"),
+      "Unable to parse Runtime review actor from runtime record",
     ),
   };
 }

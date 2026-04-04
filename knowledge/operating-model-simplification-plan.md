@@ -1,7 +1,9 @@
 # Directive Workspace Operating-Model Simplification Plan
 
 Last updated: 2026-04-03
-Status: proposed
+Status: historical/reference document
+
+This plan records the simplification work that produced the current baseline. Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`. Use `./README.md` before treating any `knowledge/` document as current authority.
 
 ## Purpose
 

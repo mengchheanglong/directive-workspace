@@ -1,19 +1,14 @@
-import fs from "node:fs";
-import path from "node:path";
-
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
   optionalString,
-  readDirectiveArchitectureDeepTailArtifact,
+  prepareDirectiveArchitectureDeepTailWrite,
+  readDirectiveArchitectureDeepTailDetailArtifact,
   resolveArchitectureDeepTailRelativePath,
-  resolveDirectiveRelativePath,
+  writeDirectiveArchitectureDeepTailArtifact,
 } from "./architecture-deep-tail-artifact-helpers.ts";
 import {
   readDirectiveArchitectureIntegrationRecordDetail,
 } from "./architecture-integration-record.ts";
 import { ARCHITECTURE_DEEP_TAIL_STAGE } from "./architecture-deep-tail-stage-map.ts";
-import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "./directive-workspace-artifact-storage.ts";
 
 export type RecordDirectiveArchitectureConsumptionInput = {
   integrationPath: string;
@@ -141,22 +136,24 @@ function renderConsumptionMarkdown(input: {
 export function recordDirectiveArchitectureConsumption(
   input: RecordDirectiveArchitectureConsumptionInput,
 ): DirectiveArchitectureConsumptionRecordResult {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const integrationRelativePath = resolveDirectiveRelativePath(directiveRoot, input.integrationPath);
+  const writePreparation = prepareDirectiveArchitectureDeepTailWrite({
+    directiveRoot: input.directiveRoot,
+    sourcePath: input.integrationPath,
+    sourceFieldName: "integrationPath",
+    resolveTargetRelativePath: resolveConsumptionRelativePath,
+    actor: input.recordedBy,
+  });
+  const directiveRoot = writePreparation.directiveRoot;
+  const integrationRelativePath = writePreparation.sourceRelativePath;
   const integrationDetail = readDirectiveArchitectureIntegrationRecordDetail({
     directiveRoot,
     integrationPath: integrationRelativePath,
   });
-  const consumptionRelativePath = resolveConsumptionRelativePath(integrationRelativePath);
-  const consumptionAbsolutePath = resolveDirectiveWorkspaceArtifactAbsolutePath({
-    directiveRoot,
-    relativePath: consumptionRelativePath,
-    mode: "write",
-  });
-  const created = !fs.existsSync(consumptionAbsolutePath);
-  const snapshotAt = new Date().toISOString();
-  const recordedBy = String(input.recordedBy || "directive-frontend-operator").trim()
-    || "directive-frontend-operator";
+  const consumptionRelativePath = writePreparation.targetRelativePath;
+  const consumptionAbsolutePath = writePreparation.targetAbsolutePath;
+  const created = writePreparation.created;
+  const snapshotAt = writePreparation.snapshotAt;
+  const recordedBy = writePreparation.actor;
   const outcome = input.outcome === "failure" ? "failure" : "success";
   const appliedSurface = optionalString(input.appliedSurface)
     || "Directive Workspace engine-owned product logic within the current bounded Architecture surface.";
@@ -193,8 +190,14 @@ export function recordDirectiveArchitectureConsumption(
     rollbackNote,
   });
 
-  fs.mkdirSync(path.dirname(consumptionAbsolutePath), { recursive: true });
-  fs.writeFileSync(consumptionAbsolutePath, markdown, "utf8");
+  writeDirectiveArchitectureDeepTailArtifact({
+    directiveRoot,
+    stageId: "consumption_record",
+    sourceRelativePath: integrationRelativePath,
+    targetRelativePath: consumptionRelativePath,
+    targetAbsolutePath: consumptionAbsolutePath,
+    markdown,
+  });
 
   return {
     ok: true,
@@ -216,13 +219,13 @@ export function readDirectiveArchitectureConsumptionRecordDetail(input: {
   consumptionPath: string;
   directiveRoot?: string;
 }): DirectiveArchitectureConsumptionRecordDetail {
-  const directiveRoot = normalizePath(input.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const consumptionArtifact = readDirectiveArchitectureDeepTailArtifact({
-    directiveRoot,
+  const consumptionArtifact = readDirectiveArchitectureDeepTailDetailArtifact({
+    directiveRoot: input.directiveRoot,
     artifactPath: input.consumptionPath,
     stage: ARCHITECTURE_DEEP_TAIL_STAGE.consumption_record,
     fieldName: "consumptionPath",
   });
+  const directiveRoot = consumptionArtifact.directiveRoot;
   const consumptionRelativePath = consumptionArtifact.relativePath;
   const consumptionAbsolutePath = consumptionArtifact.absolutePath;
   const content = consumptionArtifact.content;

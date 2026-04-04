@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -9,24 +8,17 @@ import {
   writeDirectiveRuntimeProofOpenProjectionSet,
 } from "../shared/lib/runtime-proof-open-projections.ts";
 import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
+import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
 import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
 import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import {
+  copyRelativeFile,
+  extractOpenedBy,
+  readJson,
+  uniqueRelativePaths,
+  writeJson,
+} from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-  operating_mode?: string | null;
-};
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const RUNTIME_PROOF_CASES = [
@@ -44,35 +36,8 @@ const RUNTIME_PROOF_CASES = [
   },
 ] as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function copyRelativeFile(relativePath: string, tempRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
-  assert.ok(fs.existsSync(sourcePath), `Missing source file for parity copy: ${relativePath}`);
-  const targetPath = path.join(tempRoot, relativePath);
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
-}
-
-function extractOpenedBy(markdown: string) {
-  const match = markdown.match(/- Opened by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime proof actor from proof artifact");
-  return match[1];
-}
-
-function uniqueRelativePaths(items: Array<string | null | undefined>) {
-  return [...new Set(items.filter((value): value is string => Boolean(value)))];
-}
-
 function main() {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
 
@@ -100,7 +65,7 @@ function main() {
         proofCase.followUpPath,
         proofCase.runtimeRecordPath,
       ])) {
-        copyRelativeFile(relativePath, directiveRoot);
+        copyRelativeFile(relativePath, DIRECTIVE_ROOT, directiveRoot, "Missing source file for parity copy");
       }
 
       tempQueue.entries.push({
@@ -126,7 +91,10 @@ function main() {
       }).focus;
       assert.ok(liveFocus?.ok, `Live Runtime proof state did not resolve for ${proofCase.candidateId}`);
 
-      const openedBy = extractOpenedBy(liveProofMarkdown);
+      const openedBy = extractOpenedBy(
+        liveProofMarkdown,
+        "Unable to parse Runtime proof actor from proof artifact",
+      );
       const result = openDirectiveRuntimeRecordProof({
         directiveRoot,
         runtimeRecordPath: proofCase.runtimeRecordPath,
@@ -185,7 +153,7 @@ function main() {
         liveFocus.linkedArtifacts.runtimePromotionRecordPath,
         liveFocus.linkedArtifacts.runtimeCallableStubPath,
       ])) {
-        copyRelativeFile(relativePath, directiveRoot);
+        copyRelativeFile(relativePath, DIRECTIVE_ROOT, directiveRoot, "Missing source file for parity copy");
       }
 
       const tempFocus = resolveDirectiveWorkspaceState({

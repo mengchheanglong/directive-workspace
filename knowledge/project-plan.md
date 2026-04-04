@@ -4,6 +4,7 @@ title: Directive Workspace Project Plan
 userId: 795edcca-fd18-4be3-8ba0-b86045af08ef
 createdAt: '2026-03-17T20:06:43.2045961+07:00'
 updatedAt: '2026-03-17T20:34:14.7463222+07:00'
+status: historical/reference document
 tags:
   - project-plan
   - directive-workspace
@@ -12,6 +13,10 @@ tags:
   - capability-integration
 ---
 # Directive Workspace Project Plan
+
+> Historical/reference note:
+> Active doctrine now lives in `../CLAUDE.md`, with active run priority in `../control/runbook/current-priority.md`.
+> Use `./README.md` before treating any `knowledge/` document as current authority.
 
 > **Status: superseded (2026-03-22)**
 > This file is a v0-era planning artifact. The core loop, capability intake, analysis, experiment, evaluation, decision, and integration registry described below are all implemented and operational.
