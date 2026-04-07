@@ -15,7 +15,7 @@
   "linkedArtifacts": {
     "intakeRecordPath": null,
     "triageRecordPath": null,
-    "routingRecordPath": "discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md",
     "engineRunRecordPath": null,
     "engineRunReportPath": null,
     "architectureHandoffPath": null,
@@ -25,7 +25,8 @@
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md"
+    "resultRecordPath": "architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md"
   },
   "projectionInputs": null
 }
+

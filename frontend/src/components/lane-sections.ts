@@ -104,6 +104,27 @@ export function renderQueueCard(
     : head?.artifact_lane === "architecture"
       ? "Active Architecture head"
       : "Current live artifact";
+  const reviewPressure = entry.review_pressure
+    ?? (run?.routingAssessment?.reviewGuidance
+      ? {
+          guidance_kind: run.routingAssessment.reviewGuidance.guidanceKind,
+          summary: run.routingAssessment.reviewGuidance.summary,
+          operator_action: run.routingAssessment.reviewGuidance.operatorAction,
+          stop_line: run.routingAssessment.reviewGuidance.stopLine,
+          routing_confidence: run.routingAssessment.confidence ?? null,
+          route_conflict: run.routingAssessment.routeConflict ?? null,
+          needs_human_review: run.routingAssessment.needsHumanReview ?? null,
+          ambiguity_summary: run.routingAssessment.ambiguitySummary
+            ? {
+                top_lane_id: run.routingAssessment.ambiguitySummary.topLaneId,
+                runner_up_lane_id: run.routingAssessment.ambiguitySummary.runnerUpLaneId,
+                score_delta: run.routingAssessment.ambiguitySummary.scoreDelta,
+                conflicting_signal_families: [...run.routingAssessment.ambiguitySummary.conflictingSignalFamilies],
+                conflicting_lane_ids: [...run.routingAssessment.ambiguitySummary.conflictingLaneIds],
+              }
+            : null,
+        }
+      : null);
 
   return html`
     <article class=${cardClass}>
@@ -137,6 +158,30 @@ export function renderQueueCard(
         </section>
 
         <section class="queue-kv">
+          <h4>Review pressure</h4>
+          ${reviewPressure
+            ? html`
+                <p class="queue-step">${reviewPressure.summary}</p>
+                <p class="muted">
+                  ${reviewPressure.routing_confidence ?? "n/a"} confidence
+                  | conflict: ${reviewPressure.route_conflict == null ? "n/a" : reviewPressure.route_conflict ? "yes" : "no"}
+                  | review: ${reviewPressure.needs_human_review == null ? "n/a" : reviewPressure.needs_human_review ? "yes" : "no"}
+                </p>
+                ${reviewPressure.route_conflict && reviewPressure.ambiguity_summary
+                  ? html`
+                      <p class="muted">
+                        Why conflicted: ${reviewPressure.ambiguity_summary.top_lane_id}
+                        over ${reviewPressure.ambiguity_summary.runner_up_lane_id ?? "none"}
+                        by ${reviewPressure.ambiguity_summary.score_delta}; signals:
+                        ${reviewPressure.ambiguity_summary.conflicting_signal_families.join(", ") || "none"}.
+                      </p>
+                    `
+                  : nothing}
+              `
+            : html`<p class="muted">No elevated review pressure recorded on the linked route.</p>`}
+        </section>
+
+        <section class="queue-kv">
           <h4>Downstream stub</h4>
           <div>${handoffHref
             ? html`<a href=${handoffHref} @click=${(event: Event) => {
@@ -152,6 +197,10 @@ export function renderQueueCard(
 
       ${entry.status_warning
         ? html`<p class="muted" style="margin-top:12px;">${entry.status_warning}</p>`
+        : nothing}
+
+      ${reviewPressure
+        ? html`<p class="muted" style="margin-top:12px;">Operator action: ${reviewPressure.operator_action} Stop-line: ${reviewPressure.stop_line}</p>`
         : nothing}
 
       <div class="queue-actions">
@@ -374,6 +423,8 @@ export function renderArchitectureLaneSummary(
 export function renderDiscoveryLanePage(snapshot: FrontendSnapshot) {
   const runtimeCount = snapshot.runtimeSummary.activeCases.length;
   const architectureCount = snapshot.architectureSummary.activeCases.length;
+  const reviewPressureCount = snapshot.queue.entries.filter((entry) => Boolean(entry.review_pressure)).length;
+  const conflictedCount = snapshot.queue.entries.filter((entry) => entry.review_pressure?.route_conflict).length;
   return html`
     <section class="panel">
       <h2>Discovery lane</h2>
@@ -383,9 +434,9 @@ export function renderDiscoveryLanePage(snapshot: FrontendSnapshot) {
           <h3>Queue</h3>
           <div class="lane-overview-stats">
             <div class="lane-overview-stat"><h4>Total entries</h4><p class="seam-value">${snapshot.queue.totalEntries}</p></div>
-            <div class="lane-overview-stat"><h4>Handoff stubs</h4><p class="seam-value">${snapshot.handoffStubs.length}</p></div>
+            <div class="lane-overview-stat"><h4>Review pressure</h4><p class="seam-value">${reviewPressureCount}</p></div>
           </div>
-          <p class="muted">Queue and handoff state remain the canonical Discovery operating surfaces.</p>
+          <p class="muted">Queue and review-pressure state remain the canonical Discovery operating surfaces before any lane drill-down.</p>
           <div class="lane-actions">
             <a href="/submit" @click=${(event: Event) => { event.preventDefault(); navTo("/submit"); }}>Open source submission</a>
             <a href="/queue" @click=${(event: Event) => { event.preventDefault(); navTo("/queue"); }}>Open queue</a>
@@ -396,9 +447,9 @@ export function renderDiscoveryLanePage(snapshot: FrontendSnapshot) {
           <h3>Routing outcomes</h3>
           <div class="lane-overview-stats">
             <div class="lane-overview-stat"><h4>To Architecture</h4><p class="seam-value">${architectureCount}</p></div>
-            <div class="lane-overview-stat"><h4>To Runtime</h4><p class="seam-value">${runtimeCount}</p></div>
+            <div class="lane-overview-stat"><h4>Conflicted routes</h4><p class="seam-value">${conflictedCount}</p></div>
           </div>
-          <p class="muted">Discovery stays explicit. It does not auto-advance downstream work; it records the route and hands off to the next bounded lane surface.</p>
+          <p class="muted">Discovery stays explicit. It records the route, shows whether it is conflicted, and only then hands off to the next bounded lane surface. Runtime-routed cases currently visible: ${runtimeCount}.</p>
         </section>
       </div>
     </section>

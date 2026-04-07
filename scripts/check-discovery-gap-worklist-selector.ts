@@ -6,16 +6,13 @@ import { fileURLToPath } from "node:url";
 import {
   isDiscoveryGapWorklistItemEligibleForSelection,
   readTopEligibleDiscoveryGapFromCanonicalWorklist,
-} from "../shared/lib/discovery-gap-worklist-selector.ts";
-import type { DiscoveryGapWorklist } from "../shared/lib/discovery-gap-worklist-generator.ts";
+} from "../discovery/lib/discovery-gap-worklist-selector.ts";
+import type { DiscoveryGapWorklist } from "../discovery/lib/discovery-gap-worklist-generator.ts";
+import { readJson } from "./checker-test-helpers.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const GAP_WORKLIST_PATH = path.join(DIRECTIVE_ROOT, "discovery", "gap-worklist.json");
 const INTAKE_QUEUE_PATH = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
 
 function listRelativeFiles(rootPath: string) {
   const results: string[] = [];

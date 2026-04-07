@@ -4,12 +4,13 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
+import { readDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
 import {
   mirrorDirectiveDiscoveryFrontDoorSubmission,
   readDirectiveMirroredDiscoveryCaseRecord,
-} from "../shared/lib/case-store.ts";
-import { submitDirectiveDiscoveryFrontDoor } from "../shared/lib/discovery-front-door.ts";
+} from "../engine/cases/case-store.ts";
+import { submitDirectiveDiscoveryFrontDoor } from "../discovery/lib/discovery-front-door.ts";
+import { writeJson } from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -18,10 +19,7 @@ function ensureParentDir(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 }
 
-function writeJson(filePath: string, value: unknown) {
-  ensureParentDir(filePath);
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
+
 
 async function main() {
   await withTempDirectiveRoot({ prefix: "directive-case-event-parity-" }, async (directiveRoot) => {

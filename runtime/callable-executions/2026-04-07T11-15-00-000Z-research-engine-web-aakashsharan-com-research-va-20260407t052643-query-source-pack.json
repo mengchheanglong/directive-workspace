@@ -1,0 +1,63 @@
+{
+  "version": "bounded_callable_execution_record/v1",
+  "executionId": "2026-04-07T11-15-00-000Z-research-engine-web-aakashsharan-com-research-va-20260407t052643-query-source-pack",
+  "executionAt": "2026-04-07T11:15:00.000Z",
+  "capability": {
+    "capabilityId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+    "title": "Research Vault Source-Pack Query",
+    "form": "runtime_owned_imported_source_derived_source_pack",
+    "toolCount": 1,
+    "tools": [
+      "query-source-pack"
+    ]
+  },
+  "invocation": {
+    "tool": "query-source-pack",
+    "timeoutMs": 10000,
+    "status": "success",
+    "ok": true
+  },
+  "metadata": {
+    "startedAt": "2026-04-07T15:57:17.730Z",
+    "completedAt": "2026-04-07T15:57:17.730Z",
+    "durationMs": 0,
+    "timeoutMs": 10000,
+    "capabilityId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702."
+  },
+  "boundary": {
+    "executionSurface": "shared_runtime_callable_executor",
+    "hostIntegrated": false,
+    "promotionAutomation": false,
+    "automaticWorkflowAdvancement": false
+  },
+  "inputSummary": {
+    "kind": "object",
+    "topLevelCount": 3,
+    "keys": [
+      "query",
+      "includeEvidence",
+      "maxItems"
+    ],
+    "preview": "{\"query\":\"discovery acquisition phase model\",\"includeEvidence\":true,\"maxItems\":2}",
+    "sizeBytes": 81
+  },
+  "resultSummary": {
+    "kind": "object",
+    "topLevelCount": 8,
+    "keys": [
+      "ok",
+      "query",
+      "sourcePackId",
+      "candidateId",
+      "sourceDerivedBehavior",
+      "sourceRuntimeExecutionClaimed",
+      "matchedSections",
+      "stopLine"
+    ],
+    "preview": "{\"ok\":true,\"query\":\"discovery acquisition phase model\",\"sourcePackId\":\"research_vault_phase_model_source_pack.v1\",\"candidateId\":\"research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.\",\"sourceDerivedBehavior\":..."
+  },
+  "artifacts": {
+    "recordPath": "runtime/callable-executions/2026-04-07T11-15-00-000Z-research-engine-web-aakashsharan-com-research-va-20260407t052643-query-source-pack.json",
+    "reportPath": "runtime/callable-executions/2026-04-07T11-15-00-000Z-research-engine-web-aakashsharan-com-research-va-20260407t052643-query-source-pack.md"
+  }
+}

@@ -19,24 +19,28 @@ It does not own:
 ## Default operational loop
 
 1. Default fast path:
-   - create one fast-path record in `intake/`
+   - create one fast-path record in `01-intake/`
    - capture intake, triage, and routing in that one record
-2. Split into `triage/` and `routing-log/` only when the case is complex, disputed, or held.
+2. Split into `02-triage/` and `03-routing-log/` only when the case is complex, disputed, or held.
 3. Route the candidate to one of:
    - Architecture
    - Runtime
-   - `monitor/`
-   - `deferred-or-rejected/`
+   - `04-monitor/`
+   - `05-deferred-or-rejected/`
    - `reference/`
 4. If the route is not clear after first pass, hold it instead of stretching Discovery work.
 
+This is already the Discovery cutdown rule:
+- simple cases stay on the fast path in `01-intake/`
+- `02-triage/` and `03-routing-log/` open only when the case genuinely needs the split path
+
 ## Folders
 
-- `intake/` — fast-path markdown intake records
-- `triage/` — complex-case triage records (split path only)
-- `routing-log/` — routing decisions
-- `monitor/` — candidates in monitor holding state
-- `deferred-or-rejected/` — candidates rejected or deferred
+- `01-intake/` — fast-path markdown intake records
+- `02-triage/` — complex-case triage records (split path only)
+- `03-routing-log/` — routing decisions
+- `04-monitor/` — candidates in monitor holding state
+- `05-deferred-or-rejected/` — candidates rejected or deferred
 - `reference/` — background knowledge and source maps
 - `research-engine/` — Research Engine source-intelligence imports
 

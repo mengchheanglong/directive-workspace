@@ -70,6 +70,19 @@ def validate_dw_discovery_packet(payload: dict[str, Any]) -> None:
                     "freshness_signal",
                     "freshest_source_updated_at",
                     "freshest_source_age_days",
+                    "structural_signal_band",
+                    "structural_signal_summary",
+                    "workflow_phase_labels",
+                    "provider_seam_summary",
+                    "workflow_boundary_shape_hint",
+                    "recommended_lane_target",
+                    "lane_target_rationale",
+                    "workflow_phase_scores",
+                    "structural_extraction_recommendations",
+                    "structural_avoid_recommendations",
+                    "review_guidance_summary",
+                    "review_guidance_action",
+                    "review_guidance_stop_line",
                     "uncertainty_notes",
                 },
                 f"dw_discovery_packet.{label}[]",
@@ -91,6 +104,11 @@ def validate_source_intelligence_packet(payload: dict[str, Any]) -> None:
             "signal_scoring",
             "strong_signals",
             "weak_signals",
+            "structural_signals",
+            "lane_target_signals",
+            "structural_recommendations",
+            "review_guidance",
+            "review_queue",
             "open_uncertainties",
             "machine_friendly_research_packet",
         },
@@ -118,7 +136,17 @@ def validate_source_intelligence_packet(payload: dict[str, Any]) -> None:
         {"known_baseline", "already_known_candidate_set"},
         "source_intelligence_packet.baseline_context",
     )
-    for label in ("candidate_intelligence", "signal_scoring", "strong_signals", "weak_signals"):
+    for label in (
+        "candidate_intelligence",
+        "signal_scoring",
+        "strong_signals",
+        "weak_signals",
+        "structural_signals",
+        "lane_target_signals",
+        "structural_recommendations",
+        "review_guidance",
+        "review_queue",
+    ):
         _expect_list_of_dicts(payload[label], f"source_intelligence_packet.{label}")
     if not isinstance(payload["open_uncertainties"], list):
         raise ValueError("source_intelligence_packet.open_uncertainties must be a list.")
@@ -127,6 +155,11 @@ def validate_source_intelligence_packet(payload: dict[str, Any]) -> None:
         {
             "strong_signals",
             "weak_signals",
+            "structural_signals",
+            "lane_target_signals",
+            "structural_recommendations",
+            "review_guidance",
+            "review_queue",
             "rejected_candidates",
             "novelty_notes",
             "evidence_gaps",

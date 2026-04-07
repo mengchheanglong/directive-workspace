@@ -433,12 +433,12 @@ Derive truthful routed queue status in one bounded seam, verify it, and stop wit
 Files touched:
 `hosts/web-host/data.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-implementation-result.md`
 Verification run:
@@ -474,12 +474,12 @@ Add one source-side routed lifecycle-sync legality rule, verify it, and stop wit
 Files touched:
 `shared/lib/discovery-intake-lifecycle-sync.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-implementation-result.md`
 Verification run:
@@ -509,7 +509,7 @@ Improves canonical Discovery route integrity by treating Discovery-held destinat
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`discovery/routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md`
+`discovery/03-routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the Discovery-held route equivalence guard in `shared/lib/dw-state.ts`, revert checker coverage, and remove the `dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28` DEEP case chain.
@@ -518,12 +518,12 @@ Treat Discovery-held route destinations as compatible with Engine lane `discover
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-implementation-result.md`
 Verification run:
@@ -534,7 +534,7 @@ Verification run:
 Result:
 Discovery-held `monitor` now resolves as a clean Discovery route instead of a broken lane mismatch. The completed Agentics Issue Triage queue row now preserves `status_effective = completed`, and the whole-workspace counts dropped to `completed -> completed_inconsistent = 21`.
 Next likely move:
-Add first-class resolver support for `discovery/monitor/*.md`, which is now the remaining current-era artifact path gap behind that completed monitor case.
+Add first-class resolver support for `discovery/04-monitor/*.md`, which is now the remaining current-era artifact path gap behind that completed monitor case.
 Risks / notes:
 This slice intentionally stopped at route equivalence. The monitor artifact itself is still unsupported as a direct resolver focus path.
 
@@ -543,7 +543,7 @@ Cycle 4
 Chosen task:
 Discovery monitor truth-surface support in the canonical resolver.
 Why it won:
-After Cycle 3, the remaining current-era gap was a real `discovery/monitor/*.md` artifact that still could not resolve as a first-class focus path, and one healthy completed queue row still pointed at the routing record instead of the live monitor artifact.
+After Cycle 3, the remaining current-era gap was a real `discovery/04-monitor/*.md` artifact that still could not resolve as a first-class focus path, and one healthy completed queue row still pointed at the routing record instead of the live monitor artifact.
 Affected layer:
 Shared Engine / Discovery truth surface.
 Owning lane:
@@ -553,7 +553,7 @@ Improves whole-product truthfulness by making the real Discovery monitor artifac
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`discovery/monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md`
+`discovery/04-monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the monitor reader / resolver support in `shared/lib/dw-state.ts`, revert checker coverage, and remove the `dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28` DEEP case chain.
@@ -562,12 +562,12 @@ Add one first-class monitor truth surface, verify the routed monitor case resolv
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-implementation-result.md`
 Verification run:
@@ -576,7 +576,7 @@ Verification run:
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
-`discovery/monitor/*.md` is now a first-class canonical focus path. The routed monitor case resolves with `currentStage = discovery.monitor.active`, and the completed monitor queue row now points at the monitor artifact as `current_head`.
+`discovery/04-monitor/*.md` is now a first-class canonical focus path. The routed monitor case resolves with `currentStage = discovery.monitor.active`, and the completed monitor queue row now points at the monitor artifact as `current_head`.
 Next likely move:
 Repair the one remaining current-era routed inconsistency: the GPT Researcher Architecture handoff stub that still failed because it was missing a required `Lifecycle classification` section.
 Risks / notes:
@@ -595,18 +595,18 @@ Architecture.
 Mission usefulness:
 Removes the last current-era routed inconsistency from the queue/read model by bringing one real handoff stub back into canonical shape.
 Proof path:
-`architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md`
-`discovery/routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md`
+`architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md`
+`discovery/03-routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
 Revert the added `Lifecycle classification` section in the handoff stub and revert the checker expectation update.
 Stop-line:
 Repair the missing section, verify the routed case resolves cleanly, and stop without broadening into other historical artifact normalization.
 Files touched:
-`architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md`
+`architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md`
 `scripts/check-directive-workspace-composition.ts`
 Verification run:
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -621,7 +621,7 @@ Cycle 6
 Chosen task:
 Legacy Architecture adoption compatibility in the shared adoption reader.
 Why it won:
-After the current-era queue and monitor seams were clean, the highest-ROI remaining shared truth gap was four legacy `architecture/03-adopted/*.md` records that still failed canonical focus only because the adoption reader hard-required a modern decision sidecar those older artifacts never had. That was still bounded and strongly verifiable, unlike the much broader legacy Runtime history surface.
+After the current-era queue and monitor seams were clean, the highest-ROI remaining shared truth gap was four legacy `architecture/02-adopted/*.md` records that still failed canonical focus only because the adoption reader hard-required a modern decision sidecar those older artifacts never had. That was still bounded and strongly verifiable, unlike the much broader legacy Runtime history surface.
 Affected layer:
 Shared Engine / Architecture adoption truth.
 Owning lane:
@@ -631,7 +631,7 @@ Keeps older adopted Architecture value reachable as canonical current heads inst
 Proof path:
 `shared/lib/architecture-result-adoption.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md`
+`architecture/02-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy adoption fallback in `shared/lib/architecture-result-adoption.ts`, revert checker coverage, and remove the `dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28` DEEP case chain.
@@ -640,17 +640,17 @@ Make the four legacy adopted Architecture artifacts resolve as clean canonical c
 Files touched:
 `shared/lib/architecture-result-adoption.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-implementation-result.md`
 Verification run:
 `npm run check:directive-workspace-composition`
-`npm run report:directive-workspace-state -- architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md`
+`npm run report:directive-workspace-state -- architecture/02-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-implementation-result.md`
 `npm run check`
 `npm run report:directive-workspace-state`
@@ -677,8 +677,8 @@ Proof path:
 `hosts/web-host/data.ts`
 `frontend/src/app.ts`
 `scripts/check-frontend-host.ts`
-`runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
-`runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
+`runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
+`runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
 Rollback path:
 Revert the legacy Runtime handoff detail parser in `hosts/web-host/data.ts`, revert the display-only branch in `frontend/src/app.ts`, and revert the repo-backed handoff assertions in `scripts/check-frontend-host.ts`.
 Stop-line:
@@ -713,7 +713,7 @@ Removes a current-era invalid handoff warning and keeps internally-generated Arc
 Proof path:
 `shared/lib/architecture-handoff-start.ts`
 `frontend/src/app.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
 Revert the internally-generated handoff fallback in `shared/lib/architecture-handoff-start.ts`, revert the Architecture handoff detail rendering change in `frontend/src/app.ts`, revert the explicit `n/a` source fields in the handoff artifact, and revert the checker coverage.
@@ -722,7 +722,7 @@ Make the internally-generated handoff resolve cleanly with honest unresolved Eng
 Files touched:
 `shared/lib/architecture-handoff-start.ts`
 `frontend/src/app.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md`
 `scripts/check-directive-workspace-composition.ts`
 Verification run:
 `npm run check:directive-workspace-composition`
@@ -747,38 +747,38 @@ Architecture.
 Mission usefulness:
 Makes the recent internally-generated DEEP Architecture pressure cases directly focusable through the canonical bounded-start / bounded-result chain instead of only working indirectly through later artifacts.
 Proof path:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
 Revert the eight repaired bounded-start / bounded-result artifacts and revert the new composition coverage for the 2026-03-28 internally-generated Architecture family.
 Stop-line:
 Bring the four current-era internally-generated bounded-start / bounded-result pairs into the canonical Architecture artifact contract, verify they focus cleanly, and stop before broadening into adoption/materialization repair or legacy Runtime policy.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md`
 `scripts/check-directive-workspace-composition.ts`
 Verification run:
 `npx tsx -` (direct focus checks for the four repaired bounded-start / bounded-result pairs)
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
-All four internally-generated 2026-03-28 bounded starts now resolve as clean `architecture.bounded_start.opened` artifacts, and all four paired bounded results resolve as clean `architecture.bounded_result.adopt` artifacts with only the expected `architecture/03-adopted/*.md` gap.
+All four internally-generated 2026-03-28 bounded starts now resolve as clean `architecture.bounded_start.opened` artifacts, and all four paired bounded results resolve as clean `architecture.bounded_result.adopt` artifacts with only the expected `architecture/02-adopted/*.md` gap.
 Next likely move:
 Reassess whether the next best bounded slice is now surfacing the two legacy Runtime handoff artifacts as read-only stubs in the handoff list, or whether another shared-truth seam has become more valuable.
 Risks / notes:
@@ -799,7 +799,7 @@ Lets the repaired 2026-03-28 Architecture result families traverse through adopt
 Proof path:
 `shared/lib/architecture-result-adoption.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-adopted-planned-next.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the adoption-reader compatibility changes in `shared/lib/architecture-result-adoption.ts` and revert the updated checker expectations for the 2026-03-28 internally-generated Architecture family.
@@ -810,7 +810,7 @@ Files touched:
 `scripts/check-directive-workspace-composition.ts`
 Verification run:
 `npx tsx -` (direct adoption-reader / bounded-result focus check for the 2026-03-28 lifecycle-sync adoption pair)
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
 `npm run report:directive-workspace-state`
@@ -837,8 +837,8 @@ Proof path:
 `hosts/web-host/data.ts`
 `frontend/src/app.ts`
 `scripts/check-frontend-host.ts`
-`runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
-`runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
+`runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
+`runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
 Rollback path:
 Revert the legacy Runtime handoff stub builder in `hosts/web-host/data.ts`, revert the frontend stub-kind typing change, and revert the repo-backed snapshot assertions in `scripts/check-frontend-host.ts`.
 Stop-line:
@@ -863,7 +863,7 @@ Cycle 12
 Chosen task:
 Legacy deferred Runtime follow-up compatibility for the historical `cli-anything` follow-up record.
 Why it won:
-After Cycle 11, the refreshed handoff snapshot had one remaining `invalid_artifact_state`: `runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`. The top three bounded options were: (1) add a read-only compatibility fallback for that single legacy deferred follow-up, (2) reopen broader legacy Runtime history mapping, and (3) shift immediately to the next ts-edge DEEP Engine slice. Candidate 1 won because it removed the last invalid handoff artifact with strong verification and much lower doctrine risk than broader Runtime-history work.
+After Cycle 11, the refreshed handoff snapshot had one remaining `invalid_artifact_state`: `runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`. The top three bounded options were: (1) add a read-only compatibility fallback for that single legacy deferred follow-up, (2) reopen broader legacy Runtime history mapping, and (3) shift immediately to the next ts-edge DEEP Engine slice. Candidate 1 won because it removed the last invalid handoff artifact with strong verification and much lower doctrine risk than broader Runtime-history work.
 Affected layer:
 Host/workbench handoff read surface.
 Owning lane:
@@ -874,7 +874,7 @@ Proof path:
 `hosts/web-host/data.ts`
 `frontend/src/app.ts`
 `scripts/check-frontend-host.ts`
-`runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
+`runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
 Rollback path:
 Revert the legacy deferred Runtime follow-up fallback in `hosts/web-host/data.ts`, revert the frontend detail branch for `runtime_follow_up_legacy`, and revert the repo-backed assertions in `scripts/check-frontend-host.ts`.
 Stop-line:
@@ -884,7 +884,7 @@ Files touched:
 `frontend/src/app.ts`
 `scripts/check-frontend-host.ts`
 Verification run:
-`npx tsx -` (repo-backed `readDirectiveFrontendHandoffDetail(...)` and snapshot check for `runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`)
+`npx tsx -` (repo-backed `readDirectiveFrontendHandoffDetail(...)` and snapshot check for `runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`)
 `npm run check:frontend-host`
 `npm run check`
 `npm run report:directive-workspace-state`
@@ -920,12 +920,12 @@ Files touched:
 `engine/lane.ts`
 `engine/directive-workspace-lanes.ts`
 `engine/directive-engine.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-implementation-result.md`
 Verification run:
@@ -964,12 +964,12 @@ Files touched:
 `engine/lane.ts`
 `engine/directive-workspace-lanes.ts`
 `engine/directive-engine.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-progressive-integration-stage-chaining-2026-03-28-implementation-result.md`
 Verification run:
@@ -1006,12 +1006,12 @@ Add one focused staged Engine verification script, wire it into `npm run check`,
 Files touched:
 `scripts/check-directive-engine-stage-chaining.ts`
 `package.json`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-implementation-result.md`
 Verification run:
@@ -1046,12 +1046,12 @@ Stop-line:
 Add one Runtime control source to the staged Engine verification, verify it, and stop without reopening parked Runtime work or touching legacy Runtime policy.
 Files touched:
 `scripts/check-directive-engine-stage-chaining.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stage-chaining-runtime-control-verification-2026-03-28-implementation-result.md`
 Verification run:
@@ -1086,12 +1086,12 @@ Stop-line:
 Add one Discovery control source to the staged Engine verification, verify it, and stop without changing Discovery mechanics or reopening policy work.
 Files touched:
 `scripts/check-directive-engine-stage-chaining.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-implementation-result.md`
 Verification run:
@@ -1120,7 +1120,7 @@ Improves whole-product truthfulness by letting the canonical resolver inspect on
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
+`runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime follow-up compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28` DEEP case chain.
@@ -1129,16 +1129,16 @@ Resolve the deferred legacy Runtime follow-up cleanly through the canonical repo
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
+`npm run report:directive-workspace-state -- runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
 `npm run check:directive-workspace-composition`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-implementation-result.md`
 `npm run check`
@@ -1164,8 +1164,8 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
-`runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
+`runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
+`runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime handoff compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28` DEEP case chain.
@@ -1174,17 +1174,17 @@ Resolve the two legacy Runtime handoffs cleanly through the canonical report, ad
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
-`npm run report:directive-workspace-state -- runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
+`npm run report:directive-workspace-state -- runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md`
+`npm run report:directive-workspace-state -- runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md`
 `npm run check:directive-workspace-composition`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-implementation-result.md`
 `npm run check`
@@ -1212,7 +1212,7 @@ Proof path:
 `hosts/web-host/data.ts`
 `scripts/check-directive-workspace-composition.ts`
 `scripts/check-frontend-host.ts`
-`runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`
+`runtime/00-follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the active-bounded legacy Runtime follow-up compatibility changes in `shared/lib/dw-state.ts`, `hosts/web-host/data.ts`, `scripts/check-directive-workspace-composition.ts`, and `scripts/check-frontend-host.ts`, then remove the `dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28` DEEP case chain.
@@ -1223,16 +1223,16 @@ Files touched:
 `hosts/web-host/data.ts`
 `scripts/check-directive-workspace-composition.ts`
 `scripts/check-frontend-host.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`
+`npm run report:directive-workspace-state -- runtime/00-follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md`
 `npm run check:directive-workspace-composition`
 `npm run check:frontend-host`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-implementation-result.md`
@@ -1261,9 +1261,9 @@ Proof path:
 `hosts/web-host/data.ts`
 `scripts/check-directive-workspace-composition.ts`
 `scripts/check-frontend-host.ts`
-`runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
-`runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md`
-`runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md`
+`runtime/00-follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
+`runtime/00-follow-up/2026-03-20-promptfoo-runtime-followup.md`
+`runtime/00-follow-up/2026-03-20-puppeteer-browser-runtime-followup.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the narrative legacy Runtime follow-up compatibility changes in `shared/lib/dw-state.ts`, `hosts/web-host/data.ts`, `scripts/check-directive-workspace-composition.ts`, and `scripts/check-frontend-host.ts`, then remove the `dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28` DEEP case chain.
@@ -1274,18 +1274,18 @@ Files touched:
 `hosts/web-host/data.ts`
 `scripts/check-directive-workspace-composition.ts`
 `scripts/check-frontend-host.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
-`npm run report:directive-workspace-state -- runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md`
-`npm run report:directive-workspace-state -- runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md`
+`npm run report:directive-workspace-state -- runtime/00-follow-up/2026-03-20-agent-orchestrator-runtime-followup.md`
+`npm run report:directive-workspace-state -- runtime/00-follow-up/2026-03-20-promptfoo-runtime-followup.md`
+`npm run report:directive-workspace-state -- runtime/00-follow-up/2026-03-20-puppeteer-browser-runtime-followup.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-implementation-result.md`
 `npm run check:frontend-host`
 `npm run check:directive-workspace-composition`
@@ -1293,14 +1293,14 @@ Verification run:
 Result:
 The remaining narrative historical Runtime follow-ups now resolve as clean `runtime_follow_up_legacy` history with preserved candidate identity and current status, and the workbench now surfaces them as historical follow-up stubs instead of invalid artifacts.
 Next likely move:
-Refresh the remaining legacy Runtime surface and decide whether the next best bounded slice is the stable `runtime/records/*-runtime-record.md` family or whether the run has reached the broader policy boundary.
+Refresh the remaining legacy Runtime surface and decide whether the next best bounded slice is the stable `runtime/legacy-records/*-runtime-record.md` family or whether the run has reached the broader policy boundary.
 Risks / notes:
 This slice intentionally stayed read-only and did not map historical execution, promotion, or callable semantics.
 
 Cycle 22
 
 Chosen task:
-Direct canonical focus compatibility for the stable historical `runtime/records/*-runtime-record.md` family.
+Direct canonical focus compatibility for the stable historical `runtime/legacy-records/*-runtime-record.md` family.
 Why it won:
 After Cycle 21, the next highest-ROI bounded gap was the stable Runtime record family that still threw `unsupported Runtime artifact path` even though those files shared a predictable structured shape and could be treated as read-only legacy Runtime history.
 Affected layer:
@@ -1312,9 +1312,9 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-19-agentics-runtime-record.md`
-`runtime/records/2026-03-21-promptfoo-runtime-record.md`
-`runtime/records/2026-03-23-scientify-literature-monitoring-runtime-record.md`
+`runtime/legacy-records/2026-03-19-agentics-runtime-record.md`
+`runtime/legacy-records/2026-03-21-promptfoo-runtime-record.md`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime record compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28` DEEP case chain.
@@ -1323,18 +1323,18 @@ Resolve representative legacy Runtime records cleanly through the canonical repo
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-19-agentics-runtime-record.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-promptfoo-runtime-record.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-runtime-record.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-19-agentics-runtime-record.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-promptfoo-runtime-record.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-record.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1348,7 +1348,7 @@ This slice intentionally stayed read-only and did not map historical proof, exec
 Cycle 23
 
 Chosen task:
-Direct canonical focus compatibility for the historical `runtime/registry/*-registry-entry.md` family.
+Direct canonical focus compatibility for the historical `runtime/08-registry/*-registry-entry.md` family.
 Why it won:
 After Cycle 22, the next highest-ROI bounded gap was the structured Runtime registry-entry family that still threw `unsupported Runtime artifact path`, while the proof/execution family remained more policy-heavy because those files describe active execution semantics rather than retained read-only runtime history.
 Affected layer:
@@ -1360,9 +1360,9 @@ Improves whole-product truthfulness by letting the canonical resolver inspect hi
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/registry/2026-03-20-agentics-registry-entry.md`
-`runtime/registry/2026-03-21-promptfoo-registry-entry.md`
-`runtime/registry/2026-03-22-v0-normalizer-transformation-registry-entry.md`
+`runtime/08-registry/2026-03-20-agentics-registry-entry.md`
+`runtime/08-registry/2026-03-21-promptfoo-registry-entry.md`
+`runtime/08-registry/2026-03-22-v0-normalizer-transformation-registry-entry.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime registry compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28` DEEP case chain.
@@ -1371,18 +1371,18 @@ Resolve representative historical Runtime registry entries cleanly through the c
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/registry/2026-03-20-agentics-registry-entry.md`
-`npm run report:directive-workspace-state -- runtime/registry/2026-03-21-promptfoo-registry-entry.md`
-`npm run report:directive-workspace-state -- runtime/registry/2026-03-22-v0-normalizer-transformation-registry-entry.md`
+`npm run report:directive-workspace-state -- runtime/08-registry/2026-03-20-agentics-registry-entry.md`
+`npm run report:directive-workspace-state -- runtime/08-registry/2026-03-21-promptfoo-registry-entry.md`
+`npm run report:directive-workspace-state -- runtime/08-registry/2026-03-22-v0-normalizer-transformation-registry-entry.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1396,7 +1396,7 @@ This slice intentionally stayed read-only and did not map promotion-record, proo
 Cycle 24
 
 Chosen task:
-Direct canonical focus compatibility for the historical `runtime/promotion-records/*-promotion-record.md` family.
+Direct canonical focus compatibility for the historical `runtime/07-promotion-records/*-promotion-record.md` family.
 Why it won:
 After Cycle 23, the promotion-record family was still the last structured historical Runtime family that remained unsupported while staying read-only enough to avoid the active proof/execution policy wall.
 Affected layer:
@@ -1408,9 +1408,9 @@ Improves whole-product truthfulness by letting the canonical resolver inspect hi
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/promotion-records/2026-03-20-agentics-promotion-record.md`
-`runtime/promotion-records/2026-03-21-promptfoo-promotion-record.md`
-`runtime/promotion-records/2026-03-22-v0-normalizer-transformation-promotion-record.md`
+`runtime/07-promotion-records/2026-03-20-agentics-promotion-record.md`
+`runtime/07-promotion-records/2026-03-21-promptfoo-promotion-record.md`
+`runtime/07-promotion-records/2026-03-22-v0-normalizer-transformation-promotion-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime promotion compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28` DEEP case chain.
@@ -1419,18 +1419,18 @@ Resolve representative historical Runtime promotion records cleanly through the 
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/promotion-records/2026-03-20-agentics-promotion-record.md`
-`npm run report:directive-workspace-state -- runtime/promotion-records/2026-03-21-promptfoo-promotion-record.md`
-`npm run report:directive-workspace-state -- runtime/promotion-records/2026-03-22-v0-normalizer-transformation-promotion-record.md`
+`npm run report:directive-workspace-state -- runtime/07-promotion-records/2026-03-20-agentics-promotion-record.md`
+`npm run report:directive-workspace-state -- runtime/07-promotion-records/2026-03-21-promptfoo-promotion-record.md`
+`npm run report:directive-workspace-state -- runtime/07-promotion-records/2026-03-22-v0-normalizer-transformation-promotion-record.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1446,7 +1446,7 @@ Cycle 25
 Chosen task:
 Direct canonical focus compatibility for the historical Runtime transformation record/proof family.
 Why it won:
-After the promotion-record slice, the remaining Runtime history still had one materially stable read-only subfamily: `runtime/records/*-transformation-record.md` and paired `*-transformation-proof.json`, including one older proof JSON variant. That was a bounded shared-truth improvement with stronger verification than the mixed runtime-slice proof/execution family.
+After the promotion-record slice, the remaining Runtime history still had one materially stable read-only subfamily: `runtime/legacy-records/*-transformation-record.md` and paired `*-transformation-proof.json`, including one older proof JSON variant. That was a bounded shared-truth improvement with stronger verification than the mixed runtime-slice proof/execution family.
 Affected layer:
 Shared Engine / Runtime truth surface.
 Owning lane:
@@ -1456,10 +1456,10 @@ Improves whole-product truthfulness by letting the canonical resolver inspect hi
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-22-context-pack-async-latency-transformation-record.md`
-`runtime/records/2026-03-22-context-pack-async-latency-transformation-proof.json`
-`runtime/records/2026-03-22-v0-normalizer-transformation-record.md`
-`runtime/records/2026-03-22-v0-normalizer-transformation-proof.json`
+`runtime/legacy-records/2026-03-22-context-pack-async-latency-transformation-record.md`
+`runtime/legacy-records/2026-03-22-context-pack-async-latency-transformation-proof.json`
+`runtime/legacy-records/2026-03-22-v0-normalizer-transformation-record.md`
+`runtime/legacy-records/2026-03-22-v0-normalizer-transformation-proof.json`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime transformation compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28` DEEP case chain.
@@ -1468,25 +1468,25 @@ Resolve representative historical Runtime transformation records and proof JSONs
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-22-context-pack-async-latency-transformation-record.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-22-context-pack-async-latency-transformation-proof.json`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-22-v0-normalizer-transformation-proof.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-22-context-pack-async-latency-transformation-record.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-22-context-pack-async-latency-transformation-proof.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-22-v0-normalizer-transformation-proof.json`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
 Result:
 The historical Runtime transformation record/proof family now resolves directly as clean `runtime_transformation_record_legacy` and `runtime_transformation_proof_legacy` history, including the older `candidate_id` / `baseline_measurement` proof JSON variant, and the new DEEP case resolves cleanly at `architecture.implementation_result.success`.
 Next likely move:
-Re-rank the remaining broken completed Runtime history. The next bounded candidate is the label-style transformation-record subset that still points at descriptive “this record” proof labels instead of canonical artifact paths.
+Re-rank the remaining broken completed Runtime history. The next bounded candidate is the label-style transformation-record subset that still points at descriptive â€œthis recordâ€ proof labels instead of canonical artifact paths.
 Risks / notes:
 This slice intentionally stayed read-only and did not map runtime-slice proof/execution, proof-checklist, registry, or callable continuation semantics into the current non-executing Runtime v0 chain.
 
@@ -1505,8 +1505,8 @@ Improves whole-product truthfulness by clearing the last transformation-record f
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md`
-`runtime/records/2026-03-22-automation-test-boilerplate-transformation-record.md`
+`runtime/legacy-records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md`
+`runtime/legacy-records/2026-03-22-automation-test-boilerplate-transformation-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the descriptive transformation-link normalization in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28` DEEP case chain.
@@ -1515,17 +1515,17 @@ Resolve the two label-style historical Runtime transformation records cleanly th
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-22-automation-test-boilerplate-transformation-record.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-22-automation-test-boilerplate-transformation-record.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1539,7 +1539,7 @@ This slice intentionally treated descriptive labels as notes only when they were
 Cycle 27
 
 Chosen task:
-Direct canonical focus compatibility for the historical `runtime/records/*-runtime-slice-01-proof.md` family.
+Direct canonical focus compatibility for the historical `runtime/legacy-records/*-runtime-slice-01-proof.md` family.
 Why it won:
 After Cycle 26, the last live `completed_inconsistent` queue rows all pointed at the historical runtime-slice proof family. That was a stable, high-value, read-only subfamily with stronger verification than the remaining execution/checklist surfaces.
 Affected layer:
@@ -1551,9 +1551,9 @@ Improves whole-product truthfulness by letting the canonical resolver inspect hi
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
-`runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md`
-`runtime/records/2026-03-21-superpowers-runtime-slice-01-proof.md`
+`runtime/legacy-records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
+`runtime/legacy-records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md`
+`runtime/legacy-records/2026-03-21-superpowers-runtime-slice-01-proof.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime slice-proof compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28` DEEP case chain.
@@ -1562,17 +1562,17 @@ Resolve representative historical runtime-slice proofs cleanly through the canon
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1586,7 +1586,7 @@ This slice intentionally stayed read-only and did not map runtime-slice executio
 Cycle 28
 
 Chosen task:
-Direct canonical focus compatibility for the historical `runtime/records/*-runtime-slice-01-execution.md` family.
+Direct canonical focus compatibility for the historical `runtime/legacy-records/*-runtime-slice-01-execution.md` family.
 Why it won:
 After Cycle 27, the next clean bounded Runtime-history seam was the three stable execution artifacts. They were still unsupported by the canonical resolver, but unlike the remaining checklist family they shared one contract and linked cleanly back to the proof family already normalized.
 Affected layer:
@@ -1598,9 +1598,9 @@ Improves whole-product truthfulness by letting the canonical resolver inspect hi
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
-`runtime/records/2026-03-21-puppeteer-runtime-slice-01-execution.md`
-`runtime/records/2026-03-21-skills-manager-runtime-slice-01-execution.md`
+`runtime/legacy-records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
+`runtime/legacy-records/2026-03-21-puppeteer-runtime-slice-01-execution.md`
+`runtime/legacy-records/2026-03-21-skills-manager-runtime-slice-01-execution.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime slice-execution compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28` DEEP case chain.
@@ -1609,18 +1609,18 @@ Resolve representative historical runtime-slice executions cleanly through the c
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-puppeteer-runtime-slice-01-execution.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-skills-manager-runtime-slice-01-execution.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-puppeteer-runtime-slice-01-execution.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-skills-manager-runtime-slice-01-execution.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1646,7 +1646,7 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime proof-checklist compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28` DEEP case chain.
@@ -1655,16 +1655,16 @@ Resolve the historical Scientify Runtime proof checklist cleanly through the can
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1690,7 +1690,7 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-02-live-fetch-proof.md`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-slice-02-live-fetch-proof.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime live-fetch proof compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28` DEEP case chain.
@@ -1699,16 +1699,16 @@ Resolve the historical Scientify live-fetch proof cleanly through the canonical 
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-02-live-fetch-proof.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-slice-02-live-fetch-proof.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1734,7 +1734,7 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime live-fetch gate snapshot compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28` DEEP case chain.
@@ -1743,16 +1743,16 @@ Resolve the historical Scientify live-fetch gate snapshot cleanly through the ca
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1778,8 +1778,8 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json`
-`runtime/records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the legacy Runtime live-pool compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28` DEEP case chain.
@@ -1788,17 +1788,17 @@ Resolve the historical Scientify live qualified/degraded pool artifacts cleanly 
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-implementation-result.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1824,8 +1824,8 @@ Improves whole-product truthfulness by letting the canonical resolver inspect hi
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json`
-`runtime/records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json`
+`runtime/legacy-records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the sample-pool compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28` DEEP case chain.
@@ -1834,18 +1834,18 @@ Support the historical sample pair only, verify it, and stop without touching th
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1871,11 +1871,11 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-21-runtime-system-bundle-02-boundary-inventory.md`
-`runtime/records/2026-03-21-runtime-system-bundle-03-source-pack-catalog-cleanup.md`
-`runtime/records/2026-03-21-runtime-system-bundle-04-promotion-profile-normalization.md`
-`runtime/records/2026-03-21-runtime-system-bundle-05-import-source-policy-alignment.md`
-`runtime/records/2026-03-21-runtime-system-bundle-06-legacy-live-runtime-normalization.md`
+`runtime/legacy-records/2026-03-21-runtime-system-bundle-02-boundary-inventory.md`
+`runtime/legacy-records/2026-03-21-runtime-system-bundle-03-source-pack-catalog-cleanup.md`
+`runtime/legacy-records/2026-03-21-runtime-system-bundle-04-promotion-profile-normalization.md`
+`runtime/legacy-records/2026-03-21-runtime-system-bundle-05-import-source-policy-alignment.md`
+`runtime/legacy-records/2026-03-21-runtime-system-bundle-06-legacy-live-runtime-normalization.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the system-bundle compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28` DEEP case chain.
@@ -1884,21 +1884,21 @@ Support the five system-bundle notes only, verify them, and stop without touchin
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-runtime-system-bundle-02-boundary-inventory.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-runtime-system-bundle-03-source-pack-catalog-cleanup.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-runtime-system-bundle-04-promotion-profile-normalization.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-runtime-system-bundle-05-import-source-policy-alignment.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-runtime-system-bundle-06-legacy-live-runtime-normalization.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-runtime-system-bundle-02-boundary-inventory.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-runtime-system-bundle-03-source-pack-catalog-cleanup.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-runtime-system-bundle-04-promotion-profile-normalization.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-runtime-system-bundle-05-import-source-policy-alignment.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-runtime-system-bundle-06-legacy-live-runtime-normalization.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1924,8 +1924,8 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-20-agentics-docs-maintenance-validation.md`
-`runtime/records/2026-03-20-agentics-docs-maintenance-validation-rerun.md`
+`runtime/legacy-records/2026-03-20-agentics-docs-maintenance-validation.md`
+`runtime/legacy-records/2026-03-20-agentics-docs-maintenance-validation-rerun.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the validation-note compatibility additions in `shared/lib/dw-state.ts` and `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28` DEEP case chain.
@@ -1934,18 +1934,18 @@ Support the validation-note pair only, verify it, and stop without touching the 
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-20-agentics-docs-maintenance-validation.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-20-agentics-docs-maintenance-validation-rerun.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-20-agentics-docs-maintenance-validation.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-20-agentics-docs-maintenance-validation-rerun.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -1970,9 +1970,9 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-21-agent-orchestrator-cli-precondition-proof.md`
-`runtime/records/2026-03-21-agent-orchestrator-precondition-correction.md`
-`runtime/records/2026-03-21-agent-orchestrator-host-adapter-decision.md`
+`runtime/legacy-records/2026-03-21-agent-orchestrator-cli-precondition-proof.md`
+`runtime/legacy-records/2026-03-21-agent-orchestrator-precondition-correction.md`
+`runtime/legacy-records/2026-03-21-agent-orchestrator-host-adapter-decision.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the precondition/decision-note compatibility additions in `shared/lib/dw-state.ts` and the checker assertions in `scripts/check-directive-workspace-composition.ts`, then remove the `dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28` DEEP case chain.
@@ -1981,19 +1981,19 @@ Support the three agent-orchestrator notes only, verify them, and stop without t
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-agent-orchestrator-cli-precondition-proof.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-agent-orchestrator-precondition-correction.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-agent-orchestrator-host-adapter-decision.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-agent-orchestrator-cli-precondition-proof.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-agent-orchestrator-precondition-correction.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-agent-orchestrator-host-adapter-decision.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -2018,7 +2018,7 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md`
+`runtime/legacy-records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the narrow legacy Runtime record path-recognition widening and the focused checker assertions, then remove the `dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28` DEEP case chain.
@@ -2027,17 +2027,17 @@ Support the CLI-Anything re-entry note only, verify it, and stop without touchin
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -2064,7 +2064,7 @@ Improves whole-product truthfulness by letting the canonical resolver inspect th
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/records/2026-03-20-mini-swe-agent-fallback-rehearsal.md`
+`runtime/legacy-records/2026-03-20-mini-swe-agent-fallback-rehearsal.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the narrow legacy Runtime slice-execution path-recognition widening and the focused checker assertions, then remove the `dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28` DEEP case chain.
@@ -2073,17 +2073,17 @@ Support the mini-swe fallback rehearsal only, verify it, and stop without touchi
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-20-mini-swe-agent-fallback-rehearsal.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-20-mini-swe-agent-fallback-rehearsal.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -2107,24 +2107,24 @@ Architecture (meta / shared Engine policy).
 Mission usefulness:
 Improves whole-product truthfulness by making it explicit that the canonical truth anchor remains case-focused here, and by preventing fake progress through synthetic candidate mapping or ad hoc digest semantics.
 Proof path:
-`runtime/records/2026-03-20-agentics-daily-status-digest.md`
-`runtime/records/2026-03-19-agentics-runtime-record.md`
-`runtime/records/2026-03-20-agentics-runtime-slice-01-proof.md`
-`runtime/follow-up/DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md`
+`runtime/legacy-records/2026-03-20-agentics-daily-status-digest.md`
+`runtime/legacy-records/2026-03-19-agentics-runtime-record.md`
+`runtime/legacy-records/2026-03-20-agentics-runtime-slice-01-proof.md`
+`runtime/00-follow-up/DIRECTIVE_AGENTICS_SLICE_2_PLAYBOOKS.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md`
 Rollback path:
 Delete the `dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28` DEEP case chain and revert this run-log entry if a later product decision explicitly requires first-class non-case digest semantics.
 Stop-line:
 Record one explicit DEEP policy decision for the daily-status digest, verify that the new bounded result resolves cleanly and that canonical checks still pass, and stop without changing truth-anchor code.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result-adoption-decision.json`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/records/2026-03-20-agentics-runtime-slice-01-proof.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-20-agentics-runtime-slice-01-proof.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-daily-status-digest-policy-boundary-2026-03-28-bounded-result.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -2150,19 +2150,19 @@ Proof path:
 `shared/lib/discovery-intake-queue-writer.ts`
 `shared/lib/discovery-intake-queue-transition.ts`
 `hosts/web-host/data.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md`
 Rollback path:
 Delete the `dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28` DEEP case chain and revert this run-log entry if a later product decision explicitly requires stored historical queue migration or a different queue source-of-truth boundary.
 Stop-line:
 Record one explicit DEEP policy decision for historical queue lifecycle normalization, verify that the new bounded result resolves cleanly and that canonical checks still pass, and stop without changing queue code or mass-editing historical rows.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result-adoption-decision.json`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-queue-lifecycle-normalization-policy-boundary-2026-03-28-bounded-result.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -2221,7 +2221,7 @@ Verification summary
 
 Unresolved issues
 - There is no longer a remaining safe mechanical compatibility gap in the legacy Runtime record family.
-- `runtime/records/2026-03-20-agentics-daily-status-digest.md` remains intentionally unsupported as a direct canonical focus because it is a mixed mission/operator digest rather than a stable case artifact.
+- `runtime/legacy-records/2026-03-20-agentics-daily-status-digest.md` remains intentionally unsupported as a direct canonical focus because it is a mixed mission/operator digest rather than a stable case artifact.
 - Historical queue lifecycle rows are intentionally preserved as raw evidence and adjusted through interpretive read-model normalization; there is no settled product need for stored historical queue rewrite.
 
 Why the run stopped
@@ -2250,7 +2250,7 @@ Proof path:
 `shared/lib/dw-state.ts`
 `engine/workspace-truth.ts`
 `scripts/check-directive-workspace-composition.ts`
-`discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md`
+`discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the narrow Discovery-route legality rule in `shared/lib/dw-state.ts`, revert the staged composition assertion, and delete the `dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28` DEEP case chain.
@@ -2259,12 +2259,12 @@ Implement one resolver-side legality rule plus one staged composition check, ver
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-required-next-artifact-legality-hardening-2026-03-28-implementation-result.md`
 `implement.md`
@@ -2294,7 +2294,7 @@ Improves whole-product truthfulness by making stale Runtime approval-boundary ar
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`
+`runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`
 `runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-implementation-result.md`
 Rollback path:
@@ -2304,17 +2304,17 @@ Implement one resolver-side stale-local-step downgrade for Runtime approval-boun
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`
+`npm run report:directive-workspace-state -- runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`
 `npm run report:directive-workspace-state -- runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md`
 `npm run check:directive-workspace-composition`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-implementation-result.md`
@@ -2355,8 +2355,8 @@ Files touched:
 `implement.md`
 Verification run:
 `npm run report:directive-workspace-state -- runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-20-agentics-runtime-slice-01-proof.md`
-`npm run report:directive-workspace-state -- runtime/records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-20-agentics-runtime-slice-01-proof.md`
+`npm run report:directive-workspace-state -- runtime/legacy-records/2026-03-21-promptfoo-runtime-slice-01-proof.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
 `npm run report:directive-workspace-state`
@@ -2419,7 +2419,7 @@ Proof path:
 `shared/lib/dw-state/shared.ts`
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
+`architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the narrow stale-current-head downgrade in `shared/lib/dw-state/shared.ts`, revert the composition assertions, and delete the `dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28` DEEP case chain.
@@ -2428,17 +2428,17 @@ Implement one resolver-side stale-local-step downgrade for `architecture_bounded
 Files touched:
 `shared/lib/dw-state/shared.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
 `npm run check:directive-workspace-composition`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-bounded-result-legality-hardening-2026-03-28-implementation-result.md`
 `npm run check`
@@ -2465,7 +2465,7 @@ Proof path:
 `shared/lib/dw-state/shared.ts`
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
 `architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`
 `architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md`
 `architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md`
@@ -2477,17 +2477,17 @@ Implement one resolver-side stale-local-step downgrade for downstream Architectu
 Files touched:
 `shared/lib/dw-state/shared.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-downstream-legality-hardening-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
+`npm run report:directive-workspace-state -- architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
 `npm run report:directive-workspace-state -- architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md`
 `npm run report:directive-workspace-state -- architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md`
@@ -2517,8 +2517,8 @@ Proof path:
 `shared/lib/dw-state/shared.ts`
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md`
-`architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md`
+`architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md`
+`architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-implementation-result.md`
 Rollback path:
 Revert the narrow stale-current-head downgrade in `shared/lib/dw-state/shared.ts`, revert the composition assertions, and delete the `dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28` DEEP case chain.
@@ -2527,18 +2527,18 @@ Implement one resolver-side stale-local-step downgrade for `architecture_handoff
 Files touched:
 `shared/lib/dw-state/shared.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-implementation-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
@@ -2576,12 +2576,12 @@ Implement one resolver-side stale-local-step downgrade for the remaining Archite
 Files touched:
 `shared/lib/dw-state/shared.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-implementation-result.md`
 `implement.md`
@@ -2612,8 +2612,8 @@ Architecture.
 Mission usefulness:
 Removes a current repo-generated parsing regression from the user-facing handoff surface and prevents the same stub-shape drift from silently reappearing.
 Proof path:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md`
 `shared/lib/architecture-handoff-start.ts`
 `hosts/web-host/data.ts`
 `scripts/check-frontend-host.ts`
@@ -2622,8 +2622,8 @@ Revert the two repaired handoff files to their prior malformed lightweight note 
 Stop-line:
 Make the two current handoff files satisfy the canonical handoff reader, add one focused guard proving frontend handoff warnings stay empty for them, verify, and stop without touching unrelated truth semantics.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md`
 `scripts/check-frontend-host.ts`
 `implement.md`
 Verification run:
@@ -2651,8 +2651,8 @@ Architecture.
 Mission usefulness:
 Restores clean canonical focus on the repaired March 28 Architecture cases and prevents those current repo-generated bounded-starts from silently regressing.
 Proof path:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md`
 `shared/lib/architecture-bounded-closeout.ts`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
@@ -2660,8 +2660,8 @@ Revert the two repaired bounded-start files to their prior note-shaped form, rem
 Stop-line:
 Make the two current bounded-start files satisfy the canonical bounded-start reader, extend one narrow guard that they resolve cleanly, verify, and stop without broadening into more March 28 artifact-family cleanup.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md`
 `scripts/check-directive-workspace-composition.ts`
 `implement.md`
 Verification run:
@@ -2688,8 +2688,8 @@ Architecture.
 Mission usefulness:
 Restores clean canonical bounded-result parsing for those repo-generated cases and prevents the pair from silently regressing without broadening into the later adoption chain.
 Proof path:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md`
 `shared/lib/architecture-bounded-closeout.ts`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
@@ -2697,8 +2697,8 @@ Revert the two repaired bounded-result files to their prior note-shaped form, re
 Stop-line:
 Make the two current bounded-result files satisfy the canonical bounded-result reader, add one narrow parser guard for them, verify, and stop without broadening into more downstream March 28 artifacts.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md`
 `scripts/check-directive-workspace-composition.ts`
 `implement.md`
 Verification run:
@@ -2725,8 +2725,8 @@ Architecture.
 Mission usefulness:
 Restores clean canonical adoption focus for those repo-generated cases and prevents the pair from silently regressing without broadening into later implementation or retention work.
 Proof path:
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md`
 `shared/lib/architecture-result-adoption.ts`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
@@ -2734,8 +2734,8 @@ Revert the two repaired adoption files to their prior note-shaped form, remove t
 Stop-line:
 Make the two current adoption files satisfy the canonical adoption reader, add one narrow parser guard for them, verify, and stop without broadening into later implementation-target or implementation-result artifacts.
 Files touched:
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md`
 `scripts/check-directive-workspace-composition.ts`
 `implement.md`
 Verification run:
@@ -2764,10 +2764,10 @@ Mission usefulness:
 Adds one real new external source to the system, tests the NOTE-mode front door on a fresh evaluator-framework candidate, and records a truthful route for later human review without opening implementation work.
 Proof path:
 `shared/lib/discovery-front-door.ts`
-`discovery/intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md`
-`discovery/triage/2026-03-28-dw-source-inspect-ai-2026-03-28-triage.md`
-`discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`discovery/01-intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md`
+`discovery/02-triage/2026-03-28-dw-source-inspect-ai-2026-03-28-triage.md`
+`discovery/03-routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
 `discovery/intake-queue.json`
 Rollback path:
 Delete the new Inspect AI intake / triage / routing / handoff artifacts, remove the new engine run record/report pair, revert `shared/lib/discovery-front-door.ts`, remove the Inspect AI queue entry, and revert this log entry.
@@ -2775,18 +2775,18 @@ Stop-line:
 Process exactly one new external source through Discovery intake + triage + routing, persist an explicit NOTE-mode classification, open at most one justified downstream handoff target, record the reserve list informationally only, verify, and stop.
 Files touched:
 `shared/lib/discovery-front-door.ts`
-`discovery/intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md`
-`discovery/triage/2026-03-28-dw-source-inspect-ai-2026-03-28-triage.md`
-`discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`discovery/01-intake/2026-03-28-dw-source-inspect-ai-2026-03-28-intake.md`
+`discovery/02-triage/2026-03-28-dw-source-inspect-ai-2026-03-28-triage.md`
+`discovery/03-routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
 `runtime/standalone-host/engine-runs/2026-03-28T00-00-00-000Z-dw-source-inspect-ai-2026-03-28-402b52cf.json`
 `runtime/standalone-host/engine-runs/2026-03-28T00-00-00-000Z-dw-source-inspect-ai-2026-03-28-402b52cf.md`
 `discovery/intake-queue.json`
 `implement.md`
 Verification run:
 direct queue-entry verification for `dw-source-inspect-ai-2026-03-28`
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -2847,20 +2847,20 @@ Files touched:
 `engine/routing.ts`
 `engine/types.ts`
 `scripts/check-directive-engine-stage-chaining.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
 `npm run check:directive-engine-stage-chaining`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-discovery-framework-source-runtime-overread-routing-hardening-2026-03-28-implementation-result.md`
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -2883,21 +2883,21 @@ Mission usefulness:
 Adds a fresh evaluator-library source while testing whether the improved router can correctly keep lighter-weight evaluator-pattern sources on the Architecture side.
 Proof path:
 `shared/lib/discovery-front-door.ts`
-`discovery/intake/2026-03-28-dw-source-openevals-2026-03-28-intake.md`
-`discovery/triage/2026-03-28-dw-source-openevals-2026-03-28-triage.md`
-`discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`discovery/01-intake/2026-03-28-dw-source-openevals-2026-03-28-intake.md`
+`discovery/02-triage/2026-03-28-dw-source-openevals-2026-03-28-triage.md`
+`discovery/03-routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
 Rollback path:
 Remove the OpenEvals intake, triage, routing, handoff, and engine-run artifacts, revert the queue entry in `discovery/intake-queue.json`, and revert this log entry.
 Stop-line:
 Process exactly one new external source through Discovery intake, triage, routing, explicit mode classification, and open only one justified downstream target if the route clearly requires it.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
 `discovery/intake-queue.json`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -2920,21 +2920,21 @@ Mission usefulness:
 Adds a fresh prompt-optimization source while testing whether lighter-weight prompt/evaluator-pattern sources also route cleanly into Architecture without runtime overread.
 Proof path:
 `shared/lib/discovery-front-door.ts`
-`discovery/intake/2026-03-28-dw-source-promptwizard-2026-03-28-intake.md`
-`discovery/triage/2026-03-28-dw-source-promptwizard-2026-03-28-triage.md`
-`discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md`
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`discovery/01-intake/2026-03-28-dw-source-promptwizard-2026-03-28-intake.md`
+`discovery/02-triage/2026-03-28-dw-source-promptwizard-2026-03-28-triage.md`
+`discovery/03-routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
 Rollback path:
 Remove the PromptWizard intake, triage, routing, handoff, and engine-run artifacts, revert the queue entry in `discovery/intake-queue.json`, and revert this log entry.
 Stop-line:
 Process exactly one new external source through Discovery intake, triage, routing, explicit mode classification, and open only one justified downstream target if the route clearly requires it.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
 `discovery/intake-queue.json`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -2958,9 +2958,9 @@ Keeps NOTE-mode Architecture routing honest and prevents the system from over-ad
 Proof path:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
 Rollback path:
 Revert the NOTE-mode route/handoff wording change in `shared/lib/dw-state.ts`, revert the focused proof-case assertions in `scripts/check-directive-workspace-composition.ts`, remove the DEEP case chain below, and revert this log entry.
 Stop-line:
@@ -2968,20 +2968,20 @@ Open one explicit DEEP NOTE-mode Architecture case, define one bounded misalignm
 Files touched:
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-start.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-result-adoption-decision.json`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-adopted-planned-next.md`
-`architecture/03-adopted/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-adopted-planned-next-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-start.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-adopted-planned-next.md`
+`architecture/02-adopted/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-adopted-planned-next-adoption-decision.json`
 `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-implementation-target.md`
 `architecture/05-implementation-results/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-implementation-result.md`
 `implement.md`
 Verification run:
 `npm run check`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
 `npm run report:directive-workspace-state -- architecture/05-implementation-results/2026-03-28-dw-pressure-engine-note-mode-architecture-route-stop-line-alignment-2026-03-28-implementation-result.md`
 `npm run report:directive-workspace-state`
 Result:
@@ -3007,8 +3007,8 @@ Proof path:
 `shared/lib/architecture-bounded-closeout.ts`
 `shared/lib/dw-state.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
 Rollback path:
 Delete the OpenEvals bounded-result and paired adoption-decision artifact, restore the queue entry in `discovery/intake-queue.json` to the handoff as the current result record, revert the NOTE direct-closeout code path, and revert this log entry.
 Stop-line:
@@ -3021,14 +3021,14 @@ Files touched:
 `hosts/web-host/server.ts`
 `hosts/web-host/data.ts`
 `scripts/check-directive-workspace-composition.ts`
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result-adoption-decision.json`
 `discovery/intake-queue.json`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
 `npm run check:directive-workspace-composition`
 `npm run check`
 `npm run report:directive-workspace-state`
@@ -3051,9 +3051,9 @@ Architecture.
 Mission usefulness:
 Closes one high-signal evaluator-framework source into a truthful NOTE bounded result, preserving retained evaluator/proof patterns while keeping deeper adoption unopened.
 Proof path:
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result-adoption-decision.json`
 `discovery/intake-queue.json`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
@@ -3061,16 +3061,16 @@ Delete the Inspect AI bounded-result and paired decision artifact, restore the q
 Stop-line:
 Materialize exactly one NOTE bounded result for Inspect AI, verify focused truth plus full checks, and stop without continuing PromptWizard.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result-adoption-decision.json`
 `discovery/intake-queue.json`
 `scripts/check-directive-workspace-composition.ts`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -3092,9 +3092,9 @@ Architecture.
 Mission usefulness:
 Closes one prompt-optimization source into a truthful NOTE bounded result, preserving prompt-refinement and evaluator-guided improvement patterns for future Architecture work while keeping deeper adoption explicitly unopened.
 Proof path:
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result-adoption-decision.json`
 `discovery/intake-queue.json`
 `scripts/check-directive-workspace-composition.ts`
 Rollback path:
@@ -3102,16 +3102,16 @@ Delete the PromptWizard bounded-result and paired decision artifact, restore the
 Stop-line:
 Materialize exactly one NOTE bounded result for PromptWizard, verify focused truth plus full checks, and stop without opening any second move.
 Files touched:
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
-`architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
+`architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result-adoption-decision.json`
 `discovery/intake-queue.json`
 `scripts/check-directive-workspace-composition.ts`
 `implement.md`
 Verification run:
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
-`npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md`
+`npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md`
 `npm run check`
 `npm run report:directive-workspace-state`
 Result:
@@ -3157,7 +3157,7 @@ This slice intentionally did not normalize the 33 legacy-incompatible adoption a
 Chosen task:
 Reclassify the historical Scientify Architecture-to-Runtime handoff in the Architecture materialization due-check so it counts as an out-of-scope handoff artifact instead of an unreadable adoption.
 Why it won:
-After Cycle 61, the only misleading live warning inside this exact lane was the due-check/report treating `architecture/03-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff.md` as unreadable. Current repo truth showed the artifact was readable and decision-backed; the bug was purely its classification in materialization accounting.
+After Cycle 61, the only misleading live warning inside this exact lane was the due-check/report treating `architecture/02-adopted/2026-03-23-scientify-literature-monitoring-runtime-handoff.md` as unreadable. Current repo truth showed the artifact was readable and decision-backed; the bug was purely its classification in materialization accounting.
 Affected layer:
 Shared Architecture materialization reader/report behavior.
 Owning lane:
@@ -3275,11 +3275,11 @@ Mission usefulness:
 Clarifies that Discovery may draw from either unprocessed in-context sources or one newly found outside source when current pressure is exhausted, then uses that rule to intake one real Engine-improving source instead of inventing maintenance work.
 Proof path:
 `CLAUDE.md`
-`discovery/intake/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result.md`
+`discovery/01-intake/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result.md`
 `npm run report:directive-workspace-state`
 `npm run check`
 Rollback path:
@@ -3289,12 +3289,12 @@ Record the doctrine clarification, route one fresh real source through Discovery
 Files touched:
 `CLAUDE.md`
 `discovery/intake-queue.json`
-`discovery/intake/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result.md`
-`architecture/02-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result-adoption-decision.json`
+`discovery/01-intake/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result.md`
+`architecture/01-experiments/2026-03-30-dw-source-gh-aw-safe-outputs-spec-2026-03-30-bounded-result-adoption-decision.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gh-aw-safe-outputs-spec-2026-03-30-d7ec1192.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gh-aw-safe-outputs-spec-2026-03-30-d7ec1192.md`
 `state/cases/dw-source-gh-aw-safe-outputs-spec-2026-03-30.json`
@@ -3323,11 +3323,11 @@ Architecture.
 Mission usefulness:
 Adds one fresh real source to the Engine-building loop and captures proof/evaluator-pattern pressure that can improve how Directive Workspace judges, proves, and adapts future sources.
 Proof path:
-`discovery/intake/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result.md`
+`discovery/01-intake/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result.md`
 `npm run report:directive-workspace-state`
 `npm run check`
 Rollback path:
@@ -3336,12 +3336,12 @@ Stop-line:
 Process exactly one fresh source through Discovery first, close it at the honest NOTE-mode Architecture boundary, and stop without forcing a new adaptation slice from pattern guidance alone.
 Files touched:
 `discovery/intake-queue.json`
-`discovery/intake/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result.md`
-`architecture/02-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result-adoption-decision.json`
+`discovery/01-intake/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result.md`
+`architecture/01-experiments/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-bounded-result-adoption-decision.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-autoresearch-advanced-patterns-2026-03-30-0b83a61b.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-autoresearch-advanced-patterns-2026-03-30-0b83a61b.md`
 `state/cases/dw-source-autoresearch-advanced-patterns-2026-03-30.json`
@@ -3370,31 +3370,31 @@ Architecture.
 Mission usefulness:
 Adds fresh source pressure around question-conditioned repository interrogation, explicit evidence gathering, and bounded external lookup as possible Engine-owned source-analysis improvements.
 Proof path:
-`discovery/intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
+`discovery/01-intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
 Rollback path:
 Delete the Agentics Repo Ask case artifacts, remove its queue/state entries, and remove this log entry.
 Stop-line:
 Process exactly one fresh source through Discovery first, close it at the honest NOTE-mode Architecture boundary if no concrete adaptation target appears, and rerank instead of continuing the case by momentum.
 Files touched:
 `discovery/intake-queue.json`
-`discovery/intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result-adoption-decision.json`
+`discovery/01-intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result-adoption-decision.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-agentics-repo-ask-2026-03-30-bd643258.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-agentics-repo-ask-2026-03-30-bd643258.md`
 `state/cases/dw-source-agentics-repo-ask-2026-03-30.json`
 `state/case-events/dw-source-agentics-repo-ask-2026-03-30.jsonl`
 `implement.md`
 Verification run:
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
-`architecture/02-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result-adoption-decision.json`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result.md`
+`architecture/01-experiments/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-bounded-result-adoption-decision.json`
 Result:
 Fresh source `sources/intake/agentics/docs/repo-ask.md` entered through Discovery first, routed to Architecture with `usefulnessLevel: meta`, and closed honestly as a NOTE-mode bounded result with `nextDecision: defer` and verdict `stay_experimental`. It added fresh source-analysis pressure but still did not isolate a concrete promotion-worthy Architecture artifact.
 Next likely move:
@@ -3414,27 +3414,27 @@ Discovery.
 Mission usefulness:
 Adds fresh source pressure around deeper research-backed source acquisition and evidence gathering while preserving the rule that unclear downstream adoption targets should remain Discovery-held instead of being forced into Architecture or Runtime.
 Proof path:
-`discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md`
-`discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
+`discovery/01-intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md`
+`discovery/04-monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
 Rollback path:
 Delete the GPT Researcher MCP Server case artifacts, remove its queue/state entries, and remove this log entry.
 Stop-line:
 If the strongest fresh source clearly routes to Discovery-held monitor with no bounded Architecture target, record that route honestly and stop the pressure loop instead of forcing another Architecture NOTE case.
 Files touched:
 `discovery/intake-queue.json`
-`discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md`
-`discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
+`discovery/01-intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md`
+`discovery/04-monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-59767548.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-59767548.md`
 `state/cases/dw-source-gpt-researcher-mcp-server-2026-03-30.json`
 `state/case-events/dw-source-gpt-researcher-mcp-server-2026-03-30.jsonl`
 `implement.md`
 Verification run:
-`discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
+`discovery/04-monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md`
 `state/cases/dw-source-gpt-researcher-mcp-server-2026-03-30.json`
 Result:
 Fresh source `sources/intake/gpt-researcher/mcp-server/README.md` entered through Discovery first and was routed to `monitor` with `usefulnessLevel: meta` and current stage `discovery.monitor.active`. That created the honest stop condition for this run: the strongest remaining source pressure is Discovery-held, not a new bounded Architecture slice.
@@ -3489,12 +3489,12 @@ Architecture.
 Mission usefulness:
 Adds outside source pressure around checker-system design, validation coverage, violation tracking, simple operator triage, and checker-self-testing that could improve Directive Workspace proof/evaluator quality and Engine self-improvement discipline without reopening runtime execution or host seams.
 Proof path:
-`discovery/intake/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result.md`
-`architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result-adoption-decision.json`
+`discovery/01-intake/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result.md`
+`architecture/01-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result-adoption-decision.json`
 `npm run report:directive-workspace-state`
 `npm run check`
 Rollback path:
@@ -3503,12 +3503,12 @@ Stop-line:
 Process exactly one outside source chosen from `awesome-scalability` through Discovery first, route it honestly, and stop at the truthful NOTE/STANDARD boundary instead of forcing a deeper Architecture slice.
 Files touched:
 `discovery/intake-queue.json`
-`discovery/intake/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-intake.md`
-`discovery/triage/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-triage.md`
-`discovery/routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md`
-`architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-engine-handoff.md`
-`architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result.md`
-`architecture/02-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result-adoption-decision.json`
+`discovery/01-intake/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-intake.md`
+`discovery/02-triage/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-triage.md`
+`discovery/03-routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md`
+`architecture/01-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-engine-handoff.md`
+`architecture/01-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result.md`
+`architecture/01-experiments/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-bounded-result-adoption-decision.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-dropbox-data-checking-2026-03-30-83e78a78.json`
 `runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-dropbox-data-checking-2026-03-30-83e78a78.md`
 `state/cases/dw-source-dropbox-data-checking-2026-03-30.json`
@@ -3517,7 +3517,7 @@ Files touched:
 Verification run:
 `npm run report:directive-workspace-state`
 `npm run check`
-`npx tsx -` with `resolveDirectiveWorkspaceState(...)` focused on `discovery/routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md`
+`npx tsx -` with `resolveDirectiveWorkspaceState(...)` focused on `discovery/03-routing-log/2026-03-30-dw-source-dropbox-data-checking-2026-03-30-routing-record.md`
 Result:
 `Data Checking at Dropbox` entered through Discovery first, routed to Architecture with `usefulnessLevel: meta`, and then closed honestly as a NOTE-mode bounded result with verdict `stay_experimental` and `nextDecision: defer`. The retained value is checker-system design guidance for future Engine proof/evaluator work, but no concrete bounded product artifact emerged yet, so deeper Architecture materialization remains intentionally unopened.
 Next likely move:
@@ -3661,7 +3661,7 @@ This slice stayed documentation-only. It did not move folders, rename runtime st
 Chosen task:
 Align the Runtime follow-up README with the repo-baseline contract after the top-level Runtime README clarification.
 Why it won:
-`runtime/follow-up/README.md` is the next strongest same-class ambiguity because it still used generic "product-owned" wording for a lane corpus surface and still pointed at the old `.openclaw\workspace\directive-workspace` template path.
+`runtime/00-follow-up/README.md` is the next strongest same-class ambiguity because it still used generic "product-owned" wording for a lane corpus surface and still pointed at the old `.openclaw\workspace\directive-workspace` template path.
 Affected layer:
 Runtime follow-up documentation and lane-ownership clarity.
 Owning lane:
@@ -3669,7 +3669,7 @@ Architecture structural alignment in support of Runtime boundary clarity.
 Mission usefulness:
 Keeps the follow-up surface legible as a Runtime lane workflow surface instead of an undifferentiated product-ownership claim, while removing one more stale canonical-root reference from a current README.
 Proof path:
-`runtime/follow-up/README.md`
+`runtime/00-follow-up/README.md`
 `npm run report:directive-workspace-state`
 `npm run check`
 Rollback path:
@@ -3677,14 +3677,14 @@ Restore the previous README wording and remove this log entry.
 Stop-line:
 Stop once the Runtime follow-up README uses lane-aligned ownership wording and current-path references, the main truth surfaces still pass, and no broader Runtime-doc rewrite is introduced.
 Files touched:
-`runtime/follow-up/README.md`
+`runtime/00-follow-up/README.md`
 `implement.md`
 Verification run:
-`rg -n "These files are product-owned|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|Runtime lane-owned workflow artifacts" runtime/follow-up/README.md -S`
+`rg -n "These files are product-owned|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|Runtime lane-owned workflow artifacts" runtime/00-follow-up/README.md -S`
 `npm run report:directive-workspace-state`
 `npm run check`
 Result:
-`runtime/follow-up/README.md` now describes the folder as Runtime lane-owned workflow artifacts and uses the current repo-relative template reference instead of the old `.openclaw\workspace\directive-workspace` path.
+`runtime/00-follow-up/README.md` now describes the folder as Runtime lane-owned workflow artifacts and uses the current repo-relative template reference instead of the old `.openclaw\workspace\directive-workspace` path.
 Next likely move:
 Rerank the remaining Runtime-adjacent READMEs. Do not broaden beyond one surface per cycle.
 Risks / notes:
@@ -3694,7 +3694,7 @@ This slice stayed documentation-only. It did not move folders, change runtime wo
 Chosen task:
 Align the Runtime promotion-records README with the repo-baseline contract by removing the remaining stale canonical-root references.
 Why it won:
-`runtime/promotion-records/README.md` is a current Runtime README with clear same-class ambiguity: it still pointed every canonical reference at the old `.openclaw\workspace\directive-workspace` root even though the surface itself is otherwise structurally correct.
+`runtime/07-promotion-records/README.md` is a current Runtime README with clear same-class ambiguity: it still pointed every canonical reference at the old `.openclaw\workspace\directive-workspace` root even though the surface itself is otherwise structurally correct.
 Affected layer:
 Runtime promotion-record documentation and canonical reference clarity.
 Owning lane:
@@ -3702,7 +3702,7 @@ Architecture structural alignment in support of Runtime boundary clarity.
 Mission usefulness:
 Keeps a current Runtime stage README aligned with the product root and avoids teaching future work the wrong canonical path for promotion artifacts and contracts.
 Proof path:
-`runtime/promotion-records/README.md`
+`runtime/07-promotion-records/README.md`
 `npm run report:directive-workspace-state`
 `npm run check`
 Rollback path:
@@ -3710,14 +3710,14 @@ Restore the previous README references and remove this log entry.
 Stop-line:
 Stop once the promotion-records README uses current repo-relative references, the main truth surfaces still pass, and no broader Runtime-doc rewrite is introduced.
 Files touched:
-`runtime/promotion-records/README.md`
+`runtime/07-promotion-records/README.md`
 `implement.md`
 Verification run:
-`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|shared/templates/promotion-record.md|shared/contracts/runtime-to-host.md|runtime/PROMOTION_PROFILES.json" runtime/promotion-records/README.md -S`
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|shared/templates/promotion-record.md|shared/contracts/runtime-to-host.md|runtime/meta/PROMOTION_PROFILES.json" runtime/07-promotion-records/README.md -S`
 `npm run report:directive-workspace-state`
 `npm run check`
 Result:
-`runtime/promotion-records/README.md` now uses current repo-relative references for the promotion template, runtime-to-host contract, promotion profiles, and current backlog instead of the old `.openclaw\workspace\directive-workspace` root.
+`runtime/07-promotion-records/README.md` now uses current repo-relative references for the promotion template, runtime-to-host contract, promotion profiles, and current backlog instead of the old `.openclaw\workspace\directive-workspace` root.
 Next likely move:
 Rerank the remaining authoritative Runtime/Shared READMEs. Do not broaden beyond one surface per cycle.
 Risks / notes:
@@ -3760,7 +3760,7 @@ This slice stayed documentation-only. It did not change shared-lib ownership rul
 Chosen task:
 Align the Runtime registry README with the current repo root after the Runtime top-level and stage README clarifications.
 Why it won:
-`runtime/registry/README.md` is still a current authoritative Runtime stage README, and its only remaining same-class ambiguity was the stale `.openclaw\workspace\directive-workspace` template reference.
+`runtime/08-registry/README.md` is still a current authoritative Runtime stage README, and its only remaining same-class ambiguity was the stale `.openclaw\workspace\directive-workspace` template reference.
 Affected layer:
 Runtime registry documentation and canonical reference clarity.
 Owning lane:
@@ -3768,7 +3768,7 @@ Architecture structural alignment in support of Runtime boundary clarity.
 Mission usefulness:
 Keeps the accepted-runtime-state surface aligned with the canonical product root so future registry work is not pointed at stale path authority.
 Proof path:
-`runtime/registry/README.md`
+`runtime/08-registry/README.md`
 `npm run report:directive-workspace-state`
 `npm run check`
 Rollback path:
@@ -3776,14 +3776,14 @@ Restore the previous README reference and remove this log entry.
 Stop-line:
 Stop once the registry README uses the current repo-relative template reference, the main truth surfaces still pass, and no broader registry-doc rewrite is introduced.
 Files touched:
-`runtime/registry/README.md`
+`runtime/08-registry/README.md`
 `implement.md`
 Verification run:
-`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|shared/templates/registry-entry.md" runtime/registry/README.md -S`
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace|shared/templates/registry-entry.md" runtime/08-registry/README.md -S`
 `npm run report:directive-workspace-state`
 `npm run check`
 Result:
-`runtime/registry/README.md` now points at `shared/templates/registry-entry.md` instead of the old `.openclaw\workspace\directive-workspace` root while preserving the existing acceptance semantics.
+`runtime/08-registry/README.md` now points at `shared/templates/registry-entry.md` instead of the old `.openclaw\workspace\directive-workspace` root while preserving the existing acceptance semantics.
 Next likely move:
 Rerank the remaining authoritative docs. Do not broaden beyond one surface per cycle.
 Risks / notes:
@@ -3977,11 +3977,11 @@ Files touched:
 `shared/contracts/promotion-quality-gate.md`
 `implement.md`
 Verification run:
-`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|runtime/PROMOTION_PROFILES.json" shared/contracts/promotion-quality-gate.md -S`
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|runtime/meta/PROMOTION_PROFILES.json" shared/contracts/promotion-quality-gate.md -S`
 `npm run report:directive-workspace-state`
 `npm run check`
 Result:
-`shared/contracts/promotion-quality-gate.md` now references the canonical Runtime promotion inventory through `runtime/PROMOTION_PROFILES.json` instead of the stale `.openclaw\workspace\directive-workspace` root.
+`shared/contracts/promotion-quality-gate.md` now references the canonical Runtime promotion inventory through `runtime/meta/PROMOTION_PROFILES.json` instead of the stale `.openclaw\workspace\directive-workspace` root.
 Next likely move:
 Rerank the remaining current shared contracts. Stop if the remaining same-class issues are no longer one clearly dominant current-surface contradiction.
 Risks / notes:
@@ -4010,11 +4010,11 @@ Files touched:
 `shared/contracts/skill-lifecycle-guard.md`
 `implement.md`
 Verification run:
-`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|runtime/PROMOTION_PROFILES.json" shared/contracts/skill-lifecycle-guard.md -S`
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|runtime/meta/PROMOTION_PROFILES.json" shared/contracts/skill-lifecycle-guard.md -S`
 `npm run report:directive-workspace-state`
 `npm run check`
 Result:
-`shared/contracts/skill-lifecycle-guard.md` now references the canonical Runtime promotion inventory through `runtime/PROMOTION_PROFILES.json` instead of the stale `.openclaw\workspace\directive-workspace` root.
+`shared/contracts/skill-lifecycle-guard.md` now references the canonical Runtime promotion inventory through `runtime/meta/PROMOTION_PROFILES.json` instead of the stale `.openclaw\workspace\directive-workspace` root.
 Next likely move:
 Rerank the remaining current shared contracts. Stop if the remaining same-class issues are no longer one clearly dominant current-surface contradiction.
 Risks / notes:
@@ -4076,11 +4076,11 @@ Files touched:
 `shared/contracts/agent-eval-guard.md`
 `implement.md`
 Verification run:
-`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|runtime/PROMOTION_PROFILES.json" shared/contracts/agent-eval-guard.md -S`
+`rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|runtime/meta/PROMOTION_PROFILES.json" shared/contracts/agent-eval-guard.md -S`
 `npm run report:directive-workspace-state`
 `npm run check`
 Result:
-`shared/contracts/agent-eval-guard.md` now references the canonical Runtime promotion inventory through `runtime/PROMOTION_PROFILES.json` instead of the stale `.openclaw\workspace\directive-workspace` root.
+`shared/contracts/agent-eval-guard.md` now references the canonical Runtime promotion inventory through `runtime/meta/PROMOTION_PROFILES.json` instead of the stale `.openclaw\workspace\directive-workspace` root.
 Next likely move:
 Rerank the remaining current shared contracts. Stop if the remaining same-class issues are no longer one clearly dominant current-surface contradiction.
 Risks / notes:
@@ -4102,20 +4102,21 @@ Run scope:
 - stay limited to current high-authority contracts and one lane README
 
 Verified micro-fixes:
-- `shared/contracts/browser-smoke-guard.md`: canonical inventory now uses `runtime/PROMOTION_PROFILES.json`.
-- `shared/contracts/design-review-skill-guard.md`: canonical inventory now uses `runtime/PROMOTION_PROFILES.json`.
-- `shared/contracts/context-operator-import-guard.md`: canonical inventory now uses `runtime/PROMOTION_PROFILES.json`.
-- `shared/contracts/dw-web-host-seam-review-guard.md`: canonical inventory now uses `runtime/PROMOTION_PROFILES.json`.
+- `shared/contracts/browser-smoke-guard.md`: canonical inventory now uses `runtime/meta/PROMOTION_PROFILES.json`.
+- `shared/contracts/design-review-skill-guard.md`: canonical inventory now uses `runtime/meta/PROMOTION_PROFILES.json`.
+- `shared/contracts/context-operator-import-guard.md`: canonical inventory now uses `runtime/meta/PROMOTION_PROFILES.json`.
+- `shared/contracts/dw-web-host-seam-review-guard.md`: canonical inventory now uses `runtime/meta/PROMOTION_PROFILES.json`.
 - `shared/contracts/bounded-literature-monitoring-workflow.md`: related-artifact references now use current repo-relative shared contract/template/schema paths.
 - `shared/contracts/literature-monitoring-degraded-state-guard.md`: relationship references now use current repo-relative shared contract/template/schema paths.
 - `shared/contracts/host-integration-acceptance.md`: host acceptance wording now says the host respects the canonical Discovery lifecycle.
-- `runtime/records/README.md`: repo-relative template reference now points at `shared/templates/runtime-record.md`, and the folder description no longer implies active runtime execution ownership.
+- `runtime/legacy-records/README.md`: repo-relative template reference now points at `shared/templates/runtime-record.md`, and the folder description no longer implies active runtime execution ownership.
 
 Verification run:
-- `rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\contracts\\bounded-literature-monitoring-workflow.md|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\contracts\\evaluator-contract.md|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\templates\\literature-monitoring-digest.md|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\templates\\runtime-record.md|product-owned Discovery lifecycle|active Runtime execution records" shared/contracts runtime/records/README.md -S`
+- `rg -n "C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\runtime\\PROMOTION_PROFILES.json|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\contracts\\bounded-literature-monitoring-workflow.md|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\contracts\\evaluator-contract.md|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\templates\\literature-monitoring-digest.md|C:\\Users\\User\\.openclaw\\workspace\\directive-workspace\\shared\\templates\\runtime-record.md|product-owned Discovery lifecycle|active Runtime execution records" shared/contracts runtime/legacy-records/README.md -S`
 - `npm run report:directive-workspace-state`
 - `npm run check`
 
 Stop summary:
 - Stop once the batch is verified and the remaining same-class hits are mostly historical runtime records, promotion/registry artifacts, or older inventory documents rather than current high-authority doctrine/contract/README surfaces.
+
 

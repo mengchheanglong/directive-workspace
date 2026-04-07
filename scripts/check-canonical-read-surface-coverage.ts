@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -56,19 +57,12 @@ type FailureResult = {
 
 export type CanonicalReadSurfaceCoverageResult = SuccessResult | FailureResult;
 
-type QueueEntry = {
-  candidate_id: string;
-  status: string;
-  routing_target?: string;
-  routing_record_path?: string;
-};
-
 export function runCanonicalReadSurfaceCoverageCheck(
   directiveRoot: string,
 ): CanonicalReadSurfaceCoverageResult {
   const queuePath = path.join(directiveRoot, "discovery", "intake-queue.json");
   const queue = JSON.parse(fs.readFileSync(queuePath, "utf8")) as {
-    entries: QueueEntry[];
+    entries: DiscoveryIntakeQueueEntry[];
   };
 
   const violations: Violation[] = [];

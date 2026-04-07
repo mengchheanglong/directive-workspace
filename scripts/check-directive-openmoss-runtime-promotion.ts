@@ -7,8 +7,8 @@ import {
   getDirectiveFrontendCheckJson,
   withDirectiveFrontendCheckServer,
 } from "./frontend-check-helpers.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { readDirectiveRuntimePromotionSpecification } from "../shared/lib/runtime-promotion-specification.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { readDirectiveRuntimePromotionSpecification } from "../runtime/lib/runtime-promotion-specification.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "directive_openmoss_runtime_promotion";
@@ -17,9 +17,9 @@ const PROMOTION_READINESS_PATH =
 const PROMOTION_SPECIFICATION_PATH =
   "runtime/06-promotion-specifications/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-specification.json";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md";
 const REGISTRY_ENTRY_PATH =
-  "runtime/registry/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-registry-entry.md";
+  "runtime/08-registry/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-registry-entry.md";
 const EXPECTED_HOST = "Directive Workspace web host (frontend/ + hosts/web-host/)";
 const EXPECTED_NEXT_LEGAL_STEP =
   "No automatic Runtime step is open; registry acceptance, host integration, runtime execution, and promotion automation remain intentionally unopened.";

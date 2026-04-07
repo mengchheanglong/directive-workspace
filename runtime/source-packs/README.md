@@ -20,7 +20,7 @@ What belongs here:
 What does not belong here:
 - raw upstream repo clones
 - Discovery intake, triage, routing, or monitor artifacts
-- Architecture experiments, notes, or reference-pattern artifacts
+- Architecture experiments or notes
 - runtime follow-up, proof, capability-boundary, or promotion-readiness records
 - shared product logic, contracts, schemas, or templates
 - host-only runtime data, reports, or snapshots

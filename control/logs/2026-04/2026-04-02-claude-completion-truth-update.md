@@ -25,7 +25,7 @@
 
 - `npm run report:directive-workspace-state`
 - `npm run report:operational-architecture-improvement-candidates`
-- `npm run report:directive-workspace-state -- discovery/routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md`
+- `npm run report:directive-workspace-state -- discovery/03-routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md`
 
 ## Rollback
 

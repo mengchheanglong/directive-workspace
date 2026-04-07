@@ -52,7 +52,7 @@ Current repo truth no longer has an active phase or seam, and reopening Backstag
 
 ### 3. Scientify Research Workflow Plugin Runtime stop
 - Artifacts:
-  - `discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
+  - `discovery/03-routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
   - `runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md`
 - Why selected:
   - recent live anchor
@@ -66,9 +66,9 @@ Current repo truth no longer has an active phase or seam, and reopening Backstag
 
 ### 4. OpenMOSS Runtime follow-up and promotion-readiness chain
 - Artifacts:
-  - `runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md`
+  - `runtime/00-follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md`
   - `runtime/05-promotion-readiness/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-readiness.md`
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
 - Why selected:
   - recent high-friction Runtime case
   - useful test of whether durable execution or control-plane modeling is the real blocker

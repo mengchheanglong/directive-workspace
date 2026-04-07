@@ -1,0 +1,33 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-test-open-deep-research-autoloop-2026-04-06",
+  "adoption_date": "2026-04-06",
+  "source_analysis_ref": "architecture/01-experiments/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "engine-code",
+  "artifact_path": "architecture/01-experiments/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-bounded-result.md",
+  "primary_evidence_path": "runtime/standalone-host/engine-runs/2026-04-06T15-10-00-000Z-dw-test-open-deep-research-autoloop-2026-04-06-66b7e9ee.json",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "routing_quality",
+    "claim": "Directive Workspace can carry this bounded Architecture slice forward into direct adoption without reopening the prior Engine, handoff, and post-consumption evidence chain by hand.",
+    "mechanism": "The bounded closeout now records an adoption-ready Architecture result and paired decision artifact directly on the bounded-result record.",
+    "baseline_observation": "Before this closeout, the reopened bounded slice still depended on manual interpretation to decide whether it could move forward as retained Directive-owned Architecture output.",
+    "expected_effect": "The bounded result 'Record the concrete Engine-owned delta from this bounded slice. Name the code or product artifact that changed, record its primary evidence path explicitly when one exists, and describe the retained structural value in Directive-owned form (Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.) without inventing a fake stage sequence. Tie the closeout back to the intended delta: Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.. Keep source-specific implementation baggage out of scope. Then state explicitly whether this bounded result should adopt now or stay experimental. This autonomous closeout keeps one bounded Architecture materialization continuation open because the approved objective explicitly targets engine-owned product logic rather than a reference-only retained result. The linked Engine run, routing record, and bounded handoff remain the explicit evidence chain for this Architecture result.' can now move directly into the normal adoption/materialization path as Architecture-owned output.",
+    "verification_method": "structural_inspection"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}

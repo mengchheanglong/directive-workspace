@@ -15,10 +15,27 @@ Use this file as the shortest path to current repo truth and active work surface
   Product-level truth summary: what Directive Workspace has proven, what remains intentionally minimal, and which seams are still closed.
 - `control/state/`
   Machine-readable control surfaces for completion state and bounded persistent coordination.
-- `shared/lib/dw-state.ts`
+- `engine/state/index.ts`
   Canonical read surface for current case and workflow state.
 - `state/`
   Case/event persistence, not historical commentary.
+
+## Code vs artifact navigation
+
+- `engine/`
+  Shared kernel plus cross-lane state and truth code.
+  Use the grouped surfaces first:
+  - `architecture/lib/`
+  - `runtime/lib/`
+  - `discovery/lib/`
+  - `engine/state/`
+- `shared/lib/`
+  Residual cross-cutting services, artifact/storage helpers, and external adapters that are still product-owned but are not lane homes.
+- `architecture/`, `runtime/`, `discovery/`
+  Lane artifact and proof corpora.
+  Their `lib/` subfolders are the canonical home of lane executable logic.
+- `runtime/core/`, `runtime/capabilities/`
+  Actual Runtime executable capability surfaces.
 
 ## Doctrine vs source input
 
@@ -42,12 +59,12 @@ Use this file as the shortest path to current repo truth and active work surface
 
 - `control/logs/`
   Historical run logs only. Use them for audit/history, not as current authority.
-- `runtime/follow-up/`
+- `runtime/00-follow-up/`
   Mixed Runtime case-local support corpus: follow-up records, preparation bundles, and bounded proof bundles.
-  Do not use folder recency here as the live continuation rule; use `npm run report:runtime-follow-up-navigation` as the canonical operator entry surface, then resolve exact case-head truth through `shared/lib/dw-state.ts` or `npm run report:directive-workspace-state`.
+  Do not use folder recency here as the live continuation rule; use `npm run report:runtime-follow-up-navigation` as the canonical operator entry surface, then resolve exact case-head truth through `engine/state/index.ts` or `npm run report:directive-workspace-state`.
 - `architecture/`, `runtime/`, `discovery/`
   Lane-owned operating artifacts.
-- `architecture/deep-materialization/`
+- `architecture/04-materialization/`
   Physical storage for DEEP-only Architecture materialization artifacts.
   Logical artifact paths for `architecture/04-...` through `architecture/09-...` remain stable, but this storage root is not the normal daily navigation surface.
 
@@ -81,3 +98,4 @@ If two surfaces seem to disagree:
 - then `engine/workspace-truth.ts`
 - then shared/control read surfaces
 - treat historical logs as evidence, not authority
+

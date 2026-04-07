@@ -41,14 +41,14 @@ Stop after the first honest bounded result and do not begin integration, repo-wi
 
 Files touched:
 
-- `architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md`
-- `architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result-adoption-decision.json`
+- `architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md`
+- `architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result-adoption-decision.json`
 - `discovery/intake-queue.json`
 - `control/logs/2026-03/2026-03-31-roam-code-phase-a-phase-3.md`
 
 Verification run:
 
-- `npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md`
+- `npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md`
 - `npm run report:directive-workspace-state`
 - `npm run check`
 
@@ -63,3 +63,4 @@ None inside Phase A. Backstage remains parked unless a newly authorized scope re
 Risks / notes:
 
 - The Architecture closeout helper can over-resolve to `adopt` when readiness fields are left too permissive, so this result was corrected manually to preserve the honest bounded decision.
+

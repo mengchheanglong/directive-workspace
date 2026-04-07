@@ -1,0 +1,24 @@
+# Discovery Triage Record: Open Deep Research Autoloop Test
+
+- Candidate id: dw-test-open-deep-research-autoloop-2026-04-06
+- Candidate name: Open Deep Research Autoloop Test
+- Triage date: 2026-04-06
+- First-pass summary: Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.
+- Problem it appears to solve: Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.
+- Extractable value hypothesis: Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design. | Real source found via research-engine live-hybrid run on 2026-04-06. Testing whether Discovery plus Engine routing can advance a clearly structural source through the downstream loop without extra manual steps. | record_shape:auto
+- Routing recommendation: Shared Engine routing selected architecture with usefulness level meta.
+- Proposed adoption target: engine-owned product logic
+- Stack-shape summary: external-system source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review
+- Missing evidence: adapted mechanism described, excluded baggage described, engine or product boundary improvement explained, improvement delta stays anchored to prior extraction, adaptation, and improvement stages
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer.
+- Next action: Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for "improve engine self-improvement quality" remains explicit through adaptation_complete.
+- Linked intake record: discovery/01-intake/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-intake.md

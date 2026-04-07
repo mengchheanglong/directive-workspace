@@ -2,13 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const HOST_CONSUMPTION_REPORT_PATH =
   "runtime/standalone-host/host-consumption/2026-04-02-dw-source-scientify-research-workflow-plugin-2026-03-27-host-consumption-report.json";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
 
 function main() {
   const report = JSON.parse(

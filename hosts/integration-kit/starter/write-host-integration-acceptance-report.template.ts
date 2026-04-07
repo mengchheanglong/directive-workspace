@@ -5,7 +5,7 @@ import {
   runHostIntegrationAcceptance,
   type HostIntegrationAcceptanceModuleSurface,
   type HostIntegrationAcceptanceReport,
-} from "./host-integration-acceptance.template";
+} from "./host-integration-acceptance.template.ts";
 
 export type WriteHostIntegrationAcceptanceReportOptions = {
   hostName: string;

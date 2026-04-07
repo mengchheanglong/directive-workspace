@@ -1,4 +1,4 @@
-import { buildDirectiveBoundedPersistentCoordinationReport } from "../shared/lib/bounded-persistent-coordination.ts";
+import { buildDirectiveBoundedPersistentCoordinationReport } from "../engine/coordination/bounded-persistent-coordination.ts";
 
 const report = buildDirectiveBoundedPersistentCoordinationReport({ dryRun: true });
 

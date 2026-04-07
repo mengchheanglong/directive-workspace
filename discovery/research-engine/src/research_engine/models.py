@@ -128,6 +128,7 @@ class SourceFact:
     confidence: str
     excerpt: str
     notes: list[str] = field(default_factory=list)
+    extraction_fidelity: str = "direct"
 
 
 @dataclass(slots=True)
@@ -158,6 +159,7 @@ class EvidenceItem:
     trust_signal: str
     rejection_flags: list[str]
     notes: list[str]
+    extraction_fidelity: str
     source_updated_at: str | None
     source_age_days: int | None
     freshness_signal: str
@@ -192,6 +194,8 @@ class CandidateDossier:
     contradiction_flags: list[str]
     evidence_cluster_summary: list[str]
     provenance_summary: list[str]
+    extraction_fidelity_summary: str
+    fallback_evidence_count: int
     freshness_summary: str
     freshness_signal: str
     freshest_source_updated_at: str | None
@@ -255,6 +259,19 @@ class DwCandidatePacket:
     freshness_signal: str
     freshest_source_updated_at: str | None
     freshest_source_age_days: int | None
+    structural_signal_band: str
+    structural_signal_summary: str
+    workflow_phase_labels: list[str]
+    provider_seam_summary: str | None
+    workflow_boundary_shape_hint: str | None
+    recommended_lane_target: str | None
+    lane_target_rationale: str | None
+    workflow_phase_scores: dict[str, int]
+    structural_extraction_recommendations: list[str]
+    structural_avoid_recommendations: list[str]
+    review_guidance_summary: str
+    review_guidance_action: str
+    review_guidance_stop_line: str
     uncertainty_notes: list[str]
 
 

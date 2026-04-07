@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { selectNextDirectiveCompletionSlice } from "../shared/lib/completion-slice-selector.ts";
+import { selectNextDirectiveCompletionSlice } from "../engine/coordination/completion-slice-selector.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATUS_PATH = path.join(DIRECTIVE_ROOT, "control", "state", "completion-status.json");

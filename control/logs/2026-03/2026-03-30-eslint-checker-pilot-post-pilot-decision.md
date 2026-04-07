@@ -35,7 +35,7 @@ Verified facts:
 - `shared/schemas/checker-definition-registry.schema.json` includes the shared `failureExpectation` contract.
 - `scripts/check-checker-definition-pilot.ts` validates both success and failure facts for each approved pilot member.
 - `control/logs/2026-03/2026-03-30-eslint-checker-pilot-finished.md` already records the verified closeout of the pilot itself.
-- `architecture/02-experiments/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-bounded-result-adoption-decision.json` still records `stay_experimental` with reason `Required proof has not been executed yet.`, which is now stale as a next-step signal but still correctly shows the source experiment should not auto-expand.
+- `architecture/01-experiments/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-bounded-result-adoption-decision.json` still records `stay_experimental` with reason `Required proof has not been executed yet.`, which is now stale as a next-step signal but still correctly shows the source experiment should not auto-expand.
 
 Authorized next-step posture:
 - No immediate follow-on slice is authorized from this control decision.
@@ -51,3 +51,4 @@ Stop summary:
 - Do not add a fourth checker.
 - Do not widen this into whole-checker migration or general linting work.
 - Stop at this verified boundary until a new bounded pressure clearly justifies a separately authorized slice.
+

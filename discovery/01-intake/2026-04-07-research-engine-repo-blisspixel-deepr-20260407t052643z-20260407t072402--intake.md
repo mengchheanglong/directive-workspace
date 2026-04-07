@@ -1,0 +1,23 @@
+# Discovery Intake Record: blisspixel/deepr
+
+- Candidate id: research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.
+- Candidate name: blisspixel/deepr
+- Intake date: 2026-04-07
+- Source type: external-system
+- Source reference: https://github.com/blisspixel/deepr
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Live-discovered candidate requiring source analysis. Imported from research-engine for Directive Workspace Discovery review only.
+- Initial relevance to the workspace: Direct usefulness: the generated Runtime adaptation and improvement plans target reusable callable runtime value with bounded behavior-preserving improvement, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 1252cf72-7fd4-4558-84a2-e686692ab40d selected runtime. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-04-07-research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402--triage.md

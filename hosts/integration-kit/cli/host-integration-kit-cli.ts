@@ -3,21 +3,31 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  adaptOpenClawMaintenanceWatchdogSignalToDirectiveRequest,
+  type OpenClawMaintenanceWatchdogSignal,
+} from "../../adapters/openclaw-maintenance-watchdog-signal-adapter.ts";
+import {
+  adaptOpenClawRuntimeVerificationSignalToDirectiveRequest,
+  type OpenClawRuntimeVerificationSignal,
+} from "../../adapters/openclaw-runtime-verification-signal-adapter.ts";
+import {
   createMemoryDiscoveryHostStorageBridge,
-} from "../starter/discovery-host-storage-bridge.memory.template";
+} from "../starter/discovery-host-storage-bridge.memory.template.ts";
 import {
   submitDiscoveryEntryWithHostBridge,
   type DiscoveryHostStorageBridge,
-} from "../starter/discovery-submission-adapter.template";
+} from "../starter/discovery-submission-adapter.template.ts";
 import {
   runHostIntegrationAcceptanceQuickstart,
-} from "../starter/run-host-integration-acceptance-quickstart.template";
-import type { DiscoverySubmissionRequest } from "../../../shared/lib/discovery-submission-router.ts";
+} from "../starter/run-host-integration-acceptance-quickstart.template.ts";
+import type { DiscoverySubmissionRequest } from "../../../discovery/lib/discovery-submission-router.ts";
 
 type CommandName =
   | "acceptance-quickstart"
   | "submission-memory-dry-run"
-  | "print-submission-example";
+  | "print-submission-example"
+  | "print-signal-example"
+  | "signal-adapter-dry-run";
 
 type FlagMap = Record<string, string[]>;
 
@@ -32,7 +42,9 @@ function printUsage() {
 Commands:
   acceptance-quickstart --host-name <name> --module-surface <package_import|starter_copy|mixed> --output-root <path> [--relative-output-path <path>] [--generated-at <iso>]
   submission-memory-dry-run --input-json-path <path> [--directive-root <path>] [--received-at <yyyy-mm-dd>] [--unresolved-gap-id <id> ...]
-  print-submission-example --shape <queue_only|fast_path|split_case>
+  print-submission-example --shape <front_door|queue_only|fast_path|split_case>
+  print-signal-example --kind <runtime_verification|maintenance_watchdog>
+  signal-adapter-dry-run --kind <runtime_verification|maintenance_watchdog> --input-json-path <path>
 `);
 }
 
@@ -83,6 +95,7 @@ function readJsonFile<T>(filePath: string): T {
 
 function resolveSubmissionExamplePath(shape: string) {
   const fileNameByShape: Record<string, string> = {
+    front_door: "discovery-submission-front-door.json",
     queue_only: "discovery-submission-queue-only.json",
     fast_path: "discovery-submission-fast-path.json",
     split_case: "discovery-submission-split-case.json",
@@ -90,6 +103,18 @@ function resolveSubmissionExamplePath(shape: string) {
   const fileName = fileNameByShape[shape];
   if (!fileName) {
     throw new Error(`Unsupported submission example shape: ${shape}`);
+  }
+  return path.resolve(examplesRoot, fileName);
+}
+
+function resolveSignalExamplePath(kind: string) {
+  const fileNameByKind: Record<string, string> = {
+    runtime_verification: "openclaw-runtime-verification-signal.json",
+    maintenance_watchdog: "openclaw-maintenance-watchdog-signal.json",
+  };
+  const fileName = fileNameByKind[kind];
+  if (!fileName) {
+    throw new Error(`Unsupported signal example kind: ${kind}`);
   }
   return path.resolve(examplesRoot, fileName);
 }
@@ -190,6 +215,71 @@ function handlePrintSubmissionExample(flags: FlagMap) {
   );
 }
 
+function handlePrintSignalExample(flags: FlagMap) {
+  const kind = readRequiredFlag(flags, "kind");
+  const examplePath = resolveSignalExamplePath(kind);
+  const payload = readJsonFile<Record<string, unknown>>(examplePath);
+
+  process.stdout.write(
+    `${JSON.stringify(
+      {
+        ok: true,
+        command: "print-signal-example",
+        kind,
+        examplePath,
+        payload,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+}
+
+function handleSignalAdapterDryRun(flags: FlagMap) {
+  const kind = readRequiredFlag(flags, "kind");
+  const inputJsonPath = readRequiredFlag(flags, "input-json-path");
+
+  if (kind === "runtime_verification") {
+    const payload = readJsonFile<OpenClawRuntimeVerificationSignal>(inputJsonPath);
+    const result = adaptOpenClawRuntimeVerificationSignalToDirectiveRequest(payload);
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          ok: true,
+          command: "signal-adapter-dry-run",
+          kind,
+          inputJsonPath,
+          result,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    return;
+  }
+
+  if (kind === "maintenance_watchdog") {
+    const payload = readJsonFile<OpenClawMaintenanceWatchdogSignal>(inputJsonPath);
+    const result = adaptOpenClawMaintenanceWatchdogSignalToDirectiveRequest(payload);
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          ok: true,
+          command: "signal-adapter-dry-run",
+          kind,
+          inputJsonPath,
+          result,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    return;
+  }
+
+  throw new Error(`Unsupported signal adapter kind: ${kind}`);
+}
+
 async function main() {
   const { command, flags } = parseArgs(process.argv.slice(2));
 
@@ -207,6 +297,12 @@ async function main() {
       return;
     case "print-submission-example":
       handlePrintSubmissionExample(flags);
+      return;
+    case "print-signal-example":
+      handlePrintSignalExample(flags);
+      return;
+    case "signal-adapter-dry-run":
+      handleSignalAdapterDryRun(flags);
       return;
     default:
       printUsage();

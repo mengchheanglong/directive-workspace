@@ -6,13 +6,13 @@ import { fileURLToPath } from "node:url";
 import {
   readDirectiveActionRunnerEvents,
   readDirectiveActionRunnerRecord,
-} from "../../shared/lib/directive-runner-state.ts";
-import type { DiscoveryIntakeQueueEntry } from "../../shared/lib/discovery-intake-queue-writer.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
-import { readDirectiveCaseMirrorEvents } from "../../shared/lib/case-event-log.ts";
-import { openDirectiveRuntimeFollowUp } from "../../shared/lib/runtime-follow-up-opener.ts";
-import { runDirectiveRuntimeFollowUpWithRunner } from "../../shared/lib/runtime-follow-up-runner.ts";
+} from "../../engine/execution/directive-runner-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../../discovery/lib/discovery-intake-queue-writer.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../../engine/state/index.ts";
+import { readDirectiveCaseMirrorEvents } from "../../engine/cases/case-event-log.ts";
+import { openDirectiveRuntimeFollowUp } from "../../runtime/lib/runtime-follow-up-opener.ts";
+import { runDirectiveRuntimeFollowUpWithRunner } from "../../runtime/lib/runtime-follow-up-runner.ts";
 import {
   copyRelativeFile,
   extractReviewedBy,
@@ -25,7 +25,7 @@ import { withTempDirectiveRoot } from "../temp-directive-root.ts";
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const CASE_UNDER_TEST = {
   candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
-  followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+  followUpPath: "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
   runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
 } as const;
 

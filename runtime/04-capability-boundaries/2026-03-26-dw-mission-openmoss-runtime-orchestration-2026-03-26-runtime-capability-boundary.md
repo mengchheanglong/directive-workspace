@@ -17,8 +17,8 @@
 ## source inputs
 - Runtime proof artifact: `runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
 - Proposed host: `pending_host_selection`
 - Proposed runtime surface: reimplement
@@ -53,5 +53,5 @@
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-capability-boundary.md`
 - Proof artifact: `runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md`
 - Runtime record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`

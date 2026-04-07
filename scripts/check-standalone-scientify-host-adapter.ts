@@ -3,11 +3,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createStandaloneFilesystemHost } from "../hosts/standalone-host/runtime.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import {
   DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH,
   readDirectiveRuntimePromotionSpecification,
-} from "../shared/lib/runtime-promotion-specification.ts";
+} from "../runtime/lib/runtime-promotion-specification.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "standalone_scientify_host_adapter";
@@ -18,7 +18,7 @@ const PROMOTION_SPECIFICATION_PATH =
 const CALLABLE_STUB_PATH =
   "runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
 
 async function main() {
   const host = createStandaloneFilesystemHost({
@@ -40,7 +40,7 @@ async function main() {
     assert.equal(descriptor.currentStage, "runtime.promotion_record.opened");
     assert.equal(
       descriptor.nextLegalStep,
-      "No automatic Runtime step is open; registry acceptance and promotion automation remain intentionally unopened while callable execution and one bounded host integration path are already proven.",
+      "No automatic Runtime step is open; one registry entry, callable execution, and one bounded standalone-host integration path are already proven. Reopen only for explicit evidence feedback or later broader host work.",
     );
     assert.deepEqual(descriptor.promotionReadinessBlockers, []);
     assert.equal(

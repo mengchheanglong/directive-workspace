@@ -1,0 +1,315 @@
+{
+  "$schema": "shared/schemas/directive-engine-run-record.schema.json",
+  "schemaVersion": 2,
+  "recordKind": "directive_engine_run_record",
+  "runId": "66b7e9ee-cc70-4eed-b211-2994220b4b3f",
+  "receivedAt": "2026-04-06T15:10:00.000Z",
+  "source": {
+    "sourceId": "dw-test-open-deep-research-autoloop-2026-04-06",
+    "sourceType": "external-system",
+    "sourceRef": "https://github.com/langchain-ai/open_deep_research",
+    "title": "Open Deep Research Autoloop Test",
+    "summary": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.",
+    "notes": [
+      "Real source found via research-engine live-hybrid run on 2026-04-06. Testing whether Discovery plus Engine routing can advance a clearly structural source through the downstream loop without extra manual steps.",
+      "record_shape:auto"
+    ],
+    "missionAlignmentHint": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.",
+    "capabilityGapId": null,
+    "primaryAdoptionTarget": "architecture",
+    "containsExecutableCode": true,
+    "containsWorkflowPattern": true,
+    "improvesDirectiveWorkspace": true,
+    "workflowBoundaryShape": "bounded_protocol"
+  },
+  "mission": {
+    "missionId": "directive-workspace-discovery-front-door",
+    "currentObjective": "Build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.",
+    "usefulnessSignals": [
+      "Useful means anything that materially improves:",
+      "revenue and conversion",
+      "execution speed and automation strength",
+      "decision quality and strategic leverage",
+      "cost efficiency and reliability",
+      "orchestration quality and agent coordination",
+      "capability-gap detection and self-improvement velocity"
+    ],
+    "capabilityLanes": [
+      "Directive engine materialization - one reusable executable core that hosts can embed cleanly",
+      "Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior",
+      "Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions",
+      "Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement",
+      "Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)",
+      "Evaluation quality - dimensional measurement (evaluators), not just binary gates",
+      "Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling"
+    ],
+    "activeMissionMarkdown": "# Active Mission\n\nLast updated: 2026-03-24\nStatus: canonical\n\n## Current Objective\n\nBuild and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.\n\n## What Usefulness Means Under This Objective\n\nUseful means anything that materially improves:\n- revenue and conversion\n- execution speed and automation strength\n- decision quality and strategic leverage\n- cost efficiency and reliability\n- orchestration quality and agent coordination\n- capability-gap detection and self-improvement velocity\n\n## Capability Lanes That Matter Most\n\n1. Directive engine materialization - one reusable executable core that hosts can embed cleanly\n   Architecture is currently the closest lane to this objective because the current mission is to improve the Engine itself.\n2. Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior\n3. Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions\n4. Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement\n5. Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)\n6. Evaluation quality - dimensional measurement (evaluators), not just binary gates\n7. Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling\n\n## Known Capability Gaps (Open)\n\n- gap: Canonical Directive engine surface only partially materialized\n  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Runtime / Architecture logic centered inside the Engine\n  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Runtime / Architecture operate as clear Engine lanes rather than loose top-level features\n\n## Recently Resolved Gaps\n\n- gap: Discovery as actual front door for most work - RESOLVED 2026-03-23\n  resolution: `shared/lib/discovery-front-door-coverage.ts` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.\n\n- gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22\n  resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.\n\n- gap: Architecture-to-Runtime handoff - RESOLVED 2026-03-22\n  resolution: Formal handoff record created for autoresearch bounded-run pattern. All contract fields exercised.\n\n- gap: Evaluator lane dimensional proof - RESOLVED 2026-03-22\n  resolution: Backend test boilerplate consolidation uses dimensional evaluator with numeric before/after (20.6% line reduction, 16.9% byte reduction). First non-vacuous dimensional proof.\n\n- gap: Discovery intake queue native usage - RESOLVED 2026-03-22\n  resolution: 5 native primary-mode queue entries achieved (threshold: 5+). 14 total entries (5 native, 9 backfill). Three behavior-preserving transformation candidates processed end-to-end through native queue.\n\n- gap: agent-lab legacy dependency - RESOLVED 2026-03-22\n  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Runtime-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state."
+  },
+  "openGaps": [],
+  "selectedLane": {
+    "laneId": "architecture",
+    "label": "Architecture",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true
+  },
+  "candidate": {
+    "candidateId": "dw-test-open-deep-research-autoloop-2026-04-06",
+    "candidateName": "Open Deep Research Autoloop Test",
+    "recommendedLaneId": "architecture",
+    "recommendedLaneLabel": "Architecture",
+    "recommendedRecordShape": "split_case",
+    "usefulnessLevel": "meta",
+    "missionPriorityScore": 43,
+    "confidence": "high",
+    "matchedGapId": null,
+    "matchedGapRank": null,
+    "requiresHumanReview": false,
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended architecture because its lane score (23) exceeded the alternatives.",
+      "Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+      "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+      "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+      "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+      "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+      "Meta-usefulness signal is present (3/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for architecture: keyword=9, metadata=14, gap=0.",
+      "Split-case is recommended because strong Architecture signals justify a fuller structural record even without an open gap match."
+    ]
+  },
+  "analysis": {
+    "missionFitSummary": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.",
+    "primaryAdoptionQuestion": "What is the primary adoption target of the extracted value?",
+    "matchedCapabilityGapId": null,
+    "usefulnessRationale": "Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended architecture because its lane score (23) exceeded the alternatives.",
+      "Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+      "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+      "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+      "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+      "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+      "Meta-usefulness signal is present (3/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for architecture: keyword=9, metadata=14, gap=0.",
+      "Split-case is recommended because strong Architecture signals justify a fuller structural record even without an open gap match."
+    ]
+  },
+  "routingAssessment": {
+    "recommendedLaneId": "architecture",
+    "recommendedRecordShape": "split_case",
+    "missionPriorityScore": 43,
+    "confidence": "high",
+    "matchedGapId": null,
+    "matchedGapRank": null,
+    "explicitRouteDestination": null,
+    "routeConflict": false,
+    "needsHumanReview": false,
+    "ambiguitySummary": {
+      "topLaneId": "architecture",
+      "runnerUpLaneId": "runtime",
+      "scoreDelta": 10,
+      "conflictingSignalFamilies": [],
+      "conflictingLaneIds": []
+    },
+    "reviewGuidance": null,
+    "scoreBreakdown": {
+      "missionFit": 5,
+      "gapAlignment": 0,
+      "laneScores": {
+        "discovery": 6,
+        "architecture": 23,
+        "runtime": 13
+      },
+      "keywordLaneScores": {
+        "discovery": 6,
+        "architecture": 9,
+        "runtime": 9
+      },
+      "metadataLaneScores": {
+        "discovery": 0,
+        "architecture": 14,
+        "runtime": 4
+      },
+      "gapLaneScores": {
+        "discovery": 0,
+        "architecture": 0,
+        "runtime": 0
+      },
+      "metaUsefulnessSignal": 3,
+      "patternExtractionSignal": 0,
+      "transformationSignal": 0,
+      "runtimeSignal": 3,
+      "ambiguityPenalty": 0,
+      "total": 43
+    },
+    "explanationBreakdown": {
+      "keywordSignals": [
+        "Meta-usefulness signal is present (3/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+        "Keyword-derived lane scores: discovery=6, architecture=9, runtime=9."
+      ],
+      "metadataSignals": [
+        "Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+        "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+        "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+        "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+        "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+        "Metadata-derived lane scores: discovery=0, architecture=14, runtime=4."
+      ],
+      "gapAlignmentSignals": [
+        "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+        "Gap-derived lane scores: discovery=0, architecture=0, runtime=0."
+      ],
+      "ambiguitySignals": [
+        "Top lane architecture beat runtime by 10 points after ambiguity penalties.",
+        "No material signal-family disagreement remained after scoring; keyword, metadata, and gap alignment all supported architecture or had no competing winner."
+      ]
+    },
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended architecture because its lane score (23) exceeded the alternatives.",
+      "Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+      "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+      "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+      "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+      "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+      "Meta-usefulness signal is present (3/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for architecture: keyword=9, metadata=14, gap=0.",
+      "Split-case is recommended because strong Architecture signals justify a fuller structural record even without an open gap match."
+    ]
+  },
+  "extractionPlan": {
+    "extractedValue": [
+      "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.",
+      "Real source found via research-engine live-hybrid run on 2026-04-06. Testing whether Discovery plus Engine routing can advance a clearly structural source through the downstream loop without extra manual steps.",
+      "record_shape:auto"
+    ],
+    "excludedBaggage": [
+      "source-specific implementation baggage",
+      "unadapted source terminology"
+    ]
+  },
+  "adaptationPlan": {
+    "directiveOwnedForm": "Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.",
+    "adaptedValue": [
+      "Convert extracted mechanisms into Engine-owned logic or operating assets.",
+      "Strip source baggage before adoption into the Engine."
+    ]
+  },
+  "improvementPlan": {
+    "improvementGoals": [
+      "improve engine self-improvement quality",
+      "improve future source adaptation quality"
+    ],
+    "intendedDelta": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption."
+  },
+  "proofPlan": {
+    "proofKind": "architecture_validation",
+    "objective": "Prove the extracted mechanism is adapted into product-owned operating code or engine logic without carrying source baggage forward blindly, and that the proof boundary stays grounded in the staged improvement delta \"improve engine self-improvement quality\".",
+    "requiredEvidence": [
+      "adapted mechanism described",
+      "excluded baggage described",
+      "engine or product boundary improvement explained",
+      "improvement delta stays anchored to prior extraction, adaptation, and improvement stages"
+    ],
+    "requiredGates": [
+      "adaptation_complete",
+      "improvement_complete",
+      "engine_boundary_preserved",
+      "decision_review"
+    ],
+    "rollbackPrompt": "Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer."
+  },
+  "decision": {
+    "decisionState": "accept_for_architecture",
+    "adoptionTargetLaneId": "architecture",
+    "adoptionTargetLaneLabel": "Architecture",
+    "requiresHumanApproval": true,
+    "summary": "Preliminary engine decision: accept_for_architecture for Architecture, pending human approval before final adoption.",
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended architecture because its lane score (23) exceeded the alternatives.",
+      "Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+      "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+      "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+      "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+      "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+      "Meta-usefulness signal is present (3/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for architecture: keyword=9, metadata=14, gap=0.",
+      "Split-case is recommended because strong Architecture signals justify a fuller structural record even without an open gap match.",
+      "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete."
+    ]
+  },
+  "integrationProposal": {
+    "targetLaneId": "architecture",
+    "targetLaneLabel": "Architecture",
+    "integrationMode": "adapt",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true,
+    "handoffArtifactFamily": "architecture_adoption",
+    "nextAction": "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete.",
+    "requiresHumanReview": false
+  },
+  "reportPlan": {
+    "reportKind": "architecture_adaptation_report",
+    "summary": "Sync the accept_for_architecture decision and adapt integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+    "usefulnessRationale": "Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+    "requiredDestinations": [
+      "directive_workspace_record",
+      "directive_workspace_report_sync"
+    ],
+    "syncRequired": true
+  },
+  "events": [
+    {
+      "type": "source_ingested",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Source captured for candidate dw-test-open-deep-research-autoloop-2026-04-06."
+    },
+    {
+      "type": "source_analyzed",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design. Usefulness rationale: Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value."
+    },
+    {
+      "type": "candidate_routed",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Candidate routed to architecture with usefulness level meta. Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value."
+    },
+    {
+      "type": "value_extracted",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Extracted 3 value signals and excluded 2 baggage signals."
+    },
+    {
+      "type": "value_adapted",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib."
+    },
+    {
+      "type": "value_improved",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption."
+    },
+    {
+      "type": "proof_planned",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Proof plan architecture_validation prepared."
+    },
+    {
+      "type": "decision_recorded",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Preliminary engine decision: accept_for_architecture for Architecture, pending human approval before final adoption."
+    },
+    {
+      "type": "integration_proposed",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Integration proposal targets architecture via architecture_adoption."
+    },
+    {
+      "type": "report_planned",
+      "at": "2026-04-06T15:10:00.000Z",
+      "summary": "Sync the accept_for_architecture decision and adapt integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value."
+    }
+  ]
+}

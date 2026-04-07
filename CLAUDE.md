@@ -4,7 +4,7 @@
 
 Directive Workspace is a **goal-driven capability evolution product**.
 
-Its purpose is to help improve the user’s system based on the user’s active goal by:
+Its purpose is to help improve the userâ€™s system based on the userâ€™s active goal by:
 - consuming external sources
 - identifying mission-relevant usefulness
 - extracting useful value
@@ -70,7 +70,7 @@ If a piece of logic is shared across Discovery, Runtime, and Architecture, it li
 
 The governing workflow is:
 
-**Source → Analyze → Route → Extract → Adapt → Improve → Prove → Decide → Integrate + Report**
+**Source â†’ Analyze â†’ Route â†’ Extract â†’ Adapt â†’ Improve â†’ Prove â†’ Decide â†’ Integrate + Report**
 
 Important:
 - **Decide** is required
@@ -89,11 +89,11 @@ It should:
 
 The stronger rule is:
 
-**extract → adapt → improve → prove → decide → integrate + report**
+**extract â†’ adapt â†’ improve â†’ prove â†’ decide â†’ integrate + report**
 
 not merely:
 
-**extract → adopt**
+**extract â†’ adopt**
 
 ## Source entry rule
 
@@ -168,13 +168,13 @@ Runtime is responsible for converting extracted usefulness into Directive-owned 
 Runtime is the primary home of **behavior-preserving transformation** when the transformed result becomes reusable runtime capability.
 
 Examples include:
-- bad code → good code
-- messy code → cleaner code
-- slow code → faster code
-- expensive code → cheaper code
-- fragile code → more reliable code
-- same behavior → better implementation
-- same algorithm → better language/runtime fit
+- bad code â†’ good code
+- messy code â†’ cleaner code
+- slow code â†’ faster code
+- expensive code â†’ cheaper code
+- fragile code â†’ more reliable code
+- same behavior â†’ better implementation
+- same algorithm â†’ better language/runtime fit
 
 Runtime answers:
 
@@ -247,13 +247,13 @@ Behavior-preserving transformation is a first-class adaptation pattern in Direct
 It means improving an implementation while preserving the intended behavior or capability.
 
 Examples include:
-- bad code → good code
-- messy code → cleaner code
-- slow code → faster code
-- expensive code → cheaper code
-- fragile code → more reliable code
-- same behavior → better implementation
-- same algorithm → better language/runtime fit
+- bad code â†’ good code
+- messy code â†’ cleaner code
+- slow code â†’ faster code
+- expensive code â†’ cheaper code
+- fragile code â†’ more reliable code
+- same behavior â†’ better implementation
+- same algorithm â†’ better language/runtime fit
 
 Ownership is determined by the **primary adoption target**:
 
@@ -276,7 +276,7 @@ Useful for how the system works.
 Usually Architecture.
 
 ### 3. Meta-usefulness
-Useful because it improves Directive Workspace’s ability to discover, judge, extract, adapt, improve, and integrate future sources.
+Useful because it improves Directive Workspaceâ€™s ability to discover, judge, extract, adapt, improve, and integrate future sources.
 Deepest Architecture / Engine-core value.
 
 The third level is central.
@@ -299,7 +299,7 @@ That means the project is currently in an **Engine-building phase**.
 ### Current emphasis
 - Discovery should become better at source collection, filtering, routing, and capability-gap visibility
 - Runtime should become better at runtime usefulness conversion and behavior-preserving transformation
-- Architecture should become better at improving the Engine’s adaptation ability
+- Architecture should become better at improving the Engineâ€™s adaptation ability
 - Directive Workspace as a whole should become better at self-improvement through source consumption
 
 Runtime is important, but it is not the center of the product.
@@ -336,7 +336,7 @@ Architecture is closest to the current mission because the current mission is to
    - do not weaken the full workflow into a shorter informal pattern
 
 10. **Usefulness beats novelty**
-   - a source matters only if it advances the mission or the Engine’s future ability
+   - a source matters only if it advances the mission or the Engineâ€™s future ability
 
 ## Working method
 
@@ -371,13 +371,86 @@ Avoid:
 - treating Discovery / Runtime / Architecture as peer products
 - collapsing Engine into Architecture
 - reducing Directive Workspace to source collection only
-- reducing Runtime to “tool adoption” only
+- reducing Runtime to â€œtool adoptionâ€ only
 - reducing Architecture to note-taking
 - treating extraction as enough without adaptation/improvement
 - dropping Decide or Report from the workflow
 - keeping shared core logic scattered across lanes
 - optimizing for novelty instead of mission usefulness
 - broad speculative abstraction without workflow pressure
+
+## Folder-to-ownership map
+
+Each lane folder owns both its **artifact records** and its **operating code**.
+The Engine kernel is separate in `engine/`.
+
+### engine/ â€” Engine kernel + cross-lane state
+
+The source-processing kernel and shared infrastructure that all lanes depend on.
+
+- `directive-engine.ts` â€” source analysis, routing, usefulness, extraction/adaptation/improvement planning, proof plans, decisions, reports, integration proposals
+- `routing.ts` â€” keyword-based routing assessment and scoring
+- `usefulness.ts` â€” usefulness classification and explanation
+- `types.ts`, `lane.ts`, `directive-workspace-lanes.ts` â€” Engine type definitions and lane resolution
+- `approval-boundary.ts` â€” guard rails, path utilities, integrity checks
+- `workspace-truth.ts` â€” product truth constants and legal seam inventory
+- `artifact-link-validation.ts` â€” link integrity checking
+- `storage.ts`, `source-type-normalization.ts` â€” store interface and source normalization
+- `state/` â€” canonical cross-lane state resolution (`dw-state`)
+
+### architecture/ â€” Architecture lane (records + operating code)
+
+- `architecture/lib/` â€” Architecture lane operating code: handoff, closeout, adoption, implementation, retention, integration, consumption, evaluation, reopen
+- `architecture/01-experiments/`, `02-adopted/`, etc. â€” experiment records, adoption decisions, deferred items (markdown + JSON)
+- Architecture-local intake/triage folders were intentionally removed; Discovery is the only front door
+
+### runtime/ â€” Runtime lane (records + operating code + capabilities)
+
+- `runtime/lib/` â€” Runtime lane operating code: openers, runners, proofs, promotion, sequences, projections
+- `runtime/core/` â€” callable contracts and execution machinery
+- `runtime/capabilities/` â€” actual callable capabilities (literature-access, code-normalizer)
+- `runtime/01-callable-integrations/`, `02-records/`, `03-proof/`, etc. â€” artifact records
+
+### discovery/ â€” Discovery lane (records + operating code + research-engine)
+
+- `discovery/lib/` â€” Discovery lane operating code: front door, intake queue, routing, gap worklist, fast-path records, completion records
+- `discovery/research-engine/` â€” bounded Python source-intelligence pipeline
+- `discovery/intake-queue.json`, `03-routing-log/`, `02-triage/`, etc. â€” artifact records
+
+### shared/lib/ â€” Cross-cutting support
+
+Residual support services that are not lane-specific:
+
+- case management (`case-store`, `case-event-log`, `case-planner`, `case-snapshot`)
+- lifecycle coordination (`read-only-lifecycle-coordination`, `bounded-persistent-coordination`)
+- evidence aggregation and reporting helpers
+- host-neutral adapters (`openclaw-*`)
+- artifact/storage compatibility helpers
+
+### scripts/ â€” Enforcement and reporting
+
+- 91 checker scripts (`check-*`) â€” validate product truth and consistency
+- 14 report scripts (`report-*`) â€” produce machine-readable system state
+
+### hosts/ â€” Host adapters
+
+- `hosts/web-host/` â€” product-owned web frontend API host
+- `hosts/standalone-host/` â€” filesystem-based reference host
+- `hosts/integration-kit/` â€” starter templates and CLI for new hosts
+
+### Dependency direction
+
+```
+hosts/ â”€â”€â–º lane folders (architecture/lib, runtime/lib, discovery/lib)
+  â”‚                        â–²
+  â””â”€â”€â–º engine/ â—„â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+         â”‚
+         â””â”€â”€â–º shared/lib/ (cross-cutting support)
+```
+
+Lane code imports `engine/` for guard rails, types, and approval boundaries.
+Lane code imports `shared/lib/` for case management and storage helpers.
+`engine/state/` imports from all three lane folders to resolve cross-lane truth.
 
 ## Operating modes
 
@@ -386,18 +459,18 @@ Replace the one-size-fits-all chain with three named modes, decided at triage ti
 ### Mode 1: NOTE (Quick record, default stop)
 
 - **When:** Source is interesting but not product-actionable. Confirmatory findings. Low confidence routing. Exploratory assessment.
-- **Artifacts:** Discovery front door (intake + triage + routing) → one analysis note → done.
-- **Architecture version:** Handoff → single bounded-result with verdict `noted`. No bounded-start needed.
-- **Runtime version:** Follow-up stub → `parked_after_review`. No record opened.
+- **Artifacts:** Discovery front door (intake + triage + routing) â†’ one analysis note â†’ done.
+- **Architecture version:** Handoff â†’ single bounded-result with verdict `noted`. No bounded-start needed.
+- **Runtime version:** Follow-up stub â†’ `parked_after_review`. No record opened.
 - **Total artifacts:** 4-6 (Discovery set + 1 note)
 - **Max sessions:** 1
 
 ### Mode 2: STANDARD (Bounded chain, circuit breaker at result)
 
 - **When:** Source has concrete extractable value. Clear adoption target. Moderate confidence.
-- **Artifacts:** Full Discovery front door → lane-appropriate chain up to bounded-result (Architecture) or capability-boundary (Runtime). **Default stop at result/boundary** — extension requires explicit justification.
-- **Architecture version:** Handoff → bounded-start → bounded-result → stop unless adoption criteria are met.
-- **Runtime version:** Follow-up → record → proof → capability-boundary → stop unless promotion criteria are met.
+- **Artifacts:** Full Discovery front door â†’ lane-appropriate chain up to bounded-result (Architecture) or capability-boundary (Runtime). **Default stop at result/boundary** â€” extension requires explicit justification.
+- **Architecture version:** Handoff â†’ bounded-start â†’ bounded-result â†’ stop unless adoption criteria are met.
+- **Runtime version:** Follow-up â†’ record â†’ proof â†’ capability-boundary â†’ stop unless promotion criteria are met.
 - **Batching allowed:** Tightly coupled steps (e.g., handoff + start, or record + proof) can be done in one session.
 - **Max sessions:** 2-4
 
@@ -414,9 +487,9 @@ Replace the one-size-fits-all chain with three named modes, decided at triage ti
 
 At Discovery routing (or at the start of any downstream session), classify using this 3-question filter:
 
-1. **Does this source produce concrete code, contracts, or Engine changes?** → If no → **NOTE**.
-2. **Is the adoption target clear and the confidence moderate-to-high?** → If yes → **STANDARD**.
-3. **Does this open a new seam, introduce real runtime capability, or change Engine operating code?** → If yes → **DEEP**.
+1. **Does this source produce concrete code, contracts, or Engine changes?** â†’ If no â†’ **NOTE**.
+2. **Is the adoption target clear and the confidence moderate-to-high?** â†’ If yes â†’ **STANDARD**.
+3. **Does this open a new seam, introduce real runtime capability, or change Engine operating code?** â†’ If yes â†’ **DEEP**.
 
 If unsure between NOTE and STANDARD, default to NOTE. You can always upgrade later, but you cannot undo the artifact overhead of an unnecessary STANDARD chain.
 
@@ -430,7 +503,7 @@ If unsure between NOTE and STANDARD, default to NOTE. You can always upgrade lat
 ### Batching rules
 
 - **Tightly coupled steps may be batched into one session** when:
-  - The output of step N is a mechanical prerequisite for step N+1 (e.g., handoff → start)
+  - The output of step N is a mechanical prerequisite for step N+1 (e.g., handoff â†’ start)
   - No human judgment decision separates them
   - Both steps are in the same lane
 - **Steps that should NOT be batched:**
@@ -465,4 +538,6 @@ If unsure between NOTE and STANDARD, default to NOTE. You can always upgrade lat
 
 ## Final doctrine sentence
 
-Directive Workspace is a self-improving goal-driven product whose Engine consumes external sources, judges their mission-relevant usefulness, extracts and refines that usefulness, and upgrades either reusable runtime capability through Runtime or the system’s own operating intelligence through Architecture.
+Directive Workspace is a self-improving goal-driven product whose Engine consumes external sources, judges their mission-relevant usefulness, extracts and refines that usefulness, and upgrades either reusable runtime capability through Runtime or the systemâ€™s own operating intelligence through Architecture.
+
+

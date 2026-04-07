@@ -36,8 +36,9 @@ Proof path:
 
 Rollback path:
 
-Remove `architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md`, its paired decision artifact, revert the proof updates, and restore the queue/case state to the handoff boundary.
+Remove `architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md`, its paired decision artifact, revert the proof updates, and restore the queue/case state to the handoff boundary.
 
 Stop-line:
 
 Stop once the GPT Researcher case resolves to `architecture.bounded_result.stay_experimental`, the queue marks it completed, the updated proof surfaces pass, and no additional same-class Architecture handoff pending-review case remains.
+

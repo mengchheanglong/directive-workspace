@@ -7,9 +7,9 @@ import { fileURLToPath } from "node:url";
 import {
   readDirectiveArchitectureBoundedResultArtifact,
   readDirectiveArchitectureBoundedStartArtifact,
-} from "../shared/lib/architecture-bounded-closeout.ts";
-import { readDirectiveArchitectureAdoptionDetail } from "../shared/lib/architecture-result-adoption.ts";
-import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../shared/lib/architecture-deep-tail-stage-map.ts";
+} from "../architecture/lib/architecture-bounded-closeout.ts";
+import { readDirectiveArchitectureAdoptionDetail } from "../architecture/lib/architecture-result-adoption.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../architecture/lib/architecture-deep-tail-stage-map.ts";
 import {
   DIRECTIVE_WORKSPACE_BLOCKED_ADVANCEMENT_MESSAGE,
   DIRECTIVE_WORKSPACE_PRODUCT_TRUTH,
@@ -31,31 +31,32 @@ import {
   readFrontendQueueOverview,
 } from "../hosts/web-host/data.ts";
 import { runDirectiveArchitectureCompositionCheck } from "./check-architecture-composition.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "../shared/lib/directive-workspace-artifact-storage.ts";
-import { syncDiscoveryIntakeLifecycle } from "../shared/lib/discovery-intake-lifecycle-sync.ts";
-import { openDirectiveDiscoveryRoute } from "../shared/lib/discovery-route-opener.ts";
-import { openDirectiveRuntimeFollowUp } from "../shared/lib/runtime-follow-up-opener.ts";
-import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
-import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
-import { openDirectiveRuntimePromotionReadiness } from "../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
+import { syncDiscoveryIntakeLifecycle } from "../discovery/lib/discovery-intake-lifecycle-sync.ts";
+import { openDirectiveDiscoveryRoute } from "../discovery/lib/discovery-route-opener.ts";
+import { openDirectiveRuntimeFollowUp } from "../runtime/lib/runtime-follow-up-opener.ts";
+import { openDirectiveRuntimeRecordProof } from "../runtime/lib/runtime-record-proof-opener.ts";
+import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../runtime/lib/runtime-proof-runtime-capability-boundary-opener.ts";
+import { openDirectiveRuntimePromotionReadiness } from "../runtime/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
+import { uniqueRelativePaths } from "./checker-test-helpers.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const ARCHITECTURE_ROUTE_PATH =
-  "discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md";
+  "discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md";
 const RUNTIME_ROUTE_PATH =
-  "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md";
+  "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md";
 const ARCHITECTURE_EVALUATION_PATH =
   `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md`;
 const ARCHITECTURE_HANDOFF_PATH =
-  "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md";
 const ARCHITECTURE_BOUNDED_START_PATH =
-  "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md";
 const ARCHITECTURE_BOUNDED_RESULT_PATH =
-  "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md";
 const ARCHITECTURE_ADOPTION_PATH =
-  "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md";
+  "architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md";
 const ARCHITECTURE_IMPLEMENTATION_TARGET_PATH =
   `${ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`;
 const ARCHITECTURE_IMPLEMENTATION_RESULT_PATH =
@@ -69,109 +70,109 @@ const ARCHITECTURE_CONSUMPTION_PATH =
 const ARCHITECTURE_STALE_EVALUATION_PATH =
   `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-evaluation.md`;
 const ROAM_ROUTE_PHASE_A_PHASE_2_PATH =
-  "discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md";
+  "discovery/03-routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md";
 const RUNTIME_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md";
+  "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md";
 const LEGACY_RUNTIME_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md";
+  "runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md";
 const LEGACY_RUNTIME_ACTIVE_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md";
+  "runtime/00-follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md";
 const LEGACY_RUNTIME_AGENT_ORCHESTRATOR_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md";
+  "runtime/00-follow-up/2026-03-20-agent-orchestrator-runtime-followup.md";
 const LEGACY_RUNTIME_PROMPTFOO_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md";
+  "runtime/00-follow-up/2026-03-20-promptfoo-runtime-followup.md";
 const LEGACY_RUNTIME_PUPPETEER_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md";
+  "runtime/00-follow-up/2026-03-20-puppeteer-browser-runtime-followup.md";
 const LEGACY_RUNTIME_AGENTICS_RECORD_PATH =
-  "runtime/records/2026-03-19-agentics-runtime-record.md";
+  "runtime/legacy-records/2026-03-19-agentics-runtime-record.md";
 const LEGACY_RUNTIME_PROMPTFOO_RECORD_PATH =
-  "runtime/records/2026-03-21-promptfoo-runtime-record.md";
+  "runtime/legacy-records/2026-03-21-promptfoo-runtime-record.md";
 const LEGACY_RUNTIME_SCIENTIFY_RECORD_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-runtime-record.md";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-record.md";
 const LEGACY_RUNTIME_CLI_ANYTHING_REENTRY_RECORD_PATH =
-  "runtime/records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md";
+  "runtime/legacy-records/2026-03-22-cli-anything-reentry-preconditions-slice-01.md";
 const LEGACY_RUNTIME_PROMPTFOO_SLICE_PROOF_PATH =
-  "runtime/records/2026-03-21-promptfoo-runtime-slice-01-proof.md";
+  "runtime/legacy-records/2026-03-21-promptfoo-runtime-slice-01-proof.md";
 const LEGACY_RUNTIME_AGENT_ORCHESTRATOR_SLICE_PROOF_PATH =
-  "runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md";
+  "runtime/legacy-records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-proof.md";
 const LEGACY_RUNTIME_SUPERPOWERS_SLICE_PROOF_PATH =
-  "runtime/records/2026-03-21-superpowers-runtime-slice-01-proof.md";
+  "runtime/legacy-records/2026-03-21-superpowers-runtime-slice-01-proof.md";
 const LEGACY_RUNTIME_AGENT_ORCHESTRATOR_SLICE_EXECUTION_PATH =
-  "runtime/records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md";
+  "runtime/legacy-records/2026-03-21-agent-orchestrator-cli-runtime-slice-01-execution.md";
 const LEGACY_RUNTIME_PUPPETEER_SLICE_EXECUTION_PATH =
-  "runtime/records/2026-03-21-puppeteer-runtime-slice-01-execution.md";
+  "runtime/legacy-records/2026-03-21-puppeteer-runtime-slice-01-execution.md";
 const LEGACY_RUNTIME_SKILLS_MANAGER_SLICE_EXECUTION_PATH =
-  "runtime/records/2026-03-21-skills-manager-runtime-slice-01-execution.md";
+  "runtime/legacy-records/2026-03-21-skills-manager-runtime-slice-01-execution.md";
 const LEGACY_RUNTIME_MINI_SWE_FALLBACK_REHEARSAL_PATH =
-  "runtime/records/2026-03-20-mini-swe-agent-fallback-rehearsal.md";
+  "runtime/legacy-records/2026-03-20-mini-swe-agent-fallback-rehearsal.md";
 const LEGACY_RUNTIME_SCIENTIFY_PROOF_CHECKLIST_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-slice-01-proof-checklist.md";
 const LEGACY_RUNTIME_SCIENTIFY_LIVE_FETCH_PROOF_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-runtime-slice-02-live-fetch-proof.md";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-runtime-slice-02-live-fetch-proof.md";
 const LEGACY_RUNTIME_SCIENTIFY_LIVE_FETCH_GATE_SNAPSHOT_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-fetch-gate-snapshot.json";
 const LEGACY_RUNTIME_SCIENTIFY_LIVE_QUALIFIED_POOL_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-qualified-pool.json";
 const LEGACY_RUNTIME_SCIENTIFY_LIVE_DEGRADED_POOL_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-live-degraded-pool.json";
 const LEGACY_RUNTIME_SCIENTIFY_SAMPLE_QUALIFIED_POOL_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-qualified-pool-sample.json";
 const LEGACY_RUNTIME_SCIENTIFY_SAMPLE_DEGRADED_POOL_PATH =
-  "runtime/records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json";
+  "runtime/legacy-records/2026-03-23-scientify-literature-monitoring-degraded-quality-sample.json";
 const LEGACY_RUNTIME_SYSTEM_BUNDLE_02_PATH =
-  "runtime/records/2026-03-21-runtime-system-bundle-02-boundary-inventory.md";
+  "runtime/legacy-records/2026-03-21-runtime-system-bundle-02-boundary-inventory.md";
 const LEGACY_RUNTIME_SYSTEM_BUNDLE_03_PATH =
-  "runtime/records/2026-03-21-runtime-system-bundle-03-source-pack-catalog-cleanup.md";
+  "runtime/legacy-records/2026-03-21-runtime-system-bundle-03-source-pack-catalog-cleanup.md";
 const LEGACY_RUNTIME_SYSTEM_BUNDLE_04_PATH =
-  "runtime/records/2026-03-21-runtime-system-bundle-04-promotion-profile-normalization.md";
+  "runtime/legacy-records/2026-03-21-runtime-system-bundle-04-promotion-profile-normalization.md";
 const LEGACY_RUNTIME_SYSTEM_BUNDLE_05_PATH =
-  "runtime/records/2026-03-21-runtime-system-bundle-05-import-source-policy-alignment.md";
+  "runtime/legacy-records/2026-03-21-runtime-system-bundle-05-import-source-policy-alignment.md";
 const LEGACY_RUNTIME_SYSTEM_BUNDLE_06_PATH =
-  "runtime/records/2026-03-21-runtime-system-bundle-06-legacy-live-runtime-normalization.md";
+  "runtime/legacy-records/2026-03-21-runtime-system-bundle-06-legacy-live-runtime-normalization.md";
 const LEGACY_RUNTIME_AGENTICS_DOCS_VALIDATION_PATH =
-  "runtime/records/2026-03-20-agentics-docs-maintenance-validation.md";
+  "runtime/legacy-records/2026-03-20-agentics-docs-maintenance-validation.md";
 const LEGACY_RUNTIME_AGENTICS_DOCS_VALIDATION_RERUN_PATH =
-  "runtime/records/2026-03-20-agentics-docs-maintenance-validation-rerun.md";
+  "runtime/legacy-records/2026-03-20-agentics-docs-maintenance-validation-rerun.md";
 const LEGACY_RUNTIME_AGENT_ORCHESTRATOR_PRECONDITION_PROOF_PATH =
-  "runtime/records/2026-03-21-agent-orchestrator-cli-precondition-proof.md";
+  "runtime/legacy-records/2026-03-21-agent-orchestrator-cli-precondition-proof.md";
 const LEGACY_RUNTIME_AGENT_ORCHESTRATOR_PRECONDITION_CORRECTION_PATH =
-  "runtime/records/2026-03-21-agent-orchestrator-precondition-correction.md";
+  "runtime/legacy-records/2026-03-21-agent-orchestrator-precondition-correction.md";
 const LEGACY_RUNTIME_AGENT_ORCHESTRATOR_HOST_ADAPTER_DECISION_PATH =
-  "runtime/records/2026-03-21-agent-orchestrator-host-adapter-decision.md";
+  "runtime/legacy-records/2026-03-21-agent-orchestrator-host-adapter-decision.md";
 const LEGACY_RUNTIME_AGENTICS_REGISTRY_PATH =
-  "runtime/registry/2026-03-20-agentics-registry-entry.md";
+  "runtime/08-registry/2026-03-20-agentics-registry-entry.md";
 const LEGACY_RUNTIME_PROMPTFOO_REGISTRY_PATH =
-  "runtime/registry/2026-03-21-promptfoo-registry-entry.md";
+  "runtime/08-registry/2026-03-21-promptfoo-registry-entry.md";
 const LEGACY_RUNTIME_V0_NORMALIZER_REGISTRY_PATH =
-  "runtime/registry/2026-03-22-v0-normalizer-transformation-registry-entry.md";
+  "runtime/08-registry/2026-03-22-v0-normalizer-transformation-registry-entry.md";
 const LEGACY_RUNTIME_AGENTICS_PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-03-20-agentics-promotion-record.md";
+  "runtime/07-promotion-records/2026-03-20-agentics-promotion-record.md";
 const LEGACY_RUNTIME_PROMPTFOO_PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-03-21-promptfoo-promotion-record.md";
+  "runtime/07-promotion-records/2026-03-21-promptfoo-promotion-record.md";
 const LEGACY_RUNTIME_V0_NORMALIZER_PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-03-22-v0-normalizer-transformation-promotion-record.md";
+  "runtime/07-promotion-records/2026-03-22-v0-normalizer-transformation-promotion-record.md";
 const LEGACY_RUNTIME_ASYNC_LATENCY_TRANSFORMATION_RECORD_PATH =
-  "runtime/records/2026-03-22-context-pack-async-latency-transformation-record.md";
+  "runtime/legacy-records/2026-03-22-context-pack-async-latency-transformation-record.md";
 const LEGACY_RUNTIME_V0_NORMALIZER_TRANSFORMATION_RECORD_PATH =
-  "runtime/records/2026-03-22-v0-normalizer-transformation-record.md";
+  "runtime/legacy-records/2026-03-22-v0-normalizer-transformation-record.md";
 const LEGACY_RUNTIME_REMAINING_BACKEND_TRANSFORMATION_RECORD_PATH =
-  "runtime/records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md";
+  "runtime/legacy-records/2026-03-22-remaining-backend-test-boilerplate-transformation-record.md";
 const LEGACY_RUNTIME_AUTOMATION_TEST_TRANSFORMATION_RECORD_PATH =
-  "runtime/records/2026-03-22-automation-test-boilerplate-transformation-record.md";
+  "runtime/legacy-records/2026-03-22-automation-test-boilerplate-transformation-record.md";
 const LEGACY_RUNTIME_REPO_SNAPSHOT_CODE_INTEL_TRANSFORMATION_RECORD_PATH =
-  "runtime/records/2026-03-23-repo-snapshot-code-intel-cache-transformation-record.md";
+  "runtime/legacy-records/2026-03-23-repo-snapshot-code-intel-cache-transformation-record.md";
 const LEGACY_RUNTIME_ASYNC_LATENCY_TRANSFORMATION_PROOF_PATH =
-  "runtime/records/2026-03-22-context-pack-async-latency-transformation-proof.json";
+  "runtime/legacy-records/2026-03-22-context-pack-async-latency-transformation-proof.json";
 const LEGACY_RUNTIME_V0_NORMALIZER_TRANSFORMATION_PROOF_PATH =
-  "runtime/records/2026-03-22-v0-normalizer-transformation-proof.json";
+  "runtime/legacy-records/2026-03-22-v0-normalizer-transformation-proof.json";
 const LEGACY_RUNTIME_REPO_SNAPSHOT_CODE_INTEL_TRANSFORMATION_PROOF_PATH =
-  "runtime/records/2026-03-23-repo-snapshot-code-intel-cache-transformation-proof.json";
+  "runtime/legacy-records/2026-03-23-repo-snapshot-code-intel-cache-transformation-proof.json";
 const LEGACY_RUNTIME_HANDOFF_AUTORESEARCH_PATH =
-  "runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md";
+  "runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md";
 const LEGACY_RUNTIME_HANDOFF_SCIENTIFY_PATH =
-  "runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md";
+  "runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md";
 const LIVE_PENDING_RUNTIME_FOLLOW_UP_PATH =
-  "runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md";
+  "runtime/00-follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md";
 const RUNTIME_PROOF_PATH =
   "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md";
 const RUNTIME_ROUTE_CAPABILITY_BOUNDARY_PATH =
@@ -182,24 +183,24 @@ const RUNTIME_CALLABLE_CAPABILITY_BOUNDARY_PATH =
   "runtime/04-capability-boundaries/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-runtime-capability-boundary.md";
 const PRESSURE_KARPATHY_CANDIDATE_ID = "dw-pressure-karpathy-autoresearch-2026-03-25";
 const PRESSURE_KARPATHY_HEAD_PATH =
-  "architecture/02-experiments/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-bounded-result.md";
+  "architecture/01-experiments/2026-03-25-dw-pressure-karpathy-autoresearch-2026-03-25-bounded-result.md";
 const PRESSURE_MINI_SWE_CANDIDATE_ID = "dw-pressure-mini-swe-agent-2026-03-25";
 const PRESSURE_MINI_SWE_HEAD_PATH =
   "runtime/05-promotion-readiness/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-promotion-readiness.md";
 const PRESSURE_PAPERCODER_CANDIDATE_ID = "dw-pressure-papercoder-2026-03-25";
 const PRESSURE_PAPERCODER_HEAD_PATH =
-  "architecture/02-experiments/2026-03-25-dw-pressure-papercoder-2026-03-25-bounded-result.md";
+  "architecture/04-materialization/04-implementation-targets/2026-03-25-dw-pressure-papercoder-2026-03-25-implementation-target.md";
 const COMPLETED_MONITOR_CANDIDATE_ID = "dw-mission-agentics-issue-triage-discovery-restart-2026-03-26";
 const DISCOVERY_MONITOR_ROUTE_PATH =
-  "discovery/routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md";
+  "discovery/03-routing-log/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record.md";
 const DISCOVERY_MONITOR_RECORD_PATH =
-  "discovery/monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md";
+  "discovery/04-monitor/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-monitor-record.md";
 const LEGACY_ARCHITECTURE_IMPLEMENTATION_TARGET_GAP = ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.gapPattern;
 const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
   {
     candidateId: "dw-openclaw-runtime-verification-freshness-2026-03-22",
     candidateName: "OpenClaw Runtime Verification Freshness",
-    artifactPath: "architecture/03-adopted/2026-03-22-openclaw-runtime-verification-freshness-adopted.md",
+    artifactPath: "architecture/02-adopted/2026-03-22-openclaw-runtime-verification-freshness-adopted.md",
     expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
     expectedCurrentHeadPath:
       `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-22-openclaw-runtime-verification-freshness-evaluation.md`,
@@ -208,7 +209,7 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
   {
     candidateId: "dw-openclaw-maintenance-watchdog-signal-lane",
     candidateName: "OpenClaw Maintenance Watchdog Signal Lane",
-    artifactPath: "architecture/03-adopted/2026-03-22-openclaw-maintenance-watchdog-signal-lane-adopted.md",
+    artifactPath: "architecture/02-adopted/2026-03-22-openclaw-maintenance-watchdog-signal-lane-adopted.md",
     expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
     expectedCurrentHeadPath:
       `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-22-openclaw-maintenance-watchdog-signal-lane-evaluation.md`,
@@ -217,7 +218,7 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
   {
     candidateId: "dw-openclaw-discovery-submission-flow",
     candidateName: "OpenClaw Discovery Submission Flow",
-    artifactPath: "architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md",
+    artifactPath: "architecture/02-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md",
     expectedCurrentStage: "architecture.post_consumption_evaluation.keep",
     expectedCurrentHeadPath:
       `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-22-openclaw-discovery-submission-flow-evaluation.md`,
@@ -226,7 +227,7 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
   {
     candidateId: "dw-discovery-gap-driven-priority-loop",
     candidateName: "Discovery Gap Priority Worklist",
-    artifactPath: "architecture/03-adopted/2026-03-22-discovery-gap-priority-worklist-adopted.md",
+    artifactPath: "architecture/02-adopted/2026-03-22-discovery-gap-priority-worklist-adopted.md",
     expectedCurrentStage: "architecture.retained.confirmed",
     expectedCurrentHeadPath:
       `${ARCHITECTURE_DEEP_TAIL_STAGE.retained.relativeDir}/2026-03-22-discovery-gap-priority-worklist-retained.md`,
@@ -234,69 +235,69 @@ const LEGACY_ARCHITECTURE_ADOPTION_CASES = [
   },
 ] as const;
 const INTERNAL_ARCHITECTURE_2026_03_28_START_CASES = [
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-start.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-start.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-start.md",
 ] as const;
 const INTERNAL_ARCHITECTURE_2026_03_28_RESULT_CASES = [
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-result.md",
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-monitor-truth-surface-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-lifecycle-sync-route-linkage-hardening-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-follow-up-focus-compatibility-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-handoff-focus-compatibility-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-active-follow-up-focus-compatibility-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-record-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-registry-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-promotion-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-proof-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-proof-checklist-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-proof-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-fetch-gate-snapshot-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-live-pool-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-sample-pool-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-system-bundle-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-validation-note-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-precondition-decision-note-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-cli-anything-reentry-record-focus-compat-2026-03-28-bounded-result.md",
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-mini-swe-fallback-rehearsal-focus-compat-2026-03-28-bounded-result.md",
 ] as const;
 const CURRENT_BOUNDED_START_PARSE_GUARD_CASES = [
   {
     startPath:
-      "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md",
+      "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-start.md",
     candidateId:
       "dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28",
   },
   {
     startPath:
-      "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md",
+      "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-start.md",
     candidateId:
       "dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28",
   },
@@ -304,14 +305,14 @@ const CURRENT_BOUNDED_START_PARSE_GUARD_CASES = [
 const CURRENT_BOUNDED_RESULT_PARSE_GUARD_CASES = [
   {
     resultPath:
-      "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md",
+      "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-bounded-result.md",
     candidateId:
       "dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28",
     verdict: "adopt",
   },
   {
     resultPath:
-      "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md",
+      "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-bounded-result.md",
     candidateId:
       "dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28",
     verdict: "adopt",
@@ -320,14 +321,14 @@ const CURRENT_BOUNDED_RESULT_PARSE_GUARD_CASES = [
 const CURRENT_ADOPTION_PARSE_GUARD_CASES = [
   {
     adoptedPath:
-      "architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md",
+      "architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-adopted-planned-next.md",
     candidateId:
       "dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28",
     finalStatus: "adopt_planned_next",
   },
   {
     adoptedPath:
-      "architecture/03-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md",
+      "architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-adopted-planned-next.md",
     candidateId:
       "dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28",
     finalStatus: "adopt_planned_next",
@@ -339,43 +340,39 @@ const COMPLETED_NOTE_ARCHITECTURE_CANDIDATE_ID = "dw-live-gpt-researcher-engine-
 const ROUTED_PENDING_CONTROL_CANDIDATE_ID = "dw-pressure-openmoss-architecture-loop-2026-03-26";
 const COMPLETED_PROMPTFOO_CANDIDATE_ID = "al-tooling-promptfoo";
 const TS_EDGE_ROUTE_PATH =
-  "discovery/routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md";
+  "discovery/03-routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md";
 const LEGACY_RUNTIME_LABEL_ROUTE_PATH =
-  "discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md";
+  "discovery/03-routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md";
 const LEGACY_ARCHITECTURE_ADOPTION_COMPATIBILITY_HANDOFF_PATH =
-  "architecture/02-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md";
+  "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-architecture-adoption-compatibility-2026-03-28-engine-handoff.md";
 const NOTE_MODE_ARCHITECTURE_PROOF_CASES = [
   {
     label: "Inspect AI",
-    routingPath: "discovery/routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md",
-    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md",
+    routingPath: "discovery/03-routing-log/2026-03-28-dw-source-inspect-ai-2026-03-28-routing-record.md",
+    handoffPath: "architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md",
   },
   {
     label: "OpenEvals",
-    routingPath: "discovery/routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md",
-    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md",
+    routingPath: "discovery/03-routing-log/2026-03-28-dw-source-openevals-2026-03-28-routing-record.md",
+    handoffPath: "architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md",
   },
   {
     label: "PromptWizard",
-    routingPath: "discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md",
-    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md",
+    routingPath: "discovery/03-routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md",
+    handoffPath: "architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md",
   },
   {
     label: "GPT Researcher",
-    routingPath: "discovery/routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md",
-    handoffPath: "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md",
+    routingPath: "discovery/03-routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md",
+    handoffPath: "architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md",
   },
 ] as const;
 const ENGINE_FOCUS_NEGATIVE_CASE_PATH =
   "runtime/standalone-host/engine-runs/2026-03-31T00-00-00-000Z-dw-source-roam-code-2026-03-31-4d4f5f1b.json";
-
-function uniqueRelativePaths(paths: Array<string | null | undefined>) {
-  return [...new Set(paths.filter((value): value is string => Boolean(value)))];
-}
 
 function expectFocus(relativePath: string, directiveRoot = DIRECTIVE_ROOT) {
   const report = resolveDirectiveWorkspaceState({
@@ -1054,7 +1051,7 @@ function main() {
   assert.equal(roamRoutePhaseA2.currentStage, "architecture.bounded_result.stay_experimental");
   assert.equal(
     roamRoutePhaseA2.currentHead.artifactPath,
-    "architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md",
+    "architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-result.md",
     "Roam Phase A / Phase 2 route should continue from the bounded result current head",
   );
   assert.equal(
@@ -1500,17 +1497,17 @@ function main() {
   assert.equal(
     pressurePaperCoderEntry.current_head?.artifact_path,
     PRESSURE_PAPERCODER_HEAD_PATH,
-    "Queue current head should point at the Architecture bounded result for the PaperCoder pressure-run case",
+    "Queue current head should point at the implementation-target Architecture artifact for the PaperCoder pressure-run case",
   );
   assert.equal(
     pressurePaperCoderEntry.current_head?.artifact_stage,
-    "architecture.bounded_result.adopt",
-    "Queue current head stage should reflect the Architecture bounded result stage for the PaperCoder pressure-run case",
+    "architecture.implementation_target.opened",
+    "Queue current head stage should reflect the Architecture implementation-target stage for the PaperCoder pressure-run case",
   );
   assert.equal(
     pressurePaperCoderEntry.current_case_stage,
-    "architecture.bounded_result.adopt",
-    "Queue case stage should reflect the Architecture bounded result state for the PaperCoder pressure-run case",
+    "architecture.implementation_target.opened",
+    "Queue case stage should reflect the Architecture implementation-target state for the PaperCoder pressure-run case",
   );
 
   const completedPromptfooEntry = queueOverview.entries.find((entry) =>
@@ -1636,7 +1633,7 @@ function main() {
     );
     assert.match(
       stagedEntry.status_warning ?? "",
-      /discovery\/routing-log\/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record\.md/i,
+      /discovery\/03-routing-log\/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-routing-record\.md/i,
       "Completed queue entries should identify the fallback routing artifact when result_record_path is missing",
     );
   });
@@ -2757,7 +2754,7 @@ function main() {
     );
     assert.match(
       stagedEntry.status_warning ?? "",
-      /do not treat "discovery\/routing-log\/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record\.md" as the live continuation point/i,
+      /do not treat "discovery\/03-routing-log\/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record\.md" as the live continuation point/i,
       "Routed progressed warning should fall back to the routing record path when result_record_path is absent",
     );
   });
@@ -2782,7 +2779,7 @@ function main() {
   );
   assert.equal(
     completedNoteArchitectureEntry.current_head?.artifact_path,
-    "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md",
+    "architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md",
     "Completed NOTE-mode Architecture entries should point at the bounded result as the live current head",
   );
   assert.equal(
@@ -2802,7 +2799,7 @@ function main() {
   );
   assert.equal(
     routedPendingControlEntry.status_warning,
-    'Queue still marks this case routed, but the live case head has already progressed to runtime.promotion_record.opened at "runtime/promotion-records/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-promotion-record.md". Do not treat "runtime/follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md" as the live continuation point.',
+    'Queue still marks this case routed, but the live case head has already progressed to runtime.promotion_record.opened at "runtime/07-promotion-records/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-promotion-record.md". Do not treat "runtime/00-follow-up/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-runtime-follow-up-record.md" as the live continuation point.',
     "Progressed routed queue entries should surface a warning that points at the live promotion-record head",
   );
 
@@ -2847,7 +2844,7 @@ function main() {
     writeRelativeFile(RUNTIME_ROUTE_PATH, stagedRoot, (content) =>
       content.replace(
         /^- Required next artifact: .+$/m,
-        "- Required next artifact: runtime/follow-up/mismatched-runtime-follow-up-record.md",
+        "- Required next artifact: runtime/00-follow-up/mismatched-runtime-follow-up-record.md",
       ));
 
     const brokenRoute = expectFocus(RUNTIME_ROUTE_PATH, stagedRoot);
@@ -2954,7 +2951,7 @@ function main() {
             routing_target: "runtime",
             intake_record_path: runtimeRoute.linkedArtifacts.discoveryIntakePath,
             routing_record_path: RUNTIME_ROUTE_PATH,
-            result_record_path: "runtime/follow-up/missing-runtime-follow-up-record.md",
+            result_record_path: "runtime/00-follow-up/missing-runtime-follow-up-record.md",
             note_append: "composition-check-missing-sync",
           },
           transitionDate: "2026-03-25",
@@ -2977,7 +2974,7 @@ function main() {
     writeRelativeFile(runtimeRecordPath, stagedRoot, (content) =>
       content.replace(
         /^- Source follow-up record: .+$/m,
-        "- Source follow-up record: runtime/follow-up/missing-runtime-follow-up-record.md",
+        "- Source follow-up record: runtime/00-follow-up/missing-runtime-follow-up-record.md",
       ));
 
     const brokenRuntimeRecord = expectFocus(runtimeRecordPath, stagedRoot);
@@ -3283,6 +3280,13 @@ function main() {
       "Runtime promotion-readiness opener should create the promotion-readiness artifact on first approval",
     );
 
+    for (const relativePath of uniqueRelativePaths([
+      runtimePromotionReadiness.linkedArtifacts.runtimePromotionRecordPath,
+      runtimePromotionReadiness.linkedArtifacts.runtimeCallableStubPath,
+    ])) {
+      copyRelativeFile(relativePath, stagedRoot);
+    }
+
     assert.throws(
       () =>
         openDirectiveRuntimePromotionReadiness({
@@ -3369,3 +3373,4 @@ function main() {
 }
 
 main();
+

@@ -1,0 +1,74 @@
+{
+  "reportVersion": "standalone_research_vault_source_pack_execution_report/v1",
+  "generatedAt": "2026-04-07T11:15:00.000Z",
+  "candidateId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  "candidateName": "Research Vault: Open Source Agentic AI Research Assistant",
+  "hostName": "Directive Workspace standalone host",
+  "hostSurface": "Directive Workspace standalone host Research Vault source-pack invoke adapter",
+  "callableSurface": "standalone_host_runtime_research_vault_source_pack_query",
+  "promotionRecordPath": "runtime/07-promotion-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-record.md",
+  "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-specification.json",
+  "hostSelectionResolutionPath": "runtime/05-promotion-readiness/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-host-selection-resolution.md",
+  "sampleInvocation": {
+    "tool": "query-source-pack",
+    "status": "success",
+    "persistArtifacts": true,
+    "matchedSectionCount": 2,
+    "topSectionId": "phase_model"
+  },
+  "acceptance": {
+    "callableThroughHost": true,
+    "descriptorCallableOnly": false,
+    "runtimeCallableExecution": true,
+    "sourceRuntimeExecutionClaimed": false,
+    "hostIntegrationClaimed": true,
+    "registryAcceptanceClaimed": false,
+    "promotionAutomation": false,
+    "runtimeInternalsBypassed": false
+  },
+  "hostCallableAdapter": {
+    "contractVersion": "host_callable_adapter.v1",
+    "contractPath": "shared/contracts/host-callable-adapter.md",
+    "schemaPath": "shared/schemas/host-callable-adapter.v1.schema.json",
+    "adapterId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.:standalone_host:research_vault_source_pack_runtime_callable_adapter",
+    "candidateId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+    "candidateName": "Research Vault: Open Source Agentic AI Research Assistant",
+    "hostName": "Directive Workspace standalone host",
+    "hostSurface": "Directive Workspace standalone host Research Vault source-pack invoke adapter",
+    "callableSurface": "standalone_host_runtime_research_vault_source_pack_query",
+    "capabilityKind": "runtime_callable_execution",
+    "evidencePaths": {
+      "promotionRecordPath": "runtime/07-promotion-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-record.md",
+      "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-specification.json",
+      "hostSelectionResolutionPath": "runtime/05-promotion-readiness/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-host-selection-resolution.md",
+      "executionEvidencePath": "runtime/callable-executions/2026-04-07T11-15-00-000Z-research-engine-web-aakashsharan-com-research-va-20260407t052643-query-source-pack.json"
+    },
+    "acceptance": {
+      "callableThroughHost": true,
+      "descriptorCallableOnly": false,
+      "runtimeCallableExecution": true,
+      "sourceRuntimeExecutionClaimed": false,
+      "hostIntegrationClaimed": true,
+      "registryAcceptanceClaimed": false,
+      "promotionAutomation": false,
+      "runtimeInternalsBypassed": false
+    },
+    "proof": {
+      "primaryChecker": "npm run check:standalone-research-vault-source-pack-execution",
+      "supportingCheckers": [
+        "npm run check:standalone-research-vault-host-callable",
+        "npm run check:runtime-host-callable-adapter-contract"
+      ]
+    },
+    "stopLine": "Research Vault source-pack query executes as Directive-owned derived behavior; the external Research Vault app, registry acceptance, and promotion automation remain unopened."
+  },
+  "executionEvidencePath": "runtime/callable-executions/2026-04-07T11-15-00-000Z-research-engine-web-aakashsharan-com-research-va-20260407t052643-query-source-pack.json",
+  "proof": {
+    "primaryChecker": "npm run check:standalone-research-vault-source-pack-execution",
+    "supportingCheckers": [
+      "npm run check:standalone-research-vault-host-callable",
+      "npm run check:runtime-host-callable-adapter-contract"
+    ]
+  },
+  "stopLine": "Research Vault source-pack query is a Directive-owned derived execution; the external Research Vault app, registry acceptance, and promotion automation remain unopened."
+}

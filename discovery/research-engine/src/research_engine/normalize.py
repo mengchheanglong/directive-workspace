@@ -110,6 +110,16 @@ NEGATIVE_EVIDENCE_CUES = {
     "ui",
     "weak",
 }
+COMPARATIVE_EVIDENCE_CUES = (
+    "compare",
+    "comparison",
+    "tradeoff",
+    "versus",
+    " vs ",
+    "benchmark",
+    "alternative",
+    "compared to",
+)
 TIMESTAMP_PATTERN = re.compile(
     r"\d{4}-\d{2}-\d{2}(?:[T ][0-2]\d:[0-5]\d(?::[0-5]\d)?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?)?"
 )
@@ -237,6 +247,91 @@ def summarize_candidate_freshness(
     )
 
 
+def summarize_extraction_fidelity(
+    evidence_items: list[EvidenceItem],
+) -> tuple[str, int]:
+    fidelity_counter = Counter(item.extraction_fidelity for item in evidence_items)
+    fallback_count = fidelity_counter.get("fallback", 0)
+    derived_count = fidelity_counter.get("derived", 0)
+    direct_count = fidelity_counter.get("direct", 0)
+    total_count = len(evidence_items)
+    summary = (
+        f"Extraction fidelity: direct={direct_count}, derived={derived_count}, "
+        f"fallback={fallback_count} across {total_count} evidence items."
+    )
+    return summary, fallback_count
+
+
+def detect_actionable_evidence_gaps(
+    candidates: list[CandidateDossier],
+    evidence_bundle: list[EvidenceItem],
+    *,
+    max_directives: int = 3,
+) -> list[dict[str, object]]:
+    if max_directives <= 0:
+        return []
+
+    evidence_by_candidate: dict[str, list[EvidenceItem]] = defaultdict(list)
+    for item in evidence_bundle:
+        evidence_by_candidate[item.candidate_id].append(item)
+
+    directives: list[dict[str, object]] = []
+    for candidate in candidates:
+        evidence_items = evidence_by_candidate.get(candidate.candidate_id, [])
+        if not evidence_items:
+            continue
+
+        trust_signals = {item.trust_signal for item in evidence_items}
+        fact_types = {item.fact_type for item in evidence_items}
+        missing_fact_types = [
+            fact_type
+            for fact_type in ("architecture", "workflow", "integration")
+            if fact_type not in fact_types
+        ]
+
+        has_maintenance_signal = any(
+            item.fact_type == "maintenance" or item.source_updated_at is not None
+            for item in evidence_items
+        )
+        has_comparative_signal = False
+        for item in evidence_items:
+            text = " ".join([item.excerpt, *item.notes]).lower()
+            if any(cue in text for cue in COMPARATIVE_EVIDENCE_CUES):
+                has_comparative_signal = True
+                break
+
+        gaps: list[str] = []
+        if "primary" not in trust_signals:
+            gaps.append("missing-primary-source-evidence")
+        if missing_fact_types:
+            gaps.append("missing-technical-facts")
+        if not has_maintenance_signal:
+            gaps.append("missing-maintenance-freshness")
+        if not has_comparative_signal:
+            gaps.append("missing-comparative-evidence")
+        if not gaps:
+            continue
+
+        directives.append(
+            {
+                "candidate_id": candidate.candidate_id,
+                "candidate_name": candidate.name,
+                "gaps": gaps,
+                "missing_fact_types": missing_fact_types,
+                "evidence_count": len(evidence_items),
+            }
+        )
+
+    directives.sort(
+        key=lambda item: (
+            len(item.get("gaps", [])) if isinstance(item.get("gaps", []), list) else 0,
+            int(item.get("evidence_count", 0)),
+        ),
+        reverse=True,
+    )
+    return directives[:max_directives]
+
+
 def derive_evidence_clusters(
     candidate_id: str,
     evidence_items: list[EvidenceItem],
@@ -362,6 +457,8 @@ def normalize_evidence(
                 rejection_flags.append("low-trust-source")
             if fact.confidence == "low" and trust_signal != "primary":
                 rejection_flags.append("weak-source-evidence")
+            if fact.extraction_fidelity == "fallback":
+                rejection_flags.append("fallback-derived-evidence")
             evidence.append(
                 EvidenceItem(
                     evidence_id=f"{document.candidate_id}-e{index}",
@@ -375,16 +472,17 @@ def normalize_evidence(
                     captured_at=document.fetched_at,
                     matched_via=f"{document.provider}:{document.track_id}",
                     trust_signal=trust_signal,
-                rejection_flags=rejection_flags,
-                notes=fact.notes,
-                source_updated_at=source_updated_at,
-                source_age_days=source_age_days,
-                freshness_signal=freshness_signal,
-                cluster_id="",
-                duplicate_evidence_ids=[],
-                contradiction_evidence_ids=[],
+                    rejection_flags=rejection_flags,
+                    notes=fact.notes,
+                    extraction_fidelity=fact.extraction_fidelity,
+                    source_updated_at=source_updated_at,
+                    source_age_days=source_age_days,
+                    freshness_signal=freshness_signal,
+                    cluster_id="",
+                    duplicate_evidence_ids=[],
+                    contradiction_evidence_ids=[],
+                )
             )
-        )
     return evidence
 
 
@@ -419,6 +517,12 @@ def build_candidate_shells(evidence_bundle: list[EvidenceItem]) -> list[Candidat
             rejection_flags.append("low-confidence-majority")
             reconsideration_triggers.append(
                 "Replace low-confidence excerpts with high-confidence source-backed facts."
+            )
+        extraction_fidelity_summary, fallback_evidence_count = summarize_extraction_fidelity(evidence_items)
+        if fallback_evidence_count >= max(2, (len(evidence_items) + 1) // 2):
+            rejection_flags.append("fallback-evidence-majority")
+            reconsideration_triggers.append(
+                "Replace generic fallback summaries/snippets with targeted source excerpts before adoption scoring."
             )
         if not {"architecture", "workflow", "integration"} & fact_types:
             rejection_flags.append("insufficient-technical-facts")
@@ -467,6 +571,8 @@ def build_candidate_shells(evidence_bundle: list[EvidenceItem]) -> list[Candidat
                 contradiction_flags=contradiction_flags,
                 evidence_cluster_summary=evidence_cluster_summary,
                 provenance_summary=provenance_summary,
+                extraction_fidelity_summary=extraction_fidelity_summary,
+                fallback_evidence_count=fallback_evidence_count,
                 freshness_summary=freshness_summary,
                 freshness_signal=freshness_signal,
                 freshest_source_updated_at=freshest_source_updated_at,

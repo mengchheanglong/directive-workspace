@@ -17,7 +17,7 @@
   - now states the required pre-host prerequisite set and its non-authority boundary
 - `runtime/README.md`
   - now distinguishes prerequisite formalization from an actual host-facing promotion record
-- `runtime/promotion-records/README.md`
+- `runtime/07-promotion-records/README.md`
   - now states the same prerequisite boundary inside the promotion-record family
 
 ## Prerequisite set proved
@@ -63,7 +63,7 @@ Revert:
 - `scripts/check-pre-host-promotion-record-prerequisites.ts`
 - `shared/contracts/runtime-to-host.md`
 - `runtime/README.md`
-- `runtime/promotion-records/README.md`
+- `runtime/07-promotion-records/README.md`
 - `package.json`
 - `control/state/completion-status.json`
 - `control/state/completion-slices.json`

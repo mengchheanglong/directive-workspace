@@ -1,0 +1,24 @@
+# Discovery Triage Record: Fathom-DeepResearch
+
+- Candidate id: research-engine-fathom-deep-research-20260406t145339z-20260406t145353.
+- Candidate name: Fathom-DeepResearch
+- Triage date: 2026-04-06
+- First-pass summary: Separates live-web evidence seeking from final synthesis instead of collapsing both into one agent loop. Imported from research-engine for Directive Workspace Discovery review only.
+- Problem it appears to solve: Make source selection and routing clearer and more reusable than the original source context.
+- Extractable value hypothesis: Separates live-web evidence seeking from final synthesis instead of collapsing both into one agent loop. Imported from research-engine for Directive Workspace Discovery review only. | Imported source candidate fathom-deep-research from research-engine bundle C:/Users/User/projects/directive-workspace/discovery/research-engine/artifacts-live-test/dw_import_bundle.json. Bundle decision boundary: This bundle is import-ready for Directive Workspace Discovery review only; it must not be treated as a routing or adoption decision. Source intelligence boundary: Research Engine gathers source intelligence and scoring signals only; it does not decide what Directive Workspace Discovery should adopt or route. Discovery packet boundary: Research Engine prepares Discovery-facing candidate packets; Directive Workspace Discovery retains final route and adoption authority. Research-engine source kind: system Discovery signal band: strong Signal score summary: Strong Discovery review signal from Research Engine scoring. Score summary: total=83; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=9/10; novelty=4/10. Signal total score: 83. Strong signal: Strong signal for further Discovery review because the current run shows high relevance, solid evidence quality, and bounded subsystem-reuse potential. Initial value hypothesis: Useful source-intelligence signal for bounded acquisition-vs-synthesis separation and heterogeneous search handling. Baggage signals: Benchmark/model-stack coupling | Thinner public subsystem docs. Capability gap hint: Need cleaner separation between acquisition backend and synthesis/report layers. Freshness: Latest normalized evidence captured at 2026-04-06T14:53:39+00:00. Freshest observed source update at 2026-03-30T00:00:00+00:00 (7 days old at capture; 5/5 evidence items carried source dates; signal=current). Evidence bundle refs: fathom-deep-research-e1, fathom-deep-research-e2, fathom-deep-research-e3, fathom-deep-research-e4, fathom-deep-research-e5. Evidence cluster summary: Collapsed 5 evidence items into 5 clusters. | No duplicate evidence clusters detected. | No contradiction flags detected across clustered evidence.. Provenance: primary via catalog:official-docs (github-repo). Uncertainty notes: Current run is catalog-backed and should later be upgraded to live-provider evidence. | record_shape:queue_only
+- Routing recommendation: Shared Engine routing selected monitor with usefulness level meta.
+- Proposed adoption target: discovery-held candidate
+- Stack-shape summary: external-system source; host dependence engine_only; integration mode none.
+- Boilerplate vs product boundary: Directive-owned form: Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.
+- Suggested decision state: hold_in_discovery
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan discovery_review defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: routing_review, human_decision_required
+- Missing evidence: mission-fit rationale recorded, routing rationale recorded, next bounded action chosen
+- Monitor/Defer trigger conditions: Hold the source in Discovery until routing confidence or downstream adoption target becomes clearer.
+- Re-entry conditions: Respect rollback boundary: Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work.
+- Next action: Keep the candidate in Discovery until routing clarity improves.
+- Linked intake record: discovery/01-intake/2026-04-06-research-engine-fathom-deep-research-20260406t145339z-20260406t145353--intake.md

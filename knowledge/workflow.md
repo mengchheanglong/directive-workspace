@@ -73,22 +73,22 @@ Default mode:
 Use the smallest artifact set that preserves clarity.
 
 ### Discovery default
-- one fast-path record in `discovery/intake/`
+- one fast-path record in `discovery/01-intake/`
 
 ### Architecture default
-- one experiment slice in `architecture/02-experiments/`
+- one experiment slice in `architecture/01-experiments/`
 - one adopted or deferred outcome only if the slice survives the decision
 - default stop at bounded-result
 - downstream materialization stages are DEEP-only unless the next step adds a concrete new Directive-owned artifact or required consumption proof
 
 ### Architecture source-driven work
 When Architecture processes a source (repo, paper, framework, tool, workflow, method), use the source-adaptation chain:
-1. Source analysis per `shared/contracts/source-analysis-contract.md` — value map, baggage map, adaptation/improvement opportunities
-2. Adaptation decision per `shared/contracts/adaptation-decision-contract.md` — per-mechanism extract/adapt/improve decisions with mandatory delta evidence
+1. Source analysis per `shared/contracts/source-analysis-contract.md` â€” value map, baggage map, adaptation/improvement opportunities
+2. Adaptation decision per `shared/contracts/adaptation-decision-contract.md` â€” per-mechanism extract/adapt/improve decisions with mandatory delta evidence
 3. Experiment slice using `shared/templates/source-adaptation-record.md` or `experiment-record.md` with the source-adaptation fields filled
 4. If the adapted value has a runtime component, hand off to Runtime via `shared/contracts/architecture-to-runtime.md` with adaptation/improvement evidence
 
-The source-adaptation chain replaces the weak pattern (`extract → adopt`) with the doctrine-required strong pattern (`extract → adapt → improve`), which then continues through `Prove → Decide → Integrate + Report`.
+The source-adaptation chain replaces the weak pattern (`extract â†’ adopt`) with the doctrine-required strong pattern (`extract â†’ adapt â†’ improve`), which then continues through `Prove â†’ Decide â†’ Integrate + Report`.
 
 Skip the source-adaptation chain only when the Architecture work is purely internal (doctrine update, workflow redesign, template/contract creation) with no external source input.
 
@@ -107,14 +107,14 @@ When an adapted/improved mechanism reaches the Decide step, use `shared/contract
 - whether the mechanism is ready for adoption (readiness check)
 - what artifact type it should become (contract, schema, template, policy, reference-pattern, shared-lib, doctrine-update)
 - whether to adopt in Architecture, stay experimental, or hand off to Runtime
-- what usefulness-level treatment applies (direct → Runtime handoff, structural → Architecture core, meta → self-improvement priority)
+- what usefulness-level treatment applies (direct â†’ Runtime handoff, structural â†’ Architecture core, meta â†’ self-improvement priority)
 
 When the Decide step needs an executable outcome, resolve it through `shared/lib/architecture-adoption-resolution.ts` so review result, readiness gates, artifact type selection, and Runtime threshold logic stay canonical.
 When the Decide step must emit a machine-readable adoption artifact, build it through `shared/lib/architecture-adoption-artifacts.ts` so the output matches `shared/schemas/architecture-adoption-decision.schema.json`.
 When retained decision artifacts are expected to survive across later Architecture generations, keep their canonical `decision_format` through `shared/lib/architecture-adoption-decision-envelope.ts` so closeout, backfill, and cycle evaluation can distinguish artifact-shape upgrades cleanly.
-When the Decide step should run review, adoption, and retained decision emission as one canonical closeout lane, execute it through `shared/lib/architecture-closeout.ts`. Use an experiment record under `architecture/02-experiments/` for `stay_experimental` closeouts and an adopted record under `architecture/03-adopted/` for `adopt` or `hand_off_to_runtime` closeouts.
+When the Decide step should run review, adoption, and retained decision emission as one canonical closeout lane, execute it through `shared/lib/architecture-closeout.ts`. Use an experiment record under `architecture/01-experiments/` for `stay_experimental` closeouts and an adopted record under `architecture/02-adopted/` for `adopt` or `hand_off_to_runtime` closeouts.
 When retained adoption decisions must be written, loaded, or backfilled from disk, route that persistence through `shared/lib/architecture-adoption-decision-store.ts` so closeout, corpus maintenance, and wave evaluation share one atomic product-owned store instead of host-local JSON handling.
-When a retained machine-readable adoption artifact is produced for an adopted slice, emit it through `shared/lib/architecture-adoption-decision-writer.ts` so it lands beside the adopted record in `architecture/03-adopted/` by default and cycle evaluation/corpus review can consume the on-disk decision state directly.
+When a retained machine-readable adoption artifact is produced for an adopted slice, emit it through `shared/lib/architecture-adoption-decision-writer.ts` so it lands beside the adopted record in `architecture/02-adopted/` by default and cycle evaluation/corpus review can consume the on-disk decision state directly.
 When the live Decide-step lane already has review checks but not a pre-resolved review artifact, pass those checks to the same writer so the retained decision output stays on the canonical review -> adoption -> retention path.
 
 When an adoption is flagged as meta-useful, include a self-improvement evidence block per `shared/contracts/architecture-self-improvement-contract.md`.
@@ -142,10 +142,10 @@ Prefer decision artifacts emitted by the live Architecture closeout lane over ha
 If a meta-useful adoption materially changes how prior evidence should be interpreted, open a boundary per `shared/contracts/self-improvement-generation-boundary.md` and record it with `shared/templates/generation-boundary-note.md`.
 Pre-boundary evidence can remain historical context, but it must not be counted as clean confirmation of the new Architecture generation.
 
-The corpus normalization record (`architecture/02-experiments/2026-03-22-architecture-corpus-normalization.md`) provides the baseline classification for all pre-doctrine adopted records.
+The corpus normalization record (`architecture/01-experiments/2026-03-22-architecture-corpus-normalization.md`) provides the baseline classification for all pre-doctrine adopted records.
 
 ### Runtime default
-- one follow-up record in `runtime/follow-up/`
+- one follow-up record in `runtime/00-follow-up/`
 - one promotion record only when host/runtime delivery is real
 - if the case is exploratory or lacks delivery pressure, park at follow-up review or capability-boundary instead of extending the chain
 
@@ -221,3 +221,4 @@ Do not run the heaviest gate bundle when a narrower gate bundle proves the chang
 Do not continue a slice after the adoption target becomes unclear.
 
 Do not continue a slice after bounded-result unless the next step adds a concrete product artifact that does not already exist.
+

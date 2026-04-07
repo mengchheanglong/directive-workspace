@@ -14,8 +14,8 @@
 Focused example commands:
 
 ```bash
-npm run report:directive-workspace-state -- discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md
-npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md
+npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md
+npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md
 ```
 
 ## Canonical truth
@@ -96,19 +96,19 @@ Do not collapse those pairs into one meaning.
 ## Canonical examples
 
 - Discovery -> Architecture route
-  - artifact: `discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md`
+  - artifact: `discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md`
   - artifact stage: `discovery.route.architecture`
   - current stage: `architecture.post_consumption_evaluation.keep`
 - Discovery -> Runtime route
-  - artifact: `discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md`
+  - artifact: `discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md`
   - artifact stage: `discovery.route.runtime`
   - current stage: `runtime.promotion_readiness.opened`
 - Architecture bounded result vs case state
-  - artifact: `architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
+  - artifact: `architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
   - artifact stage: `architecture.bounded_result.stay_experimental`
   - current stage: `architecture.post_consumption_evaluation.reopen`
 - Runtime follow-up vs case state
-  - artifact: `runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`
+  - artifact: `runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`
   - artifact stage: `runtime.follow_up.pending_review`
   - current stage: `runtime.promotion_readiness.opened`
 - Runtime runtime capability boundary
@@ -145,14 +145,15 @@ Do not collapse those pairs into one meaning.
 ## If you are working in a specific lane
 
 - Runtime
-  - start from `discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md`
-  - then inspect `runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`, `runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md`, and `runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md`
+  - start from `discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md`
+  - then inspect `runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md`, `runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md`, and `runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md`
 - Architecture
-  - start from `discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md`
-  - then inspect `architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md` and `architecture/09-post-consumption-evaluations/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md`
+  - start from `discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md`
+  - then inspect `architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md` and `architecture/09-post-consumption-evaluations/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md`
 - Discovery
   - start from the routing records and queue-linked Engine runs
   - do not duplicate usefulness/routing reasoning outside Engine
 - Shared Engine / Product truth
   - start from the overview report and the whole-product checker
   - prefer truth hardening over workflow expansion
+

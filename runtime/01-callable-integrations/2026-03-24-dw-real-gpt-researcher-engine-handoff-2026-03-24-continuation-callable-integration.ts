@@ -1,4 +1,4 @@
-import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../../shared/lib/architecture-deep-tail-stage-map.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../../architecture/lib/architecture-deep-tail-stage-map.ts";
 
 export const DW_GPT_RESEARCHER_ENGINE_HANDOFF_PRESSURE_INTEGRATION_V0 = {
   capabilityId: "dw-real-gpt-researcher-engine-handoff-2026-03-24",
@@ -21,9 +21,9 @@ export const DW_GPT_RESEARCHER_ENGINE_HANDOFF_PRESSURE_INTEGRATION_V0 = {
     implementationTargetPath:
       `${ARCHITECTURE_DEEP_TAIL_STAGE.implementation_target.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`,
     adoptionArtifactPath:
-      "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md",
+      "architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md",
     boundedResultPath:
-      "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
+      "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
   },
   objective:
     "Materialize the adapted mechanism as engine-owned product logic before any host-specific integration work.",
@@ -124,3 +124,4 @@ export function runDirectiveRuntimeV0GptResearcherEngineHandoffIntegration(
     },
   };
 }
+

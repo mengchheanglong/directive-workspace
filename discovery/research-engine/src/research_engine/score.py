@@ -70,6 +70,26 @@ def _maintenance_health(
     return maintenance_health, recency_decay, len(dated_items)
 
 
+def _extraction_fidelity_penalty(evidence_items: list[EvidenceItem]) -> tuple[int, int, int, int]:
+    fallback_count = sum(1 for item in evidence_items if item.extraction_fidelity == "fallback")
+    derived_count = sum(1 for item in evidence_items if item.extraction_fidelity == "derived")
+    direct_count = sum(1 for item in evidence_items if item.extraction_fidelity == "direct")
+    if not evidence_items:
+        return 0, fallback_count, derived_count, direct_count
+    fallback_ratio = fallback_count / len(evidence_items)
+    if fallback_count == 0:
+        penalty = 0
+    elif fallback_ratio <= 0.25:
+        penalty = -2
+    elif fallback_ratio <= 0.5:
+        penalty = -4
+    elif fallback_ratio <= 0.75:
+        penalty = -6
+    else:
+        penalty = -8
+    return penalty, fallback_count, derived_count, direct_count
+
+
 def score_candidates(
     candidates: list[CandidateDossier],
     evidence_bundle: list[EvidenceItem],
@@ -134,6 +154,12 @@ def score_candidates(
             high_confidence,
             medium_confidence,
         )
+        (
+            extraction_fidelity_penalty,
+            fallback_fidelity_count,
+            derived_fidelity_count,
+            direct_fidelity_count,
+        ) = _extraction_fidelity_penalty(evidence_items)
         baggage_penalty = _baggage_penalty(candidate.baggage_signals)
         evidence_risk_penalty = -(
             (len(critical_flags) * 7)
@@ -149,6 +175,7 @@ def score_candidates(
             "self_hostability": self_hostability,
             "composability": composability,
             "maintenance_health": maintenance_health,
+            "extraction_fidelity_penalty": extraction_fidelity_penalty,
             "baggage_penalty": baggage_penalty,
             "evidence_risk_penalty": evidence_risk_penalty,
             "adoption_clarity": adoption_clarity,
@@ -160,6 +187,7 @@ def score_candidates(
             f"Trust signals observed: {', '.join(sorted(trust_signals)) or 'none'}.",
         ]
         rationale.extend(candidate.evidence_cluster_summary[:3])
+        rationale.append(candidate.extraction_fidelity_summary)
         if candidate.freshest_source_age_days is None:
             rationale.append(
                 f"Freshness signal: {candidate.freshness_signal}; no source-updated timestamp extracted, so maintenance health applied a default recency decay of {recency_decay}."
@@ -176,6 +204,12 @@ def score_candidates(
             rationale.append(f"Contradiction flags: {', '.join(candidate.contradiction_flags)}.")
         if candidate.reconsideration_triggers:
             rationale.append(f"Reconsideration triggers: {'; '.join(candidate.reconsideration_triggers)}.")
+        if fallback_fidelity_count:
+            rationale.append(
+                "Fallback-derived evidence penalty applied: "
+                f"{fallback_fidelity_count} fallback, {derived_fidelity_count} derived, "
+                f"{direct_fidelity_count} direct evidence items."
+            )
         rationale.extend(avoid_copying[:1])
         if entry is None:
             rationale.append("No catalog profile found; scored from live evidence only.")

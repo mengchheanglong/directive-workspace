@@ -1,0 +1,23 @@
+# Discovery Intake Record: Puppeteer Bounded Tool Runtime Run
+
+- Candidate id: dw-pressure-puppeteer-bounded-tool-2026-03-25
+- Candidate name: Puppeteer Bounded Tool Runtime Run
+- Intake date: 2026-03-25
+- Source type: github-repo
+- Source reference: https://github.com/puppeteer/puppeteer
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Runtime operationalization. Assess whether Puppeteer's browser automation surface should become a bounded reusable runtime tool capability for Directive Workspace, especially browser smoke checks, screenshot capture, and JS-heavy page interaction, without importing broad host assumptions.
+- Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 204f4679-f0bd-4e0e-9010-320610d881bd selected runtime. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-triage.md

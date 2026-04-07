@@ -73,4 +73,4 @@ This guard opens one explicit manual promotion-record seam only. It does not ope
 
 ## Canonical Inventory
 
-- `runtime/PROMOTION_PROFILES.json`
+- `runtime/meta/PROMOTION_PROFILES.json`

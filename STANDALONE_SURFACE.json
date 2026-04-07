@@ -6,7 +6,7 @@
     "productOwnerReason": "Directive Workspace is the standalone product and canonical owner of doctrine, contracts, shared operating assets, and mission-driven capability evolution logic.",
     "packageName": "@directive-workspace/product",
     "releaseMode": "reference_api_host_lane_ready_for_shareable_local_use",
-    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with an initial canonical Engine plus an Engine-owned Discovery/Runtime/Architecture lane set, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local use but not yet the broader host replacement for Mission Control.",
+    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with a canonical Engine kernel, lane-owned Discovery/Runtime/Architecture operating surfaces, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local use but not yet the broader host replacement for Mission Control.",
     "runtimeHost": "mission-control",
     "runtimeHostReason": "Mission Control remains the current runtime host while Directive Workspace owns the package-ready product surface."
   },
@@ -29,8 +29,10 @@
       "./frontend",
       "./frontend/cli",
       "./frontend/server",
-      "./shared/architecture",
-      "./shared/discovery"
+      "./architecture",
+      "./discovery",
+      "./runtime",
+      "./engine/state"
     ]
   },
   "entries": [
@@ -75,14 +77,24 @@
       "kind": "engine_surface"
     },
     {
-      "id": "shared-discovery-barrel",
-      "path": "shared/lib/discovery/index.ts",
-      "kind": "shared_barrel"
+      "id": "discovery-lane-barrel",
+      "path": "discovery/lib/index.ts",
+      "kind": "lane_surface"
     },
     {
-      "id": "shared-architecture-barrel",
-      "path": "shared/lib/architecture/index.ts",
-      "kind": "shared_barrel"
+      "id": "architecture-lane-barrel",
+      "path": "architecture/lib/index.ts",
+      "kind": "lane_surface"
+    },
+    {
+      "id": "runtime-lane-barrel",
+      "path": "runtime/lib/index.ts",
+      "kind": "lane_surface"
+    },
+    {
+      "id": "engine-state-barrel",
+      "path": "engine/state/index.ts",
+      "kind": "engine_state_surface"
     },
     {
       "id": "runtime-core-contract-entry",

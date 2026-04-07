@@ -1,0 +1,24 @@
+# Discovery Triage Record: Agentics Repo Ask Workflow
+
+- Candidate id: dw-source-agentics-repo-ask-2026-03-30
+- Candidate name: Agentics Repo Ask Workflow
+- Triage date: 2026-03-30
+- First-pass summary: Engine-building mission pressure: assess whether question-conditioned repository analysis, bounded web lookup, and evidence-backed answer composition should improve Directive Workspace source analysis quality, routing rationale quality, or Discovery evidence gathering without reopening execution seams. Structural stages detected: analysis -> mutation.
+- Problem it appears to solve: Turn the preserved analysis -> mutation with explicit handoff boundaries stage pattern into explicit Engine-owned improvement plans so later planning stages can build on the adaptation boundary (Keep analysis -> mutation with explicit handoff boundaries as separate Engine-owned reasoning stages.) instead of recomputing everything from the same flat input.
+- Extractable value hypothesis: Stage-aware structural pattern: analysis -> mutation with explicit handoff boundaries. | Engine-building mission pressure: assess whether question-conditioned repository analysis, bounded web lookup, and evidence-backed answer composition should improve Directive Workspace source analysis quality, routing rationale quality, or Discovery evidence gathering without reopening execution seams. | Fresh repo-local workflow under sources/intake/agentics. Retained value is Engine-owned source-analysis and evidence-gathering patterns: question-conditioned repository interrogation, codebase search plus bounded external lookup, and answer composition grounded in explicit evidence. Out of scope: issue comments, PR comments, GitHub mutation, or general-purpose assistant runtime packaging.
+- Routing recommendation: Shared Engine routing selected architecture with usefulness level meta.
+- Proposed adoption target: engine-owned product logic
+- Stack-shape summary: workflow-writeup source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic that preserves explicit stage boundaries for structural source adaptation instead of collapsing them into one generic Architecture mechanism.. Excluded baggage: paper-specific benchmark and repository-generation detail that does not need to become Engine workflow logic, non-mission-relevant source detail, unadapted source terminology.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review
+- Missing evidence: adapted mechanism described, excluded baggage described, engine or product boundary improvement explained, improvement delta stays anchored to prior extraction, adaptation, and improvement stages
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer.
+- Next action: Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for "improve stage-aware engine analysis for structural sources" remains explicit through adaptation_complete.
+- Linked intake record: discovery/01-intake/2026-03-30-dw-source-agentics-repo-ask-2026-03-30-intake.md

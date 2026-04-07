@@ -15,17 +15,17 @@
   "linkedArtifacts": {
     "intakeRecordPath": null,
     "triageRecordPath": null,
-    "routingRecordPath": "discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
     "engineRunRecordPath": null,
     "engineRunReportPath": null,
     "architectureHandoffPath": null,
     "architectureDecisionPath": null,
-    "runtimeFollowUpPath": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+    "runtimeFollowUpPath": "runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
     "runtimeRecordPath": "runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md",
     "runtimeProofPath": "runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md",
     "runtimeCapabilityBoundaryPath": "runtime/04-capability-boundaries/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-capability-boundary.md",
     "runtimePromotionReadinessPath": "runtime/05-promotion-readiness/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-promotion-readiness.md",
-    "resultRecordPath": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md"
+    "resultRecordPath": "runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md"
   },
   "projectionInputs": {
     "runtimeFollowUpOpen": {
@@ -34,7 +34,7 @@
       "followUpDate": "2026-03-24",
       "candidateId": "dw-live-scientify-engine-pressure-2026-03-24",
       "candidateName": "Scientify Mixed Adoption Target Pressure",
-      "followUpRelativePath": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+      "followUpRelativePath": "runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
       "runtimeRecordRelativePath": "runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md",
       "runtimeProofRelativePath": "runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md",
       "currentDecisionState": "route_to_runtime_follow_up",
@@ -68,7 +68,7 @@
       "rollback": "Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.",
       "noOpPath": "Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.",
       "reviewCadence": "Review on next active Directive Workspace operating pass.",
-      "linkedHandoffPath": "discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md"
+      "linkedHandoffPath": "discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md"
     },
     "runtimeProofOpen": {
       "snapshotAt": "2026-04-01T08:45:13.147Z",
@@ -78,7 +78,7 @@
       "candidateName": "Scientify Mixed Adoption Target Pressure",
       "runtimeRecordRelativePath": "runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md",
       "runtimeProofRelativePath": "runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md",
-      "linkedFollowUpRecord": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+      "linkedFollowUpRecord": "runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
       "runtimeObjective": "Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.",
       "proposedHost": "mission-control",
       "proposedRuntimeSurface": "reimplement",
@@ -100,7 +100,7 @@
       "rollback": "Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.",
       "noOpPath": "Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.",
       "reviewCadence": "Review on next active Directive Workspace operating pass.",
-      "linkedHandoffPath": "discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
+      "linkedHandoffPath": "discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
       "sourceRecordStatus": "pending_proof_boundary",
       "nextDecisionPoint": "Approve one bounded Runtime proof artifact or leave the record pending."
     },
@@ -112,8 +112,8 @@
       "candidateName": "Scientify Mixed Adoption Target Pressure",
       "runtimeProofRelativePath": "runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md",
       "runtimeRecordRelativePath": "runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md",
-      "linkedFollowUpRecord": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
-      "linkedRoutingPath": "discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
+      "linkedFollowUpRecord": "runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+      "linkedRoutingPath": "discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
       "runtimeCapabilityBoundaryRelativePath": "runtime/04-capability-boundaries/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-capability-boundary.md",
       "runtimeObjective": "Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.",
       "proposedHost": "mission-control",
@@ -143,8 +143,8 @@
       "capabilityBoundaryRelativePath": "runtime/04-capability-boundaries/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-capability-boundary.md",
       "linkedRuntimeProofPath": "runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md",
       "linkedRuntimeRecordPath": "runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md",
-      "linkedFollowUpPath": "runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
-      "linkedRoutingPath": "discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
+      "linkedFollowUpPath": "runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+      "linkedRoutingPath": "discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md",
       "linkedCallableStubPath": null,
       "promotionReadinessRelativePath": "runtime/05-promotion-readiness/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-promotion-readiness.md",
       "runtimeObjective": "Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.",

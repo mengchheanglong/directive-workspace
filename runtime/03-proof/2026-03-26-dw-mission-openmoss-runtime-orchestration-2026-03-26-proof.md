@@ -4,7 +4,7 @@
 - Candidate id: `dw-mission-openmoss-runtime-orchestration-2026-03-26`
 - Candidate name: `OpenMOSS Runtime Orchestration Surface`
 - Runtime v0 record path: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source follow-up record path: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Source follow-up record path: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
 - Proof opening decision: `approved_for_bounded_proof_artifact`
 - Opened by: `directive-lead-implementer`
 - Opened on: `2026-03-26`
@@ -12,8 +12,8 @@
 
 ## source inputs required
 - Runtime v0 record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
 - Proposed host: `pending_host_selection`
 - Proposed runtime surface: reimplement
@@ -60,5 +60,5 @@
 ## artifact linkage
 - Runtime proof artifact: `runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`

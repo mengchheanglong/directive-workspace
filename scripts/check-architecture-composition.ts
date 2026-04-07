@@ -3,24 +3,24 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
-import { closeDirectiveArchitectureBoundedStart } from "../shared/lib/architecture-bounded-closeout.ts";
+import { closeDirectiveArchitectureBoundedStart } from "../architecture/lib/architecture-bounded-closeout.ts";
 import {
   adoptDirectiveArchitectureResult,
   resolveDirectiveArchitectureAdoptionReviewResolution,
-} from "../shared/lib/architecture-result-adoption.ts";
-import { createDirectiveArchitectureImplementationTarget } from "../shared/lib/architecture-implementation-target.ts";
-import { createDirectiveArchitectureImplementationResult } from "../shared/lib/architecture-implementation-result.ts";
-import { readDirectiveArchitectureMaterializationDueCheck } from "../shared/lib/architecture-materialization-due-check.ts";
-import { confirmDirectiveArchitectureRetention } from "../shared/lib/architecture-retention.ts";
-import { createDirectiveArchitectureIntegrationRecord } from "../shared/lib/architecture-integration-record.ts";
-import { recordDirectiveArchitectureConsumption } from "../shared/lib/architecture-consumption-record.ts";
-import { evaluateDirectiveArchitectureConsumption } from "../shared/lib/architecture-post-consumption-evaluation.ts";
-import { reopenDirectiveArchitectureFromEvaluation } from "../shared/lib/architecture-reopen-from-evaluation.ts";
+} from "../architecture/lib/architecture-result-adoption.ts";
+import { createDirectiveArchitectureImplementationTarget } from "../architecture/lib/architecture-implementation-target.ts";
+import { createDirectiveArchitectureImplementationResult } from "../architecture/lib/architecture-implementation-result.ts";
+import { readDirectiveArchitectureMaterializationDueCheck } from "../architecture/lib/architecture-materialization-due-check.ts";
+import { confirmDirectiveArchitectureRetention } from "../architecture/lib/architecture-retention.ts";
+import { createDirectiveArchitectureIntegrationRecord } from "../architecture/lib/architecture-integration-record.ts";
+import { recordDirectiveArchitectureConsumption } from "../architecture/lib/architecture-consumption-record.ts";
+import { evaluateDirectiveArchitectureConsumption } from "../architecture/lib/architecture-post-consumption-evaluation.ts";
+import { reopenDirectiveArchitectureFromEvaluation } from "../architecture/lib/architecture-reopen-from-evaluation.ts";
 import {
   continueDirectiveArchitectureFromBoundedResult,
   readDirectiveArchitectureBoundedResultArtifact,
   readDirectiveArchitectureBoundedStartArtifact,
-} from "../shared/lib/architecture-bounded-closeout.ts";
+} from "../architecture/lib/architecture-bounded-closeout.ts";
 import {
   readDirectiveFrontendArchitectureAdoptionDetail,
   readDirectiveFrontendArchitectureConsumptionRecordDetail,
@@ -79,13 +79,13 @@ const SOURCE_ROOT = normalizePath(
 );
 
 const NORMAL_BOUNDED_START =
-  "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-bounded-start.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-bounded-start.md";
 const NORMAL_CONTINUATION_START =
-  "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md";
 const REOPENED_BOUNDED_START =
-  "architecture/01-bounded-starts/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-bounded-start.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-bounded-start.md";
 const TEMP_REOPENED_CONTINUATION =
-  "architecture/01-bounded-starts/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-continuation-bounded-start.md";
+  "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-continuation-bounded-start.md";
 
 function normalizePath(filePath: string) {
   return path.resolve(filePath).replace(/\\/g, "/");
@@ -799,13 +799,13 @@ export function runDirectiveArchitectureCompositionCheck() {
     });
     expectIncludes(
       normalResultArtifact.startRelativePath,
-      "architecture/02-experiments/",
+      "architecture/01-experiments/",
       "normal bounded result should stay linked to the normal Architecture experiment space",
     );
     expectIncludes(
       reopenedStartArtifact.startRelativePath,
-      "architecture/01-bounded-starts/",
-      "reopened start should stay linked to the bounded-start re-entry space",
+      "architecture/01-experiments/",
+      "reopened start should stay linked to the Architecture experiment space",
     );
 
     console.log(JSON.stringify({ ok: true, report }, null, 2));
@@ -821,3 +821,4 @@ const entryHref = process.argv[1]
 if (entryHref === import.meta.url) {
   runDirectiveArchitectureCompositionCheck();
 }
+

@@ -1,0 +1,24 @@
+# Discovery Triage Record: Scientify Research Workflow Plugin
+
+- Candidate id: dw-source-scientify-research-workflow-plugin-2026-03-27
+- Candidate name: Scientify Research Workflow Plugin
+- Triage date: 2026-03-27
+- First-pass summary: Scientify is a real OpenClaw plugin that automates academic research workflows through LLM-driven sub-agents. It contains 10+ research skills (literature survey, deep analysis, implementation plan, code implementation, review, experiment, idea generation, subscription management), 6+ tools (arxiv search/download, openalex, unpaywall, github search, paper browser), hooks (cron injection, research mode, skill injection), and a knowledge-state system. This source has direct value as reusable research workflow capability and structural/meta value for how it organizes multi-phase orchestrated skill pipelines with verification between steps. It is the strongest available external source that has not yet been processed through the modern Engine path.
+- Problem it appears to solve: Make source selection and routing clearer and more reusable than the original source context.
+- Extractable value hypothesis: Scientify is a real OpenClaw plugin that automates academic research workflows through LLM-driven sub-agents. It contains 10+ research skills (literature survey, deep analysis, implementation plan, code implementation, review, experiment, idea generation, subscription management), 6+ tools (arxiv search/download, openalex, unpaywall, github search, paper browser), hooks (cron injection, research mode, skill injection), and a knowledge-state system. This source has direct value as reusable research workflow capability and structural/meta value for how it organizes multi-phase orchestrated skill pipelines with verification between steps. It is the strongest available external source that has not yet been processed through the modern Engine path. | Full cloned repo at sources/intake/scientify. Published npm package (v1.12.1). MIT licensed. Previously tagged as a candidate for gap-directive-engine-materialization but never processed through the modern Discovery front door.
+- Routing recommendation: Shared Engine routing selected monitor with usefulness level meta.
+- Proposed adoption target: discovery-held candidate
+- Stack-shape summary: github-repo source; host dependence engine_only; integration mode none.
+- Boilerplate vs product boundary: Directive-owned form: Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.
+- Suggested decision state: hold_in_discovery
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan discovery_review defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: routing_review, human_decision_required
+- Missing evidence: mission-fit rationale recorded, routing rationale recorded, next bounded action chosen
+- Monitor/Defer trigger conditions: Hold the source in Discovery until routing confidence or downstream adoption target becomes clearer.
+- Re-entry conditions: Respect rollback boundary: Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work.
+- Next action: Keep the candidate in Discovery until routing clarity improves.
+- Linked intake record: discovery/01-intake/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-intake.md

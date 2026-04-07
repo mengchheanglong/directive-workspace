@@ -1,5 +1,5 @@
-import { createMemoryDiscoveryHostStorageBridge } from "./discovery-host-storage-bridge.memory.template";
-import { readDiscoveryOverviewWithHostBridge } from "./discovery-overview-reader.template";
+import { createMemoryDiscoveryHostStorageBridge } from "./discovery-host-storage-bridge.memory.template.ts";
+import { readDiscoveryOverviewWithHostBridge } from "./discovery-overview-reader.template.ts";
 
 function assertCondition(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -24,11 +24,11 @@ export function runDiscoveryOverviewStarterSmoke() {
           mission_alignment: "Completed path example.",
           capability_gap_id: "gap-example",
           assigned_worker: null,
-          fast_path_record_path: "discovery/intake/2026-03-22-completed.md",
-          routing_record_path: "discovery/routing-log/2026-03-22-completed.md",
+          fast_path_record_path: "discovery/01-intake/2026-03-22-completed.md",
+          routing_record_path: "discovery/03-routing-log/2026-03-22-completed.md",
           routed_at: "2026-03-21",
           completed_at: "2026-03-22",
-          result_record_path: "runtime/records/2026-03-22-completed.md",
+          result_record_path: "runtime/legacy-records/2026-03-22-completed.md",
           notes: "Completed entry.",
         },
         {

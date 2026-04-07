@@ -23,12 +23,12 @@ Rule:
 
 Inside `sources/`, treat surfaces as follows:
 
-- `intake/`
+- `01-intake/`
   - active raw-source intake surface
   - source material still feeding current or reopenable extraction, adaptation, or evaluation work
   - raw source authority only, not workflow authority
 
-- `deferred-or-rejected/`
+- `05-deferred-or-rejected/`
   - deferred, rejected, or historical raw-source corpus
   - retained for traceability and possible later reassessment
   - still raw source material, not lane-owned output

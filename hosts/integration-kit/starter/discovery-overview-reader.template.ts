@@ -4,7 +4,7 @@ import type {
   DiscoveryIntakeQueueEntry,
   DiscoveryQueueStatus,
   DiscoveryRoutingTarget,
-} from "../../../shared/lib/discovery-intake-queue-writer.ts";
+} from "../../../discovery/lib/discovery-intake-queue-writer.ts";
 
 export type DiscoveryOverviewHostStorageBridge = {
   directiveRoot: string;

@@ -3,33 +3,22 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { appendDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
+import { appendDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
 import { DIRECTIVE_WORKSPACE_BLOCKED_ADVANCEMENT_MESSAGE } from "../engine/workspace-truth.ts";
-import { planDirectiveMirroredCaseNextStep } from "../shared/lib/case-planner.ts";
+import { planDirectiveMirroredCaseNextStep } from "../engine/cases/case-planner.ts";
 import {
   materializeDirectiveMirroredCaseSnapshot,
   type DirectiveMirroredCaseSnapshotResult,
-} from "../shared/lib/case-snapshot.ts";
+} from "../engine/cases/case-snapshot.ts";
 import {
   writeDirectiveMirroredDiscoveryCaseRecord,
   type DirectiveMirroredDiscoveryCaseRecord,
-} from "../shared/lib/case-store.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../engine/cases/case-store.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { readJson } from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  operating_mode?: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-};
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "case_planner_parity" as const;
@@ -104,10 +93,6 @@ type Failure = {
 
 type CheckResult = Success | Failure;
 type Options = { probeMode?: ProbeMode };
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
 
 function scalarize(value: unknown): string | number | boolean {
   if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") {
@@ -192,7 +177,7 @@ function arrayContains(
 }
 
 function loadGoldenQueueEntries(violations: Violation[]) {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
 
@@ -225,7 +210,7 @@ function loadGoldenQueueEntries(violations: Violation[]) {
 }
 
 function buildMirroredRecord(input: {
-  queueEntry: QueueEntry;
+  queueEntry: DiscoveryIntakeQueueEntry;
   routing: ReturnType<typeof readDirectiveDiscoveryRoutingArtifact>;
   authoritative: NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
 }): DirectiveMirroredDiscoveryCaseRecord {
@@ -260,8 +245,9 @@ function expectedOutcomeForCase(candidateId: string) {
     case "dw-source-openevals-2026-03-28":
     case "dw-source-inspect-ai-2026-03-28":
     case "dw-source-promptwizard-2026-03-28":
-    case RETENTION_CANDIDATE_ID:
       return "stop";
+    case RETENTION_CANDIDATE_ID:
+      return "recommend_task";
     case "dw-source-ts-edge-2026-03-27":
     case "dw-source-scientify-research-workflow-plugin-2026-03-27":
     case "dw-source-temporal-durable-execution-2026-04-01":
@@ -278,7 +264,7 @@ function expectedOutcomeForCase(candidateId: string) {
 function expectedRecommendTaskKindForCase(candidateId: string) {
   switch (candidateId) {
     case RETENTION_CANDIDATE_ID:
-      return "evaluate_post_consumption";
+      return "record_implementation_result";
     default:
       throw new Error(`Missing expected recommend-task kind for ${candidateId}`);
   }
@@ -287,7 +273,7 @@ function expectedRecommendTaskKindForCase(candidateId: string) {
 function expectedRecommendTaskPatternForCase(candidateId: string) {
   switch (candidateId) {
     case RETENTION_CANDIDATE_ID:
-      return /(evaluate the applied architecture output after use)/i;
+      return /(record the implementation result)/i;
     default:
       throw new Error(`Missing expected recommend-task legal pattern for ${candidateId}`);
   }
@@ -323,15 +309,15 @@ function buildBlockedFixture() {
     operatingMode: "standard",
     queueStatus: "routed",
     decisionState: "accept_for_architecture",
-    currentHeadPath: "discovery/routing-log/fixture-blocked-routing-record.md",
+    currentHeadPath: "discovery/03-routing-log/fixture-blocked-routing-record.md",
     currentStage: "discovery.route.architecture",
     nextLegalStep: DIRECTIVE_WORKSPACE_BLOCKED_ADVANCEMENT_MESSAGE,
     latestEventType: "state_materialized" as const,
     materializedFromEventId: "fixture:blocked-integrity:state_materialized:v1",
     linkedArtifacts: {
-      intakeRecordPath: "discovery/intake/fixture-blocked-intake.md",
-      triageRecordPath: "discovery/triage/fixture-blocked-triage.md",
-      routingRecordPath: "discovery/routing-log/fixture-blocked-routing-record.md",
+      intakeRecordPath: "discovery/01-intake/fixture-blocked-intake.md",
+      triageRecordPath: "discovery/02-triage/fixture-blocked-triage.md",
+      routingRecordPath: "discovery/03-routing-log/fixture-blocked-routing-record.md",
       engineRunRecordPath: null,
       engineRunReportPath: null,
       resultRecordPath: null,
@@ -584,21 +570,33 @@ async function validate(options: Options = {}): Promise<CheckResult> {
             eq(
               violations,
               candidateId,
-              "snapshot_stage_mismatch",
-              "snapshot.currentStage",
-              snapshotA.currentStage,
-              "architecture.consumption.success",
-              `Recommend-task case should now resolve to the consumption-record Architecture boundary for ${candidateId}`,
-            );
-            eq(
-              violations,
-              candidateId,
               "planner_task_kind_mismatch",
               "plan.task.kind",
               "task" in planA ? planA.task.kind : null,
               expectedRecommendTaskKindForCase(candidateId),
-              `Recommend-task case should open the bounded post-consumption evaluation task for ${candidateId}`,
+              `Recommend-task case should preserve the explicit bounded next task for ${candidateId}`,
             );
+            if (candidateId === RETENTION_CANDIDATE_ID) {
+              eq(
+                violations,
+                candidateId,
+                "snapshot_stage_mismatch",
+                "snapshot.currentStage",
+                snapshotA.currentStage,
+                "architecture.implementation_target.opened",
+                "The core-principles case should now resolve to the implementation-target Architecture boundary",
+              );
+            } else {
+              eq(
+                violations,
+                candidateId,
+                "snapshot_stage_mismatch",
+                "snapshot.currentStage",
+                snapshotA.currentStage,
+                "architecture.consumption.success",
+                `Recommend-task case should now resolve to the consumption-record Architecture boundary for ${candidateId}`,
+              );
+            }
             arrayContains(
               violations,
               candidateId,

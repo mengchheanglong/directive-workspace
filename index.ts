@@ -1,10 +1,15 @@
 export * as engine from "./engine/index";
+export * as engineCases from "./engine/cases/index";
+export * as engineCoordination from "./engine/coordination/index";
+export * as engineExecution from "./engine/execution/index";
 export * as integrationKit from "./hosts/integration-kit/index";
+export * as adapters from "./hosts/adapters/index";
 export * as standaloneHost from "./hosts/standalone-host/index";
 export * as frontend from "./hosts/web-host/index";
-export * as discovery from "./shared/lib/discovery/index";
-export * as architecture from "./shared/lib/architecture/index";
-export * as workspaceState from "./shared/lib/dw-state";
+export * as discovery from "./discovery/lib/index";
+export * as architecture from "./architecture/lib/index";
+export * as runtime from "./runtime/lib/index";
+export * as state from "./engine/state/index";
 export {
   DIRECTIVE_SOURCE_FLOW,
   DIRECTIVE_SUPPORTED_SOURCE_TYPES,

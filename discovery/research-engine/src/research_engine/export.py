@@ -28,7 +28,11 @@ from research_engine.models import (
     to_jsonable,
     utc_now_iso,
 )
-from research_engine.normalize import derive_evidence_clusters, summarize_candidate_freshness
+from research_engine.normalize import (
+    derive_evidence_clusters,
+    summarize_candidate_freshness,
+    summarize_extraction_fidelity,
+)
 
 
 def _normalize_label(value: str) -> str:
@@ -63,6 +67,9 @@ def _materialize_rejection_candidate(
         freshest_source_age_days,
         freshness_summary,
     ) = summarize_candidate_freshness(rejection_evidence)
+    extraction_fidelity_summary, fallback_evidence_count = summarize_extraction_fidelity(
+        rejection_evidence
+    )
     return CandidateDossier(
         candidate_id=entry.candidate_id if entry else rejection.candidate_id,
         name=entry.name if entry else title,
@@ -89,6 +96,8 @@ def _materialize_rejection_candidate(
             )
             or ["Rejection packet has no attached evidence provenance."]
         ),
+        extraction_fidelity_summary=extraction_fidelity_summary,
+        fallback_evidence_count=fallback_evidence_count,
         freshness_summary=freshness_summary,
         freshness_signal=freshness_signal,
         freshest_source_updated_at=freshest_source_updated_at,
@@ -177,6 +186,8 @@ def _candidate_weaknesses(candidate: CandidateDossier, known_state: str) -> list
 
 def _candidate_uncertainties(candidate: CandidateDossier, status_reason: str) -> list[str]:
     notes: list[str] = []
+    if candidate.fallback_evidence_count:
+        notes.append(candidate.extraction_fidelity_summary)
     if candidate.freshest_source_age_days is None:
         notes.append("Source-age extraction was incomplete; freshness remains partially uncertain.")
     if not any("primary" in summary for summary in candidate.provenance_summary):
@@ -190,6 +201,51 @@ def _candidate_uncertainties(candidate: CandidateDossier, status_reason: str) ->
     if not notes:
         notes.append("No major unresolved uncertainty was extracted beyond normal evidence interpretation risk.")
     return notes
+
+
+def _acquisition_health_uncertainties(record: ResearchRecord) -> list[str]:
+    uncertainties: list[str] = []
+    degraded_entries = [
+        provider
+        for provider in record.provider_health
+        if provider.status in {"degraded", "fallback"}
+    ]
+    if degraded_entries:
+        summarized_entries = []
+        for provider in degraded_entries[:4]:
+            reason_codes = ", ".join(provider.reason_codes) if provider.reason_codes else provider.status
+            summarized_entries.append(
+                f"{provider.provider} ({provider.status}; reasons={reason_codes})"
+            )
+        remaining = len(degraded_entries) - len(summarized_entries)
+        summary = "; ".join(summarized_entries)
+        if remaining > 0:
+            summary = f"{summary}; +{remaining} additional provider entries"
+        uncertainties.append(f"Acquisition health pressure: {summary}.")
+
+    strict_notes = [
+        note
+        for note in record.acquisition_notes
+        if "strict" in note.lower() and "fallback" in note.lower()
+    ]
+    if strict_notes:
+        uncertainties.append(f"Strict no-fallback acquisition path: {strict_notes[0]}")
+    elif any("strict-no-fallback" in provider.reason_codes for provider in record.provider_health):
+        strict_providers = sorted(
+            {
+                provider.provider
+                for provider in record.provider_health
+                if "strict-no-fallback" in provider.reason_codes
+            }
+        )
+        if strict_providers:
+            uncertainties.append(
+                "Strict no-fallback acquisition path signaled by provider reason codes: "
+                + ", ".join(strict_providers)
+                + "."
+            )
+
+    return uncertainties
 
 
 def _signal_score_explanations(
@@ -277,6 +333,7 @@ def _discovery_signal_profile(
     status_reason: str,
 ) -> tuple[str, int | None, str]:
     scores = _signal_score_explanations(candidate, mission)
+    structural_signal_band, structural_signal_summary = _structural_signal_profile(candidate, mission)
     total_score = candidate.scorecard.total if candidate.scorecard else None
     relevance_score = scores["relevance_score"][0]
     novelty_score = scores["novelty_score"][0]
@@ -319,6 +376,18 @@ def _discovery_signal_profile(
         or relevance_score <= 6
         or evidence_quality_score <= 5
     ):
+        if (
+            known_state == "baseline"
+            and structural_signal_band == "extractive_structural"
+            and relevance_score >= 7
+            and evidence_quality_score >= 7
+            and subsystem_reuse_score >= 7
+        ):
+            return (
+                "review",
+                total_score,
+                f"Baseline-overlap candidate still carries bounded structural extraction value. {structural_signal_summary} Score summary: {score_summary}",
+            )
         return (
             "weak",
             total_score,
@@ -330,6 +399,377 @@ def _discovery_signal_profile(
         total_score,
         f"Mixed Discovery review signal; candidate may still be useful, but novelty, evidence strength, or bounded reuse remains inconclusive. Score summary: {score_summary}",
     )
+
+
+def _structural_signal_profile(
+    candidate: CandidateDossier,
+    mission: ResearchMission,
+) -> tuple[str, str]:
+    scores = _signal_score_explanations(candidate, mission)
+    known_state, _, _ = _known_context_for_candidate(candidate, mission)
+    relevance_score = scores["relevance_score"][0]
+    evidence_quality_score = scores["evidence_quality_score"][0]
+    subsystem_reuse_score = scores["subsystem_reuse_score"][0]
+
+    if candidate.usefulness_level_hint in {"structural", "meta"} and (
+        relevance_score >= 7
+        and evidence_quality_score >= 7
+        and subsystem_reuse_score >= 7
+    ):
+        if known_state == "baseline":
+            return (
+                "extractive_structural",
+                "Structurally useful despite baseline overlap: preserve the bounded workflow or mechanism signal for extraction, but do not treat the source as a novel primary base.",
+            )
+        if known_state == "anchor":
+            return (
+                "comparison_structural",
+                "Structurally useful comparison-anchor signal: preserve the bounded workflow or mechanism shape while keeping novelty expectations explicit.",
+            )
+        return (
+            "strong_structural",
+            "Strong structural signal: candidate exposes reusable workflow or mechanism boundaries worth extracting into Directive-owned form.",
+        )
+
+    return (
+        "none",
+        "No separate structural extraction signal beyond the standard Discovery review scoring.",
+    )
+
+
+def _workflow_phase_scores(
+    candidate: CandidateDossier,
+    mission: ResearchMission,
+    phase_labels: list[str],
+) -> dict[str, int]:
+    scores = _signal_score_explanations(candidate, mission)
+    base_score = round(
+        (
+            scores["relevance_score"][0]
+            + scores["evidence_quality_score"][0]
+            + scores["subsystem_reuse_score"][0]
+        )
+        / 3
+    )
+    text = " ".join(
+        [
+            candidate.summary,
+            candidate.problem_solved,
+            candidate.value_hypothesis,
+            candidate.capability_gap_hint,
+            *candidate.baggage_signals,
+        ]
+    ).lower()
+    phase_patterns = {
+        "planning": ("planning", "plan", "planner"),
+        "discovery": ("discovery", "research", "search", "evidence"),
+        "acquisition": ("acquisition", "fetch", "search", "provider"),
+        "compression": ("compression", "compress", "distill", "cluster"),
+        "synthesis": ("synthesis", "synthesize", "merge", "combine"),
+        "reporting": ("report", "reporting", "write", "writing"),
+        "outline": ("outline",),
+        "reflection": ("reflection", "reflect", "loop"),
+    }
+    ordered_phases = [
+        "planning",
+        "discovery",
+        "acquisition",
+        "compression",
+        "synthesis",
+        "reporting",
+        "outline",
+        "reflection",
+    ]
+    scores_by_phase: dict[str, int] = {}
+    for phase in ordered_phases:
+        phase_marked = phase in phase_labels or any(term in text for term in phase_patterns[phase])
+        if not phase_marked:
+            continue
+        phase_score = base_score
+        if phase in {"planning", "discovery"} and "workflow" in text:
+            phase_score += 1
+        if phase in {"discovery", "acquisition"} and any(
+            marker in text for marker in ("evidence", "provider seam", "provider", "metadata", "citation")
+        ):
+            phase_score += 1
+        if phase in {"compression", "synthesis"} and any(
+            marker in text for marker in ("compression", "synthesis", "cluster", "distill")
+        ):
+            phase_score += 1
+        if phase == "reporting" and "report" in text:
+            phase_score += 1
+        if phase == "reporting" and any("report-centric" in baggage.lower() for baggage in candidate.baggage_signals):
+            phase_score -= 2
+        scores_by_phase[phase] = max(1, min(10, phase_score))
+    return scores_by_phase
+
+
+def _lane_target_profile(
+    candidate: CandidateDossier,
+    structural_signal_band: str,
+    workflow_phase_labels: list[str],
+    provider_seam_summary: str | None,
+    workflow_boundary_shape_hint: str | None,
+) -> tuple[str, str]:
+    adoption_target_hint = candidate.adoption_target_hint.lower()
+    text = " ".join(
+        [
+            candidate.summary,
+            candidate.problem_solved,
+            candidate.value_hypothesis,
+            candidate.capability_gap_hint,
+        ]
+    ).lower()
+    if adoption_target_hint in {"runtime", "callable", "capability", "skill"} or candidate.usefulness_level_hint == "direct":
+        return (
+            "runtime",
+            "Primary value appears reusable as a runtime capability rather than an Engine workflow improvement.",
+        )
+    if (
+        candidate.usefulness_level_hint in {"structural", "meta"}
+        or structural_signal_band in {"strong_structural", "comparison_structural", "extractive_structural"}
+        or workflow_boundary_shape_hint == "bounded_protocol"
+        or provider_seam_summary is not None
+        or len(workflow_phase_labels) >= 2
+        or any(
+            marker in text
+            for marker in (
+                "routing",
+                "evaluation",
+                "proof",
+                "provider seam",
+                "source intelligence",
+                "workflow",
+                "engine",
+                "adaptation",
+                "research pipeline",
+            )
+        )
+    ):
+        if structural_signal_band == "extractive_structural":
+            return (
+                "architecture",
+                "Primary value is Architecture-oriented extraction: preserve workflow/provider boundaries while keeping baseline-overlap expectations explicit.",
+            )
+        return (
+            "architecture",
+            "Primary value improves Directive Workspace workflow, evaluation, or source-intelligence structure.",
+        )
+    return (
+        "discovery",
+        "Current value is still mainly Discovery review/comparison pressure rather than ready Runtime or Architecture adoption.",
+    )
+
+
+def _structural_recommendations(
+    candidate: CandidateDossier,
+    recommended_lane_target: str,
+    workflow_phase_labels: list[str],
+    provider_seam_summary: str | None,
+    workflow_boundary_shape_hint: str | None,
+) -> tuple[list[str], list[str]]:
+    text = " ".join(
+        [
+            candidate.summary,
+            candidate.problem_solved,
+            candidate.value_hypothesis,
+            candidate.capability_gap_hint,
+        ]
+    ).lower()
+    extract: list[str] = []
+    avoid: list[str] = []
+
+    if len(workflow_phase_labels) >= 2:
+        extract.append(
+            f"Extract the explicit phase model ({', '.join(workflow_phase_labels)}) as a Directive-owned workflow contract."
+        )
+    if provider_seam_summary is not None:
+        extract.append("Extract the provider seam as a bounded interface between acquisition and downstream synthesis/reporting.")
+    if workflow_boundary_shape_hint == "bounded_protocol":
+        extract.append("Extract the bounded protocol boundary so acquisition, compression, and reporting remain separable.")
+    if any(marker in text for marker in ("citation", "metadata", "evidence ranking", "trust signal")):
+        extract.append("Extract the evidence-quality mechanism rather than the surrounding source-specific product shell.")
+    if recommended_lane_target == "architecture" and not extract:
+        extract.append("Extract the reusable workflow or mechanism boundary rather than the full source system.")
+
+    for baggage in candidate.baggage_signals:
+        lowered = baggage.lower()
+        if "langgraph" in lowered:
+            avoid.append("Do not import LangGraph-specific orchestration assumptions wholesale.")
+        elif "report-centric" in lowered or "answer-first" in lowered:
+            avoid.append("Do not import the report-centric or answer-first end shape wholesale.")
+        elif "runtime" in lowered and recommended_lane_target == "architecture":
+            avoid.append("Do not let runtime-specific assumptions override the Architecture extraction target.")
+
+    if recommended_lane_target == "architecture":
+        avoid.append("Do not treat the source as a novel primary base without stronger live evidence.")
+
+    return list(dict.fromkeys(extract)), list(dict.fromkeys(avoid))
+
+
+def _review_guidance(
+    candidate: CandidateDossier,
+    discovery_signal_band: str,
+    structural_signal_band: str,
+    recommended_lane_target: str,
+    extract_recommendations: list[str],
+    avoid_recommendations: list[str],
+) -> tuple[str, str, str]:
+    if structural_signal_band == "extractive_structural":
+        return (
+            "Extractive structural candidate: keep the reusable mechanism and bounded workflow, but hold novelty claims low.",
+            "Use this as an Architecture extraction/reference source. Extract only the bounded mechanisms listed here and reject wholesale framework adoption.",
+            "Do not auto-promote this source to primary-base status or direct Runtime adoption without stronger live evidence.",
+        )
+    if recommended_lane_target == "architecture":
+        return (
+            "Architecture-oriented structural candidate: extract the Engine-improvement mechanism and keep the downstream record bounded.",
+            "Route through Discovery into Architecture review, then keep the follow-through proportional to the actual mechanism being extracted.",
+            "Do not widen the case into full adoption if the source only contributes a narrow workflow or evaluator improvement.",
+        )
+    if recommended_lane_target == "runtime":
+        return (
+            "Runtime-oriented candidate: preserve the reusable capability boundary and require proof before promotion.",
+            "Route through Discovery into Runtime review and keep the reusable capability/package boundary explicit.",
+            "Do not treat the source as a structural Architecture improvement unless a separate Engine-workflow benefit is proven.",
+        )
+    return (
+        "Discovery comparison/review candidate: useful for curation pressure, but not yet lane-ready.",
+        "Keep the source in Discovery review and only advance if a clearer Architecture or Runtime adoption target appears.",
+        "Do not force downstream adoption from a comparison-only or low-confidence source packet.",
+    )
+
+
+def _review_priority_profile(
+    candidate: CandidateDossier,
+    *,
+    status: str,
+    known_state: str,
+    discovery_signal_band: str,
+    structural_signal_band: str,
+    recommended_lane_target: str,
+    uncertainty_count: int,
+) -> tuple[int, str, str]:
+    score = 40
+    drivers: list[str] = []
+
+    if discovery_signal_band == "strong":
+        score += 18
+        drivers.append("strong Discovery signal")
+    elif discovery_signal_band == "review":
+        score += 8
+        drivers.append("mixed Discovery signal")
+    elif discovery_signal_band == "weak":
+        score -= 8
+        drivers.append("weak/noisy Discovery signal")
+    elif discovery_signal_band == "hold_or_reject":
+        score -= 18
+        drivers.append("hold/reject Discovery signal")
+
+    if recommended_lane_target in {"architecture", "runtime"}:
+        score += 10
+        drivers.append(f"clear downstream target ({recommended_lane_target})")
+    elif recommended_lane_target == "discovery":
+        score += 3
+        drivers.append("Discovery-comparison target")
+
+    if structural_signal_band in {"strong_structural", "comparison_structural", "extractive_structural"}:
+        score += 8
+        drivers.append(f"structural signal ({structural_signal_band})")
+
+    if candidate.evidence_cluster_count >= 3:
+        score += 4
+        drivers.append("multi-cluster evidence")
+
+    if candidate.contradiction_flags:
+        contradiction_penalty = min(8, len(candidate.contradiction_flags) * 2)
+        score -= contradiction_penalty
+        drivers.append(f"contradiction risk (-{contradiction_penalty})")
+
+    if candidate.fallback_evidence_count > 0:
+        fallback_penalty = min(6, candidate.fallback_evidence_count)
+        score -= fallback_penalty
+        drivers.append(f"fallback evidence pressure (-{fallback_penalty})")
+
+    uncertainty_penalty = min(18, uncertainty_count * 3)
+    if uncertainty_penalty:
+        score -= uncertainty_penalty
+        drivers.append(f"open uncertainties (-{uncertainty_penalty})")
+
+    if known_state == "baseline" and structural_signal_band == "none":
+        score -= 6
+        drivers.append("baseline overlap without structural offset")
+
+    if status == "rejected":
+        score -= 20
+        drivers.append("rejected status")
+
+    score = max(0, min(100, score))
+    if score >= 68:
+        band = "high"
+    elif score >= 45:
+        band = "medium"
+    else:
+        band = "low"
+
+    rationale = (
+        "Review-priority signal for Discovery triage only; "
+        + "; ".join(drivers[:5])
+        + "."
+    )
+    return score, band, rationale
+
+
+def _derive_structural_workflow_hints(candidate: CandidateDossier) -> tuple[list[str], str | None, str | None]:
+    text = " ".join(
+        [
+            candidate.summary,
+            candidate.problem_solved,
+            candidate.value_hypothesis,
+            candidate.capability_gap_hint,
+            *candidate.baggage_signals,
+        ]
+    ).lower()
+
+    phase_patterns = [
+        ("planning", ("planning", "plan")),
+        ("discovery", ("discovery", "research")),
+        ("acquisition", ("acquisition", "search", "evidence seeking")),
+        ("compression", ("compression",)),
+        ("synthesis", ("synthesis",)),
+        ("reporting", ("reporting", "report", "writing")),
+        ("outline", ("outline",)),
+        ("reflection", ("reflection",)),
+    ]
+    phase_labels: list[str] = []
+    for label, terms in phase_patterns:
+        if any(term in text for term in terms):
+            phase_labels.append(label)
+
+    provider_seam_summary: str | None = None
+    if "provider seam" in text or "provider seams" in text:
+        provider_seam_summary = "Reusable provider seams for bounded research runs."
+    elif "heterogeneous search" in text:
+        provider_seam_summary = "Separate provider-facing search backends from synthesis and reporting."
+
+    workflow_boundary_shape_hint: str | None = None
+    if any(
+        marker in text
+        for marker in (
+            "typed phases",
+            "phase boundaries",
+            "phase boundary",
+            "bounded research runs",
+            "acquisition-vs-synthesis",
+            "staged research",
+            "staged",
+        )
+    ):
+        workflow_boundary_shape_hint = "bounded_protocol"
+    elif any(marker in text for marker in ("reflection loops", "recursive", "resumable", "durable")):
+        workflow_boundary_shape_hint = "iterative_loop"
+
+    return phase_labels, provider_seam_summary, workflow_boundary_shape_hint
 
 
 def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object]:
@@ -351,6 +791,11 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
     signal_scoring: list[dict[str, object]] = []
     strong_signals: list[dict[str, str]] = []
     weak_signals: list[dict[str, str]] = []
+    structural_signals: list[dict[str, str]] = []
+    lane_target_signals: list[dict[str, str]] = []
+    structural_recommendations: list[dict[str, object]] = []
+    review_guidance: list[dict[str, str]] = []
+    review_queue: list[dict[str, object]] = []
     rejected_candidates: list[dict[str, str]] = []
     novelty_notes: list[str] = []
     open_uncertainties: list[str] = []
@@ -368,6 +813,66 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
             f"freshness={candidate.freshness_signal}; "
             f"provenance={'; '.join(candidate.provenance_summary[:2]) or 'none'}."
         )
+        scores = _signal_score_explanations(candidate, record.mission)
+        structural_signal_band, structural_signal_summary = _structural_signal_profile(
+            candidate,
+            record.mission,
+        )
+        (
+            workflow_phase_labels,
+            provider_seam_summary,
+            workflow_boundary_shape_hint,
+        ) = _derive_structural_workflow_hints(candidate)
+        workflow_phase_scores = _workflow_phase_scores(
+            candidate,
+            record.mission,
+            workflow_phase_labels,
+        )
+        recommended_lane_target, lane_target_rationale = _lane_target_profile(
+            candidate,
+            structural_signal_band,
+            workflow_phase_labels,
+            provider_seam_summary,
+            workflow_boundary_shape_hint,
+        )
+        extract_recommendations, avoid_recommendations = _structural_recommendations(
+            candidate,
+            recommended_lane_target,
+            workflow_phase_labels,
+            provider_seam_summary,
+            workflow_boundary_shape_hint,
+        )
+        discovery_signal_band, _, _ = _discovery_signal_profile(
+            candidate,
+            record.mission,
+            status=status,
+            status_reason=status_reason,
+        )
+        (
+            review_guidance_summary,
+            review_guidance_action,
+            review_guidance_stop_line,
+        ) = _review_guidance(
+            candidate,
+            discovery_signal_band,
+            structural_signal_band,
+            recommended_lane_target,
+            extract_recommendations,
+            avoid_recommendations,
+        )
+        (
+            review_priority_score,
+            review_priority_band,
+            review_priority_rationale,
+        ) = _review_priority_profile(
+            candidate,
+            status=status,
+            known_state=known_state,
+            discovery_signal_band=discovery_signal_band,
+            structural_signal_band=structural_signal_band,
+            recommended_lane_target=recommended_lane_target,
+            uncertainty_count=len(uncertainties),
+        )
         candidate_intelligence.append(
             {
                 "name": candidate.name,
@@ -379,18 +884,79 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
                 "weaknesses": _candidate_weaknesses(candidate, known_state),
                 "overlap_with_baseline": overlap_note,
                 "novelty_notes": novelty_note,
+                "recommended_lane_target": recommended_lane_target,
+                "lane_target_rationale": lane_target_rationale,
+                "workflow_phase_scores": workflow_phase_scores,
+                "structural_extraction_recommendations": extract_recommendations,
+                "structural_avoid_recommendations": avoid_recommendations,
+                "review_guidance_summary": review_guidance_summary,
+                "review_guidance_action": review_guidance_action,
+                "review_guidance_stop_line": review_guidance_stop_line,
+                "review_priority_score": review_priority_score,
+                "review_priority_band": review_priority_band,
+                "review_priority_rationale": review_priority_rationale,
                 "uncertainty_notes": uncertainties,
             }
         )
-        scores = _signal_score_explanations(candidate, record.mission)
         signal_scoring.append(
             {
                 "name": candidate.name,
                 "link": _candidate_link(candidate),
+                "workflow_phase_scores": workflow_phase_scores,
                 **{
                     key: {"score": value[0], "explanation": value[1]}
                     for key, value in scores.items()
                 },
+            }
+        )
+        if structural_signal_band != "none":
+            structural_signals.append(
+                {
+                    "name": candidate.name,
+                    "link": _candidate_link(candidate),
+                    "band": structural_signal_band,
+                    "why": structural_signal_summary,
+                }
+            )
+        lane_target_signals.append(
+            {
+                "name": candidate.name,
+                "link": _candidate_link(candidate),
+                "target": recommended_lane_target,
+                "why": lane_target_rationale,
+            }
+        )
+        structural_recommendations.append(
+            {
+                "name": candidate.name,
+                "link": _candidate_link(candidate),
+                "target": recommended_lane_target,
+                "extract": extract_recommendations,
+                "avoid": avoid_recommendations,
+            }
+        )
+        review_guidance.append(
+            {
+                "name": candidate.name,
+                "link": _candidate_link(candidate),
+                "target": recommended_lane_target,
+                "summary": review_guidance_summary,
+                "action": review_guidance_action,
+                "stop_line": review_guidance_stop_line,
+            }
+        )
+        review_queue.append(
+            {
+                "name": candidate.name,
+                "link": _candidate_link(candidate),
+                "target": recommended_lane_target,
+                "status": status,
+                "priority_score": review_priority_score,
+                "priority_band": review_priority_band,
+                "rationale": review_priority_rationale,
+                "action": review_guidance_action,
+                "stop_line": review_guidance_stop_line,
+                "uncertainty_count": len(uncertainties),
             }
         )
         if (
@@ -423,7 +989,7 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
             )
         if (
             status == "rejected"
-            or known_state == "baseline"
+            or (known_state == "baseline" and structural_signal_band != "extractive_structural")
             or scores["relevance_score"][0] <= 6
             or scores["evidence_quality_score"][0] <= 5
         ):
@@ -439,9 +1005,18 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
                 }
             )
 
-    deduped_open_uncertainties = list(dict.fromkeys(open_uncertainties))
+    acquisition_uncertainties = _acquisition_health_uncertainties(record)
+    deduped_open_uncertainties = list(
+        dict.fromkeys([*acquisition_uncertainties, *open_uncertainties])
+    )
     evidence_gaps = deduped_open_uncertainties[:8]
     recommended_queries = list(dict.fromkeys(query.text for query in record.plan.queries))[:6]
+    review_queue.sort(
+        key=lambda item: (
+            -int(item["priority_score"]),
+            str(item["name"]).lower(),
+        )
+    )
 
     return {
         "packet_kind": SOURCE_INTELLIGENCE_PACKET_KIND,
@@ -483,12 +1058,23 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
         "signal_scoring": signal_scoring,
         "strong_signals": strong_signals,
         "weak_signals": weak_signals,
+        "structural_signals": structural_signals,
+        "lane_target_signals": lane_target_signals,
+        "structural_recommendations": structural_recommendations,
+        "review_guidance": review_guidance,
+        "review_queue": review_queue,
         "open_uncertainties": deduped_open_uncertainties[:10],
         "machine_friendly_research_packet": {
             "strong_signals": strong_signals,
             "weak_signals": weak_signals,
+            "structural_signals": structural_signals,
+            "lane_target_signals": lane_target_signals,
+            "structural_recommendations": structural_recommendations,
+            "review_guidance": review_guidance,
+            "review_queue": review_queue,
             "rejected_candidates": rejected_candidates,
             "novelty_notes": list(dict.fromkeys(novelty_notes))[:10],
+            "acquisition_health_uncertainties": acquisition_uncertainties[:8],
             "evidence_gaps": evidence_gaps,
             "recommended_followup_queries": recommended_queries,
         },
@@ -496,6 +1082,7 @@ def build_source_intelligence_packet(record: ResearchRecord) -> dict[str, object
 
 
 def render_inspection_html(record: ResearchRecord) -> str:
+    source_intelligence_packet = build_source_intelligence_packet(record)
     top_candidates = sorted(
         record.candidates,
         key=lambda candidate: candidate.scorecard.total if candidate.scorecard else 0,
@@ -577,11 +1164,61 @@ def render_inspection_html(record: ResearchRecord) -> str:
             "</tr>"
         )
 
+    review_queue_rows = []
+    for entry in source_intelligence_packet["review_queue"]:
+        candidate_link = str(entry.get("link") or "")
+        candidate_name = str(entry.get("name") or "unknown")
+        candidate_name_cell = (
+            f"<a href='{escape(candidate_link)}'>{escape(candidate_name)}</a>"
+            if candidate_link
+            else escape(candidate_name)
+        )
+        search_blob = " ".join(
+            value.lower()
+            for value in (
+                candidate_name,
+                str(entry.get("target") or ""),
+                str(entry.get("status") or ""),
+                str(entry.get("priority_band") or ""),
+                str(entry.get("action") or ""),
+                str(entry.get("stop_line") or ""),
+                str(entry.get("rationale") or ""),
+            )
+        )
+        review_queue_rows.append(
+            "<tr "
+            f"data-search='{escape(search_blob)}' "
+            f"data-name='{escape(candidate_name.lower())}' "
+            f"data-priority='{int(entry.get('priority_score', 0))}' "
+            f"data-uncertainty='{int(entry.get('uncertainty_count', 0))}'>"
+            f"<td>{candidate_name_cell}</td>"
+            f"<td>{escape(str(entry.get('target') or '-'))}</td>"
+            f"<td>{escape(str(entry.get('status') or '-'))}</td>"
+            f"<td>{escape(str(entry.get('priority_band') or '-'))} ({int(entry.get('priority_score', 0))})</td>"
+            f"<td>{int(entry.get('uncertainty_count', 0))}</td>"
+            f"<td>{escape(str(entry.get('action') or '-'))}</td>"
+            f"<td>{escape(str(entry.get('stop_line') or '-'))}</td>"
+            f"<td>{escape(str(entry.get('rationale') or '-'))}</td>"
+            "</tr>"
+        )
+
+    if not review_queue_rows:
+        review_queue_rows.append(
+            "<tr><td colspan='8' class='cell-muted'>none in the current run</td></tr>"
+        )
+
+    uncertainty_items = [
+        f"<li>{escape(str(note))}</li>" for note in source_intelligence_packet["open_uncertainties"]
+    ]
+    if not uncertainty_items:
+        uncertainty_items = ["<li class='cell-muted'>none in the current run</li>"]
+
     summary = {
         "Candidates": len(record.candidates),
         "Rejections": len(record.rejections),
         "Evidence items": len(record.evidence_bundle),
         "Discovery hits": len(record.discovery_hits),
+        "Acquisition notes": len(record.acquisition_notes),
         "Acquisition mode": record.plan.selected_acquisition_mode,
     }
     summary_cards = "".join(
@@ -713,6 +1350,8 @@ def render_inspection_html(record: ResearchRecord) -> str:
         "      color: var(--muted);\n"
         "      margin-right: 0.35rem;\n"
         "    }\n"
+        "    .uncertainty-list { margin: 0.4rem 0 0 1rem; padding: 0; }\n"
+        "    .decision-boundary { margin: 0 0 0.6rem 0; color: var(--muted); font-size: 0.88rem; }\n"
         "    @media (max-width: 760px) {\n"
         "      .table-controls { grid-template-columns: 1fr; }\n"
         "    }\n"
@@ -782,6 +1421,27 @@ def render_inspection_html(record: ResearchRecord) -> str:
         "      </table>\n"
         "    </section>\n"
         "    <section>\n"
+        "      <h2>Source-Intelligence Review Queue</h2>\n"
+        f"      <p class='decision-boundary'>Decision boundary: {escape(source_intelligence_packet['decision_boundary'])}</p>\n"
+        "      <div class='table-controls'>\n"
+        "        <input id='review-queue-filter' type='search' placeholder='Filter review queue (candidate, status, target, action, stop-line)' />\n"
+        "        <div><label for='review-queue-sort'>Sort</label><select id='review-queue-sort'>"
+        "<option value='priority-desc'>Priority (high to low)</option>"
+        "<option value='priority-asc'>Priority (low to high)</option>"
+        "<option value='uncertainty-desc'>Uncertainties (high to low)</option>"
+        "<option value='name-asc'>Name (A-Z)</option>"
+        "</select></div>\n"
+        "      </div>\n"
+        "      <table id='review-queue-table'>\n"
+        "        <thead><tr><th>Candidate</th><th>Target</th><th>Status</th><th>Priority</th><th>Uncertainties</th><th>Action</th><th>Stop-line</th><th>Rationale</th></tr></thead>\n"
+        f"        <tbody>{''.join(review_queue_rows)}</tbody>\n"
+        "      </table>\n"
+        "    </section>\n"
+        "    <section>\n"
+        "      <h2>Open Uncertainties</h2>\n"
+        f"      <ul class='uncertainty-list'>{''.join(uncertainty_items)}</ul>\n"
+        "    </section>\n"
+        "    <section>\n"
         "      <h2>Query Plan</h2>\n"
         "      <table>\n"
         "        <thead><tr><th>Query ID</th><th>Track</th><th>Type</th><th>Text</th></tr></thead>\n"
@@ -840,6 +1500,17 @@ def render_inspection_html(record: ResearchRecord) -> str:
         "          'timeouts-desc': (a, b) => numeric(b.dataset.timeouts) - numeric(a.dataset.timeouts),\n"
         "        },\n"
         "      });\n"
+        "      wireControls({\n"
+        "        tableId: 'review-queue-table',\n"
+        "        filterId: 'review-queue-filter',\n"
+        "        sortId: 'review-queue-sort',\n"
+        "        sortComparators: {\n"
+        "          'priority-desc': (a, b) => numeric(b.dataset.priority) - numeric(a.dataset.priority),\n"
+        "          'priority-asc': (a, b) => numeric(a.dataset.priority) - numeric(b.dataset.priority),\n"
+        "          'uncertainty-desc': (a, b) => numeric(b.dataset.uncertainty) - numeric(a.dataset.uncertainty),\n"
+        "          'name-asc': (a, b) => (a.dataset.name || '').localeCompare(b.dataset.name || ''),\n"
+        "        },\n"
+        "      });\n"
         "    </script>\n"
         "  </main>\n"
         "</body>\n"
@@ -869,6 +1540,46 @@ def build_dw_packet(
             status=status,
             status_reason=status_reason,
         )
+        structural_signal_band, structural_signal_summary = _structural_signal_profile(
+            candidate,
+            mission,
+        )
+        (
+            workflow_phase_labels,
+            provider_seam_summary,
+            workflow_boundary_shape_hint,
+        ) = _derive_structural_workflow_hints(candidate)
+        workflow_phase_scores = _workflow_phase_scores(
+            candidate,
+            mission,
+            workflow_phase_labels,
+        )
+        recommended_lane_target, lane_target_rationale = _lane_target_profile(
+            candidate,
+            structural_signal_band,
+            workflow_phase_labels,
+            provider_seam_summary,
+            workflow_boundary_shape_hint,
+        )
+        extract_recommendations, avoid_recommendations = _structural_recommendations(
+            candidate,
+            recommended_lane_target,
+            workflow_phase_labels,
+            provider_seam_summary,
+            workflow_boundary_shape_hint,
+        )
+        (
+            review_guidance_summary,
+            review_guidance_action,
+            review_guidance_stop_line,
+        ) = _review_guidance(
+            candidate,
+            discovery_signal_band,
+            structural_signal_band,
+            recommended_lane_target,
+            extract_recommendations,
+            avoid_recommendations,
+        )
         return DwCandidatePacket(
             candidate_id=candidate.candidate_id,
             candidate_name=candidate.name,
@@ -891,9 +1602,20 @@ def build_dw_packet(
             freshness_signal=candidate.freshness_signal,
             freshest_source_updated_at=candidate.freshest_source_updated_at,
             freshest_source_age_days=candidate.freshest_source_age_days,
-            uncertainty_notes=[
-                "Current run is catalog-backed and should later be upgraded to live-provider evidence.",
-            ],
+            structural_signal_band=structural_signal_band,
+            structural_signal_summary=structural_signal_summary,
+            workflow_phase_labels=workflow_phase_labels,
+            provider_seam_summary=provider_seam_summary,
+            workflow_boundary_shape_hint=workflow_boundary_shape_hint,
+            recommended_lane_target=recommended_lane_target,
+            lane_target_rationale=lane_target_rationale,
+            workflow_phase_scores=workflow_phase_scores,
+            structural_extraction_recommendations=extract_recommendations,
+            structural_avoid_recommendations=avoid_recommendations,
+            review_guidance_summary=review_guidance_summary,
+            review_guidance_action=review_guidance_action,
+            review_guidance_stop_line=review_guidance_stop_line,
+            uncertainty_notes=_candidate_uncertainties(candidate, status_reason),
         )
 
     accepted_packets = [
@@ -1031,6 +1753,20 @@ def render_recommendations_markdown(record: ResearchRecord) -> str:
                 f"- weaknesses: {'; '.join(candidate['weaknesses'])}",
                 f"- overlap with baseline: {candidate['overlap_with_baseline']}",
                 f"- novelty notes: {candidate['novelty_notes']}",
+                f"- recommended lane target: {candidate['recommended_lane_target']}",
+                f"- lane target rationale: {candidate['lane_target_rationale']}",
+                f"- workflow phase scores: {json.dumps(candidate['workflow_phase_scores'])}",
+                (
+                    "- extract recommendations: "
+                    f"{'; '.join(candidate['structural_extraction_recommendations']) or 'none'}"
+                ),
+                (
+                    "- avoid recommendations: "
+                    f"{'; '.join(candidate['structural_avoid_recommendations']) or 'none'}"
+                ),
+                f"- review guidance summary: {candidate['review_guidance_summary']}",
+                f"- review guidance action: {candidate['review_guidance_action']}",
+                f"- review guidance stop-line: {candidate['review_guidance_stop_line']}",
                 f"- uncertainty notes: {'; '.join(candidate['uncertainty_notes'])}",
             ]
         )
@@ -1058,6 +1794,7 @@ def render_recommendations_markdown(record: ResearchRecord) -> str:
                     f"{candidate['subsystem_reuse_score']['score']} "
                     f"({candidate['subsystem_reuse_score']['explanation']})"
                 ),
+                f"- workflow phase scores: {json.dumps(candidate['workflow_phase_scores'])}",
             ]
         )
 
@@ -1075,7 +1812,34 @@ def render_recommendations_markdown(record: ResearchRecord) -> str:
     else:
         lines.append("- none in the current run")
 
-    lines.extend(["", "7. OPEN UNCERTAINTIES"])
+    lines.extend(["", "7. STRUCTURAL RECOMMENDATIONS"])
+    if packet["structural_recommendations"]:
+        for recommendation in packet["structural_recommendations"]:
+            lines.append(
+                f"- {recommendation['name']} [{recommendation['target']}]: extract={'; '.join(recommendation['extract']) or 'none'} | avoid={'; '.join(recommendation['avoid']) or 'none'}"
+            )
+    else:
+        lines.append("- none in the current run")
+
+    lines.extend(["", "8. REVIEW GUIDANCE"])
+    if packet["review_guidance"]:
+        for guidance in packet["review_guidance"]:
+            lines.append(
+                f"- {guidance['name']} [{guidance['target']}]: {guidance['summary']} Action: {guidance['action']} Stop-line: {guidance['stop_line']}"
+            )
+    else:
+        lines.append("- none in the current run")
+
+    lines.extend(["", "9. REVIEW QUEUE"])
+    if packet["review_queue"]:
+        for entry in packet["review_queue"]:
+            lines.append(
+                f"- {entry['name']} [{entry['target']}] status={entry['status']} priority={entry['priority_band']} ({entry['priority_score']}) uncertainties={entry['uncertainty_count']}: {entry['rationale']} Action: {entry['action']} Stop-line: {entry['stop_line']}"
+            )
+    else:
+        lines.append("- none in the current run")
+
+    lines.extend(["", "10. OPEN UNCERTAINTIES"])
     if packet["open_uncertainties"]:
         for note in packet["open_uncertainties"]:
             lines.append(f"- {note}")
@@ -1085,7 +1849,7 @@ def render_recommendations_markdown(record: ResearchRecord) -> str:
     lines.extend(
         [
             "",
-            "8. MACHINE-FRIENDLY RESEARCH PACKET",
+            "11. MACHINE-FRIENDLY RESEARCH PACKET",
             "```yaml",
             json.dumps(packet["machine_friendly_research_packet"], indent=2),
             "```",

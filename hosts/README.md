@@ -21,3 +21,6 @@ Current host:
 
 Host-neutral integration kit:
 - `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\README.md`
+
+Host-owned adapter edge:
+- `hosts/adapters/`

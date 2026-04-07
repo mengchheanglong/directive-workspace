@@ -4,6 +4,8 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
+import { readJson } from "./checker-test-helpers.ts";
+
 type PackageJson = {
   scripts?: Record<string, string>;
 };
@@ -56,10 +58,6 @@ const SCHEMA_PATH = path.join(
   "checker-definition-registry.schema.json",
 );
 const REGISTRY_PATH = path.join(DIRECTIVE_ROOT, "scripts", "checker-definition-pilot.json");
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
 
 function assertNonEmptyString(value: unknown, label: string) {
   assert.equal(typeof value, "string", `${label} must be a string`);

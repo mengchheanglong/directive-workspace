@@ -12,6 +12,7 @@ import {
   runDirectiveRuntimeCallableExecution,
   type DirectiveRuntimeCallableExecutionRecord,
 } from "../runtime/core/callable-execution.ts";
+import { readJson } from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import type {
   DirectiveCallableCapability,
@@ -21,10 +22,6 @@ import type {
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "runtime_callable_execution_surface";
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
 
 function assertPersistedRecord(input: {
   directiveRoot: string;

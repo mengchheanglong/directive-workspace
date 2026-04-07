@@ -2,17 +2,18 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import {
   writeDirectiveMirroredDiscoveryCaseRecord,
   readDirectiveMirroredDiscoveryCaseRecord,
   type DirectiveMirroredDiscoveryCaseRecord,
-} from "../shared/lib/case-store.ts";
+} from "../engine/cases/case-store.ts";
 import {
   appendDirectiveCaseMirrorEvents,
   readDirectiveCaseMirrorEvents,
   type DirectiveCaseMirrorEvent,
-} from "../shared/lib/case-event-log.ts";
+} from "../engine/cases/case-event-log.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
 
 /**
  * Backfill case models for all queue entries that don't have one yet.
@@ -29,24 +30,6 @@ const DIRECTIVE_ROOT = path.resolve(
   "..",
 );
 
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  received_at: string;
-  status: string;
-  routing_target: string | null;
-  operating_mode: string | null;
-  routed_at: string | null;
-  completed_at: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  fast_path_record_path?: string | null;
-  capability_gap_id?: string | null;
-  notes?: string | null;
-};
-
 type BackfillResult = {
   totalEntries: number;
   alreadyHadCaseFile: number;
@@ -56,10 +39,10 @@ type BackfillResult = {
   errors: string[];
 };
 
-function readQueueEntries(): QueueEntry[] {
+function readQueueEntries(): DiscoveryIntakeQueueEntry[] {
   const queuePath = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
   const data = JSON.parse(fs.readFileSync(queuePath, "utf8")) as {
-    entries?: QueueEntry[];
+    entries?: DiscoveryIntakeQueueEntry[];
   };
   return data.entries ?? [];
 }
@@ -86,7 +69,7 @@ function resolveCanonicalState(routingRecordPath: string) {
   }
 }
 
-function inferLinkedArtifacts(entry: QueueEntry) {
+function inferLinkedArtifacts(entry: DiscoveryIntakeQueueEntry) {
   const base: DirectiveMirroredDiscoveryCaseRecord["linkedArtifacts"] = {
     intakeRecordPath: entry.fast_path_record_path ?? null,
     triageRecordPath: null,
@@ -105,7 +88,7 @@ function inferLinkedArtifacts(entry: QueueEntry) {
   return base;
 }
 
-function mapDecisionState(entry: QueueEntry): string {
+function mapDecisionState(entry: DiscoveryIntakeQueueEntry): string {
   if (entry.routing_target === "reject") return "reject";
   if (entry.routing_target === "defer" || entry.routing_target === "monitor") return "defer";
   if (entry.routing_target === "reference") return "reference";
@@ -115,7 +98,7 @@ function mapDecisionState(entry: QueueEntry): string {
 }
 
 function backfillEntry(
-  entry: QueueEntry,
+  entry: DiscoveryIntakeQueueEntry,
   result: BackfillResult,
 ): void {
   const candidateId = entry.candidate_id;
@@ -223,7 +206,7 @@ function backfillEntry(
 
 function ensureStateMaterializedEvent(
   candidateId: string,
-  entry: QueueEntry,
+  entry: DiscoveryIntakeQueueEntry,
   canonical: NonNullable<ReturnType<typeof resolveCanonicalState>>,
 ) {
   const existingEvents = readDirectiveCaseMirrorEvents({

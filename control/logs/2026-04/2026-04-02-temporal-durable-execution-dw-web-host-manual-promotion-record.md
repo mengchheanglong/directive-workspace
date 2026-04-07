@@ -19,7 +19,7 @@
 ## Product result made real
 
 - the case now has a real bounded manual promotion record:
-  - `runtime/promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md`
+  - `runtime/07-promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md`
 - canonical state now resolves the case current head to that promotion record
 - registry acceptance, host integration, runtime execution, and automation all remain explicitly closed
 

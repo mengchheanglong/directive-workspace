@@ -79,7 +79,7 @@ npm run report:directive-workspace-state
 That report resolves the current Directive Workspace state from real artifacts and can also focus on one artifact path:
 
 ```bash
-npm run report:directive-workspace-state -- discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md
+npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md
 ```
 
 In focused mode the report distinguishes:

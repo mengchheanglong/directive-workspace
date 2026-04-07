@@ -1,0 +1,23 @@
+# Discovery Intake Record: jackswl/deep-researcher
+
+- Candidate id: research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.
+- Candidate name: jackswl/deep-researcher
+- Intake date: 2026-04-07
+- Source type: external-system
+- Source reference: https://github.com/jackswl/deep-researcher
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Live-discovered candidate requiring source analysis. Imported from research-engine for Directive Workspace Discovery review only.
+- Initial relevance to the workspace: Direct usefulness: the generated Runtime adaptation and improvement plans target reusable callable runtime value with bounded behavior-preserving improvement, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 4b88612c-47d3-4713-b246-732ea62171e7 selected runtime. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723--triage.md

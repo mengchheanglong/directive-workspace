@@ -28,12 +28,12 @@ Reopen criteria:
 Default mode is NOTE unless repo truth clearly justifies STANDARD or DEEP.
 
 Architecture:
-- default stop at `bounded-result` in `architecture/02-experiments/`
+- default stop at `bounded-result` in `architecture/01-experiments/`
 - downstream materialization stages (04-09) are DEEP-only
 - do not continue past bounded-result unless the next step adds a concrete new Directive-owned artifact
 
 Runtime:
-- default stop at follow-up record in `runtime/follow-up/`
+- default stop at follow-up record in `runtime/00-follow-up/`
 - deeper chain only when real delivery work is active
 - do not continue deeper just to complete the chain
 
@@ -58,3 +58,4 @@ Status: complete.
 Canonical product root: `C:\Users\User\projects\directive-workspace`
 
 Do not drift back to `.openclaw\workspace` as the canonical root.
+

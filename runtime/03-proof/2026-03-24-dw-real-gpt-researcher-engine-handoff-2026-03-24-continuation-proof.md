@@ -11,8 +11,8 @@
 - Retained artifact: `architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md`
 - Implementation result: `architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md`
 - Implementation target: `architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`
-- Adoption artifact: `architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
-- Bounded result: `architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
+- Adoption artifact: `architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
+- Bounded result: `architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
 
 ## what must be proven before bounded runtime conversion
 - The callable input contract can remain bounded to the documented override fields and does not require hidden runtime context.
@@ -53,3 +53,4 @@
 - Callable stub: `runtime/01-callable-integrations/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-callable-integration.ts`
 - Runtime record: `runtime/02-records/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-runtime-record.md`
 - Source integration record: `architecture/07-integration-records/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-integration-record.md`
+

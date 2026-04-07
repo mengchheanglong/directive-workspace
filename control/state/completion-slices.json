@@ -202,7 +202,7 @@
       ],
       "blockedByClosedSeam": [],
       "proofCommands": [
-        "npm run report:directive-workspace-state -- runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
+        "npm run report:directive-workspace-state -- runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
         "npm run check:directive-scientify-runtime-promotion",
         "npm run check:directive-scientify-runtime-callable",
         "npm run check:standalone-scientify-host-adapter",
@@ -240,7 +240,7 @@
       ],
       "rollbackSurface": [
         "control/logs/2026-04",
-        "shared/lib/run-evidence-aggregation.ts",
+        "engine/execution/run-evidence-aggregation.ts",
         "discovery/capability-gaps.json",
         "discovery/gap-worklist.json",
         "control/state/completion-status.json",
@@ -376,7 +376,7 @@
         "npm run check"
       ],
       "rollbackSurface": [
-        "shared/lib/read-only-lifecycle-coordination.ts",
+        "engine/coordination/read-only-lifecycle-coordination.ts",
         "scripts/report-read-only-lifecycle-coordination.ts",
         "scripts/check-read-only-lifecycle-coordination.ts",
         "control/state",
@@ -403,7 +403,7 @@
         "npm run check"
       ],
       "rollbackSurface": [
-        "shared/lib/bounded-persistent-coordination.ts",
+        "engine/coordination/bounded-persistent-coordination.ts",
         "scripts/run-bounded-persistent-coordination.ts",
         "scripts/report-bounded-persistent-coordination.ts",
         "scripts/check-bounded-persistent-coordination.ts",

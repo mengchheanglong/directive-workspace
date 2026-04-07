@@ -1,29 +1,29 @@
 import fs from "node:fs";
 
-import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
-import type { RuntimeFollowUpRecordRequest } from "../../shared/lib/runtime-follow-up-record-writer";
-import type { RuntimeProofBundleRequest } from "../../shared/lib/runtime-proof-bundle-writer";
-import type { RuntimePromotionRecordRequest } from "../../shared/lib/runtime-promotion-record-writer";
-import type { RuntimeRegistryEntryRequest } from "../../shared/lib/runtime-registry-entry-writer";
-import type { RuntimeRecordRequest } from "../../shared/lib/runtime-record-writer";
-import type { RuntimeTransformationProofRequest } from "../../shared/lib/runtime-transformation-proof-writer";
-import type { RuntimeTransformationRecordRequest } from "../../shared/lib/runtime-transformation-record-writer";
-import { bootstrapStandaloneHostWorkspace } from "./bootstrap";
+import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
+import type { RuntimeFollowUpRecordRequest } from "../../runtime/lib/runtime-follow-up-record-writer.ts";
+import type { RuntimeProofBundleRequest } from "../../runtime/lib/runtime-proof-bundle-writer.ts";
+import type { RuntimePromotionRecordRequest } from "../../runtime/lib/runtime-promotion-record-writer.ts";
+import type { RuntimeRegistryEntryRequest } from "../../runtime/lib/runtime-registry-entry-writer.ts";
+import type { RuntimeRecordRequest } from "../../runtime/lib/runtime-record-writer.ts";
+import type { RuntimeTransformationProofRequest } from "../../runtime/lib/runtime-transformation-proof-writer.ts";
+import type { RuntimeTransformationRecordRequest } from "../../runtime/lib/runtime-transformation-record-writer.ts";
+import { bootstrapStandaloneHostWorkspace } from "./bootstrap.ts";
 import {
   applyStandaloneHostConfigOverrides,
   loadStandaloneHostConfig,
   type ResolvedStandaloneHostConfig,
-} from "./config";
+} from "./config.ts";
 import {
   createStandaloneFilesystemHost,
   createStandaloneFilesystemHostFromConfig,
   DEFAULT_STANDALONE_HOST_NAME,
   runStandaloneHostAcceptanceQuickstart,
-} from "./runtime";
+} from "./runtime.ts";
 import {
   startStandaloneHostServer,
   startStandaloneHostServerFromConfig,
-} from "./server";
+} from "./server.ts";
 
 type CommandName =
   | "init"
@@ -39,6 +39,11 @@ type CommandName =
   | "runtime-registry-write"
   | "runtime-scientify-bundle"
   | "runtime-scientify-invoke"
+  | "runtime-research-vault-descriptor"
+  | "runtime-research-vault-descriptor-callable"
+  | "runtime-research-vault-source-pack-query"
+  | "runtime-blisspixel-deepr-descriptor"
+  | "runtime-blisspixel-deepr-descriptor-callable"
   | "runtime-live-mini-swe-agent"
   | "runtime-overview"
   | "serve";
@@ -62,6 +67,11 @@ Commands:
   runtime-registry-write (--directive-root <path> | --config <path>) --input-json-path <path> [--persistence-sqlite-path <path>]
   runtime-scientify-bundle (--directive-root <path> | --config <path>) [--persistence-sqlite-path <path>]
   runtime-scientify-invoke (--directive-root <path> | --config <path>) --tool <tool> --input-json-path <path> [--timeout-ms <n>] [--execution-at <iso>] [--persist-artifacts <true|false>] [--persistence-sqlite-path <path>]
+  runtime-research-vault-descriptor (--directive-root <path> | --config <path>) [--persistence-sqlite-path <path>]
+  runtime-research-vault-descriptor-callable (--directive-root <path> | --config <path>) [--include-open-decisions <true|false>] [--execution-at <iso>] [--persistence-sqlite-path <path>]
+  runtime-research-vault-source-pack-query (--directive-root <path> | --config <path>) --query <text> [--include-evidence <true|false>] [--max-items <n>] [--timeout-ms <n>] [--execution-at <iso>] [--persist-artifacts <true|false>] [--persistence-sqlite-path <path>]
+  runtime-blisspixel-deepr-descriptor (--directive-root <path> | --config <path>) [--persistence-sqlite-path <path>]
+  runtime-blisspixel-deepr-descriptor-callable (--directive-root <path> | --config <path>) [--include-open-decisions <true|false>] [--execution-at <iso>] [--persistence-sqlite-path <path>]
   runtime-live-mini-swe-agent (--directive-root <path> | --config <path>) [--persistence-sqlite-path <path>]
   runtime-overview (--directive-root <path> | --config <path>) [--max-entries <n>] [--persistence-sqlite-path <path>]
   serve (--directive-root <path> | --config <path>) [--host <host>] [--port <port>] [--received-at <yyyy-mm-dd>] [--unresolved-gap-id <id> ...] [--auth-bearer-token <token>] [--persistence-sqlite-path <path>]
@@ -438,6 +448,132 @@ async function main() {
         persistArtifacts: persistArtifactsRaw
           ? persistArtifactsRaw === "true"
           : undefined,
+      });
+      process.stdout.write(`${JSON.stringify({ ok: true, result }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-research-vault-descriptor") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const descriptor = await host.readResearchVaultDescriptor();
+      process.stdout.write(`${JSON.stringify({ ok: true, descriptor }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-research-vault-descriptor-callable") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+    const includeOpenDecisionsRaw = readOptionalFlag(flags, "include-open-decisions");
+    if (
+      includeOpenDecisionsRaw
+      && includeOpenDecisionsRaw !== "true"
+      && includeOpenDecisionsRaw !== "false"
+    ) {
+      throw new Error("Invalid value for --include-open-decisions");
+    }
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const result = await host.invokeResearchVaultDescriptorCallable({
+        action: "summarize_descriptor",
+        includeOpenDecisions: includeOpenDecisionsRaw
+          ? includeOpenDecisionsRaw === "true"
+          : undefined,
+        executedAt: readOptionalFlag(flags, "execution-at"),
+      });
+      process.stdout.write(`${JSON.stringify({ ok: true, result }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-research-vault-source-pack-query") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+    const includeEvidenceRaw = readOptionalFlag(flags, "include-evidence");
+    if (
+      includeEvidenceRaw
+      && includeEvidenceRaw !== "true"
+      && includeEvidenceRaw !== "false"
+    ) {
+      throw new Error("Invalid value for --include-evidence");
+    }
+    const persistArtifactsRaw = readOptionalFlag(flags, "persist-artifacts");
+    if (
+      persistArtifactsRaw
+      && persistArtifactsRaw !== "true"
+      && persistArtifactsRaw !== "false"
+    ) {
+      throw new Error("Invalid value for --persist-artifacts");
+    }
+    const maxItems = readOptionalNumberFlag(flags, "max-items");
+    if (maxItems !== undefined && (maxItems < 1 || maxItems > 5)) {
+      throw new Error("Invalid value for --max-items");
+    }
+    const timeoutMs = readOptionalNumberFlag(flags, "timeout-ms");
+    if (timeoutMs !== undefined && timeoutMs < 1) {
+      throw new Error("Invalid value for --timeout-ms");
+    }
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const result = await host.invokeResearchVaultSourcePackTool({
+        tool: "query-source-pack",
+        input: {
+          query: readRequiredFlag(flags, "query"),
+          includeEvidence: includeEvidenceRaw
+            ? includeEvidenceRaw === "true"
+            : undefined,
+          maxItems,
+        },
+        timeoutMs,
+        executionAt: readOptionalFlag(flags, "execution-at"),
+        persistArtifacts: persistArtifactsRaw
+          ? persistArtifactsRaw === "true"
+          : undefined,
+      });
+      process.stdout.write(`${JSON.stringify({ ok: true, result }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-blisspixel-deepr-descriptor") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const descriptor = await host.readBlisspixelDeeprDescriptor();
+      process.stdout.write(`${JSON.stringify({ ok: true, descriptor }, null, 2)}\n`);
+    } finally {
+      host.close();
+    }
+    return;
+  }
+
+  if (command === "runtime-blisspixel-deepr-descriptor-callable") {
+    const runtimeConfig = readOptionalRuntimeConfig(flags);
+    const includeOpenDecisionsRaw = readOptionalFlag(flags, "include-open-decisions");
+    if (
+      includeOpenDecisionsRaw
+      && includeOpenDecisionsRaw !== "true"
+      && includeOpenDecisionsRaw !== "false"
+    ) {
+      throw new Error("Invalid value for --include-open-decisions");
+    }
+    const host = createRuntimeHostFromFlags(flags, runtimeConfig);
+    try {
+      const result = await host.invokeBlisspixelDeeprDescriptorCallable({
+        action: "summarize_descriptor",
+        includeOpenDecisions: includeOpenDecisionsRaw
+          ? includeOpenDecisionsRaw === "true"
+          : undefined,
+        executedAt: readOptionalFlag(flags, "execution-at"),
       });
       process.stdout.write(`${JSON.stringify({ ok: true, result }, null, 2)}\n`);
     } finally {

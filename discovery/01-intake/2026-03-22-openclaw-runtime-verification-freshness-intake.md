@@ -1,0 +1,34 @@
+# Discovery Fast-Path Record
+
+- Candidate id: `dw-openclaw-runtime-verification-freshness-2026-03-22`
+- Candidate name: `OpenClaw Runtime Verification Freshness Signal`
+- Record date: `2026-03-22`
+- Source type: `internal-signal`
+- Source reference: `reports/ops/openclaw-runtime-regression-latest.json` + `runtime/telegram-soak/daily-latest.json`
+- Source location on disk: `C:\Users\User\.openclaw\reports\ops` + `C:\Users\User\.openclaw\runtime\telegram-soak`
+- Claimed value: surface stale OpenClaw runtime verification as a Discovery candidate before orchestration confidence drifts away from recent proof
+- First-pass summary: OpenClaw currently looks healthy, but its regression and soak artifacts are 122.3h and 140.7h old. Add a bounded root signal adapter that turns stale verification evidence into a Discovery-first candidate.
+- Stack language: `powershell + json + markdown + typescript`
+- Stack runtime: `windows powershell + node`
+- Stack framework: `OpenClaw + Directive Workspace + Mission Control checks`
+- Stack package tool: `npm`
+- Stack deployment: `local workspace`
+- Stack external dependencies: `none`
+- Stack data model assumptions: regression report freshness and soak summary freshness are mission-relevant orchestration signals; stale evidence is enough to justify a Discovery candidate even without an outage
+- Stack integration shape: `OpenClaw report reader -> root signal helper -> Discovery intake queue -> Architecture proof slice`
+- Adoption target: `Directive Architecture`
+- Decision state: `accept for architecture`
+- Route destination: `architecture`
+- Why this route: the result is reusable internal operating logic for upstream signal submission and Discovery-first capability-gap detection
+- Why not the alternatives: `Runtime` is not the right owner because no runtime lane is being promoted; `Discovery holding` would leave stale verification as passive drift
+- Need bounded proof: `yes`
+- Next artifact: `architecture/01-experiments/2026-03-22-openclaw-runtime-verification-freshness-slice-01.md`
+- Compaction profile (if compacted): `n/a`
+- Compaction status (`full | compacted | bypass`): `bypass`
+- Compaction reason (required if bypass): `internal operating slice; no source compaction needed`
+- Re-entry trigger (if held): `n/a`
+- Review cadence (if held): `n/a`
+- Mission alignment (which active-mission objective does this serve): `OpenClaw as persistent orchestration` + `Discovery as operational front door`
+- Addresses known capability gap (gap_id or n/a): `gap-discovery-front-door-coverage`
+- Gap worklist rank (if selected from `discovery/gap-worklist.json`): `1`
+

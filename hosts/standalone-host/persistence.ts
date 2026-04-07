@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
 
-import type { ResolvedStandaloneHostPersistence } from "./config";
+import type { ResolvedStandaloneHostPersistence } from "./config.ts";
 
 type JsonValue = Record<string, unknown>;
 

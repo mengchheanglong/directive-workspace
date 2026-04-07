@@ -4,18 +4,18 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createStandaloneFilesystemHost } from "../hosts/standalone-host/runtime.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "directive_live_mini_swe_agent_standalone_host_runtime_implementation_slice";
 const PROMOTION_READINESS_PATH =
   "runtime/05-promotion-readiness/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-readiness.md";
 const IMPLEMENTATION_SLICE_PATH =
-  "runtime/follow-up/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-standalone-host-runtime-implementation-slice-01.md";
+  "runtime/00-follow-up/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-standalone-host-runtime-implementation-slice-01.md";
 const IMPLEMENTATION_RESULT_PATH =
-  "runtime/follow-up/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-standalone-host-runtime-implementation-slice-01-result.md";
+  "runtime/00-follow-up/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-standalone-host-runtime-implementation-slice-01-result.md";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md";
 const EXPECTED_HOST = "Directive Workspace standalone host (hosts/standalone-host/)";
 const EXPECTED_NEXT_STEP =
   "No automatic Runtime step is open; registry acceptance, host integration, runtime execution, and promotion automation remain intentionally unopened.";

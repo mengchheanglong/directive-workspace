@@ -13,9 +13,9 @@ export const DW_LIVE_MINI_SWE_AGENT_ENGINE_PRESSURE_CALLABLE_V0 = {
     promotionReadinessPath:
       "runtime/05-promotion-readiness/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-readiness.md",
     followUpPath:
-      "runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md",
+      "runtime/00-follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md",
     routingPath:
-      "discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md",
+      "discovery/03-routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md",
   },
   objective:
     "Describe the approved mini-swe-agent Runtime capability pressure as one Runtime-owned callable stub without opening execution, promotion, host integration, or automation.",

@@ -22,8 +22,8 @@
   - `shared/contracts/scientify-mission-control-external-host-guard.md`
   - `npm run check:directive-scientify-mission-control-external-host-guard`
 - The stronger pre-integration review packet is now explicit and green:
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-compile-contract-01.md`
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-promotion-input-package-01.md`
   - `npm run check:directive-scientify-mission-control-external-host-input-package`
 - `shared/contracts/runtime-to-host.md` still does not authorize Mission Control as a current bounded host-loading target, which keeps this boundary review-only rather than integrating.
 

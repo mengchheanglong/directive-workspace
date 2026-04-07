@@ -1,0 +1,24 @@
+# Discovery Triage Record: Autoresearch Results Logging Protocol
+
+- Candidate id: dw-pressure-results-logging-contract-quality-2026-03-26
+- Candidate name: Autoresearch Results Logging Protocol
+- Triage date: 2026-03-26
+- First-pass summary: Assess this structured results-logging protocol for Engine-owned contract, schema, and template value, especially explicit field discipline, enum discipline, reproducible record structure, and better Architecture closeout/result-evidence contracts without creating runtime logging automation.
+- Problem it appears to solve: Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.
+- Extractable value hypothesis: Assess this structured results-logging protocol for Engine-owned contract, schema, and template value, especially explicit field discipline, enum discipline, reproducible record structure, and better Architecture closeout/result-evidence contracts without creating runtime logging automation. | Local repo-backed source. Focus on explicit record fields, primary evidence discipline, and reusable Architecture artifact-contract quality.
+- Routing recommendation: Shared Engine routing selected architecture with usefulness level meta.
+- Proposed adoption target: engine-owned product logic
+- Stack-shape summary: workflow-writeup source; host dependence engine_only; integration mode adapt.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: non-mission-relevant source detail, unadapted source terminology.
+- Suggested decision state: accept_for_architecture
+- Fit to current direction: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Reusability across surfaces: Value remains useful without a host runtime surface.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: low
+- Can current gates validate it safely: partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: adaptation_complete, engine_boundary_preserved, decision_review
+- Missing evidence: adapted mechanism described, excluded baggage described, engine or product boundary improvement explained
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the adaptation boundary is clearer.
+- Next action: Materialize the adapted mechanism as engine-owned product logic before any host-specific integration work.
+- Linked intake record: discovery/01-intake/2026-03-26-dw-pressure-results-logging-contract-quality-2026-03-26-intake.md

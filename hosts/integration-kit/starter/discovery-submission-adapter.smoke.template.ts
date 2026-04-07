@@ -4,9 +4,9 @@ import path from "node:path";
 import {
   submitDiscoveryEntryWithHostBridge,
   type DiscoveryHostStorageBridge,
-} from "./discovery-submission-adapter.template";
-import { createFilesystemDiscoveryHostStorageBridge } from "./discovery-host-storage-bridge.filesystem.template";
-import type { DiscoverySubmissionRequest } from "../../../shared/lib/discovery-submission-router";
+} from "./discovery-submission-adapter.template.ts";
+import { createFilesystemDiscoveryHostStorageBridge } from "./discovery-host-storage-bridge.filesystem.template.ts";
+import type { DiscoverySubmissionRequest } from "../../../discovery/lib/discovery-submission-router.ts";
 
 function assertCondition(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -44,7 +44,7 @@ const starterFastPathRequest: DiscoverySubmissionRequest = {
     why_this_route: "Primary value is a reusable runtime lane.",
     why_not_alternatives: "Architecture-only treatment would miss the runtime objective.",
     need_bounded_proof: "Need a bounded proof artifact before promotion.",
-    next_artifact: "runtime/records/2026-03-22-starter-fast-path-record.md",
+    next_artifact: "runtime/legacy-records/2026-03-22-starter-fast-path-record.md",
   },
 };
 
@@ -96,7 +96,7 @@ const starterSplitCaseRequest: DiscoverySubmissionRequest = {
       why_this_route: "Primary value is reusable internal operating logic.",
       why_not_alternatives: "Runtime would be premature without runtime justification.",
       receiving_track_owner: "directive-workspace",
-      required_next_artifact: "architecture/02-experiments/2026-03-22-starter-split-case-slice-01.md",
+      required_next_artifact: "architecture/01-experiments/2026-03-22-starter-split-case-slice-01.md",
     },
   },
 };
@@ -182,3 +182,4 @@ export async function runDiscoveryStarterSmoke(): Promise<DiscoveryStarterSmokeR
     jsonArtifactPaths: harness.listJsonArtifactPaths(),
   };
 }
+

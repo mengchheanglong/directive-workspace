@@ -141,9 +141,9 @@ function createRuntimeRecordExample(receivedAt: string): JsonValue {
     candidate_id: "dw-bootstrap-runtime-example",
     candidate_name: "Bootstrap Runtime Example",
     runtime_record_date: receivedAt,
-    origin_path: `architecture/03-adopted/${receivedAt}-bootstrap-runtime-example-origin.md`,
+    origin_path: `architecture/02-adopted/${receivedAt}-bootstrap-runtime-example-origin.md`,
     linked_follow_up_record:
-      `runtime/follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
+      `runtime/00-follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
     runtime_objective:
       "Materialize the first bounded Runtime record from the standalone host's local/shareable surface.",
     proposed_host: "directive-workspace-standalone-host",
@@ -151,7 +151,7 @@ function createRuntimeRecordExample(receivedAt: string): JsonValue {
     execution_slice:
       "Write a bounded Runtime record and expose it through the standalone host overview/API without claiming runtime parity.",
     required_proof:
-      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
     required_gates: [
       "check:directive-standalone-runtime-host",
     ],
@@ -176,7 +176,7 @@ function createRuntimeProofExample(receivedAt: string): JsonValue {
     candidate_name: "Bootstrap Runtime Example",
     proof_date: receivedAt,
     linked_runtime_record:
-      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
     required_proof_items: [
       "Runtime record exists",
       "Gate snapshot JSON exists",
@@ -187,8 +187,8 @@ function createRuntimeProofExample(receivedAt: string): JsonValue {
       "check:directive-standalone-api-host",
     ],
     source_proof_artifacts: [
-      `runtime/follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
-      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
+      `runtime/00-follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
     ],
     gate_snapshot: {
       overall_result: "pass",
@@ -255,7 +255,7 @@ function createTransformationRecordExample(receivedAt: string): JsonValue {
     record_date: receivedAt,
     transformation_type: "maintainability",
     discovery_intake_path:
-      `discovery/intake/${receivedAt}-bootstrap-transformation-intake.md`,
+      `discovery/01-intake/${receivedAt}-bootstrap-transformation-intake.md`,
     component: "standalone-host Runtime transformation lane",
     current_implementation:
       "Transformation artifacts existed as templates and historical records without a canonical standalone-host writer path.",
@@ -276,9 +276,9 @@ function createTransformationRecordExample(receivedAt: string): JsonValue {
       "npm run check:directive-standalone-runtime-host && npm run check:directive-standalone-api-host",
     comparison_mode: "before-after",
     baseline_artifact_path:
-      `runtime/records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
     result_artifact_path:
-      `runtime/records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-transformation-example-transformation-proof.json`,
     correctness_preserved:
       "yes - the transformation proof still satisfies the canonical schema and the standalone host still stays bounded/local",
     metric_improvement_measured:
@@ -299,19 +299,19 @@ function createRuntimePromotionExample(receivedAt: string): JsonValue {
     candidate_name: "Bootstrap Runtime Example",
     promotion_date: receivedAt,
     linked_runtime_record:
-      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-runtime-example-runtime-record.md`,
     target_host: "directive-workspace-standalone-host",
     target_runtime_surface: "bounded local runtime artifact lifecycle",
     integration_mode: "reimplement",
     source_intent_artifact:
-      `runtime/follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
+      `runtime/00-follow-up/${receivedAt}-dw-bootstrap-runtime-example-runtime-follow-up-record.md`,
     compile_contract_artifact: "shared/contracts/runtime-to-host.md",
     runtime_permissions_profile: "local_filesystem_only",
     safe_output_scope: "directive-root/runtime/**",
     sanitize_policy: "no_external_network_side_effects",
     proposed_runtime_status: "bounded_local_reference",
     proof_path:
-      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
     quality_gate_profile: "bounded_local_reference_guard/v1",
     promotion_profile_family: "bounded_local_reference",
     proof_shape: "runtime_local_artifact_proof/v1",
@@ -344,12 +344,12 @@ function createRuntimeRegistryExample(receivedAt: string): JsonValue {
     candidate_name: "Bootstrap Runtime Example",
     registry_date: receivedAt,
     linked_promotion_record:
-      `runtime/promotion-records/${receivedAt}-dw-bootstrap-runtime-example-promotion-record.md`,
+      `runtime/07-promotion-records/${receivedAt}-dw-bootstrap-runtime-example-promotion-record.md`,
     host: "directive-workspace-standalone-host",
     runtime_surface: "bounded local runtime artifact lifecycle",
     runtime_status: "reference_live",
     proof_path:
-      `runtime/records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
+      `runtime/legacy-records/${receivedAt}-dw-bootstrap-runtime-example-proof-checklist.md`,
     last_validated_by: "check:directive-standalone-runtime-host",
     last_validation_date: receivedAt,
     active_risks: [
@@ -496,7 +496,7 @@ export function bootstrapStandaloneHostWorkspace(
     path.resolve(directiveRoot, "runtime", "records"),
   );
   const runtimePromotionRecordsDirectory = normalizeAbsolutePath(
-    path.resolve(directiveRoot, "runtime", "promotion-records"),
+    path.resolve(directiveRoot, "runtime", "07-promotion-records"),
   );
   const runtimeRegistryDirectory = normalizeAbsolutePath(
     path.resolve(directiveRoot, "runtime", "registry"),
@@ -597,3 +597,4 @@ export function bootstrapStandaloneHostWorkspace(
     ],
   };
 }
+

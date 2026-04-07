@@ -1,0 +1,23 @@
+# Discovery Intake Record: Autoloop Persistent Orchestration Pattern
+
+- Candidate id: dw-mission-autoloop-persistent-orchestration-2026-03-26
+- Candidate name: Autoloop Persistent Orchestration Pattern
+- Intake date: 2026-03-26
+- Source type: workflow-writeup
+- Source reference: sources/intake/agentics/workflows/autoloop.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Persistent orchestration, proof-backed self-improvement, and low-cost repeated iteration directly support the active mission to build a revenue-generating AI workspace that strengthens itself over time.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 313acff0-28fa-4063-b799-8cfe5dca6f7d selected architecture. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-26-dw-mission-autoloop-persistent-orchestration-2026-03-26-triage.md

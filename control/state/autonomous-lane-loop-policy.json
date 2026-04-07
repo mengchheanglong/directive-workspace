@@ -1,0 +1,26 @@
+{
+  "enabled": true,
+  "approvedBy": "directive-autonomous-loop",
+  "maxActionsPerRun": 8,
+  "discovery": {
+    "autoOpenRoute": true,
+    "requireNoHumanReview": true,
+    "minimumConfidence": "high"
+  },
+  "architecture": {
+    "autoStartFromHandoff": true,
+    "autoCloseBoundedStart": true,
+    "autoAdoptBoundedResult": true,
+    "autoCreateImplementationTargetForPlannedNext": true,
+    "autoCompleteMaterializationChain": true
+  },
+  "runtime": {
+    "autoAdvanceToPromotionReadiness": true,
+    "autoGeneratePromotionSpecification": true,
+    "autoCreatePromotionRecord": true,
+    "autoHostAdapterDescriptor": false,
+    "autoHostCallableExecution": false,
+    "autoWriteRegistryEntry": false,
+    "requireNoHumanReview": true
+  }
+}

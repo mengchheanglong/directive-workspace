@@ -8,9 +8,10 @@ import {
   type CapabilityGapRecord,
   type DiscoveryGapWorklist,
   type DiscoveryQueueEntry,
-} from "../shared/lib/discovery-gap-worklist-generator.ts";
-import { readTopEligibleDiscoveryGapFromCanonicalWorklist } from "../shared/lib/discovery-gap-worklist-selector.ts";
-import { aggregateRunEvidence } from "../shared/lib/run-evidence-aggregation.ts";
+} from "../discovery/lib/discovery-gap-worklist-generator.ts";
+import { readTopEligibleDiscoveryGapFromCanonicalWorklist } from "../discovery/lib/discovery-gap-worklist-selector.ts";
+import { aggregateRunEvidence } from "../engine/execution/run-evidence-aggregation.ts";
+import { readJson } from "./checker-test-helpers.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "runtime_cycle_evidence_feedback";
@@ -22,16 +23,12 @@ const ACTIVE_MISSION_PATH = path.join(DIRECTIVE_ROOT, "knowledge", "active-missi
 const SCIENTIFY_CANDIDATE_ID =
   "dw-source-scientify-research-workflow-plugin-2026-03-27";
 const SCIENTIFY_PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
 const OPENMOSS_CANDIDATE_ID =
   "dw-mission-openmoss-runtime-orchestration-2026-03-26";
 const OPENMOSS_PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md";
 const REPEATABILITY_GAP_ID = "gap-repeatable-runtime-promotions";
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
 
 function main() {
   const report = aggregateRunEvidence({

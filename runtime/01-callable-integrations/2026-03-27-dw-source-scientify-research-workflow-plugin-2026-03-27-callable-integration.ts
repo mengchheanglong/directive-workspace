@@ -13,9 +13,9 @@ export const DW_SCIENTIFY_LITERATURE_ACCESS_BUNDLE_CALLABLE_V0 = {
     promotionReadinessPath:
       "runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md",
     followUpPath:
-      "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md",
+      "runtime/00-follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md",
     routingPath:
-      "discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
+      "discovery/03-routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
   },
   objective:
     "Provide the approved Scientify literature-access bundle as one Runtime-owned callable capability that executes through the bounded executor surface.",

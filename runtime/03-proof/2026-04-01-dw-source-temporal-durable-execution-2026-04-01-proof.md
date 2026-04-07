@@ -4,7 +4,7 @@
 - Candidate id: `dw-source-temporal-durable-execution-2026-04-01`
 - Candidate name: `Temporal Durable Execution Platform`
 - Runtime v0 record path: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
-- Source follow-up record path: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Source follow-up record path: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
 - Proof opening decision: `approved_for_bounded_proof_artifact`
 - Opened by: `directive-lead-runtime-review`
 - Opened on: `2026-04-01`
@@ -12,8 +12,8 @@
 
 ## source inputs required
 - Runtime v0 record: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
 - Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
 - Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
@@ -60,5 +60,5 @@
 ## artifact linkage
 - Runtime proof artifact: `runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`

@@ -1,0 +1,39 @@
+# Promotion Record: Scientify Literature-Access Tool Bundle
+
+- Candidate id: dw-source-scientify-research-workflow-plugin-2026-03-27
+- Candidate name: Scientify Literature-Access Tool Bundle
+- Promotion date: 2026-04-01
+- Linked Runtime record: `runtime/02-records/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-record.md`
+- Target host: Directive Workspace standalone host (hosts/standalone-host/)
+- Target runtime surface: bounded standalone-host literature-access promotion review
+- Integration mode: reimplement
+- Source intent artifact: `runtime/04-capability-boundaries/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-capability-boundary.md`
+- Compile contract artifact: `shared/contracts/runtime-to-host.md`
+- Runtime permissions profile: read-only host-loading and bounded local artifact review only; no background execution or host-owned mutation
+- Safe output scope: `runtime/07-promotion-records/`, `runtime/06-promotion-specifications/`, and `hosts/standalone-host/` read-model truth only
+- Sanitize policy: manual Scientify-only promotion record; no registry write, activation, dispatch, or downstream automation side effects
+- Proposed runtime status: manual_standalone_host_promotion_record_opened
+- Proof path: `runtime/03-proof/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-proof.md`
+- Quality gate profile: standalone_scientify_manual_promotion_guard/v1
+- Promotion profile family: bounded_standalone_scientify_manual_promotion
+- Proof shape: standalone_scientify_manual_promotion_snapshot/v1
+- Primary host checker: `npm run check:directive-scientify-runtime-promotion`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: validated_locally
+- Quality gate fail reasons:
+  - none
+- Required gates:
+  - `npm run check:directive-scientify-runtime-promotion`
+  - `npm run check:standalone-scientify-host-adapter`
+  - `npm run check:directive-scientify-runtime-callable`
+  - `npm run check:pre-host-promotion-record-prerequisites`
+- Validation result: The first manual Scientify standalone-host promotion record is now explicit and checked, while registry acceptance, host integration, runtime execution, and promotion automation remain closed.
+- Rollback plan: remove this promotion record, unlink it from the promotion-readiness artifact, regenerate the Scientify promotion specification, and restore the completion frontier to the pre-promotion blocked state.
+- Owner: Directive Runtime
+- Promotion decision: approved for one bounded manual Scientify standalone-host promotion review

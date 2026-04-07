@@ -1,0 +1,24 @@
+# Discovery Triage Record: mini-swe-agent Runtime Route Proof
+
+- Candidate id: dw-real-mini-swe-agent-runtime-route-v0-2026-03-25
+- Candidate name: mini-swe-agent Runtime Route Proof
+- Triage date: 2026-03-25
+- First-pass summary: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.
+- Problem it appears to solve: Operationalize the value in a reusable runtime shape with stronger boundaries than the source.
+- Extractable value hypothesis: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost. | Real Runtime-route proof from the tracked mini-swe-agent source under sources/intake/mini-swe-agent.
+- Routing recommendation: Shared Engine routing selected runtime with usefulness level direct.
+- Proposed adoption target: reusable runtime transformation capability
+- Stack-shape summary: github-repo source; host dependence host_adapter_required; integration mode reimplement.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned runtime capability or transformation artifact behind a host adapter boundary.. Excluded baggage: source-specific implementation baggage, host-local assumptions from the original source.
+- Suggested decision state: route_to_runtime_follow_up
+- Fit to current direction: Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.
+- Reusability across surfaces: Value depends on a later host adapter boundary for repeated runtime use.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: medium
+- Can current gates validate it safely: partially - proof plan runtime_transformation_proof defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: behavior_preservation, metric_improvement_or_equivalent_value, runtime_boundary_review
+- Missing evidence: baseline artifact or metric, result artifact or metric, behavior-preserving claim, rollback path
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Revert to the baseline implementation and keep the candidate in follow-up status until proof is stronger.
+- Next action: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
+- Linked intake record: discovery/01-intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md

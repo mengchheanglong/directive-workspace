@@ -1,0 +1,39 @@
+# Promotion Record: mini-swe-agent Runtime Capability Pressure
+
+- Candidate id: dw-live-mini-swe-agent-engine-pressure-2026-03-24
+- Candidate name: mini-swe-agent Runtime Capability Pressure
+- Promotion date: 2026-04-02
+- Linked Runtime record: `runtime/02-records/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-record.md`
+- Target host: Directive Workspace standalone host (hosts/standalone-host/)
+- Target runtime surface: bounded standalone-host callable promotion review
+- Integration mode: reimplement
+- Source intent artifact: `runtime/04-capability-boundaries/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-capability-boundary.md`
+- Compile contract artifact: `shared/contracts/runtime-to-host.md`
+- Runtime permissions profile: read-only host-loading and bounded local artifact review only; no background execution or host-owned mutation
+- Safe output scope: `runtime/07-promotion-records/`, `runtime/06-promotion-specifications/`, `runtime/01-callable-integrations/`, and `hosts/standalone-host/` read-model truth only
+- Sanitize policy: manual live-mini-swe standalone-host promotion record only; no registry write, activation, dispatch, or downstream automation side effects
+- Proposed runtime status: manual_live_mini_swe_agent_standalone_promotion_record_opened
+- Proof path: `runtime/03-proof/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-proof.md`
+- Quality gate profile: live_mini_swe_agent_standalone_host_manual_promotion_guard/v1
+- Promotion profile family: bounded_live_mini_swe_agent_standalone_host_manual_promotion
+- Proof shape: live_mini_swe_agent_standalone_host_manual_promotion_snapshot/v1
+- Primary host checker: `npm run check:directive-live-mini-swe-agent-runtime-promotion`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: validated_locally
+- Quality gate fail reasons:
+  - none
+- Required gates:
+  - `npm run check:directive-live-mini-swe-agent-runtime-promotion`
+  - `npm run check:standalone-live-mini-swe-agent-host-adapter`
+  - `npm run check:directive-live-mini-swe-agent-runtime-callable`
+  - `npm run check:pre-host-promotion-record-prerequisites`
+- Validation result: The first manual live mini-swe standalone-host promotion record is now explicit and checked, while registry acceptance, host integration, runtime execution, and promotion automation remain closed.
+- Rollback plan: remove this promotion record, unlink it from the promotion-readiness artifact, regenerate the live mini-swe promotion specification, and restore the case to the bounded standalone-host implementation stop.
+- Owner: Directive Runtime
+- Promotion decision: approved for one bounded manual live mini-swe standalone-host promotion review

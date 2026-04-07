@@ -172,7 +172,7 @@
           },
           {
             "path": "violations.0.code",
-            "equals": "planner_outcome_mismatch"
+            "equals": "planner_task_kind_mismatch"
           },
           {
             "path": "violations.0.candidateId",
@@ -180,15 +180,15 @@
           },
           {
             "path": "violations.0.path",
-            "equals": "plan.outcome"
+            "equals": "plan.task.kind"
           },
           {
             "path": "violations.0.expected",
-            "equals": "stop"
+            "equals": "record_implementation_result"
           },
           {
             "path": "violations.0.actual",
-            "equals": "recommend_task"
+            "equals": "evaluate_post_consumption"
           }
         ]
       },

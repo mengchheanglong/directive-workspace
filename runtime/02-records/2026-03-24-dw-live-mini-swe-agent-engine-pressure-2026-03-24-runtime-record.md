@@ -3,7 +3,7 @@
 ## follow-up review decision
 - Candidate id: `dw-live-mini-swe-agent-engine-pressure-2026-03-24`
 - Candidate name: `mini-swe-agent Runtime Capability Pressure`
-- Source follow-up record: `runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Source follow-up record: `runtime/00-follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
 - Review decision: `approved_for_bounded_runtime_conversion_record`
 - Reviewed by: `directive-lead-runtime-review`
 - Review date: `2026-03-24`
@@ -51,8 +51,8 @@
 
 ## artifact linkage
 - Runtime v0 record: `runtime/02-records/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`
 - Next Runtime proof artifact if later approved: `runtime/03-proof/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-proof.md`
 
 ## boundary

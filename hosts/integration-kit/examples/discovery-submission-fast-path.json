@@ -17,6 +17,6 @@
     "why_this_route": "Primary value is a repeatedly callable runtime capability.",
     "why_not_alternatives": "Architecture-only treatment would miss the reusable runtime objective.",
     "need_bounded_proof": "Need one bounded proof artifact before promotion.",
-    "next_artifact": "runtime/records/2026-03-22-example-fast-path-record.md"
+    "next_artifact": "runtime/legacy-records/2026-03-22-example-fast-path-record.md"
   }
 }

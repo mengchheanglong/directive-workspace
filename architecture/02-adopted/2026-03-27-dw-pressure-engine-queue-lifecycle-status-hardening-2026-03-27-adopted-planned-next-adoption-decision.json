@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-adopted/2026-03-27-dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can present queue lifecycle state more truthfully when broken completed entries are explicitly marked as inconsistent completion instead of rendered as clean completion.",
+    "mechanism": "The adopted slice retains one derived queue lifecycle-status guard and operator-facing warning for broken completed entries.",
+    "baseline_observation": "Before this DEEP opener, broken queue entries still surfaced the raw completed lifecycle tag without any explicit stale-completion warning.",
+    "expected_effect": "The queue surface will stop overstating completed work for broken entries while preserving the raw queue status as evidence.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The slice is small, operator-visible, and directly aligned with the queue lifecycle mismatch bottleneck.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

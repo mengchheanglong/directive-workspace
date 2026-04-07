@@ -13,9 +13,9 @@
   "createdAt": "2026-03-30T00:00:00.000Z",
   "updatedAt": "2026-03-30T00:00:00.000Z",
   "linkedArtifacts": {
-    "intakeRecordPath": "discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md",
-    "triageRecordPath": "discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
-    "routingRecordPath": "discovery/routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md",
+    "intakeRecordPath": "discovery/01-intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-routing-record.md",
     "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-3670d87c.json",
     "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-30T00-00-00-000Z-dw-source-gpt-researcher-mcp-server-2026-03-30-3670d87c.md",
     "architectureHandoffPath": null,
@@ -25,7 +25,7 @@
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "discovery/monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md"
+    "resultRecordPath": "discovery/04-monitor/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-monitor-record.md"
   },
   "projectionInputs": {
     "discoveryFrontDoor": {
@@ -72,9 +72,9 @@
         "why_this_route": "Recommended discovery because its lane score (17) exceeded the alternatives.",
         "why_not_alternatives": "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure. Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
         "receiving_track_owner": "discovery",
-        "required_next_artifact": "discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
-        "linked_intake_record": "discovery/intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md",
-        "linked_triage_record": "discovery/triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
+        "required_next_artifact": "discovery/02-triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
+        "linked_intake_record": "discovery/01-intake/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-03-30-dw-source-gpt-researcher-mcp-server-2026-03-30-triage.md",
         "reentry_or_promotion_conditions": "routing_review, human_decision_required",
         "review_cadence": "before any downstream route is accepted"
       }

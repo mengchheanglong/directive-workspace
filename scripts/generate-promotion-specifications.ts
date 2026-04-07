@@ -6,7 +6,7 @@ import {
   buildDirectiveRuntimePromotionSpecification,
   parseDirectiveRuntimePromotionReadinessFields,
   resolveDirectiveRuntimePromotionSpecificationPath,
-} from "../shared/lib/runtime-promotion-specification.ts";
+} from "../runtime/lib/runtime-promotion-specification.ts";
 
 /**
  * Generates host-consumable promotion specification artifacts.
@@ -39,7 +39,7 @@ function main() {
 
   const files = fs
     .readdirSync(PROMOTION_READINESS_DIR, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
+    .filter((entry) => entry.isFile() && entry.name.endsWith("-promotion-readiness.md"))
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const generated: string[] = [];

@@ -21,7 +21,7 @@ type PromotionProfileCatalog = {
 };
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const PROMOTION_PROFILES_PATH = path.join(DIRECTIVE_ROOT, "runtime", "PROMOTION_PROFILES.json");
+const PROMOTION_PROFILES_PATH = path.join(DIRECTIVE_ROOT, "runtime", "meta", "PROMOTION_PROFILES.json");
 
 function readPromotionProfiles() {
   return JSON.parse(
@@ -121,7 +121,7 @@ function renderGuardMarkdown(
     "",
     "## Canonical Inventory",
     "",
-    "- `runtime/PROMOTION_PROFILES.json`",
+    "- `runtime/meta/PROMOTION_PROFILES.json`",
     "",
   ].join("\n");
 }

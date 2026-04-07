@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildDirectiveReadOnlyLifecycleCoordinationReport } from "../shared/lib/read-only-lifecycle-coordination.ts";
+import { buildDirectiveReadOnlyLifecycleCoordinationReport } from "../engine/coordination/read-only-lifecycle-coordination.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const QUEUE_PATH = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
@@ -42,27 +42,33 @@ function main() {
   });
   assert.equal(report.upstreamSignals.manualRuntimePromotionCycles.totalManualPromotionRecords >= 9, true);
   assert.equal(report.upstreamSignals.manualRuntimePromotionCycles.validatedLocallyCount >= 9, true);
-  assert.equal(report.upstreamSignals.runtimePromotionAssistanceTopRecommendation, null);
+  assert.deepEqual(report.upstreamSignals.runtimePromotionAssistanceTopRecommendation, {
+    candidateId: "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
+    assistanceState: "blocked_pending_host_selection",
+    recommendedActionKind: "clarify_repo_native_host_target",
+  });
 
-  assert.equal(report.summary.totalLiveCases, 32);
-  assert.equal(report.summary.recommendTaskCount, 6);
-  assert.equal(report.summary.parkedCount, 22);
-  assert.equal(report.summary.stopCount, 4);
-  assert.equal(report.summary.currentLaneCounts.runtime, 10);
-  assert.equal(report.summary.currentLaneCounts.architecture, 20);
-  assert.equal(report.summary.currentLaneCounts.discovery, 2);
-  assert.equal(report.summary.bucketCounts.runtime_promotion_readiness_parked, 1);
-  assert.equal(report.summary.bucketCounts.architecture_retention_confirmation_due, 6);
-  assert.equal(report.summary.bucketCounts.architecture_experimental_parked, 10);
+  assert.equal(report.summary.totalLiveCases, 47);
+  assert.equal(report.summary.recommendTaskCount, 0);
+  assert.equal(report.summary.parkedCount, 46);
+  assert.equal(report.summary.stopCount, 1);
+  assert.equal(report.summary.currentLaneCounts.runtime, 16);
+  assert.equal(report.summary.currentLaneCounts.architecture, 25);
+  assert.equal(report.summary.currentLaneCounts.discovery, 6);
+  assert.equal(report.summary.bucketCounts.runtime_promotion_readiness_parked, 7);
+  assert.equal(report.summary.bucketCounts.architecture_retention_confirmation_due, 0);
+  assert.equal(report.summary.bucketCounts.architecture_experimental_parked, 11);
+  assert.equal(report.summary.bucketCounts.architecture_keep_stop_carried_in_queue, 1);
+  assert.equal(report.summary.bucketCounts.other_live_case, 17);
   assert.equal(report.summary.bucketCounts.runtime_manual_promotion_stop, 9);
 
   assert.ok(report.topCoordinationPressure, "Expected one top coordination pressure");
-  assert.equal(report.topCoordinationPressure.bucketId, "architecture_experimental_parked");
+  assert.equal(report.topCoordinationPressure.bucketId, "other_live_case");
   assert.equal(report.topCoordinationPressure.coordinationOutcome, "parked");
-  assert.equal(report.topCoordinationPressure.caseCount, 10);
+  assert.equal(report.topCoordinationPressure.caseCount, 17);
   assert.ok(
-    report.topCoordinationPressure.recommendedFocus.includes("experimental Architecture cases"),
-    "Expected the top pressure to reflect the parked experimental Architecture cluster",
+    report.topCoordinationPressure.recommendedFocus.includes("Keep unmatched live cases visible"),
+    "Expected the top pressure to reflect the unmatched live-case review cluster",
   );
 
   const scientify = findCase(report, "dw-source-scientify-research-workflow-plugin-2026-03-27");
@@ -110,18 +116,42 @@ function main() {
   assert.equal(pressureMiniSwe.coordinationOutcome, "parked");
   assert.equal(pressureMiniSwe.actionKind, "keep_runtime_promotion_readiness_visible");
 
+  const researchVaultPromoted = findCase(
+    report,
+    "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  );
+  assert.equal(researchVaultPromoted.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(researchVaultPromoted.bucketId, "runtime_promotion_readiness_parked");
+  assert.equal(researchVaultPromoted.coordinationOutcome, "parked");
+
+  const deepResearcherPending = findCase(
+    report,
+    "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
+  );
+  assert.equal(deepResearcherPending.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(deepResearcherPending.bucketId, "runtime_promotion_readiness_parked");
+  assert.equal(deepResearcherPending.coordinationOutcome, "parked");
+
   const reportingBoundary = findCase(report, "dw-pressure-agentics-reporting-boundary-2026-03-26");
-  assert.equal(reportingBoundary.bucketId, "architecture_retention_confirmation_due");
-  assert.equal(reportingBoundary.coordinationOutcome, "recommend_task");
-  assert.equal(reportingBoundary.actionKind, "review_retention_confirmation");
+  assert.equal(reportingBoundary.currentStage, "architecture.implementation_target.opened");
+  assert.equal(reportingBoundary.bucketId, "other_live_case");
+  assert.equal(reportingBoundary.coordinationOutcome, "parked");
+  assert.equal(reportingBoundary.actionKind, "inspect_live_case_boundary");
 
   const corePrinciples = findCase(report, "dw-mission-core-principles-operating-discipline-2026-03-26");
-  assert.equal(corePrinciples.bucketId, "architecture_keep_stop_carried_in_queue");
-  assert.equal(corePrinciples.coordinationOutcome, "stop");
+  assert.equal(corePrinciples.currentStage, "architecture.implementation_target.opened");
+  assert.equal(corePrinciples.bucketId, "other_live_case");
+  assert.equal(corePrinciples.coordinationOutcome, "parked");
 
   const monitor = findCase(report, "dw-mission-agentics-issue-triage-discovery-restart-2026-03-26");
   assert.equal(monitor.bucketId, "discovery_monitor_hold");
   assert.equal(monitor.coordinationOutcome, "parked");
+
+  const openDeepResearchAutoloop = findCase(report, "dw-test-open-deep-research-autoloop-2026-04-06");
+  assert.equal(openDeepResearchAutoloop.currentStage, "architecture.post_consumption_evaluation.keep");
+  assert.equal(openDeepResearchAutoloop.bucketId, "architecture_keep_stop_carried_in_queue");
+  assert.equal(openDeepResearchAutoloop.coordinationOutcome, "stop");
+  assert.equal(openDeepResearchAutoloop.actionKind, "keep_keep_stop_visible_without_reopening");
 
   assert.equal(
     fs.readFileSync(QUEUE_PATH, "utf8"),

@@ -1,0 +1,25 @@
+# CLI-Anything Re-entry Preconditions Slice 01
+
+- Candidate id: `al-parked-cli-anything`
+- Candidate name: `CLI-Anything`
+- Runtime record date: `2026-03-22`
+- Origin path: `C:\Users\User\.openclaw\workspace\agent-lab\tooling-parked\CLI-Anything`
+- Linked follow-up record: `runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md`
+- Runtime objective: close the non-execution preconditions required before any bounded mediated-command experiment
+- Proposed host: `Mission Control`
+- Proposed runtime surface: `none yet` (precondition slice only)
+- Execution slice: `re-entry preconditions slice 01`
+- Required proof:
+  - command-mediation contract exists
+  - command-class approval policy exists
+  - host checker verifies both artifacts and deferred status
+- Required gates:
+  - `npm run check:directive-cli-anything-reentry`
+  - `npm run check:directive-v0`
+  - `npm run check:ops-stack`
+- Risks:
+  - policy language may look like runtime approval if the deferred state is not explicit
+  - future runtime widening could happen if the rollback/no-op prerequisite is skipped
+- Rollback: remove the contract/policy/checker artifacts and revert the candidate to purely note-level defer state
+- Current status: `completed precondition slice; rollback/no-op evidence still missing`
+- Next decision point: open no runtime experiment until one bounded rollback/no-op test for `read_only_workspace_inspect` is designed and evidenced

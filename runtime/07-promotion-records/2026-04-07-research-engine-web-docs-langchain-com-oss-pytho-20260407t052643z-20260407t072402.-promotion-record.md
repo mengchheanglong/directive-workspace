@@ -1,0 +1,39 @@
+# Promotion Record: Build a deep research agent - Docs by LangChain
+
+- Candidate id: research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.
+- Candidate name: Build a deep research agent - Docs by LangChain
+- Promotion date: 2026-04-07
+- Linked Runtime record: `runtime/02-records/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-runtime-record.md`
+- Target host: Directive Workspace standalone host (hosts/standalone-host/)
+- Target runtime surface: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary. Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims.
+- Integration mode: reimplement
+- Source intent artifact: `runtime/04-capability-boundaries/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-runtime-capability-boundary.md`
+- Compile contract artifact: `shared/contracts/runtime-to-host.md`
+- Runtime permissions profile: read-only promotion-record preparation only; no registry write, host integration, runtime execution, or automation side effects
+- Safe output scope: `runtime/07-promotion-records/` and `runtime/06-promotion-specifications/` only
+- Sanitize policy: autonomous bounded pre-host promotion record only; no registry acceptance, host integration, runtime execution, or downstream automation
+- Proposed runtime status: autonomous_pre_host_promotion_record_opened
+- Proof path: `runtime/03-proof/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-proof.md`
+- Quality gate profile: autonomous_pre_host_promotion_guard/v1
+- Promotion profile family: bounded_autonomous_pre_host_promotion
+- Proof shape: autonomous_pre_host_promotion_snapshot/v1
+- Primary host checker: `npm run check:pre-host-promotion-record-prerequisites`
+- Full-text coverage threshold (%): n/a
+- Evidence-binding threshold (%): n/a
+- Citation-error threshold (%): n/a
+- Observed full-text coverage (%): n/a
+- Observed evidence-binding (%): n/a
+- Observed citation error rate (%): n/a
+- Quality gate result: pass
+- Validation state: validated_locally
+- Quality gate fail reasons:
+  - n/a
+- Required gates:
+  - `behavior_preservation`
+  - `metric_improvement_or_equivalent_value`
+  - `runtime_boundary_review`
+  - `npm run check:pre-host-promotion-record-prerequisites`
+- Validation result: This promotion record was opened automatically from runtime/05-promotion-readiness/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-promotion-readiness.md after repo-native pre-host prerequisites and promotion specification generation passed. Registry acceptance, host integration, runtime execution, and promotion automation remain closed.
+- Rollback plan: Remove runtime/07-promotion-records/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-promotion-record.md, regenerate runtime/06-promotion-specifications/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-promotion-specification.json if needed, and return the case to runtime/05-promotion-readiness/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-promotion-readiness.md before any further Runtime step.
+- Owner: Directive Runtime
+- Promotion decision: approved for one bounded autonomous pre-host promotion review

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildRuntimeCallableExecutionEvidenceReport } from "../shared/lib/runtime-callable-execution-evidence.ts";
+import { buildRuntimeCallableExecutionEvidenceReport } from "../runtime/lib/runtime-callable-execution-evidence.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "runtime_callable_execution_evidence";
@@ -13,6 +13,8 @@ const NORMALIZER_SUCCESS_RECORD_PATH =
   "runtime/callable-executions/2026-04-02T14-31-00-000Z-dw-transform-code-normalizer-normalize-code.json";
 const NORMALIZER_FAILURE_RECORD_PATH =
   "runtime/callable-executions/2026-04-02T14-32-00-000Z-dw-transform-code-normalizer-normalize-code.json";
+const RESEARCH_VAULT_SOURCE_PACK_RECORD_PATH =
+  "runtime/callable-executions/2026-04-07T11-15-00-000Z-research-engine-web-aakashsharan-com-research-va-20260407t052643-query-source-pack.json";
 
 function main() {
   const report = buildRuntimeCallableExecutionEvidenceReport({
@@ -22,16 +24,16 @@ function main() {
   assert.equal(report.ok, true);
   assert.equal(report.checkerId, CHECKER_ID);
   assert.equal(report.evidenceRoot, "runtime/callable-executions");
-  assert.equal(report.totalExecutionRecords, 3);
-  assert.equal(report.capabilityCount, 2);
-  assert.equal(report.successCount, 2);
+  assert.equal(report.totalExecutionRecords, 4);
+  assert.equal(report.capabilityCount, 3);
+  assert.equal(report.successCount, 3);
   assert.equal(report.nonSuccessCount, 1);
 
   const successStatus = report.statusCounts.find((status) => status.status === "success");
   const validationErrorStatus = report.statusCounts.find(
     (status) => status.status === "validation_error",
   );
-  assert.equal(successStatus?.count ?? 0, 2);
+  assert.equal(successStatus?.count ?? 0, 3);
   assert.equal(validationErrorStatus?.count ?? 0, 1);
 
   const scientify = report.capabilities.find(
@@ -41,8 +43,14 @@ function main() {
   const normalizer = report.capabilities.find(
     (capability) => capability.capabilityId === "dw-transform-code-normalizer",
   );
+  const researchVaultSourcePack = report.capabilities.find(
+    (capability) =>
+      capability.capabilityId
+        === "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  );
   assert.ok(scientify, "expected Scientify callable evidence");
   assert.ok(normalizer, "expected code-normalizer callable evidence");
+  assert.ok(researchVaultSourcePack, "expected Research Vault source-pack evidence");
 
   assert.equal(scientify?.executionCount, 1);
   assert.equal(scientify?.successCount, 1);
@@ -53,6 +61,11 @@ function main() {
   assert.equal(normalizer?.successCount, 1);
   assert.equal(normalizer?.nonSuccessCount, 1);
   assert.deepEqual(normalizer?.tools, ["normalize-code"]);
+
+  assert.equal(researchVaultSourcePack?.executionCount, 1);
+  assert.equal(researchVaultSourcePack?.successCount, 1);
+  assert.equal(researchVaultSourcePack?.nonSuccessCount, 0);
+  assert.deepEqual(researchVaultSourcePack?.tools, ["query-source-pack"]);
 
   assert.equal(report.failurePatterns.length, 1);
   assert.equal(report.failurePatterns[0]?.capabilityId, "dw-transform-code-normalizer");
@@ -71,6 +84,7 @@ function main() {
     SCIENTIFY_RECORD_PATH,
     NORMALIZER_SUCCESS_RECORD_PATH,
     NORMALIZER_FAILURE_RECORD_PATH,
+    RESEARCH_VAULT_SOURCE_PACK_RECORD_PATH,
   ]);
 
   process.stdout.write(

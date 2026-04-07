@@ -1,0 +1,24 @@
+# Discovery Triage Record: Temporal Durable Execution Platform
+
+- Candidate id: dw-source-temporal-durable-execution-2026-04-01
+- Candidate name: Temporal Durable Execution Platform
+- Triage date: 2026-04-01
+- First-pass summary: Engine-building mission pressure: assess whether Temporal's durable workflow model, task queues, workflow history, signals, queries, retries, and operator-visible run state should inform Directive Workspace durability/control-surface design without opening runtime rollout, planner-driven execution, or host-admin execution.
+- Problem it appears to solve: Operationalize the value in a reusable runtime shape with stronger boundaries than the source.
+- Extractable value hypothesis: Engine-building mission pressure: assess whether Temporal's durable workflow model, task queues, workflow history, signals, queries, retries, and operator-visible run state should inform Directive Workspace durability/control-surface design without opening runtime rollout, planner-driven execution, or host-admin execution. | selected_via:codex-durable-execution-pass | stronger_than:inngest-durable-functions,trigger-dev-long-running-tasks,dbos-postgres-checkpointing | retained_value:durable-workflow-model-and-control-surface-patterns
+- Routing recommendation: Shared Engine routing selected runtime with usefulness level direct.
+- Proposed adoption target: reusable runtime capability
+- Stack-shape summary: external-system source; host dependence host_adapter_required; integration mode reimplement.
+- Boilerplate vs product boundary: Directive-owned form: Directive-owned runtime capability or transformation artifact behind a host adapter boundary.. Excluded baggage: source-specific implementation baggage, host-local assumptions from the original source.
+- Suggested decision state: route_to_runtime_follow_up
+- Fit to current direction: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
+- Reusability across surfaces: Value depends on a later host adapter boundary for repeated runtime use.
+- Operational risk: Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.
+- Integration cost: medium
+- Can current gates validate it safely: partially - proof plan runtime_runtime_proof defines required evidence and gates, but human review still decides whether to advance.
+- Immediate risks: bounded_runtime_scope, proof_artifact_present, host_adapter_review
+- Missing evidence: runtime objective, evaluation method, rollback path, host-integration boundary note
+- Monitor/Defer trigger conditions: If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.
+- Re-entry conditions: Respect rollback boundary: Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.
+- Next action: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.
+- Linked intake record: discovery/01-intake/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-intake.md

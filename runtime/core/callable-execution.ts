@@ -7,6 +7,9 @@ import {
 import {
   createLiteratureAccessCallableCapability,
 } from "../capabilities/literature-access/index.ts";
+import {
+  createResearchVaultSourcePackCallableCapability,
+} from "../capabilities/research-vault-source-pack/index.ts";
 import type {
   DirectiveCallableCapability,
   DirectiveCallableExecutionResult,
@@ -18,12 +21,16 @@ export const DIRECTIVE_RUNTIME_CALLABLE_EXECUTION_RECORD_VERSION =
 const SCIENTIFY_LITERATURE_ACCESS_CAPABILITY_ID =
   "dw-source-scientify-research-workflow-plugin-2026-03-27";
 const CODE_NORMALIZER_CAPABILITY_ID = "dw-transform-code-normalizer";
+const RESEARCH_VAULT_SOURCE_PACK_CAPABILITY_ID =
+  "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.";
 
 const KNOWN_CALLABLE_CAPABILITIES = {
   [SCIENTIFY_LITERATURE_ACCESS_CAPABILITY_ID]:
     createLiteratureAccessCallableCapability,
   [CODE_NORMALIZER_CAPABILITY_ID]:
     createCodeNormalizerCallableCapability,
+  [RESEARCH_VAULT_SOURCE_PACK_CAPABILITY_ID]:
+    createResearchVaultSourcePackCallableCapability,
 } satisfies Record<string, () => DirectiveCallableCapability>;
 
 export type DirectiveRuntimeCallableCapabilityId =

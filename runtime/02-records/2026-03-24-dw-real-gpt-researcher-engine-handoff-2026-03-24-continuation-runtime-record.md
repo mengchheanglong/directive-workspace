@@ -11,8 +11,8 @@
 - Source retained artifact: `architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md`
 - Source implementation result: `architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md`
 - Source implementation target: `architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md`
-- Source adoption artifact: `architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
-- Source bounded result: `architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
+- Source adoption artifact: `architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md`
+- Source bounded result: `architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md`
 
 ## intended target surface
 - Directive Workspace engine-owned product logic within the current Architecture boundary.
@@ -46,3 +46,4 @@
 - This record does not authorize execution.
 - This record does not create a Runtime runtime surface.
 - This record only explains why the callable stub exists, what proof is required before implementation, and where rollback returns if the callable path should not proceed.
+

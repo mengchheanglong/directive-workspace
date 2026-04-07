@@ -1,0 +1,37 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-src-mini-swe-agent-adoption-decision-envelope-lib",
+  "adoption_date": "2026-03-23",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-23-mini-swe-agent-adoption-decision-envelope-source-analysis.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-23-mini-swe-agent-adoption-decision-envelope-adaptation.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "shared/lib/architecture-adoption-decision-envelope.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Retained Architecture decisions will become safer to evolve because every decision now carries an explicit format identifier and canonical envelope merge behavior.",
+    "mechanism": "The adoption-decision envelope helper now owns the canonical decision_format and merge discipline used by the retained decision builder.",
+    "baseline_observation": "Retained Architecture decision artifacts were machine-readable but had no explicit format identity or reusable nested merge helper.",
+    "expected_effect": "Later retained-decision upgrades can distinguish format generations cleanly instead of assuming one implicit JSON shape forever.",
+    "verification_method": "structural_inspection",
+    "verification_result": "confirmed",
+    "verification_date": "2026-03-23",
+    "verification_notes": "The retained corpus was re-emitted through backfill with explicit decision_format and the fresh slice closed through the same upgraded builder."
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
+    "completion_status": "product_materialized",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

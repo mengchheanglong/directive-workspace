@@ -4,15 +4,21 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { determineDiscoverySubmissionShape } from "../shared/lib/discovery-submission-router.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { determineDiscoverySubmissionShape } from "../discovery/lib/discovery-submission-router.ts";
+import {
+  openDirectiveDiscoveryRoute,
+  readDirectiveDiscoveryRoutingArtifact,
+} from "../discovery/lib/discovery-route-opener.ts";
+import { runDirectiveAutonomousLaneLoopSupervised } from "../engine/coordination/autonomous-lane-loop.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import {
   adaptResearchEngineCandidateToDirectiveRequest,
   allocateResearchEngineImportedCandidateId,
   importResearchEngineDiscoveryBundle,
   loadResearchEngineDiscoveryBundle,
   selectResearchEngineCandidatesForImport,
-} from "../shared/lib/research-engine-discovery-import.ts";
+} from "../hosts/adapters/research-engine-discovery-import.ts";
+import { readJson, writeJson } from "./checker-test-helpers.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -20,13 +26,13 @@ function ensureParentDir(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
 }
 
-function writeJson(filePath: string, value: unknown) {
-  ensureParentDir(filePath);
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
+function normalizeEngineCandidateId(value: string | null | undefined) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 64);
 }
 
 async function withTempDirectiveRoot(run: (directiveRoot: string, bundleDir: string) => Promise<void>) {
@@ -98,6 +104,22 @@ function writeResearchEngineFixture(bundleDir: string) {
         provenance_summary: ["primary via official repo"],
         freshness_summary:
           "Latest normalized evidence captured at 2026-04-01T00:00:00.000Z. Signal=current.",
+        recommended_lane_target: "architecture",
+        lane_target_rationale:
+          "Primary value improves Directive Workspace workflow, evaluation, or source-intelligence structure.",
+        workflow_phase_scores: { discovery: 9, reporting: 7 },
+        structural_extraction_recommendations: [
+          "Extract the evidence-quality mechanism rather than the surrounding source-specific product shell.",
+        ],
+        structural_avoid_recommendations: [
+          "Do not treat the source as a novel primary base without stronger live evidence.",
+        ],
+        review_guidance_summary:
+          "Architecture-oriented structural candidate: extract the Engine-improvement mechanism and keep the downstream record bounded.",
+        review_guidance_action:
+          "Route through Discovery into Architecture review, then keep the follow-through proportional to the actual mechanism being extracted.",
+        review_guidance_stop_line:
+          "Do not widen the case into full adoption if the source only contributes a narrow workflow or evaluator improvement.",
         uncertainty_notes: [
           "Current run is catalog-backed and should later be upgraded to live-provider evidence.",
         ],
@@ -126,6 +148,22 @@ function writeResearchEngineFixture(bundleDir: string) {
         provenance_summary: ["primary via official docs"],
         freshness_summary:
           "Latest normalized evidence captured at 2026-04-01T00:00:00.000Z. Signal=current.",
+        recommended_lane_target: "architecture",
+        lane_target_rationale:
+          "Primary value improves Directive Workspace workflow, evaluation, or source-intelligence structure.",
+        workflow_phase_scores: { discovery: 8, reflection: 8 },
+        structural_extraction_recommendations: [
+          "Extract the reusable workflow or mechanism boundary rather than the full source system.",
+        ],
+        structural_avoid_recommendations: [
+          "Do not treat the source as a novel primary base without stronger live evidence.",
+        ],
+        review_guidance_summary:
+          "Architecture-oriented structural candidate: extract the Engine-improvement mechanism and keep the downstream record bounded.",
+        review_guidance_action:
+          "Route through Discovery into Architecture review, then keep the follow-through proportional to the actual mechanism being extracted.",
+        review_guidance_stop_line:
+          "Do not widen the case into full adoption if the source only contributes a narrow workflow or evaluator improvement.",
         uncertainty_notes: [
           "Fit depends on whether long-running resumability is required in current DW usage.",
         ],
@@ -140,8 +178,119 @@ function writeResearchEngineFixture(bundleDir: string) {
         signal_total_score: 78,
         signal_score_summary:
           "Weak or noisy Discovery review signal due to baseline overlap, limited evidence quality, low relevance, or both. Score summary: total=78; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=8/10; novelty=1/10.",
+        recommended_lane_target: "discovery",
+        lane_target_rationale:
+          "Current value is still mainly Discovery review/comparison pressure rather than ready Runtime or Architecture adoption.",
+        workflow_phase_scores: { discovery: 8, reporting: 7 },
+        structural_extraction_recommendations: [],
+        structural_avoid_recommendations: [],
+        review_guidance_summary:
+          "Discovery comparison/review candidate: useful for curation pressure, but not yet lane-ready.",
+        review_guidance_action:
+          "Keep the source in Discovery review and only advance if a clearer Architecture or Runtime adoption target appears.",
+        review_guidance_stop_line:
+          "Do not force downstream adoption from a comparison-only or low-confidence source packet.",
         uncertainty_notes: [
           "Current run is catalog-backed and should later be upgraded to live-provider evidence.",
+        ],
+      },
+      {
+        candidate_id: "open-deep-research",
+        candidate_name: "Open Deep Research",
+        source_kind: "framework",
+        source_reference: "https://github.com/langchain-ai/open_deep_research",
+        mission_relevance:
+          "Breaks deep research into typed phases instead of collapsing everything into an answer loop.",
+        initial_value_hypothesis:
+          "Best conceptual base for Research Engine because its orchestration boundaries map cleanly to planning, discovery, compression, and reporting.",
+        initial_baggage_signals: [
+          "LangGraph-flavored orchestration assumptions",
+          "Report-centric end shape",
+        ],
+        capability_gap_hint:
+          "Need reusable phase boundaries and provider seams for bounded research runs.",
+        evidence_bundle_refs: ["open-deep-research-e1", "open-deep-research-e2"],
+        evidence_cluster_summary: [
+          "Typed planning, discovery, compression, and reporting stages remain explicit across the evidence set.",
+        ],
+        contradiction_flags: [],
+        discovery_signal_band: "review",
+        signal_total_score: 81,
+        signal_score_summary:
+          "Baseline-overlap candidate still carries bounded structural extraction value. Structurally useful despite baseline overlap: preserve the bounded workflow or mechanism signal for extraction, but do not treat the source as a novel primary base. Score summary: total=81; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=8/10; novelty=1/10.",
+        provenance_summary: ["primary via official repo"],
+        freshness_summary:
+          "Latest normalized evidence captured at 2026-04-01T00:00:00.000Z. Signal=current.",
+        structural_signal_band: "extractive_structural",
+        structural_signal_summary:
+          "Structurally useful despite baseline overlap: preserve the bounded workflow or mechanism signal for extraction, but do not treat the source as a novel primary base.",
+        workflow_phase_labels: ["planning", "discovery", "compression", "reporting"],
+        provider_seam_summary: "Reusable provider seams for bounded research runs.",
+        workflow_boundary_shape_hint: "bounded_protocol",
+        recommended_lane_target: "architecture",
+        lane_target_rationale:
+          "Primary value is Architecture-oriented extraction: preserve workflow/provider boundaries while keeping baseline-overlap expectations explicit.",
+        workflow_phase_scores: { planning: 9, discovery: 10, compression: 9, reporting: 7 },
+        structural_extraction_recommendations: [
+          "Extract the explicit phase model (planning, discovery, compression, reporting) as a Directive-owned workflow contract.",
+          "Extract the provider seam as a bounded interface between acquisition and downstream synthesis/reporting.",
+          "Extract the bounded protocol boundary so acquisition, compression, and reporting remain separable.",
+        ],
+        structural_avoid_recommendations: [
+          "Do not import LangGraph-specific orchestration assumptions wholesale.",
+          "Do not import the report-centric or answer-first end shape wholesale.",
+          "Do not treat the source as a novel primary base without stronger live evidence.",
+        ],
+        review_guidance_summary:
+          "Extractive structural candidate: keep the reusable mechanism and bounded workflow, but hold novelty claims low.",
+        review_guidance_action:
+          "Use this as an Architecture extraction/reference source. Extract only the bounded mechanisms listed here and reject wholesale framework adoption.",
+        review_guidance_stop_line:
+          "Do not auto-promote this source to primary-base status or direct Runtime adoption without stronger live evidence.",
+        uncertainty_notes: [
+          "Current run is catalog-backed and should later be upgraded to live-provider evidence.",
+        ],
+      },
+      {
+        candidate_id: "deep-researcher-runtime",
+        candidate_name: "jackswl/deep-researcher",
+        source_kind: "system",
+        source_reference: "https://github.com/jackswl/deep-researcher",
+        mission_relevance:
+          "Provides a reusable runtime execution capability for repeated deep-research runs.",
+        initial_value_hypothesis:
+          "Packaged runtime capability for repeated execution.",
+        initial_baggage_signals: [
+          "Requires bounded host integration review.",
+        ],
+        capability_gap_hint:
+          "Need a reusable runtime execution surface.",
+        evidence_bundle_refs: ["deep-researcher-e1", "deep-researcher-e2"],
+        evidence_cluster_summary: [
+          "Runtime execution behavior is explicit and repeatable.",
+        ],
+        contradiction_flags: [],
+        discovery_signal_band: "strong",
+        signal_total_score: 84,
+        signal_score_summary:
+          "Strong Discovery review signal from Research Engine scoring. Score summary: total=84; relevance=9/10; evidence_quality=8/10; inspectability=8/10; subsystem_reuse=9/10; novelty=5/10.",
+        provenance_summary: ["primary via official repo"],
+        freshness_summary:
+          "Latest normalized evidence captured at 2026-04-01T00:00:00.000Z. Signal=current.",
+        recommended_lane_target: "runtime",
+        lane_target_rationale:
+          "Primary value is reusable runtime capability packaging for repeated execution.",
+        workflow_phase_scores: {},
+        structural_extraction_recommendations: [],
+        structural_avoid_recommendations: [],
+        review_guidance_summary:
+          "Runtime-oriented candidate: preserve the reusable capability boundary and require proof before promotion.",
+        review_guidance_action:
+          "Route through Discovery into Runtime review and keep the reusable capability/package boundary explicit.",
+        review_guidance_stop_line:
+          "Do not treat the source as structural Architecture improvement without separate Engine-workflow proof.",
+        uncertainty_notes: [
+          "Host-fit validation remains required before promotion.",
         ],
       },
     ],
@@ -157,6 +306,18 @@ function writeResearchEngineFixture(bundleDir: string) {
         signal_total_score: null,
         signal_score_summary:
           "Held or rejected for Discovery review: Baseline overlap and answer-first product framing. Score summary: total=n/a; relevance=1/10; evidence_quality=8/10; inspectability=8/10; subsystem_reuse=1/10; novelty=1/10.",
+        recommended_lane_target: "discovery",
+        lane_target_rationale:
+          "Current value is still mainly Discovery review/comparison pressure rather than ready Runtime or Architecture adoption.",
+        workflow_phase_scores: {},
+        structural_extraction_recommendations: [],
+        structural_avoid_recommendations: [],
+        review_guidance_summary:
+          "Discovery comparison/review candidate: useful for curation pressure, but not yet lane-ready.",
+        review_guidance_action:
+          "Keep the source in Discovery review and only advance if a clearer Architecture or Runtime adoption target appears.",
+        review_guidance_stop_line:
+          "Do not force downstream adoption from a comparison-only or low-confidence source packet.",
         uncertainty_notes: [
           "Current run is catalog-backed and should later be upgraded to live-provider evidence.",
         ],
@@ -200,7 +361,40 @@ async function main() {
           detected_at: "2026-04-01",
           resolved_at: null,
         },
+        {
+          gap_id: "gap-runtime-execution-surface",
+          description: "Need a reusable runtime execution surface for repeated callable runs.",
+          priority: "high",
+          related_mission_objective: "Runtime reusable capability packaging and proof discipline",
+          current_state: "Runtime execution assets exist but repeated callable packaging remains ad hoc.",
+          desired_state: "Runtime candidates route with high-confidence into bounded Runtime follow-through.",
+          detected_at: "2026-04-01",
+          resolved_at: null,
+        },
       ],
+    });
+    writeJson(path.join(directiveRoot, "control", "state", "autonomous-lane-loop-policy.json"), {
+      enabled: true,
+      approvedBy: "research-engine-import-check",
+      maxActionsPerRun: 2,
+      discovery: {
+        autoOpenRoute: true,
+        requireNoHumanReview: true,
+        minimumConfidence: "high",
+      },
+      architecture: {
+        autoStartFromHandoff: true,
+        autoCloseBoundedStart: true,
+        autoAdoptBoundedResult: true,
+        autoCreateImplementationTargetForPlannedNext: true,
+        autoCompleteMaterializationChain: true,
+      },
+      runtime: {
+        autoAdvanceToPromotionReadiness: true,
+        autoGeneratePromotionSpecification: true,
+        autoCreatePromotionRecord: true,
+        requireNoHumanReview: true,
+      },
     });
     ensureParentDir(path.join(directiveRoot, "knowledge", "active-mission.md"));
     fs.copyFileSync(
@@ -240,6 +434,8 @@ async function main() {
     assert.equal(adapted.request.operating_mode, "note");
     assert.equal(adapted.request.fast_path, undefined);
     assert.equal(adapted.request.case_record, undefined);
+    assert.equal(adapted.request.contains_executable_code, true);
+    assert.equal(adapted.request.improves_directive_workspace, true);
     assert.match(
       adapted.request.notes ?? "",
       /Discovery retains final route and adoption authority/i,
@@ -338,6 +534,175 @@ async function main() {
       "Discovery notes should preserve the Research Engine signal band",
     );
 
+    const openDeepResearchImport = await importResearchEngineDiscoveryBundle({
+      directiveRoot,
+      bundlePath: path.join(bundleDir, "dw_import_bundle.json"),
+      candidateIds: ["open-deep-research"],
+      receivedAt: "2026-04-01T01:00:00.000Z",
+    });
+    assert.equal(openDeepResearchImport.importedCount, 1);
+    assert.deepEqual(openDeepResearchImport.selectedSourceCandidateIds, ["open-deep-research"]);
+    const openDeepResearchCandidate = loaded.discoveryPacket.candidates.find(
+      (candidate) => candidate.candidate_id === "open-deep-research",
+    );
+    assert.ok(openDeepResearchCandidate, "open-deep-research candidate should exist in the Discovery packet");
+    assert.deepEqual(
+      openDeepResearchCandidate?.workflow_phase_labels,
+      ["planning", "discovery", "compression", "reporting"],
+      "Research Engine should emit the extracted phased research model explicitly in the DW packet",
+    );
+    assert.equal(
+      openDeepResearchCandidate?.structural_signal_band,
+      "extractive_structural",
+      "Research Engine should classify structurally useful baseline-overlap candidates explicitly instead of flattening them into weak/noisy only",
+    );
+    assert.match(
+      openDeepResearchCandidate?.structural_signal_summary ?? "",
+      /Structurally useful despite baseline overlap/i,
+      "Research Engine should preserve the structural extraction rationale explicitly in the DW packet",
+    );
+    assert.equal(
+      openDeepResearchCandidate?.provider_seam_summary,
+      "Reusable provider seams for bounded research runs.",
+      "Research Engine should emit the extracted provider seam as a bounded structural hint",
+    );
+    assert.equal(
+      openDeepResearchCandidate?.workflow_boundary_shape_hint,
+      "bounded_protocol",
+      "Research Engine should emit the workflow-boundary shape explicitly for bounded protocol sources",
+    );
+    assert.equal(
+      openDeepResearchCandidate?.recommended_lane_target,
+      "architecture",
+      "Research Engine should preclassify the bounded structural target without taking route authority away from Discovery",
+    );
+    assert.equal(
+      openDeepResearchCandidate?.workflow_phase_scores?.planning,
+      9,
+      "Research Engine should score the planning phase contribution explicitly for structural workflow sources",
+    );
+    assert.ok(
+      openDeepResearchCandidate?.structural_extraction_recommendations?.some((entry) =>
+        /Extract the provider seam/i.test(entry),
+      ),
+      "Research Engine should emit explicit extraction recommendations instead of only saying the source is structurally useful",
+    );
+    assert.ok(
+      openDeepResearchCandidate?.structural_avoid_recommendations?.some((entry) =>
+        /LangGraph-specific orchestration assumptions/i.test(entry),
+      ),
+      "Research Engine should emit explicit avoid recommendations for bounded extraction work",
+    );
+    assert.match(
+      openDeepResearchCandidate?.review_guidance_summary ?? "",
+      /Extractive structural candidate/i,
+      "Research Engine should emit explicit review guidance for structurally useful baseline-overlap candidates",
+    );
+    assert.equal(
+      openDeepResearchImport.imports[0]?.discovery.discovery.routingTarget,
+      "architecture",
+      "open-deep-research should route through Discovery into Architecture when its structural phase/provider-seam signals are preserved",
+    );
+    assert.equal(
+      openDeepResearchImport.imports[0]?.discovery.discovery.decisionState,
+      "adopt",
+      "open-deep-research should produce an adopt-ready Discovery routing decision under the structured metadata path",
+    );
+
+    const customRuntimeArtifactsRoot = path.join(directiveRoot, "runtime-host-artifacts");
+    const runtimeImport = await importResearchEngineDiscoveryBundle({
+      directiveRoot,
+      bundlePath: path.join(bundleDir, "dw_import_bundle.json"),
+      candidateIds: ["deep-researcher-runtime"],
+      receivedAt: "2026-04-01T02:00:00.000Z",
+      runtimeArtifactsRoot: customRuntimeArtifactsRoot,
+    });
+    assert.equal(runtimeImport.importedCount, 1);
+    const runtimeRoutingPath = runtimeImport.imports[0]!.discovery.createdPaths.routingRecordPath;
+    const runtimeRouting = readDirectiveDiscoveryRoutingArtifact({
+      directiveRoot,
+      routingPath: runtimeRoutingPath,
+    });
+    assert.equal(runtimeRouting.routeDestination, "runtime");
+    assert.equal(runtimeRouting.decisionState, "adopt");
+    assert.equal(runtimeRouting.routingConfidence, "high");
+    assert.equal(runtimeRouting.routeConflict, false);
+    assert.equal(runtimeRouting.needsHumanReview, false);
+    assert.equal(
+      runtimeRouting.engineRunRecordPath,
+      runtimeImport.imports[0]!.discovery.engine.recordRelativePath,
+      "routing record should preserve the exact Engine run record path created by front-door submission",
+    );
+    assert.equal(
+      runtimeRouting.engineRunReportPath,
+      runtimeImport.imports[0]!.discovery.engine.reportRelativePath,
+      "routing record should preserve the exact Engine run report path created by front-door submission",
+    );
+
+    const runtimeEngineRunRecordPath = runtimeRouting.engineRunRecordPath;
+    assert.ok(runtimeEngineRunRecordPath, "runtime routing record should include a linked Engine run record path");
+    const runtimeEngineRunAbsolutePath = path.join(directiveRoot, runtimeEngineRunRecordPath);
+    assert.ok(
+      fs.existsSync(runtimeEngineRunAbsolutePath),
+      `linked Engine run record should exist before route opening (${runtimeEngineRunRecordPath})`,
+    );
+    const runtimeEngineRunRecord = readJson<{ candidate?: { candidateId?: string } }>(runtimeEngineRunAbsolutePath);
+    assert.equal(
+      normalizeEngineCandidateId(runtimeEngineRunRecord.candidate?.candidateId ?? null),
+      normalizeEngineCandidateId(runtimeRouting.candidateId),
+      "linked Engine run record should belong to the routed candidate",
+    );
+
+    const runtimeLoop = await runDirectiveAutonomousLaneLoopSupervised({
+      directiveRoot,
+      artifactPath: runtimeRoutingPath,
+    });
+    assert.ok(
+      runtimeLoop.actions.some((action) => action.actionKind === "discovery_route_open"),
+      "autonomous loop should open the routed Discovery artifact into a Runtime follow-up stub",
+    );
+    assert.ok(
+      runtimeLoop.actions.some((action) => action.actionKind === "runtime_follow_up_open"),
+      "autonomous loop should continue from Runtime follow-up into Runtime record opening",
+    );
+    assert.ok(
+      fs.existsSync(path.join(directiveRoot, runtimeRouting.requiredNextArtifact)),
+      "required Runtime follow-up artifact should be materialized for a valid Runtime route",
+    );
+
+    const missingLinkedEngineRunImport = await importResearchEngineDiscoveryBundle({
+      directiveRoot,
+      bundlePath: path.join(bundleDir, "dw_import_bundle.json"),
+      candidateIds: ["deep-researcher-runtime"],
+      receivedAt: "2026-04-01T03:00:00.000Z",
+      runtimeArtifactsRoot: customRuntimeArtifactsRoot,
+    });
+    const missingLinkedRoutingPath = missingLinkedEngineRunImport.imports[0]!.discovery.createdPaths.routingRecordPath;
+    const missingLinkedRouting = readDirectiveDiscoveryRoutingArtifact({
+      directiveRoot,
+      routingPath: missingLinkedRoutingPath,
+    });
+    assert.ok(missingLinkedRouting.engineRunRecordPath);
+    fs.rmSync(path.join(directiveRoot, missingLinkedRouting.engineRunRecordPath!), {
+      force: true,
+    });
+    if (missingLinkedRouting.engineRunReportPath) {
+      fs.rmSync(path.join(directiveRoot, missingLinkedRouting.engineRunReportPath), {
+        force: true,
+      });
+    }
+    assert.throws(
+      () =>
+        openDirectiveDiscoveryRoute({
+          directiveRoot,
+          routingPath: missingLinkedRoutingPath,
+          approved: true,
+          approvedBy: "research-engine-import-check",
+        }),
+      /linked Engine run artifact not found/i,
+      "route opener must fail closed when the routing-linked Engine run artifact is missing",
+    );
+
     for (const entry of importResult.imports) {
       assert.equal(entry.sourceType, "external-system");
       assert.equal(entry.discovery.queueEntry.operating_mode, "note");
@@ -392,8 +757,11 @@ async function main() {
     assert.deepEqual(
       queueAfterRepeat.entries.map((entry) => entry.candidate_id).sort((left, right) => left.localeCompare(right)),
       [
+        "research-engine-deep-researcher-runtime-20260401t000000z-20260401t020000z",
+        "research-engine-deep-researcher-runtime-20260401t000000z-20260401t030000z",
         "research-engine-langgraph-20260401t000000z-20260401t000000z",
         "research-engine-langgraph-20260401t000000z-20260401t000000z-r2",
+        "research-engine-open-deep-research-20260401t000000z-20260401t010000z",
         "research-engine-paperqa2-20260401t000000z-20260401t000000z",
         "research-engine-paperqa2-20260401t000000z-20260401t000000z-r2",
       ],
@@ -433,7 +801,11 @@ async function main() {
       `${JSON.stringify(
         {
           ok: true,
-          importedCount: importResult.importedCount + repeatedImportResult.importedCount,
+          importedCount:
+            importResult.importedCount
+            + repeatedImportResult.importedCount
+            + runtimeImport.importedCount
+            + missingLinkedEngineRunImport.importedCount,
           selectedSourceCandidateIds: repeatedImportResult.selectedSourceCandidateIds,
           importedCandidateIds: queueAfterRepeat.entries.map((entry) => entry.candidate_id),
           routeTargets: importResult.imports.map((entry) => ({

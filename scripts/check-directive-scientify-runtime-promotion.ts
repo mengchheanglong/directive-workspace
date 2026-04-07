@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { readStandaloneScientifyLiteratureAccessBundle } from "../hosts/standalone-host/runtime-lane.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { readDirectiveRuntimePromotionSpecification } from "../shared/lib/runtime-promotion-specification.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { readDirectiveRuntimePromotionSpecification } from "../runtime/lib/runtime-promotion-specification.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "directive_scientify_runtime_promotion";
@@ -14,11 +14,11 @@ const PROMOTION_READINESS_PATH =
 const PROMOTION_SPECIFICATION_PATH =
   "runtime/06-promotion-specifications/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-specification.json";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
 const REGISTRY_ENTRY_PATH =
-  "runtime/registry/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-registry-entry.md";
+  "runtime/08-registry/2026-04-07-dw-source-scientify-research-workflow-plugin-2026-03-27-registry-entry.md";
 const EXPECTED_NEXT_LEGAL_STEP =
-  "No automatic Runtime step is open; registry acceptance and promotion automation remain intentionally unopened while callable execution and one bounded host integration path are already proven.";
+  "No automatic Runtime step is open; one registry entry, callable execution, and one bounded standalone-host integration path are already proven. Reopen only for explicit evidence feedback or later broader host work.";
 
 function readBullet(content: string, label: string) {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -50,11 +50,14 @@ function main() {
   assert.ok(readinessFocus?.ok, "Scientify promotion-readiness focus should resolve");
   assert.ok(promotionRecordFocus?.ok, "Scientify promotion-record focus should resolve");
   assert.equal(readinessFocus.currentStage, "runtime.promotion_record.opened");
-  assert.equal(readinessFocus.currentHead.artifactPath, PROMOTION_RECORD_PATH);
+  assert.equal(readinessFocus.currentHead.artifactPath, REGISTRY_ENTRY_PATH);
   assert.equal(readinessFocus.linkedArtifacts.runtimePromotionRecordPath, PROMOTION_RECORD_PATH);
+  assert.equal(readinessFocus.linkedArtifacts.runtimeRegistryEntryPath, REGISTRY_ENTRY_PATH);
   assert.equal(promotionRecordFocus.artifactKind, "runtime_promotion_record");
   assert.equal(promotionRecordFocus.artifactStage, "runtime.promotion_record.opened");
   assert.equal(promotionRecordFocus.currentStage, "runtime.promotion_record.opened");
+  assert.equal(promotionRecordFocus.currentHead.artifactPath, REGISTRY_ENTRY_PATH);
+  assert.equal(promotionRecordFocus.linkedArtifacts.runtimeRegistryEntryPath, REGISTRY_ENTRY_PATH);
   assert.equal(promotionRecordFocus.nextLegalStep, EXPECTED_NEXT_LEGAL_STEP);
   assert.deepEqual(promotionRecordFocus.runtime?.promotionReadinessBlockers ?? [], []);
   assert.equal(descriptor.currentStage, "runtime.promotion_record.opened");
@@ -101,8 +104,8 @@ function main() {
     "validated_locally",
   );
   assert.ok(
-    !fs.existsSync(path.join(DIRECTIVE_ROOT, REGISTRY_ENTRY_PATH)),
-    "Scientify registry acceptance should remain unopened after the manual promotion-record slice",
+    fs.existsSync(path.join(DIRECTIVE_ROOT, REGISTRY_ENTRY_PATH)),
+    "Scientify registry acceptance should be materialized through the bounded registry gate",
   );
 
   process.stdout.write(
@@ -115,7 +118,7 @@ function main() {
         currentHead: readinessFocus.currentHead,
         promotionRecordPath: PROMOTION_RECORD_PATH,
         promotionSpecificationPath: PROMOTION_SPECIFICATION_PATH,
-        registryEntryPresent: false,
+        registryEntryPresent: true,
       },
       null,
       2,

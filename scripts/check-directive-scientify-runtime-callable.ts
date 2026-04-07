@@ -23,7 +23,7 @@ import {
   LITERATURE_ACCESS_CALLABLE_CAPABILITY,
 } from "../runtime/capabilities/literature-access/executor.ts";
 import { checkCallableContractCompliance } from "../runtime/core/callable-contract.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "directive_scientify_runtime_callable";
@@ -34,7 +34,7 @@ const PROMOTION_READINESS_PATH =
 const PROMOTION_SPECIFICATION_PATH =
   "runtime/06-promotion-specifications/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-specification.json";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
 
 type MockResponse = {
   ok: boolean;

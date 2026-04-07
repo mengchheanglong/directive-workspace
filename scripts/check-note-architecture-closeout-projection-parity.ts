@@ -6,75 +6,45 @@ import { fileURLToPath } from "node:url";
 
 import {
   loadDirectiveArchitectureAdoptionDecisionArtifact,
-} from "../shared/lib/architecture-adoption-decision-store.ts";
+} from "../architecture/lib/architecture-adoption-decision-store.ts";
 import {
   closeDirectiveArchitectureNoteHandoff,
   readDirectiveArchitectureBoundedResultArtifact,
-} from "../shared/lib/architecture-bounded-closeout.ts";
+} from "../architecture/lib/architecture-bounded-closeout.ts";
 import {
   materializeDirectiveNoteArchitectureCloseoutProjectionSet,
   writeDirectiveNoteArchitectureCloseoutProjectionSet,
-} from "../shared/lib/architecture-note-closeout-projections.ts";
-import { readDirectiveArchitectureHandoffArtifact } from "../shared/lib/architecture-handoff-start.ts";
-import { appendDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
+} from "../architecture/lib/architecture-note-closeout-projections.ts";
+import { readDirectiveArchitectureHandoffArtifact } from "../architecture/lib/architecture-handoff-start.ts";
+import { appendDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
 import {
   writeDirectiveMirroredDiscoveryCaseRecord,
   type DirectiveMirroredDiscoveryCaseRecord,
-} from "../shared/lib/case-store.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../engine/cases/case-store.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { copyRelativeFile, readJson, writeJson } from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  operating_mode?: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-};
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const NOTE_CASES = [
   {
     candidateId: "dw-source-openevals-2026-03-28",
-    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md",
+    handoffPath: "architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-28-dw-source-openevals-2026-03-28-bounded-result.md",
   },
   {
     candidateId: "dw-source-inspect-ai-2026-03-28",
-    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md",
+    handoffPath: "architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-28-dw-source-inspect-ai-2026-03-28-bounded-result.md",
   },
   {
     candidateId: "dw-source-promptwizard-2026-03-28",
-    handoffPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md",
-    resultPath: "architecture/02-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md",
+    handoffPath: "architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-engine-handoff.md",
+    resultPath: "architecture/01-experiments/2026-03-28-dw-source-promptwizard-2026-03-28-bounded-result.md",
   },
 ] as const;
-
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function copyRelativeFile(relativePath: string, tempRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
-  assert.ok(fs.existsSync(sourcePath), `Missing source file for parity copy: ${relativePath}`);
-  const targetPath = path.join(tempRoot, relativePath);
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
-}
 
 function parseClosedBy(closeoutApproval: string) {
   const match = closeoutApproval.match(/reviewed by (.+?) directly from NOTE-mode handoff/i);
@@ -94,6 +64,7 @@ function resolveValueShapeFromArtifactType(artifactType: string) {
       return "behavior_rule" as const;
     case "reference-pattern":
       return "design_pattern" as const;
+    case "engine-code":
     case "shared-lib":
       return "executable_logic" as const;
     case "doctrine-update":
@@ -116,7 +87,7 @@ function stripNoteCloseoutFromNotes(value: string | null | undefined) {
 }
 
 function buildMirroredRecord(input: {
-  queueEntry: QueueEntry;
+  queueEntry: DiscoveryIntakeQueueEntry;
   routing: ReturnType<typeof readDirectiveDiscoveryRoutingArtifact>;
   handoff: ReturnType<typeof readDirectiveArchitectureHandoffArtifact>;
 }): DirectiveMirroredDiscoveryCaseRecord {
@@ -150,7 +121,7 @@ function buildMirroredRecord(input: {
 
 function seedRoutedMirror(input: {
   directiveRoot: string;
-  queueEntry: QueueEntry;
+  queueEntry: DiscoveryIntakeQueueEntry;
   routing: ReturnType<typeof readDirectiveDiscoveryRoutingArtifact>;
   handoff: ReturnType<typeof readDirectiveArchitectureHandoffArtifact>;
 }) {
@@ -249,7 +220,7 @@ function buildReplayInput(input: {
 
 function prepareTempCase(input: {
   directiveRoot: string;
-  queueEntry: QueueEntry;
+  queueEntry: DiscoveryIntakeQueueEntry;
   handoffPath: string;
 }) {
   const routing = readDirectiveDiscoveryRoutingArtifact({
@@ -270,7 +241,7 @@ function prepareTempCase(input: {
     handoff.engineRunReportPath,
   ]) {
     if (relativePath) {
-      copyRelativeFile(relativePath, input.directiveRoot);
+      copyRelativeFile(relativePath, DIRECTIVE_ROOT, input.directiveRoot, "Missing source file for parity copy");
     }
   }
 
@@ -284,7 +255,7 @@ function prepareTempCase(input: {
 
 function main() {
   const queuePath = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(queuePath);
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(queuePath);
 
   withTempDirectiveRoot({ prefix: "directive-note-closeout-projection-parity-" }, (directiveRoot) => {
     const tempQueue = structuredClone(queueDocument);
@@ -396,3 +367,4 @@ function main() {
 }
 
 main();
+

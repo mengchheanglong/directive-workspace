@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildOperationalArchitectureImprovementCandidatesReport } from "../shared/lib/operational-architecture-improvement-candidates.ts";
+import { buildOperationalArchitectureImprovementCandidatesReport } from "../architecture/lib/operational-architecture-improvement-candidates.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 

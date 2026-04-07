@@ -96,11 +96,11 @@
   },
   "canonicalExamples": {
     "discoveryArchitectureRoute": {
-      "artifactPath": "discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
+      "artifactPath": "discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
       "focus": {
         "ok": true,
         "directiveRoot": "C:/Users/User/projects/directive-workspace",
-        "artifactPath": "discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
+        "artifactPath": "discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
         "artifactKind": "discovery_routing_record",
         "lane": "discovery",
         "candidateId": "dw-real-karpathy-autoresearch-discovery-v0-2026-03-25",
@@ -119,17 +119,17 @@
           "lifecycle orchestration"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-intake.md",
-          "discoveryTriagePath": "discovery/triage/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-triage.md",
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-intake.md",
+          "discoveryTriagePath": "discovery/02-triage/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-triage.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-25T01-46-08-519Z-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-120309c0.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-25T01-46-08-519Z-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-120309c0.md",
-          "architectureHandoffPath": "architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md",
-          "architectureBoundedStartPath": "architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-bounded-start.md",
-          "architectureBoundedResultPath": "architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-bounded-result.md",
+          "architectureHandoffPath": "architecture/01-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md",
+          "architectureBoundedStartPath": "architecture/01-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-bounded-start.md",
+          "architectureBoundedResultPath": "architecture/01-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-bounded-result.md",
           "architectureContinuationStartPath": null,
-          "architectureAdoptionPath": "architecture/03-adopted/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-adopted.md",
+          "architectureAdoptionPath": "architecture/02-adopted/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-adopted.md",
           "architectureImplementationTargetPath": "architecture/04-implementation-targets/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-implementation-target.md",
           "architectureImplementationResultPath": "architecture/05-implementation-results/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-implementation-result.md",
           "architectureRetainedPath": "architecture/06-retained/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-retained.md",
@@ -150,7 +150,7 @@
           "routingDecision": "adopt",
           "usefulnessLevel": "meta",
           "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
-          "requiredNextArtifact": "architecture/02-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md"
+          "requiredNextArtifact": "architecture/01-experiments/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-engine-handoff.md"
         },
         "engine": {
           "runId": "120309c0-c1bf-4fe6-b65b-cb610eede469",
@@ -169,11 +169,11 @@
       }
     },
     "discoveryRuntimeRoute": {
-      "artifactPath": "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+      "artifactPath": "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
       "focus": {
         "ok": true,
         "directiveRoot": "C:/Users/User/projects/directive-workspace",
-        "artifactPath": "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+        "artifactPath": "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
         "artifactKind": "discovery_routing_record",
         "lane": "discovery",
         "candidateId": "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
@@ -192,9 +192,9 @@
           "lifecycle orchestration"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
-          "discoveryTriagePath": "discovery/triage/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-triage.md",
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
+          "discoveryTriagePath": "discovery/02-triage/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-triage.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.md",
@@ -210,7 +210,7 @@
           "architectureConsumptionRecordPath": null,
           "architectureEvaluationPath": null,
           "architectureReopenedStartPath": null,
-          "runtimeFollowUpPath": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+          "runtimeFollowUpPath": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
           "runtimeRecordPath": "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
           "runtimeProofPath": "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
           "runtimeRuntimeCapabilityBoundaryPath": "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",
@@ -223,7 +223,7 @@
           "routingDecision": "adopt",
           "usefulnessLevel": "direct",
           "usefulnessRationale": "Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
-          "requiredNextArtifact": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
+          "requiredNextArtifact": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
         },
         "engine": {
           "runId": "6b3acde0-58a2-4405-b111-e3547aa87f5d",
@@ -265,17 +265,17 @@
           "lifecycle orchestration"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-intake.md",
-          "discoveryTriagePath": "discovery/triage/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-triage.md",
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-routing-record.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-intake.md",
+          "discoveryTriagePath": "discovery/02-triage/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-triage.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-dw-real-gpt-researcher-engine-handoff-2026-03-24-3e8aed50.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-dw-real-gpt-researcher-engine-handoff-2026-03-24-3e8aed50.md",
-          "architectureHandoffPath": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
+          "architectureHandoffPath": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
           "architectureBoundedStartPath": "architecture/01-bounded-starts/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-bounded-start.md",
           "architectureBoundedResultPath": "architecture/01-bounded-starts/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-bounded-result.md",
           "architectureContinuationStartPath": null,
-          "architectureAdoptionPath": "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-adopted.md",
+          "architectureAdoptionPath": "architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-adopted.md",
           "architectureImplementationTargetPath": "architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-implementation-target.md",
           "architectureImplementationResultPath": "architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-implementation-result.md",
           "architectureRetainedPath": "architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-retained.md",
@@ -296,7 +296,7 @@
           "routingDecision": "architecture",
           "usefulnessLevel": "meta",
           "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
-          "requiredNextArtifact": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md"
+          "requiredNextArtifact": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md"
         },
         "engine": {
           "runId": "3e8aed50-7207-49bc-9361-e047715dcdb6",
@@ -315,11 +315,11 @@
       }
     },
     "architectureBoundedResult": {
-      "artifactPath": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
+      "artifactPath": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
       "focus": {
         "ok": true,
         "directiveRoot": "C:/Users/User/projects/directive-workspace",
-        "artifactPath": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
+        "artifactPath": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
         "artifactKind": "architecture_bounded_result",
         "lane": "architecture",
         "candidateId": "dw-real-gpt-researcher-engine-handoff-2026-03-24",
@@ -338,17 +338,17 @@
           "lifecycle orchestration"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-intake.md",
-          "discoveryTriagePath": "discovery/triage/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-triage.md",
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-routing-record.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-intake.md",
+          "discoveryTriagePath": "discovery/02-triage/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-triage.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-dw-real-gpt-researcher-engine-handoff-2026-03-24-3e8aed50.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-dw-real-gpt-researcher-engine-handoff-2026-03-24-3e8aed50.md",
-          "architectureHandoffPath": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
-          "architectureBoundedStartPath": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md",
-          "architectureBoundedResultPath": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
+          "architectureHandoffPath": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md",
+          "architectureBoundedStartPath": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-start.md",
+          "architectureBoundedResultPath": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
           "architectureContinuationStartPath": null,
-          "architectureAdoptionPath": "architecture/03-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md",
+          "architectureAdoptionPath": "architecture/02-adopted/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-adopted-planned-next.md",
           "architectureImplementationTargetPath": "architecture/04-implementation-targets/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-target.md",
           "architectureImplementationResultPath": "architecture/05-implementation-results/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-implementation-result.md",
           "architectureRetainedPath": "architecture/06-retained/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-retained.md",
@@ -369,7 +369,7 @@
           "routingDecision": "architecture",
           "usefulnessLevel": "meta",
           "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
-          "requiredNextArtifact": "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md"
+          "requiredNextArtifact": "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-engine-handoff.md"
         },
         "engine": {
           "runId": "3e8aed50-7207-49bc-9361-e047715dcdb6",
@@ -388,11 +388,11 @@
       }
     },
     "runtimeFollowUp": {
-      "artifactPath": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+      "artifactPath": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
       "focus": {
         "ok": true,
         "directiveRoot": "C:/Users/User/projects/directive-workspace",
-        "artifactPath": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+        "artifactPath": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
         "artifactKind": "runtime_follow_up",
         "lane": "runtime",
         "candidateId": "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
@@ -413,9 +413,9 @@
           "promotion automation"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
           "discoveryTriagePath": null,
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.md",
@@ -431,7 +431,7 @@
           "architectureConsumptionRecordPath": null,
           "architectureEvaluationPath": null,
           "architectureReopenedStartPath": null,
-          "runtimeFollowUpPath": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+          "runtimeFollowUpPath": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
           "runtimeRecordPath": "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
           "runtimeProofPath": "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
           "runtimeRuntimeCapabilityBoundaryPath": "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",
@@ -444,7 +444,7 @@
           "routingDecision": "runtime",
           "usefulnessLevel": "direct",
           "usefulnessRationale": "Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
-          "requiredNextArtifact": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
+          "requiredNextArtifact": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
         },
         "engine": {
           "runId": "6b3acde0-58a2-4405-b111-e3547aa87f5d",
@@ -497,9 +497,9 @@
           "promotion automation"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
           "discoveryTriagePath": null,
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.md",
@@ -515,7 +515,7 @@
           "architectureConsumptionRecordPath": null,
           "architectureEvaluationPath": null,
           "architectureReopenedStartPath": null,
-          "runtimeFollowUpPath": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+          "runtimeFollowUpPath": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
           "runtimeRecordPath": "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
           "runtimeProofPath": "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
           "runtimeRuntimeCapabilityBoundaryPath": "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",
@@ -528,7 +528,7 @@
           "routingDecision": "runtime",
           "usefulnessLevel": "direct",
           "usefulnessRationale": "Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
-          "requiredNextArtifact": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
+          "requiredNextArtifact": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
         },
         "engine": {
           "runId": "6b3acde0-58a2-4405-b111-e3547aa87f5d",
@@ -581,9 +581,9 @@
           "promotion automation"
         ],
         "linkedArtifacts": {
-          "discoveryIntakePath": "discovery/intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
+          "discoveryIntakePath": "discovery/01-intake/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-intake.md",
           "discoveryTriagePath": null,
-          "discoveryRoutingPath": "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+          "discoveryRoutingPath": "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
           "discoveryMonitorPath": null,
           "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.json",
           "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-03-25T03-00-00-000Z-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-6b3acde0.md",
@@ -599,7 +599,7 @@
           "architectureConsumptionRecordPath": null,
           "architectureEvaluationPath": null,
           "architectureReopenedStartPath": null,
-          "runtimeFollowUpPath": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+          "runtimeFollowUpPath": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
           "runtimeRecordPath": "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
           "runtimeProofPath": "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
           "runtimeRuntimeCapabilityBoundaryPath": "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",
@@ -612,7 +612,7 @@
           "routingDecision": "runtime",
           "usefulnessLevel": "direct",
           "usefulnessRationale": "Direct usefulness: the candidate targets reusable runtime capability and shows transformation signals, so the value looks useful in repeated runtime use while preserving or improving implementation quality.",
-          "requiredNextArtifact": "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
+          "requiredNextArtifact": "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md"
         },
         "engine": {
           "runId": "6b3acde0-58a2-4405-b111-e3547aa87f5d",
@@ -761,7 +761,7 @@
     "anchors": [
       {
         "label": "Discovery anchor: PromptWizard",
-        "artifactPath": "discovery/routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md",
+        "artifactPath": "discovery/03-routing-log/2026-03-28-dw-source-promptwizard-2026-03-28-routing-record.md",
         "lane": "discovery",
         "currentStage": "architecture.bounded_result.stay_experimental",
         "nextLegalStep": "No automatic Architecture step is open; this NOTE-mode bounded result is an explicit stop unless a new bounded pressure is introduced.",
@@ -770,7 +770,7 @@
       },
       {
         "label": "Discovery anchor: Scientify Research Workflow Plugin",
-        "artifactPath": "discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
+        "artifactPath": "discovery/03-routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
         "lane": "discovery",
         "currentStage": "runtime.promotion_readiness.opened",
         "nextLegalStep": "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.",
@@ -817,3 +817,4 @@
     "focus": null
   }
 }
+

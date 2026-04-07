@@ -69,7 +69,7 @@
     "rationale": [
       "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
       "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
-      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Current repo truth already points at a canonical facade/private split around engine/state/index.ts, which makes this a structural Architecture question.",
       "Split-case is recommended because the proposed boundary must be validated against the actual repo import graph before any rule proposal is retained."
     ]
   },
@@ -81,7 +81,7 @@
     "rationale": [
       "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
       "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
-      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Current repo truth already points at a canonical facade/private split around engine/state/index.ts, which makes this a structural Architecture question.",
       "Split-case is recommended because the proposed boundary must be validated against the actual repo import graph before any rule proposal is retained."
     ]
   },
@@ -113,7 +113,7 @@
     "rationale": [
       "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
       "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
-      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Current repo truth already points at a canonical facade/private split around engine/state/index.ts, which makes this a structural Architecture question.",
       "Split-case is recommended because the proposed boundary must be validated against the actual repo import graph before any rule proposal is retained."
     ]
   },
@@ -130,7 +130,7 @@
   "adaptationPlan": {
     "directiveOwnedForm": "Directive-owned Architecture proposal or boundary-config artifact that protects the canonical dw-state facade only if the current import graph makes that boundary truthful.",
     "adaptedValue": [
-      "Translate dependency-cruiser rule vocabulary into one Engine-owned boundary proposal around shared/lib/dw-state.ts.",
+      "Translate dependency-cruiser rule vocabulary into one Engine-owned boundary proposal around engine/state/index.ts.",
       "Reject the proposal if current repo truth shows the requested importer set is inaccurate."
     ]
   },
@@ -145,7 +145,7 @@
     "proofKind": "architecture_validation",
     "objective": "Prove whether the requested dw-state facade-only importer boundary is truthful enough to express as a bounded Architecture artifact.",
     "requiredEvidence": [
-      "actual import consumers of shared/lib/dw-state.ts, shared/lib/dw-state/shared.ts, and shared/lib/dw-state/runtime.ts are recorded",
+      "actual import consumers of engine/state/index.ts, engine/state/shared.ts, and engine/state/runtime.ts are recorded",
       "the dependency-cruiser rule shape is described in Directive-owned terms",
       "the result clearly states whether the requested boundary matches current repo truth"
     ],
@@ -165,7 +165,7 @@
     "rationale": [
       "Matched open gap gap-directive-engine-materialization (rank 1) as the closest current mission pressure.",
       "Recommended architecture because the source offers one bounded Engine-structure boundary rule rather than reusable runtime capability.",
-      "Current repo truth already points at a canonical facade/private split around shared/lib/dw-state.ts, which makes this a structural Architecture question.",
+      "Current repo truth already points at a canonical facade/private split around engine/state/index.ts, which makes this a structural Architecture question.",
       "Record one bounded Architecture result deciding whether the requested dw-state facade-only importer boundary is truthful enough to materialize."
     ]
   },

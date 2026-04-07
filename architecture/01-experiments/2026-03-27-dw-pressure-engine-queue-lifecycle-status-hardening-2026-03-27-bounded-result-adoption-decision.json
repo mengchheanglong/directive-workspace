@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-27-dw-pressure-engine-queue-lifecycle-status-hardening-2026-03-27-bounded-result.md",
+  "primary_evidence_path": "hosts/web-host/data.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can present queue lifecycle status more truthfully when broken completed entries are explicitly downgraded instead of rendered as clean completion.",
+    "mechanism": "This DEEP bounded result adds one derived queue lifecycle-status guard for completed entries whose canonical resolution is broken.",
+    "baseline_observation": "Before this slice, queue entries kept showing raw completed status even when their recorded completion artifact could not be resolved by canonical truth.",
+    "expected_effect": "The queue surface will stop overstating completed work for broken entries while preserving raw queue evidence and healthy routed entries.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "This bounded queue lifecycle-status slice adds immediate whole-product truth value without broadening into queue lifecycle sync or generic stale-status repair.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

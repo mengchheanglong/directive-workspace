@@ -16,6 +16,11 @@ export const DIRECTIVE_ENGINE_INTEGRATION_MODES = [
   "wrap",
 ] as const;
 
+export const DIRECTIVE_ENGINE_RUN_RECORD_KIND = "directive_engine_run_record" as const;
+export const DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_VERSION = 2 as const;
+export const DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_REF =
+  "shared/schemas/directive-engine-run-record.schema.json" as const;
+
 export type DirectiveEngineSourceType =
   (typeof DIRECTIVE_ENGINE_SUPPORTED_SOURCE_TYPES)[number];
 
@@ -30,6 +35,10 @@ export type DirectiveEnginePrimaryAdoptionTarget =
   | "discovery"
   | "architecture"
   | "runtime";
+
+export type DirectiveEngineWorkflowBoundaryShape =
+  | "bounded_protocol"
+  | "iterative_loop";
 
 export type DirectiveEngineHostDependence =
   | "engine_only"
@@ -63,6 +72,8 @@ export type DirectiveEngineSourceItem = {
   primaryAdoptionTarget?: DirectiveEnginePrimaryAdoptionTarget | null;
   containsExecutableCode?: boolean | null;
   containsWorkflowPattern?: boolean | null;
+  improvesDirectiveWorkspace?: boolean | null;
+  workflowBoundaryShape?: DirectiveEngineWorkflowBoundaryShape | null;
 };
 
 export type DirectiveEngineMissionInput = {
@@ -103,16 +114,43 @@ export type DirectiveEngineRoutingAssessment = {
   explicitRouteDestination: DirectiveEngineLaneId | null;
   routeConflict: boolean;
   needsHumanReview: boolean;
+  ambiguitySummary: {
+    topLaneId: DirectiveEngineLaneId;
+    runnerUpLaneId: DirectiveEngineLaneId | null;
+    scoreDelta: number;
+    conflictingSignalFamilies: Array<"keyword" | "metadata" | "gap">;
+    conflictingLaneIds: DirectiveEngineLaneId[];
+  };
+  reviewGuidance: {
+    guidanceKind:
+      | "conflicted_architecture_review"
+      | "conflicted_runtime_review"
+      | "low_confidence_discovery_hold"
+      | "bounded_lane_review";
+    summary: string;
+    operatorAction: string;
+    requiredChecks: string[];
+    stopLine: string;
+  } | null;
   scoreBreakdown: {
     missionFit: number;
     gapAlignment: number;
     laneScores: Record<DirectiveEngineLaneId, number>;
+    keywordLaneScores: Record<DirectiveEngineLaneId, number>;
+    metadataLaneScores: Record<DirectiveEngineLaneId, number>;
+    gapLaneScores: Record<DirectiveEngineLaneId, number>;
     metaUsefulnessSignal: number;
     patternExtractionSignal: number;
     transformationSignal: number;
     runtimeSignal: number;
     ambiguityPenalty: number;
     total: number;
+  };
+  explanationBreakdown: {
+    keywordSignals: string[];
+    metadataSignals: string[];
+    gapAlignmentSignals: string[];
+    ambiguitySignals: string[];
   };
   rationale: string[];
 };
@@ -211,6 +249,9 @@ export type DirectiveEngineEvent = {
 };
 
 export type DirectiveEngineRunRecord = {
+  $schema: typeof DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_REF;
+  schemaVersion: typeof DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_VERSION;
+  recordKind: typeof DIRECTIVE_ENGINE_RUN_RECORD_KIND;
   runId: string;
   receivedAt: string;
   source: DirectiveEngineSourceItem;

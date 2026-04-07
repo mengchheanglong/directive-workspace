@@ -17,10 +17,10 @@ Mission usefulness:
 
 Proof path:
 - `sources/intake/source-roam-code.md`
-- `discovery/intake/2026-03-31-dw-source-roam-code-2026-03-31-intake.md`
-- `discovery/triage/2026-03-31-dw-source-roam-code-2026-03-31-triage.md`
-- `discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-routing-record.md`
-- `discovery/monitor/2026-03-31-dw-source-roam-code-2026-03-31-monitor-record.md`
+- `discovery/01-intake/2026-03-31-dw-source-roam-code-2026-03-31-intake.md`
+- `discovery/02-triage/2026-03-31-dw-source-roam-code-2026-03-31-triage.md`
+- `discovery/03-routing-log/2026-03-31-dw-source-roam-code-2026-03-31-routing-record.md`
+- `discovery/04-monitor/2026-03-31-dw-source-roam-code-2026-03-31-monitor-record.md`
 - `runtime/standalone-host/engine-runs/2026-03-31T00-00-00-000Z-dw-source-roam-code-2026-03-31-4d4f5f1b.json`
 - `npm run report:directive-workspace-state`
 - `npm run check`
@@ -37,10 +37,10 @@ Stop-line:
 
 Files touched:
 - `sources/intake/source-roam-code.md`
-- `discovery/intake/2026-03-31-dw-source-roam-code-2026-03-31-intake.md`
-- `discovery/triage/2026-03-31-dw-source-roam-code-2026-03-31-triage.md`
-- `discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-routing-record.md`
-- `discovery/monitor/2026-03-31-dw-source-roam-code-2026-03-31-monitor-record.md`
+- `discovery/01-intake/2026-03-31-dw-source-roam-code-2026-03-31-intake.md`
+- `discovery/02-triage/2026-03-31-dw-source-roam-code-2026-03-31-triage.md`
+- `discovery/03-routing-log/2026-03-31-dw-source-roam-code-2026-03-31-routing-record.md`
+- `discovery/04-monitor/2026-03-31-dw-source-roam-code-2026-03-31-monitor-record.md`
 - `runtime/standalone-host/engine-runs/2026-03-31T00-00-00-000Z-dw-source-roam-code-2026-03-31-4d4f5f1b.json`
 - `runtime/standalone-host/engine-runs/2026-03-31T00-00-00-000Z-dw-source-roam-code-2026-03-31-4d4f5f1b.md`
 - `discovery/intake-queue.json`

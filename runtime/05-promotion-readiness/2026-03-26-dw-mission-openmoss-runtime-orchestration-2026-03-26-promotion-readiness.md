@@ -6,8 +6,8 @@
 - Runtime capability boundary path: `runtime/04-capability-boundaries/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-capability-boundary.md`
 - Source Runtime proof artifact: `runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md`
 - Source Runtime v0 record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
 - Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`
 - Opened by: `directive-lead-implementer`
 - Opened on: `2026-03-26`
@@ -46,17 +46,17 @@
 - Remaining blockers:
   - none at the promotion-readiness layer once the bounded manual promotion record is linked
 - Explicit opened runtime-implementation slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
 - Explicit implementation result for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-result.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-result.md`
 - Explicit pre-promotion implementation slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-pre-promotion-implementation-slice-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-pre-promotion-implementation-slice-01.md`
 - Explicit promotion-input package for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-input-package-01.md`
 - Explicit profile/checker decision for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-profile-checker-decision-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-profile-checker-decision-01.md`
 - Explicit compile-contract artifact for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-seam-review-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-seam-review-compile-contract-01.md`
 - Explicit bounded pre-promotion profile/checker family for that slice:
   - `Quality gate profile = dw_web_host_seam_review_guard/v1`
   - `Promotion profile family = bounded_dw_web_host_seam_review`
@@ -67,11 +67,11 @@
   - `Runtime permissions profile = read_only_lane = canonical Directive Workspace state plus linked Runtime artifacts through the existing DW thin-host reader; write_lane = none`
   - `Safe output scope = OpenMOSS seam-review page plus thin-host detail payloads only; no execution, no host integration writes, no callable activation`
 - Explicit go / no-go decision after the pre-promotion bundle:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
 - Explicit keep confirmation for the completed implementation slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-keep-confirmation.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01-keep-confirmation.md`
 - Host-facing promotion record:
-  - `runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
+  - `runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - Remaining unopened seams after that explicit bundle:
   - registry acceptance remains unopened
   - host integration, callable implementation, and runtime execution remain unopened
@@ -109,9 +109,9 @@
 
 ## Directive Workspace web-host pre-promotion implementation slice
 - Slice decision: `dw_web_host_pre_promotion_slice_explicit`
-- Slice artifact: `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-pre-promotion-implementation-slice-01.md`
+- Slice artifact: `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-pre-promotion-implementation-slice-01.md`
 - Opened runtime-implementation slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-runtime-implementation-slice-01.md`
 - Why this slice is the correct pre-promotion seam:
   - it makes the existing DW web-host seam-review surface explicit as the smallest truthful host-owned implementation slice
   - it keeps Runtime and Engine as the owners of blocker judgment, legality, and downstream progression
@@ -125,13 +125,13 @@
   - one thin-host data read over canonical Runtime truth
   - one operator-facing seam-review surface in Directive Workspace frontend/web-host
 - Explicit promotion-input package for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-input-package-01.md`
 - Explicit profile/checker decision for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-profile-checker-decision-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-profile-checker-decision-01.md`
 - Explicit compile-contract artifact for that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-seam-review-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-seam-review-compile-contract-01.md`
 - Explicit promotion go / no-go decision after opening that slice:
-  - `runtime/follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
+  - `runtime/00-follow-up/2026-03-27-dw-mission-openmoss-runtime-orchestration-dw-web-host-promotion-go-no-go-decision-01.md`
 - Still out of scope after making this slice explicit:
   - host-facing promotion record creation
   - runtime execution, host integration, or callable implementation rollout
@@ -150,9 +150,9 @@
 
 ## artifact linkage
 - Promotion-readiness artifact: `runtime/05-promotion-readiness/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-readiness.md`
-- Host-facing promotion record: `runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
+- Host-facing promotion record: `runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-capability-boundary.md`
 - Runtime proof artifact: `runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-routing-record.md`

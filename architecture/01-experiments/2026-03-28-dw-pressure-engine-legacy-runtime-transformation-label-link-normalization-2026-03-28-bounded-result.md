@@ -1,0 +1,67 @@
+# Legacy Runtime Transformation Label-Link Normalization Bounded Architecture Result
+
+- Candidate id: dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28
+- Candidate name: Legacy Runtime Transformation Label-Link Normalization
+- Experiment date: 2026-03-28
+- Owning track: Architecture
+- Experiment type: engine-routed bounded result
+- Closeout approval: not explicitly recorded in the compact bounded result artifact; reconstructed from bounded start `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-start.md`
+
+- Objective: Open one bounded DEEP Architecture slice that normalizes descriptive non-artifact baseline/result labels in historical Runtime transformation records so the canonical resolver treats them as notes instead of broken links.
+- Bounded scope:
+- Keep this at one shared Engine / truth-quality slice.
+- Limit the change to `engine/state/index.ts` and focused repo checks.
+- Support only descriptive baseline/result labels inside historical transformation records.
+- Keep those transformation artifacts historical and read-only.
+- Do not map runtime-slice proof/execution, proof-checklist, registry, promotion, or callable continuation semantics.
+- Inputs:
+- Two historical transformation records still use descriptive values like `this record (Before State section)` and `this record (Transformation proof fields section)` instead of real artifact paths.
+- The canonical resolver already knows how to represent historical transformation records, but it still treats those descriptive values as broken linked artifacts.
+- Expected output:
+- One bounded Architecture experiment slice that resolves the remaining label-style historical Runtime transformation records cleanly through the canonical report and composition check.
+- Validation gate(s):
+- `legacy_runtime_transformation_label_notes_normalized`
+- `legacy_runtime_transformation_scope_preserved`
+- `engine_boundary_preserved`
+- Transition policy profile: `decision_review`
+- Scoring policy profile: `architecture_self_improvement`
+- Blocked recovery path: Leave the transformation artifacts historical and read-only, and stop before any runtime-slice proof/execution or checklist normalization.
+- Failure criteria: The resolver still marks the two label-style transformation records broken, or the slice hides real artifact references instead of descriptive notes.
+- Rollback: Revert the label-link normalization slice, revert focused repo checks, and delete this DEEP case chain.
+- Result summary: Canonical Runtime truth now treats descriptive baseline/result labels in the remaining historical transformation records as notes instead of broken links.
+- Evidence path:
+- Primary evidence path: `engine/state/index.ts`
+- Bounded start: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-start.md`
+- Handoff stub: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-engine-handoff.md`
+- Engine run record: `runtime/standalone-host/engine-runs/2026-03-27T00-00-00-000Z-dw-source-ts-edge-2026-03-27-0aacdf59.json`
+- Engine run report: `runtime/standalone-host/engine-runs/2026-03-27T00-00-00-000Z-dw-source-ts-edge-2026-03-27-0aacdf59.md`
+- Discovery routing record: `discovery/03-routing-log/2026-03-27-dw-source-ts-edge-2026-03-27-routing-record.md`
+- Closeout decision artifact: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-bounded-result-adoption-decision.json`
+- Next decision: `adopt`
+
+## Lifecycle classification (per `architecture-artifact-lifecycle` contract)
+
+- Origin: `internally-generated`
+- Usefulness level: `meta`
+- Runtime threshold check: Would this mechanism still be valuable without a runtime surface? `yes`
+
+## Source adaptation fields
+
+- Source analysis ref: architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-transformation-label-link-normalization-2026-03-28-engine-handoff.md
+- Adaptation decision ref: n/a
+- Adaptation quality: `skipped`
+- Improvement quality: `skipped`
+- Meta-useful: `yes`
+- Meta-usefulness category: `n/a`
+- Transformation artifact gate result: `partial`
+- Transformed artifacts produced:
+- `engine/state/index.ts`
+- `scripts/check-directive-workspace-composition.ts`
+
+## Closeout decision
+
+- Verdict: `adopt`
+- Rationale: This is a bounded shared-truth normalization fix that clears the last descriptive-label transformation failures without widening old runtime execution or callable semantics.
+- Review result: `not_run`
+- Review score: `n/a`
+

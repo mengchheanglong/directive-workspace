@@ -19,6 +19,22 @@ export type FrontendQueueEntry = {
   current_case_stage: string | null;
   current_case_next_legal_step: string | null;
   current_head: FrontendCurrentHead | null;
+  review_pressure: {
+    guidance_kind: string;
+    summary: string;
+    operator_action: string;
+    stop_line: string;
+    routing_confidence: string | null;
+    route_conflict: boolean | null;
+    needs_human_review: boolean | null;
+    ambiguity_summary: {
+      top_lane_id: string;
+      runner_up_lane_id: string | null;
+      score_delta: number;
+      conflicting_signal_families: string[];
+      conflicting_lane_ids: string[];
+    } | null;
+  } | null;
   runtime_summary: {
     proposed_host: string | null;
     promotion_readiness_blockers: string[];
@@ -46,6 +62,18 @@ export type FrontendHandoffStub = {
   warning: string | null;
 };
 
+export type FrontendGapPressureDetail = {
+  openGapCount: number;
+  gapAlignmentScore: number | null;
+  matchedGapId: string | null;
+  matchedGapRank: number | null;
+  matchedGapPriority: string | null;
+  matchedGapDescription: string | null;
+  relatedMissionObjective: string | null;
+  currentState: string | null;
+  desiredState: string | null;
+};
+
 export type FrontendDiscoveryRoutingDetail = {
   ok: boolean;
   error?: string;
@@ -69,7 +97,32 @@ export type FrontendDiscoveryRoutingDetail = {
   engineRunReportPath?: string | null;
   usefulnessLevel?: string | null;
   usefulnessRationale?: string | null;
+  missionPriorityScore?: number | null;
   matchedGapId?: string | null;
+  gapPressure?: FrontendGapPressureDetail | null;
+  routingConfidence?: string | null;
+  routeConflict?: boolean | null;
+  needsHumanReview?: boolean | null;
+  explanationBreakdown?: {
+    keywordSignals: string[];
+    metadataSignals: string[];
+    gapAlignmentSignals: string[];
+    ambiguitySignals: string[];
+  } | null;
+  ambiguitySummary?: {
+    topLaneId: string;
+    runnerUpLaneId: string | null;
+    scoreDelta: number;
+    conflictingSignalFamilies: string[];
+    conflictingLaneIds: string[];
+  } | null;
+  reviewGuidance?: {
+    guidanceKind: string;
+    summary: string;
+    operatorAction: string;
+    requiredChecks: string[];
+    stopLine: string;
+  } | null;
   downstreamStubRelativePath?: string | null;
   approvalAllowed?: boolean;
   content?: string;
@@ -476,6 +529,28 @@ export type FrontendEngineRunRecord = {
     candidateId: string;
     candidateName: string;
     usefulnessLevel: string;
+    confidence?: string;
+    requiresHumanReview?: boolean;
+  };
+  routingAssessment?: {
+    confidence?: string;
+    matchedGapId?: string | null;
+    routeConflict?: boolean;
+    needsHumanReview?: boolean;
+    ambiguitySummary?: {
+      topLaneId: string;
+      runnerUpLaneId: string | null;
+      scoreDelta: number;
+      conflictingSignalFamilies: string[];
+      conflictingLaneIds: string[];
+    } | null;
+    reviewGuidance?: {
+      guidanceKind: string;
+      summary: string;
+      operatorAction: string;
+      requiredChecks: string[];
+      stopLine: string;
+    } | null;
   };
   selectedLane: {
     laneId: string;
@@ -512,6 +587,7 @@ export type FrontendEngineRunDetail = {
   reportPath?: string | null;
   reportContent?: string | null;
   reportExcerpt?: string | null;
+  gapPressure?: FrontendGapPressureDetail | null;
 };
 
 export type FrontendLaneAnchor = {
@@ -575,4 +651,49 @@ export type FrontendSnapshot = {
   };
   handoffStubs: FrontendHandoffStub[];
   handoffWarnings: string[];
+};
+
+export type FrontendOperatorDecisionInboxEntry = {
+  entryId: string;
+  lane: "discovery" | "architecture" | "runtime";
+  decisionSurface:
+    | "discovery_routing_review"
+    | "architecture_materialization_due"
+    | "runtime_host_selection"
+    | "runtime_registry_acceptance";
+  candidateId: string | null;
+  candidateName: string | null;
+  currentStage: string | null;
+  artifactPath: string;
+  blockReason: string;
+  eligibleNextAction: string;
+  requiredProof: string[];
+  resolverCommandOrArtifact: string;
+  relatedArtifacts: string[];
+  readOnly: true;
+  mutatesWorkflowState: false;
+  bypassesReview: false;
+  stopLine: string;
+};
+
+export type FrontendOperatorDecisionInboxReport = {
+  ok: boolean;
+  inboxVersion: string;
+  snapshotAt: string;
+  directiveRoot: string;
+  guardrails: {
+    readOnly: boolean;
+    mutatesWorkflowState: boolean;
+    bypassesReview: boolean;
+    writesRegistryEntries: boolean;
+    runsHostAdapters: boolean;
+  };
+  summary: {
+    totalActionableEntries: number;
+    discoveryRoutingReviewCount: number;
+    architectureMaterializationDueCount: number;
+    runtimeHostSelectionCount: number;
+    runtimeRegistryAcceptanceCount: number;
+  };
+  entries: FrontendOperatorDecisionInboxEntry[];
 };

@@ -39,7 +39,7 @@ export const DIRECTIVE_WORKSPACE_LEGAL_NEXT_SEAMS = {
     "Do not reopen Architecture flow design unless product truth is broken.",
   ],
   sharedEngineWholeProduct: [
-    "Use shared/lib/dw-state.ts as the canonical read surface instead of building new ad hoc state readers.",
+    "Use engine/state/index.ts as the canonical read surface instead of building new ad hoc state readers.",
     "The recent negative-path hardening run is parked after the bounded broken-link, stale-status, and overstated-next-step slices; reopen it only when a new singular mismatch appears.",
     "Read-only lifecycle coordination may expose recurring live-case pressure; the bounded persistent coordination ledger adds cross-session memory but must not mutate queue/case truth or auto-advance workflow.",
     "Do not turn the anchor into a workflow engine, dashboard, or automation layer.",

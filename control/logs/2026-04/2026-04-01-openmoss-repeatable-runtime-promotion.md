@@ -11,7 +11,7 @@
 
 - Corrected the shared pre-host promotion-record prerequisite evaluator so non-callable promotion candidates do not falsely require a callable stub.
 - Added the first manual OpenMOSS Directive Workspace web-host promotion record:
-  - `runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
+  - `runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - Linked that promotion record into canonical Runtime truth through the OpenMOSS promotion-readiness artifact and regenerated promotion specification.
 - Added a dedicated OpenMOSS promotion guard plus checker:
   - `shared/contracts/openmoss-dw-web-host-runtime-promotion-guard.md`
@@ -22,7 +22,7 @@
 
 - OpenMOSS now resolves from promotion-readiness to:
   - `currentStage = runtime.promotion_record.opened`
-  - `currentHead = runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
+  - `currentHead = runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - Runtime promotion is no longer singleton Scientify-only evidence.
 - Registry acceptance remains unopened.
 - Host integration remains unopened.
@@ -51,7 +51,7 @@
 
 Revert:
 
-- `runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
+- `runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md`
 - the OpenMOSS promotion-readiness and promotion-specification linkage
 - the OpenMOSS promotion guard and checker
 - the repeatability-gap resolution in `discovery/capability-gaps.json`

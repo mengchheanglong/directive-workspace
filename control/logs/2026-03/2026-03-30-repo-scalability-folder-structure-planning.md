@@ -16,7 +16,7 @@ Mission usefulness:
 - reduces future folder drift by naming the strongest current topology friction and isolating one safe next structural slice
 
 Proof path:
-- `architecture/02-experiments/2026-03-30-dw-pressure-repo-scalability-folder-structure-planning.md`
+- `architecture/01-experiments/2026-03-30-dw-pressure-repo-scalability-folder-structure-planning.md`
 - `npm run report:directive-workspace-state`
 - `npm run check`
 
@@ -28,7 +28,7 @@ Stop-line:
 - stop once the planning artifact exists, the next safe structural slice is explicit, checks pass, and no structural move has been performed yet
 
 Files touched:
-- `architecture/02-experiments/2026-03-30-dw-pressure-repo-scalability-folder-structure-planning.md`
+- `architecture/01-experiments/2026-03-30-dw-pressure-repo-scalability-folder-structure-planning.md`
 - `control/logs/2026-03/2026-03-30-repo-scalability-folder-structure-planning.md`
 
 Verification run:
@@ -36,4 +36,5 @@ Verification run:
 - `npm run check`
 
 Result:
-- the repo now has one bounded planning artifact that separates product surfaces, shared Engine surfaces, lane corpora, runtime assets, and historical/archive surfaces, and it identifies the hidden `.venv-*` trees inside `architecture/02-experiments/` as the dominant next structural friction
+- the repo now has one bounded planning artifact that separates product surfaces, shared Engine surfaces, lane corpora, runtime assets, and historical/archive surfaces, and it identifies the hidden `.venv-*` trees inside `architecture/01-experiments/` as the dominant next structural friction
+

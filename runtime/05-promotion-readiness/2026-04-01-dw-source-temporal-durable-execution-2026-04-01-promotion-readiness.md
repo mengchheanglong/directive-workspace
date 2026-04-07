@@ -6,8 +6,8 @@
 - Runtime capability boundary path: `runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md`
 - Source Runtime proof artifact: `runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md`
 - Source Runtime v0 record: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
 - Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`
 - Opened by: `directive-lead-runtime-review`
 - Opened on: `2026-04-01`
@@ -64,7 +64,7 @@
   - it keeps Runtime and Engine as the owners of legality, blockers, and downstream progression
   - it stays stronger than raw promotion-readiness while remaining weaker than a promotion record
 - Explicit compile-contract artifact for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md`
 - Explicit bounded pre-promotion profile/checker family for that slice:
   - `Quality gate profile = dw_web_host_seam_review_guard/v1`
   - `Promotion profile family = bounded_dw_web_host_seam_review`
@@ -90,7 +90,7 @@
   - it stays bounded to the existing repo-native DW web-host seam-review pattern
   - it remains weaker than any host-facing promotion or integration boundary
 - Explicit promotion-input package for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-promotion-input-package-01.md`
 - Explicit bounded pre-promotion profile/checker family for that slice:
   - `Quality gate profile = dw_web_host_seam_review_guard/v1`
   - `Promotion profile family = bounded_dw_web_host_seam_review`
@@ -116,7 +116,7 @@
   - it binds the existing repo-native DW web-host seam-review family to the current compile-contract and input-package packet
   - it stays below any promotion record while making the next review stop machine-checkable
 - Explicit profile/checker decision for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-profile-checker-decision-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-profile-checker-decision-01.md`
 - Explicit bounded pre-promotion profile/checker family for that slice:
   - `Quality gate profile = dw_web_host_seam_review_guard/v1`
   - `Promotion profile family = bounded_dw_web_host_seam_review`
@@ -139,9 +139,9 @@
   - it removes the coarse `runtime_implementation_unopened` blocker without claiming host-facing promotion
   - it stays weaker than any promotion record while making the first product-owned Runtime surface real
 - Explicit opened runtime-implementation slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01.md`
 - Explicit implementation result for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01-result.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01-result.md`
 - Explicit bounded pre-promotion profile/checker family for that slice:
   - `Quality gate profile = dw_web_host_seam_review_guard/v1`
   - `Promotion profile family = bounded_dw_web_host_seam_review`
@@ -174,15 +174,15 @@
 - Remaining blockers:
   - none at the promotion-readiness layer once the bounded manual promotion record is linked
 - Explicit opened runtime-implementation slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01.md`
 - Explicit implementation result for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01-result.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01-result.md`
 - Explicit promotion-input package for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-promotion-input-package-01.md`
 - Explicit profile/checker decision for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-profile-checker-decision-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-profile-checker-decision-01.md`
 - Explicit compile-contract artifact for that slice:
-  - `runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md`
 - Explicit bounded manual promotion profile/checker family for that slice:
   - `Quality gate profile = temporal_durable_execution_dw_web_host_manual_promotion_guard/v1`
   - `Promotion profile family = bounded_temporal_durable_execution_dw_web_host_manual_promotion`
@@ -193,7 +193,7 @@
   - `Runtime permissions profile = read_only_lane = canonical Directive Workspace state plus linked Runtime artifacts through the existing DW thin-host reader; write_lane = none`
   - `Safe output scope = Temporal durable-execution seam-review page plus thin-host detail payloads only; no execution, no host integration writes, no callable activation`
 - Host-facing promotion record:
-  - `runtime/promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md`
+  - `runtime/07-promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md`
 - Remaining unopened seams after that explicit bundle:
   - registry acceptance remains unopened
   - host integration remains unopened
@@ -213,9 +213,9 @@
 
 ## artifact linkage
 - Promotion-readiness artifact: `runtime/05-promotion-readiness/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-promotion-readiness.md`
-- Host-facing promotion record: `runtime/promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md`
+- Host-facing promotion record: `runtime/07-promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md`
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md`
 - Runtime proof artifact: `runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-07T05:27:11.458Z",
+  "candidateId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  "candidateName": "Research Vault: Open Source Agentic AI Research Assistant",
+  "sourcePromotionReadinessPath": "runtime/05-promotion-readiness/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-readiness.md",
+  "integrationMode": "reimplement",
+  "targetRuntimeSurface": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary. Use promotion assistance only as a reviewable soft signal; keep explicit callable-boundary clarity before any later promotion follow-through. Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims.",
+  "owner": "directive-workspace",
+  "sourceIntentArtifact": "runtime/04-capability-boundaries/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-capability-boundary.md",
+  "compileContractArtifact": "shared/contracts/runtime-to-host.md",
+  "runtimePermissionsProfile": {
+    "readOnlyLane": "read_only",
+    "writeLane": null
+  },
+  "safeOutputScope": null,
+  "sanitizePolicy": null,
+  "requiredGates": [
+    "behavior_preservation",
+    "metric_improvement_or_equivalent_value",
+    "runtime_boundary_review"
+  ],
+  "rollbackPlan": "Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.",
+  "proofArtifactPath": "runtime/03-proof/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-proof.md",
+  "proposedHost": "pending_host_selection",
+  "hostDependence": "pending_host_selection",
+  "executionState": "not executing, not host-integrated, not implemented, not promoted",
+  "linkedArtifacts": {
+    "capabilityBoundaryPath": "runtime/04-capability-boundaries/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-capability-boundary.md",
+    "runtimeProofPath": "runtime/03-proof/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-proof.md",
+    "runtimeRecordPath": "runtime/02-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-record.md",
+    "followUpPath": "runtime/00-follow-up/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643-runtime-follow-up-record.md",
+    "routingPath": "discovery/03-routing-log/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702--routing-record.md",
+    "callableStubPath": null,
+    "promotionRecordPath": null
+  },
+  "openDecisions": [
+    "Host selection: no host has been chosen for this candidate.",
+    "Implementation: runtime implementation has not been opened.",
+    "Promotion: host-facing promotion has not been opened.",
+    "Host integration: host integration has not been opened."
+  ],
+  "hostConsumableDescription": "Host selection is pending. Once a host is chosen, it would receive a reimplement integration of \"Research Vault: Open Source Agentic AI Research Assistant\" with the required gates: behavior_preservation, metric_improvement_or_equivalent_value, runtime_boundary_review."
+}

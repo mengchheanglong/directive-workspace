@@ -28,6 +28,7 @@ Current canonical artifacts:
 - `discovery-fast-path-record-request.schema.json`
 - `discovery-submission-request.schema.json`
 - `discovery-gap-worklist.schema.json`
+- `directive-engine-run-record.schema.json`
 - `phase-handoff-packet.schema.json`
 - `architecture-mechanism-packet.schema.json`
 - `mixed-value-source-partition.schema.json`

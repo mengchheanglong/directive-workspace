@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "research-engine-microsoft-graphrag-20260406t145339z-20260406t145353.",
+  "candidateId": "research-engine-microsoft-graphrag-20260406t145339z-20260406t145353.",
+  "candidateName": "Microsoft GraphRAG",
+  "sourceType": "external-system",
+  "sourceReference": "https://github.com/microsoft/graphrag",
+  "decisionState": "monitor",
+  "routeTarget": "monitor",
+  "operatingMode": "note",
+  "queueStatus": "routed",
+  "createdAt": "2026-04-06T14:53:53.401Z",
+  "updatedAt": "2026-04-06T14:53:53.401Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/01-intake/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-06T14-53-53-401Z-research-engine-microsoft-graphrag-20260406t145339z-20260406t145-70631a60.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-06T14-53-53-401Z-research-engine-microsoft-graphrag-20260406t145339z-20260406t145-70631a60.md",
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": null
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-04-06",
+      "decisionState": "monitor",
+      "intake": {
+        "intake_date": "2026-04-06",
+        "source_type": "external-system",
+        "source_reference": "https://github.com/microsoft/graphrag",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Adds richer post-acquisition evidence memory and multi-mode retrieval over accumulated corpora. Imported from research-engine for Directive Workspace Discovery review only.",
+        "initial_relevance_to_workspace": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "suspected_adoption_target": "discovery-held candidate",
+        "immediate_notes": "Engine run 70631a60-c540-41bc-91cf-f77b177780a7 selected discovery. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-04-06",
+        "first_pass_summary": "Adds richer post-acquisition evidence memory and multi-mode retrieval over accumulated corpora. Imported from research-engine for Directive Workspace Discovery review only.",
+        "problem_it_appears_to_solve": "Make source selection and routing clearer and more reusable than the original source context.",
+        "extractable_value_hypothesis": "Adds richer post-acquisition evidence memory and multi-mode retrieval over accumulated corpora. Imported from research-engine for Directive Workspace Discovery review only. | Imported source candidate microsoft-graphrag from research-engine bundle C:/Users/User/projects/directive-workspace/discovery/research-engine/artifacts-live-test/dw_import_bundle.json. Bundle decision boundary: This bundle is import-ready for Directive Workspace Discovery review only; it must not be treated as a routing or adoption decision. Source intelligence boundary: Research Engine gathers source intelligence and scoring signals only; it does not decide what Directive Workspace Discovery should adopt or route. Discovery packet boundary: Research Engine prepares Discovery-facing candidate packets; Directive Workspace Discovery retains final route and adoption authority. Research-engine source kind: framework Discovery signal band: strong Signal score summary: Strong Discovery review signal from Research Engine scoring. Score summary: total=82; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=9/10; novelty=4/10. Signal total score: 82. Strong signal: Strong signal for further Discovery review because the current run shows high relevance, solid evidence quality, and bounded subsystem-reuse potential. Initial value hypothesis: Useful source-intelligence signal for structured evidence memory rather than flat chunk retrieval. Baggage signals: Heavy indexing footprint | Corpus-first orientation. Capability gap hint: Need richer evidence memory and multi-hop retrieval over accumulated technical sources. Freshness: Latest normalized evidence captured at 2026-04-06T14:53:39+00:00. Freshest observed source update at 2026-03-27T00:00:00+00:00 (10 days old at capture; 5/5 evidence items carried source dates; signal=current). Evidence bundle refs: microsoft-graphrag-e1, microsoft-graphrag-e2, microsoft-graphrag-e3, microsoft-graphrag-e4, microsoft-graphrag-e5. Evidence cluster summary: Collapsed 5 evidence items into 5 clusters. | No duplicate evidence clusters detected. | No contradiction flags detected across clustered evidence.. Provenance: primary via catalog:github-repos (github-repo). Uncertainty notes: Current run is catalog-backed and should later be upgraded to live-provider evidence. | record_shape:queue_only",
+        "routing_recommendation": "Shared Engine routing selected monitor with usefulness level meta.",
+        "proposed_adoption_target": "discovery-held candidate",
+        "stack_shape_summary": "external-system source; host dependence engine_only; integration mode none.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.",
+        "suggested_decision_state": "hold_in_discovery",
+        "fit_to_current_direction": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+        "reusability_across_surfaces": "Value remains useful without a host runtime surface.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "low",
+        "can_current_gates_validate_safely": "partially - proof plan discovery_review defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "routing_review, human_decision_required",
+        "missing_evidence": "mission-fit rationale recorded, routing rationale recorded, next bounded action chosen",
+        "next_action": "Keep the candidate in Discovery until routing clarity improves.",
+        "monitor_defer_trigger_conditions": "Hold the source in Discovery until routing confidence or downstream adoption target becomes clearer.",
+        "reentry_conditions": "Respect rollback boundary: Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work."
+      },
+      "routing": {
+        "route_date": "2026-04-06",
+        "source_type": "external-system",
+        "decision_state": "monitor",
+        "adoption_target": "discovery-held candidate",
+        "route_destination": "monitor",
+        "why_this_route": "Recommended discovery because its lane score (15) exceeded the alternatives.",
+        "why_not_alternatives": "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring. Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery. Route explanation breakdown for discovery: keyword=15, metadata=0, gap=0.",
+        "receiving_track_owner": "discovery",
+        "required_next_artifact": "discovery/02-triage/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--triage.md",
+        "linked_intake_record": "discovery/01-intake/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--triage.md",
+        "reentry_or_promotion_conditions": "routing_review, human_decision_required",
+        "review_cadence": "before any downstream route is accepted"
+      }
+    }
+  }
+}

@@ -17,8 +17,8 @@
 ## source inputs
 - Runtime proof artifact: `runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md`
 - Runtime objective: Mixed runtime operationalization and engine self-improvement. Assess whether literature monitoring, orchestrated research pipeline, scheduled delivery, and project knowledge-state patterns should become a reusable runtime workflow in Runtime, an Engine workflow or handoff improvement in Architecture, or stay in Discovery until the primary adoption target is clearer.
 - Proposed host: `Directive Workspace web host (frontend/ + hosts/web-host/)`
 - Proposed runtime surface: reimplement
@@ -53,5 +53,5 @@
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-capability-boundary.md`
 - Proof artifact: `runtime/03-proof/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-proof.md`
 - Runtime record: `runtime/02-records/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-routing-record.md`

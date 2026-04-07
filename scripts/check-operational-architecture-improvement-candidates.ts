@@ -6,7 +6,7 @@ import {
   buildOperationalArchitectureImprovementCandidatesReport,
   OPERATIONAL_ARCHITECTURE_IMPROVEMENT_CHECKER_ID,
   RUNTIME_CALLABLE_INPUT_BOUNDARY_CANDIDATE_ID,
-} from "../shared/lib/operational-architecture-improvement-candidates.ts";
+} from "../architecture/lib/operational-architecture-improvement-candidates.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 

@@ -1,0 +1,23 @@
+# Discovery Intake Record: OpenMOSS
+
+- Candidate id: dw-pressure-openmoss-architecture-loop-2026-03-26
+- Candidate name: OpenMOSS
+- Intake date: 2026-03-26
+- Source type: github-repo
+- Source reference: https://github.com/openclaw/OpenMOSS
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Assess OpenMOSS for structural Engine value, especially explicit review-rework quality loops, patrol-recovery boundaries, and orchestration patterns that could improve Directive Workspace itself more than they would become reusable runtime capability.
+- Initial relevance to the workspace: Direct usefulness: the candidate targets reusable runtime capability, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 99665e2d-6a18-4ecc-872e-b2ea954d3f88 selected runtime. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-triage.md

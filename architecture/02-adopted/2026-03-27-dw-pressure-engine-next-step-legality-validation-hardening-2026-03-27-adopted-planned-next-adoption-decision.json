@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-next-step-legality-validation-hardening-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-next-step-legality-validation-hardening-2026-03-27-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-next-step-legality-validation-hardening-2026-03-27-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-adopted/2026-03-27-dw-pressure-engine-next-step-legality-validation-hardening-2026-03-27-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "routing_quality",
+    "claim": "Directive Workspace can now tighten one concrete next-step legality seam in Discovery-route resolution without broadening into the rest of negative-path hardening.",
+    "mechanism": "The adopted slice narrows legality hardening to concrete required-next-artifact mismatches while preserving descriptive labels as metadata only.",
+    "baseline_observation": "Before this DEEP opener, route-level legality relied on queue mismatches and missing linked artifacts, but not on required-next-artifact mismatches.",
+    "expected_effect": "The resolver and composition checker will block this mismatch class and report it explicitly.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The slice is small, shared, and directly aligned with the current whole-product bottleneck.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

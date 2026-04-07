@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 import re
 import sys
@@ -20,6 +21,25 @@ def _extract_local_stop_term_suggestion(acquisition_notes: list[str]) -> str | N
             return None
         return value
     return None
+
+
+def _load_local_dotenv(dotenv_path: Path | None = None) -> None:
+    candidate = dotenv_path or Path(".env")
+    if not candidate.exists():
+        return
+    try:
+        lines = candidate.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return
+    for raw_line in lines:
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        if not key or key in os.environ:
+            continue
+        os.environ[key] = value.strip().strip("\"").strip("'")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -48,6 +68,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    _load_local_dotenv()
     parser = build_parser()
     args = parser.parse_args(argv)
     mission = load_mission(args.mission_file) if args.mission_file else default_mission()

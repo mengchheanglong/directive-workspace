@@ -2,12 +2,12 @@
 
 - Date: 2026-04-03
 - Slice type: archive move
-- Scope: `runtime/follow-up/`, `control/state/operator-simplicity-migration-*.json`
+- Scope: `runtime/00-follow-up/`, `control/state/operator-simplicity-migration-*.json`
 
 ## Why this slice
 
 The completed archive-feasibility audit proved one exact artifact was safe to move:
-- `runtime/follow-up/2026-03-20-hermes-agent-utility-cutover.md`
+- `runtime/00-follow-up/2026-03-20-hermes-agent-utility-cutover.md`
 
 It was the strongest first archive candidate because it was:
 - closed as `reference-only`
@@ -16,9 +16,9 @@ It was the strongest first archive candidate because it was:
 
 ## What changed
 
-- moved the Hermes cutover note under `runtime/follow-up/archive/`
+- moved the Hermes cutover note under `runtime/00-follow-up/archive/`
 - created a narrow archive README for future operator use
-- updated the active `runtime/follow-up/README.md` boundary note to point at the archive subtree
+- updated the active `runtime/00-follow-up/README.md` boundary note to point at the archive subtree
 - advanced the migration selector to the next bounded audit slice
 
 ## Stop-line

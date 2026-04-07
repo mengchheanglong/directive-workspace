@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { buildDirectiveRuntimePromotionAssistanceReport } from "../shared/lib/runtime-promotion-assistance.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { buildDirectiveRuntimePromotionAssistanceReport } from "../runtime/lib/runtime-promotion-assistance.ts";
 import {
   runDirectiveRuntimeV0LiveMiniSweAgentCallableIntegration,
 } from "../runtime/01-callable-integrations/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-callable-integration.ts";
@@ -17,7 +17,7 @@ const PROMOTION_READINESS_PATH =
 const PROMOTION_SPECIFICATION_PATH =
   "runtime/06-promotion-specifications/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-specification.json";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md";
 const EXPECTED_HOST = "Directive Workspace standalone host (hosts/standalone-host/)";
 
 function main() {

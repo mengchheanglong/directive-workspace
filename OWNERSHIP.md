@@ -46,7 +46,7 @@
 
 - `Mission Control`
   - keeps runtime code, database, APIs, checks, and UI integration
-  - does not own Directive doctrine, Engine lane definitions, product-level contracts, or the canonical DW engine
+  - does not own Directive doctrine, lane lifecycle definitions, product-level contracts, or the canonical DW engine
 
 ## Host Integration Rule
 

@@ -6,10 +6,10 @@ import { fileURLToPath } from "node:url";
  * Host adapter boundary checker.
  *
  * Validates that host directories only import from the declared adapter surface.
- * The adapter surface is the set of engine/ and shared/lib/ modules that hosts
- * are explicitly allowed to depend on.
+ * The adapter surface is the set of engine/ modules and residual shared/lib/
+ * support modules that hosts are explicitly allowed to depend on.
  *
- * Any new host dependency on engine/ or shared/lib/ must be added to the
+ * Any new host dependency on engine/ or residual shared/lib/ must be added to the
  * ALLOWED_HOST_IMPORTS list below so the boundary stays explicit and auditable.
  */
 
@@ -30,52 +30,53 @@ const ALLOWED_HOST_IMPORT_PREFIXES: string[] = [
   "engine/index.ts",
   "engine/approval-boundary.ts",
 
-  // Canonical read surface
-  "shared/lib/dw-state",
-  "shared/lib/runtime-promotion-specification",
+  // Canonical read and promotion surfaces
+  "engine/state/index.ts",
+  "runtime/lib/runtime-promotion-specification.ts",
 
   // Discovery submission and lifecycle
-  "shared/lib/discovery-submission-router",
-  "shared/lib/discovery-front-door",
-  "shared/lib/discovery-route-opener",
-  "shared/lib/discovery-intake-queue-writer",
-  "shared/lib/discovery-intake-queue-transition",
-  "shared/lib/discovery-fast-path-record-writer",
-  "shared/lib/discovery-routing-record-writer",
-  "shared/lib/discovery-completion-record-writer",
-  "shared/lib/discovery-intake-lifecycle-sync",
-  "shared/lib/discovery-case-record-writer",
+  "discovery/lib/discovery-submission-router.ts",
+  "discovery/lib/discovery-front-door.ts",
+  "discovery/lib/discovery-route-opener.ts",
+  "discovery/lib/discovery-intake-queue-writer.ts",
+  "discovery/lib/discovery-intake-queue-transition.ts",
+  "discovery/lib/discovery-fast-path-record-writer.ts",
+  "discovery/lib/discovery-routing-record-writer.ts",
+  "discovery/lib/discovery-completion-record-writer.ts",
+  "discovery/lib/discovery-intake-lifecycle-sync.ts",
+  "discovery/lib/discovery-case-record-writer.ts",
 
   // Architecture deep-tail canonical stage map
-  "shared/lib/architecture-deep-tail-stage-map",
+  "architecture/lib/architecture-deep-tail-stage-map.ts",
 
   // Architecture lane openers/writers
-  "shared/lib/architecture-bounded-closeout",
-  "shared/lib/architecture-result-adoption",
-  "shared/lib/architecture-implementation-target",
-  "shared/lib/architecture-implementation-result",
-  "shared/lib/architecture-retention",
-  "shared/lib/architecture-integration-record",
-  "shared/lib/architecture-consumption-record",
-  "shared/lib/architecture-post-consumption-evaluation",
-  "shared/lib/architecture-reopen-from-evaluation",
-  "shared/lib/architecture-handoff-start",
+  "architecture/lib/architecture-bounded-closeout.ts",
+  "architecture/lib/architecture-result-adoption.ts",
+  "architecture/lib/architecture-implementation-target.ts",
+  "architecture/lib/architecture-implementation-result.ts",
+  "architecture/lib/architecture-retention.ts",
+  "architecture/lib/architecture-integration-record.ts",
+  "architecture/lib/architecture-consumption-record.ts",
+  "architecture/lib/architecture-post-consumption-evaluation.ts",
+  "architecture/lib/architecture-reopen-from-evaluation.ts",
+  "architecture/lib/architecture-handoff-start.ts",
 
   // Runtime lane openers/writers
-  "shared/lib/runtime-follow-up-opener",
-  "shared/lib/runtime-follow-up-record-writer",
-  "shared/lib/runtime-record-proof-opener",
-  "shared/lib/runtime-record-writer",
-  "shared/lib/runtime-proof-bundle-writer",
-  "shared/lib/runtime-proof-runtime-capability-boundary-opener",
-  "shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener",
-  "shared/lib/runtime-transformation-proof-writer",
-  "shared/lib/runtime-transformation-record-writer",
-  "shared/lib/runtime-promotion-record-writer",
-  "shared/lib/runtime-registry-entry-writer",
+  "runtime/lib/runtime-follow-up-opener.ts",
+  "runtime/lib/runtime-follow-up-record-writer.ts",
+  "runtime/lib/runtime-record-proof-opener.ts",
+  "runtime/lib/runtime-record-writer.ts",
+  "runtime/lib/runtime-proof-bundle-writer.ts",
+  "runtime/lib/runtime-proof-runtime-capability-boundary-opener.ts",
+  "runtime/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts",
+  "runtime/lib/runtime-transformation-proof-writer.ts",
+  "runtime/lib/runtime-transformation-record-writer.ts",
+  "runtime/lib/runtime-promotion-record-writer.ts",
+  "runtime/lib/runtime-registry-entry-writer.ts",
 
-  // Engine run artifacts
-  "shared/lib/engine-run-artifacts",
+  // Residual shared support still consumed by hosts
+  "engine/execution/engine-run-artifacts.ts",
+  "shared/lib/directive-workspace-artifact-storage.ts",
 ];
 
 type Violation = {
@@ -142,7 +143,11 @@ function resolveImportTarget(
   if (!importPath.startsWith(".")) return null;
   const sourceDir = path.dirname(sourceFile);
   const resolved = path.resolve(sourceDir, importPath);
-  return path.relative(DIRECTIVE_ROOT, resolved).replace(/\\/g, "/");
+  const resolvedFile =
+    [resolved, `${resolved}.ts`, `${resolved}.tsx`, path.join(resolved, "index.ts")].find((candidate) =>
+      fs.existsSync(candidate),
+    ) ?? resolved;
+  return path.relative(DIRECTIVE_ROOT, resolvedFile).replace(/\\/g, "/");
 }
 
 function isWithinAdapterBoundary(target: string): boolean {

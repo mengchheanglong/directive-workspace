@@ -6,23 +6,23 @@ import http, {
 import fs from "node:fs";
 import path from "node:path";
 
-import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
-import type { RuntimeFollowUpRecordRequest } from "../../shared/lib/runtime-follow-up-record-writer";
-import type { RuntimeProofBundleRequest } from "../../shared/lib/runtime-proof-bundle-writer";
-import type { RuntimePromotionRecordRequest } from "../../shared/lib/runtime-promotion-record-writer";
-import type { RuntimeRegistryEntryRequest } from "../../shared/lib/runtime-registry-entry-writer";
-import type { RuntimeRecordRequest } from "../../shared/lib/runtime-record-writer";
-import type { RuntimeTransformationProofRequest } from "../../shared/lib/runtime-transformation-proof-writer";
-import type { RuntimeTransformationRecordRequest } from "../../shared/lib/runtime-transformation-record-writer";
+import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
+import type { RuntimeFollowUpRecordRequest } from "../../runtime/lib/runtime-follow-up-record-writer.ts";
+import type { RuntimeProofBundleRequest } from "../../runtime/lib/runtime-proof-bundle-writer.ts";
+import type { RuntimePromotionRecordRequest } from "../../runtime/lib/runtime-promotion-record-writer.ts";
+import type { RuntimeRegistryEntryRequest } from "../../runtime/lib/runtime-registry-entry-writer.ts";
+import type { RuntimeRecordRequest } from "../../runtime/lib/runtime-record-writer.ts";
+import type { RuntimeTransformationProofRequest } from "../../runtime/lib/runtime-transformation-proof-writer.ts";
+import type { RuntimeTransformationRecordRequest } from "../../runtime/lib/runtime-transformation-record-writer.ts";
 import {
   DEFAULT_STANDALONE_RUNTIME_ARTIFACTS_RELATIVE_ROOT,
   STANDALONE_HOST_CONFIG_MODE,
   type ResolvedStandaloneHostAuth,
   type ResolvedStandaloneHostConfig,
   type ResolvedStandaloneHostPersistence,
-} from "./config";
-import { createStandaloneHostPersistenceLedger } from "./persistence";
-import { createStandaloneFilesystemHost } from "./runtime";
+} from "./config.ts";
+import { createStandaloneHostPersistenceLedger } from "./persistence.ts";
+import { createStandaloneFilesystemHost } from "./runtime.ts";
 
 type JsonValue = Record<string, unknown>;
 

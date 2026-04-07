@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-runtime-handoff-stale-status-hardening-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-runtime-handoff-stale-status-hardening-2026-03-27-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-27-dw-pressure-engine-runtime-handoff-stale-status-hardening-2026-03-27-bounded-result.md",
+  "primary_evidence_path": "hosts/web-host/data.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can present Runtime handoff work more truthfully when follow-up stub status is derived from the live current head instead of the artifact filename alone.",
+    "mechanism": "This DEEP bounded result adds one shared resolver-backed status classification rule for Runtime follow-up stubs in the host read-model.",
+    "baseline_observation": "Before this slice, historical Runtime follow-up artifacts still appeared in the handoff list as pending-review work even after the live case head had moved downstream.",
+    "expected_effect": "The operator-facing handoff list will stop overstating pending Runtime review work while preserving real pending follow-ups.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "This bounded stale-status slice adds immediate shared truth value without broadening into queue sync or frontend redesign.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

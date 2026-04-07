@@ -9,7 +9,7 @@
 ## What changed
 
 - Added one review-only external-host boundary record for this case only:
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-review-boundary-record-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-review-boundary-record-01.md`
 - Bound the promotion-readiness artifact to that record without creating a live promotion record or registry entry.
 - Added one dedicated checker for this stronger boundary:
   - `npm run check:directive-scientify-mission-control-external-host-review-boundary`

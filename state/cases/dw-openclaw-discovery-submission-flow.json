@@ -13,7 +13,7 @@
   "createdAt": "2026-03-22T00:00:00.000Z",
   "updatedAt": "2026-03-22T00:00:00.000Z",
   "linkedArtifacts": {
-    "intakeRecordPath": "discovery/intake/2026-03-22-openclaw-discovery-submission-flow-intake.md",
+    "intakeRecordPath": "discovery/01-intake/2026-03-22-openclaw-discovery-submission-flow-intake.md",
     "triageRecordPath": null,
     "routingRecordPath": null,
     "engineRunRecordPath": null,
@@ -25,7 +25,8 @@
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "architecture/03-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md"
+    "resultRecordPath": "architecture/02-adopted/2026-03-22-openclaw-discovery-submission-flow-adopted.md"
   },
   "projectionInputs": null
 }
+

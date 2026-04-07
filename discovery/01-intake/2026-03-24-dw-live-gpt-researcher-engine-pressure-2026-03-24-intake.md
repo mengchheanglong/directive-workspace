@@ -1,0 +1,23 @@
+# Discovery Intake Record: GPT Researcher Engine Pattern Audit
+
+- Candidate id: dw-live-gpt-researcher-engine-pressure-2026-03-24
+- Candidate name: GPT Researcher Engine Pattern Audit
+- Intake date: 2026-03-24
+- Source type: github-repo
+- Source reference: https://github.com/assafelovic/gpt-researcher
+- Source location on disk: n/a
+- Submitted by: mission-control-discovery-engine-backfill
+- Why it entered the system: Backfilled from a real Engine run so the Discovery queue and downstream lane handoff reflect actual routing state.
+- Claimed value: Directive engine materialization and evaluation quality. Assess whether planner or execution or publisher structure, citation-backed report generation, MCP retrieval, and report persistence patterns improve Engine routing, adaptation, proof, and self-improvement rather than merely becoming a host feature.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Backfilled from persisted Engine run cc5eed01-d35d-4c05-ae9d-03d6a906d973.
+- Linked triage record: discovery/02-triage/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-triage.md

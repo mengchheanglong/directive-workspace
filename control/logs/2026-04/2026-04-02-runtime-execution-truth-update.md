@@ -28,7 +28,7 @@
 
 - `npm run check:runtime-callable-execution-surface`
 - `npm run check:directive-workspace-composition`
-- `npm run report:directive-workspace-state -- runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
+- `npm run report:directive-workspace-state -- runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
 
 ## Rollback
 

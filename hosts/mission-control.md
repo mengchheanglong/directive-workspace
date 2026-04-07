@@ -42,7 +42,7 @@ Current host status:
   - artifact root consumed: `runtime/standalone-host/engine-runs/`
   - read mode: consume persisted `DirectiveEngineRunRecord` JSON and paired Markdown run reports directly
   - write mode: the existing Discovery submission path can optionally invoke the Engine, persist the same run-record/report artifact pair, materialize Discovery intake/triage/routing records, and create one lane-native handoff stub before advancing the queue to `routed`
-  - Architecture start mode: Mission Control can now open one bounded Architecture experiment record directly from a routed `architecture/02-experiments/*-engine-handoff.md` stub without re-reading the Engine run by hand
+  - Architecture start mode: Mission Control can now open one bounded Architecture experiment record directly from a routed `architecture/01-experiments/*-engine-handoff.md` stub without re-reading the Engine run by hand
   - boundary: Engine-native host consumption and production only; no remap into the legacy directive-capability CRUD model
 - host verification remains the source of runtime truth:
   - `npm run typecheck`
@@ -64,7 +64,7 @@ Current shared-lib mirror set:
 - `integration-artifact-generator.ts`
 
 Boundary source of truth:
-- `runtime/BOUNDARY_INVENTORY.json`
+- `runtime/meta/BOUNDARY_INVENTORY.json`
 - `runtime/source-packs/CATALOG.json`
 - `shared/contracts/host-integration-boundary.md`
 
@@ -82,3 +82,4 @@ Boundary source of truth:
 - OpenClaw does not bypass Discovery to reach Runtime or Architecture directly
 - Active bounded upstream signal lanes: direct root submission, stale runtime verification freshness, maintenance/watchdog degraded-state signaling
 - Future webhook, Telegram, or gateway submission lanes remain deferred until explicitly opened as separate slices
+

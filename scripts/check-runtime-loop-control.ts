@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildDirectiveRuntimeLoopControlReport } from "../shared/lib/runtime-loop-control.ts";
+import { buildDirectiveRuntimeLoopControlReport } from "../runtime/lib/runtime-loop-control.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const QUEUE_PATH = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
@@ -48,30 +48,44 @@ function main() {
   );
   assert.equal(report.completionFrontier.blockedByClosedSeamCount, 0);
 
-  assert.equal(report.runtimeQueue.topRecommendation, null);
-  assert.equal(report.runtimeQueue.summary.alreadyPromotedManualCycleCount, 9);
-  assert.equal(report.runtimeQueue.summary.blockedPendingHostSelectionCount, 0);
+  assert.deepEqual(report.runtimeQueue.topRecommendation, {
+    candidateId: "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
+    assistanceState: "blocked_pending_host_selection",
+    recommendedActionKind: "clarify_repo_native_host_target",
+  });
+  assert.equal(report.runtimeQueue.summary.totalPromotionReadinessCases, 15);
+  assert.equal(report.runtimeQueue.summary.alreadyPromotedManualCycleCount, 12);
+  assert.equal(report.runtimeQueue.summary.blockedPendingHostSelectionCount, 2);
   assert.equal(report.runtimeQueue.summary.blockedMissingCallableBoundaryCount, 0);
   assert.equal(report.runtimeQueue.summary.blockedOtherCount, 1);
 
-  assert.equal(report.coordinationContext.topPressureBucket, "architecture_experimental_parked");
-  assert.equal(report.coordinationContext.totalLiveCases, 32);
-  assert.equal(report.coordinationContext.parkedCount, 22);
-  assert.equal(report.coordinationContext.stopCount, 4);
+  assert.equal(report.coordinationContext.topPressureBucket, "other_live_case");
+  assert.equal(report.coordinationContext.totalLiveCases, 47);
+  assert.equal(report.coordinationContext.parkedCount, 46);
+  assert.equal(report.coordinationContext.stopCount, 1);
 
   assert.equal(report.persistenceSignals.ledgerPath, "control/state/coordination-ledger.json");
   assert.equal(report.persistenceSignals.totalPreviousChecks >= 1, true);
   assert.equal(report.persistenceSignals.staleCaseCount > 0, true);
 
-  assert.equal(report.loopSelection.loopPossible, false);
-  assert.equal(report.loopSelection.selectedDomain, "none");
-  assert.equal(report.loopSelection.authoritySurface, "none");
+  assert.equal(report.loopSelection.loopPossible, true);
+  assert.equal(report.loopSelection.selectedDomain, "runtime");
+  assert.equal(report.loopSelection.authoritySurface, "runtime_promotion_assistance");
   assert.equal(report.loopSelection.selectedCompletionSlice, null);
   assert.ok(
-    report.loopSelection.selectedReason.includes("no actionable top recommendation"),
-    "Expected the loop selector to explain that the completed completion ladder has no actionable outside-ladder Runtime follow-through remaining",
+    report.loopSelection.selectedReason.includes("top recommendation-first Runtime case"),
+    "Expected the loop selector to explain that the completed completion ladder now defers to the Runtime top recommendation frontier",
   );
-  assert.equal(report.loopSelection.selectedCase, null);
+  assert.deepEqual(report.loopSelection.selectedCase, {
+    candidateId: "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
+    candidateName: "jackswl/deep-researcher",
+    currentStage: "runtime.promotion_readiness.opened",
+    currentHeadPath:
+      "runtime/05-promotion-readiness/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-readiness.md",
+    recommendedActionKind: "clarify_repo_native_host_target",
+    recommendedActionSummary:
+      "This case cannot reach a manual promotion decision yet because host selection is still pending. Clarify one bounded repo-native host target first.",
+  });
 
   assert.equal(
     fs.readFileSync(QUEUE_PATH, "utf8"),

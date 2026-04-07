@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-adopted/2026-03-28-dw-pressure-engine-stale-current-head-runtime-approval-legality-hardening-2026-03-28-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can stop stale local approval wording from overruling the stronger live currentHead on advanced Runtime chains.",
+    "mechanism": "The adopted slice downgrades artifact-local approval wording for stale Runtime approval-boundary artifacts once currentHead has advanced downstream.",
+    "baseline_observation": "Before this DEEP slice, the shared resolver still advertised the old follow-up, record, proof, or capability-boundary approval step even after currentHead had already moved to promotion-readiness.",
+    "expected_effect": "Operators inspecting stale Runtime boundary artifacts will be redirected to the live currentHead instead of being shown a no-longer-satisfiable local approval step.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The slice is small, shared, and directly aligns artifact-local wording with currentHead truth without rewriting the integrity model.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

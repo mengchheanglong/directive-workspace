@@ -59,4 +59,4 @@ Validation hooks:
 - `npm run check:ops-stack`
 
 Canonical inventory:
-- `runtime/PROMOTION_PROFILES.json`
+- `runtime/meta/PROMOTION_PROFILES.json`

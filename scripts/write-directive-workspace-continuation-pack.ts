@@ -2,23 +2,23 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../shared/lib/architecture-deep-tail-stage-map.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGE } from "../architecture/lib/architecture-deep-tail-stage-map.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CONTINUATION_ROOT = path.join(DIRECTIVE_ROOT, "knowledge", "continuation");
 
 const CANONICAL_EXAMPLES = {
   discoveryArchitectureRoute:
-    "discovery/routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
+    "discovery/03-routing-log/2026-03-25-dw-real-karpathy-autoresearch-discovery-v0-2026-03-25-routing-record.md",
   discoveryRuntimeRoute:
-    "discovery/routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
+    "discovery/03-routing-log/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-routing-record.md",
   architectureKeepEvaluation:
     `${ARCHITECTURE_DEEP_TAIL_STAGE.post_consumption_evaluation.relativeDir}/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-evaluation.md`,
   architectureBoundedResult:
-    "architecture/02-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
+    "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-bounded-result.md",
   runtimeFollowUp:
-    "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+    "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
   runtimeProof:
     "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
   runtimeRuntimeCapabilityBoundary:
@@ -60,7 +60,7 @@ function buildMachineReadablePack() {
         "npm run check",
         "npm run report:directive-workspace-state",
       ],
-      resolverModule: "shared/lib/dw-state.ts",
+      resolverModule: "engine/state/index.ts",
       checkerCommand: "npm run check",
       checkerScript: "scripts/check-directive-workspace-composition.ts",
       reportCommand: "npm run report:directive-workspace-state",
@@ -100,7 +100,7 @@ function renderReadThisFirst(pack: ReturnType<typeof buildMachineReadablePack>) 
 1. Read \`CLAUDE.md\`.
 2. Run \`npm run check\` from the current Directive Workspace product root.
 3. Run \`npm run report:directive-workspace-state\`.
-4. Treat [dw-state.ts](../../shared/lib/dw-state.ts) as the canonical read surface.
+4. Treat [dw-state.ts](../../engine/state/index.ts) as the canonical read surface.
 
 How to read focused state:
 - \`artifactStage\` / \`artifactNextLegalStep\`: the inspected artifact's own boundary.
@@ -147,7 +147,7 @@ npm run report:directive-workspace-state -- ${CANONICAL_EXAMPLES.architectureBou
 
 ## Canonical truth
 
-- Resolver: [dw-state.ts](../../shared/lib/dw-state.ts)
+- Resolver: [dw-state.ts](../../engine/state/index.ts)
 - Whole-product checker: [check-directive-workspace-composition.ts](../../scripts/check-directive-workspace-composition.ts)
 - Current-state report: [report-directive-workspace-state.ts](../../scripts/report-directive-workspace-state.ts)
 
@@ -280,3 +280,4 @@ function main() {
 }
 
 main();
+

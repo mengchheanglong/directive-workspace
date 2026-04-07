@@ -39,7 +39,7 @@ For each mechanism identified in the source analysis value map:
 - `extraction_decision`: `extract` | `skip` | `defer`
 - `extraction_rationale`: why this mechanism is worth extracting (or not)
 - `raw_form_summary`: what the mechanism looks like in the original source
-- `target_artifact_type`: `contract` | `schema` | `template` | `policy` | `reference-pattern` | `shared-lib` | `doctrine-update`
+- `target_artifact_type`: `contract` | `schema` | `template` | `policy` | `engine-code` | `reference-pattern` | `shared-lib` | `doctrine-update`
 - `target_path`: intended file path in Directive Workspace
 
 ### 3. Adaptation decisions
@@ -71,7 +71,7 @@ For each extracted mechanism:
 
 ### 5. Integration target
 
-- `integration_surface`: `shared/contracts` | `shared/schemas` | `shared/templates` | `architecture/05-reference-patterns` | `knowledge` | `shared/lib`
+- `integration_surface`: `shared/contracts` | `shared/schemas` | `shared/templates` | `knowledge` | `shared/lib`
 - `integration_dependencies`: what existing assets must be updated or aware of this new artifact
 - `runtime_handoff_required`: `yes` | `no` — if the extracted value also has a runtime component that should hand off to Runtime
 - `runtime_handoff_ref`: path to architecture-to-runtime handoff record (if applicable)

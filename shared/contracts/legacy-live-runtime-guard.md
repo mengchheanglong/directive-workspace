@@ -29,7 +29,7 @@ Every normalized legacy live-runtime pack must declare:
 - one Runtime proof record
 - one promotion record
 - one registry entry
-- one live-runtime accounting entry in `runtime/LIVE_RUNTIME_ACCOUNTING.json`
+- one live-runtime accounting entry in `runtime/meta/LIVE_RUNTIME_ACCOUNTING.json`
 
 ## Proof Shape
 

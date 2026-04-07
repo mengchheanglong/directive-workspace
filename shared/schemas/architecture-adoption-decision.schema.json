@@ -58,7 +58,7 @@
     },
     "artifact_type": {
       "type": "string",
-      "enum": ["contract", "schema", "template", "policy", "reference-pattern", "shared-lib", "doctrine-update"]
+      "enum": ["contract", "schema", "template", "policy", "engine-code", "reference-pattern", "shared-lib", "doctrine-update"]
     },
     "artifact_path": {
       "type": "string"

@@ -10,8 +10,8 @@
 ## Repo truth used
 
 - `runtime/README.md`
-  - still says accepted runtime state is recorded in `registry/` only after host acceptance
-- `runtime/registry/README.md`
+  - still says accepted runtime state is recorded in `08-registry/` only after host acceptance
+- `runtime/08-registry/README.md`
   - still says a registry entry belongs only after:
     - a promotion record exists
     - required host gates have passed

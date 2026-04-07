@@ -7,20 +7,16 @@ import { fileURLToPath } from "node:url";
 import {
   materializeDirectiveDiscoveryFrontDoorProjectionSet,
   writeDirectiveDiscoveryFrontDoorProjectionSet,
-} from "../shared/lib/discovery-front-door-projections.ts";
-import { submitDirectiveDiscoveryFrontDoor } from "../shared/lib/discovery-front-door.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../discovery/lib/discovery-front-door-projections.ts";
+import { submitDirectiveDiscoveryFrontDoor } from "../discovery/lib/discovery-front-door.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { writeJson } from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 function ensureParentDir(filePath: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-}
-
-function writeJson(filePath: string, value: unknown) {
-  ensureParentDir(filePath);
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
 function readUtf8(filePath: string) {

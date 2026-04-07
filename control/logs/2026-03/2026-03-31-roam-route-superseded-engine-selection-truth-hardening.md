@@ -33,7 +33,7 @@ Current repo truth exposed one live broken anchor: the Roam Phase A / Phase 2 ro
 - `control/logs/2026-03/2026-03-31-roam-route-superseded-engine-selection-truth-hardening.md`
 
 ### Verification run
-- `npm run report:directive-workspace-state -- discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md`
+- `npm run report:directive-workspace-state -- discovery/03-routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md`
 - `node --experimental-strip-types ./scripts/check-directive-workspace-composition.ts`
 - `npm run report:directive-workspace-state`
 - `npm run check`

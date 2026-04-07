@@ -77,4 +77,4 @@ This guard applies only to read-only seam review. It does not open:
 
 ## Canonical Inventory
 
-- `runtime/PROMOTION_PROFILES.json`
+- `runtime/meta/PROMOTION_PROFILES.json`

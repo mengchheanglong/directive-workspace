@@ -14,6 +14,17 @@ This folder should contain:
 - reusable templates
 - canonical path/storage compatibility layers where stable logical artifact paths must survive structural cleanup
 
+Important structural note:
+- lane operating code and canonical state no longer live under `shared/lib/`
+- the main executable groupings are now:
+  - `architecture/lib/` for Architecture lane operating code
+  - `runtime/lib/` for Runtime lane operating code
+  - `discovery/lib/` for Discovery lane operating code
+  - `engine/state/` for canonical state resolution
+- `shared/lib/` remains for residual cross-cutting support, artifact/storage helpers, and host-agnostic adapters
+
+The lane artifact folders under `architecture/`, `runtime/`, and `discovery/` are the proof and record surfaces, not the only place lane ownership lives.
+
 Current reusable templates include:
 - Discovery fast-path record
 - Discovery intake, triage, routing, and holding-state templates
@@ -32,18 +43,24 @@ Current cross-track contracts include:
 - citation-set fallback contract
 
 Current shared libraries include:
-- `shared/lib/dw-state.ts`
+- `engine/state/index.ts`
 - `shared/lib/directive-workspace-artifact-storage.ts`
-- `shared/lib/architecture-deep-tail-stage-map.ts`
-- `shared/lib/architecture-deep-tail-artifact-helpers.ts`
-- `shared/lib/runtime-follow-up-navigation.ts`
-- `shared/lib/runtime-promotion-assistance.ts`
+- `architecture/lib/architecture-deep-tail-stage-map.ts`
+- `architecture/lib/architecture-deep-tail-artifact-helpers.ts`
+- `runtime/lib/runtime-follow-up-navigation.ts`
+- `runtime/lib/runtime-promotion-assistance.ts`
 - `shared/lib/structured-output-fallback.ts`
 - `shared/lib/lifecycle-artifacts.ts`
 - `shared/lib/integration-artifact-generator.ts`
+- `shared/lib/literature-monitoring-artifacts.ts`
+
+Current residual `shared/lib/` truth:
+- only artifact/storage compatibility and small host-agnostic support helpers remain there
+- lane-owned Architecture support has moved to `architecture/lib/`
+- cross-lane Engine state, case, coordination, and execution support have moved to `engine/`
 
 Host note:
-- hosts may keep temporary host-local mirrors of `shared/lib/` files
+- hosts may keep temporary host-local mirrors of Engine lane/state files and residual `shared/lib/` support files
 - canonical ownership remains in Directive Workspace
 - mirror drift must be prevented by host sync checks
 

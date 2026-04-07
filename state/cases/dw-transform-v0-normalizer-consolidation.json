@@ -13,7 +13,7 @@
   "createdAt": "2026-03-22T00:00:00.000Z",
   "updatedAt": "2026-03-22T00:00:00.000Z",
   "linkedArtifacts": {
-    "intakeRecordPath": "discovery/intake/2026-03-22-v0-normalizer-transformation-intake.md",
+    "intakeRecordPath": "discovery/01-intake/2026-03-22-v0-normalizer-transformation-intake.md",
     "triageRecordPath": null,
     "routingRecordPath": null,
     "engineRunRecordPath": null,
@@ -25,7 +25,7 @@
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "runtime/records/2026-03-22-v0-normalizer-transformation-record.md"
+    "resultRecordPath": "runtime/legacy-records/2026-03-22-v0-normalizer-transformation-record.md"
   },
   "projectionInputs": null
 }

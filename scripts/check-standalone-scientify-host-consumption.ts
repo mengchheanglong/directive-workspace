@@ -4,12 +4,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { createStandaloneFilesystemHost } from "../hosts/standalone-host/runtime.ts";
-import { DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH } from "../shared/lib/runtime-promotion-specification.ts";
+import { DIRECTIVE_RUNTIME_TO_HOST_CONTRACT_PATH } from "../runtime/lib/runtime-promotion-specification.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "standalone_scientify_host_consumption";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md";
 const PROMOTION_SPECIFICATION_PATH =
   "runtime/06-promotion-specifications/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-specification.json";
 const CALLABLE_STUB_PATH =
@@ -101,6 +101,43 @@ async function main() {
     assert.equal(result.adapter.hostIntegrated, true);
     assert.equal(result.adapter.promotionAutomation, false);
     assert.equal(result.adapter.automaticWorkflowAdvancement, false);
+    assert.equal(
+      result.hostCallableAdapter.contractVersion,
+      "host_callable_adapter.v1",
+    );
+    assert.equal(
+      result.hostCallableAdapter.contractPath,
+      "shared/contracts/host-callable-adapter.md",
+    );
+    assert.equal(
+      result.hostCallableAdapter.capabilityKind,
+      "runtime_callable_execution",
+    );
+    assert.equal(result.hostCallableAdapter.acceptance.callableThroughHost, true);
+    assert.equal(result.hostCallableAdapter.acceptance.descriptorCallableOnly, false);
+    assert.equal(result.hostCallableAdapter.acceptance.runtimeCallableExecution, true);
+    assert.equal(
+      result.hostCallableAdapter.acceptance.sourceRuntimeExecutionClaimed,
+      false,
+    );
+    assert.equal(result.hostCallableAdapter.acceptance.hostIntegrationClaimed, true);
+    assert.equal(
+      result.hostCallableAdapter.acceptance.registryAcceptanceClaimed,
+      false,
+    );
+    assert.equal(result.hostCallableAdapter.acceptance.promotionAutomation, false);
+    assert.equal(
+      result.hostCallableAdapter.evidencePaths.promotionRecordPath,
+      PROMOTION_RECORD_PATH,
+    );
+    assert.equal(
+      result.hostCallableAdapter.evidencePaths.promotionSpecificationPath,
+      PROMOTION_SPECIFICATION_PATH,
+    );
+    assert.equal(
+      result.hostCallableAdapter.evidencePaths.callableStubPath,
+      CALLABLE_STUB_PATH,
+    );
 
     assert.equal(result.execution.ok, true);
     assert.equal(result.execution.rawResult.ok, true);
@@ -148,6 +185,21 @@ async function main() {
         promotionAutomation: boolean;
         automaticWorkflowAdvancement: boolean;
       };
+      hostCallableAdapter: {
+        contractVersion: string;
+        capabilityKind: string;
+        acceptance: {
+          descriptorCallableOnly: boolean;
+          runtimeCallableExecution: boolean;
+          sourceRuntimeExecutionClaimed: boolean;
+          hostIntegrationClaimed: boolean;
+        };
+        evidencePaths: {
+          promotionRecordPath: string | null;
+          promotionSpecificationPath: string | null;
+          callableStubPath?: string | null;
+        };
+      };
       proof: {
         primaryChecker: string;
         supportingCheckers: string[];
@@ -174,6 +226,39 @@ async function main() {
     assert.equal(report.acceptance.hostIntegrated, true);
     assert.equal(report.acceptance.promotionAutomation, false);
     assert.equal(report.acceptance.automaticWorkflowAdvancement, false);
+    assert.equal(report.hostCallableAdapter.contractVersion, "host_callable_adapter.v1");
+    assert.equal(
+      report.hostCallableAdapter.capabilityKind,
+      "runtime_callable_execution",
+    );
+    assert.equal(
+      report.hostCallableAdapter.acceptance.descriptorCallableOnly,
+      false,
+    );
+    assert.equal(
+      report.hostCallableAdapter.acceptance.runtimeCallableExecution,
+      true,
+    );
+    assert.equal(
+      report.hostCallableAdapter.acceptance.sourceRuntimeExecutionClaimed,
+      false,
+    );
+    assert.equal(
+      report.hostCallableAdapter.acceptance.hostIntegrationClaimed,
+      true,
+    );
+    assert.equal(
+      report.hostCallableAdapter.evidencePaths.promotionRecordPath,
+      PROMOTION_RECORD_PATH,
+    );
+    assert.equal(
+      report.hostCallableAdapter.evidencePaths.promotionSpecificationPath,
+      PROMOTION_SPECIFICATION_PATH,
+    );
+    assert.equal(
+      report.hostCallableAdapter.evidencePaths.callableStubPath,
+      CALLABLE_STUB_PATH,
+    );
     assert.equal(
       report.proof.primaryChecker,
       "npm run check:standalone-scientify-host-consumption",

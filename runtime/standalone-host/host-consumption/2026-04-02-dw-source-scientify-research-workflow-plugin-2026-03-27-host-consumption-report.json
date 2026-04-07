@@ -6,7 +6,7 @@
   "hostName": "Directive Workspace standalone host",
   "hostSurface": "Directive Workspace standalone host callable invoke adapter",
   "invokeSurface": "standalone_host_runtime_scientify_invoke",
-  "promotionRecordPath": "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
+  "promotionRecordPath": "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
   "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-specification.json",
   "callableStubPath": "runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts",
   "executionSurface": "shared_runtime_callable_executor",
@@ -24,6 +24,41 @@
     "promotionAutomation": false,
     "automaticWorkflowAdvancement": false
   },
+  "hostCallableAdapter": {
+    "contractVersion": "host_callable_adapter.v1",
+    "contractPath": "shared/contracts/host-callable-adapter.md",
+    "schemaPath": "shared/schemas/host-callable-adapter.v1.schema.json",
+    "adapterId": "dw-source-scientify-research-workflow-plugin-2026-03-27:standalone_host:runtime_callable_invoke_adapter",
+    "candidateId": "dw-source-scientify-research-workflow-plugin-2026-03-27",
+    "candidateName": "Scientify Literature-Access Tool Bundle",
+    "hostName": "Directive Workspace standalone host",
+    "hostSurface": "Directive Workspace standalone host callable invoke adapter",
+    "callableSurface": "standalone_host_runtime_scientify_invoke",
+    "capabilityKind": "runtime_callable_execution",
+    "evidencePaths": {
+      "promotionRecordPath": "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
+      "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-specification.json",
+      "callableStubPath": "runtime/01-callable-integrations/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-callable-integration.ts"
+    },
+    "acceptance": {
+      "callableThroughHost": true,
+      "descriptorCallableOnly": false,
+      "runtimeCallableExecution": true,
+      "sourceRuntimeExecutionClaimed": false,
+      "hostIntegrationClaimed": true,
+      "registryAcceptanceClaimed": false,
+      "promotionAutomation": false,
+      "runtimeInternalsBypassed": false
+    },
+    "proof": {
+      "primaryChecker": "npm run check:standalone-scientify-host-consumption",
+      "supportingCheckers": [
+        "npm run check:standalone-scientify-host-adapter",
+        "npm run check:directive-scientify-runtime-promotion"
+      ]
+    },
+    "stopLine": "Scientify executes a Runtime-owned callable through the standalone host adapter; imported-source execution, registry acceptance, and promotion automation remain unopened."
+  },
   "proof": {
     "primaryChecker": "npm run check:standalone-scientify-host-consumption",
     "supportingCheckers": [
@@ -31,5 +66,5 @@
       "npm run check:directive-scientify-runtime-promotion"
     ]
   },
-  "stopLine": "One promoted Scientify callable executes through the standalone host adapter without bypassing Runtime internals; registry acceptance and promotion automation remain unopened."
+  "stopLine": "One promoted Scientify callable executes through the standalone host adapter without bypassing Runtime internals; imported-source execution, registry acceptance, and promotion automation remain unopened."
 }

@@ -1,0 +1,23 @@
+# Discovery Intake Record: Autoresearch Proof Boundary Pressure
+
+- Candidate id: dw-pressure-autoresearch-proof-boundary-2026-03-25
+- Candidate name: Autoresearch Proof Boundary Pressure
+- Intake date: 2026-03-25
+- Source type: github-repo
+- Source reference: https://github.com/uditgoenka/autoresearch
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Engine self-improvement for Architecture-side proof and evaluation quality. Assess whether autoresearch's mixed verification patterns, guard discipline, custom verification scripts, and results-tracking guidance should improve Directive Workspace Architecture bounded-result evaluation honesty without becoming reusable runtime capability.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 07f5a67b-98a0-4e05-8488-9fcf5f0cb086 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-25-dw-pressure-autoresearch-proof-boundary-2026-03-25-triage.md

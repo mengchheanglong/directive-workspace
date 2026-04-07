@@ -6,19 +6,19 @@ import { fileURLToPath } from "node:url";
 import {
   readDirectiveRuntimeTwoStepSequenceRecord,
   type DirectiveRunnerActionResult,
-} from "../shared/lib/directive-runner-state.ts";
-import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
-import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../engine/execution/directive-runner-state.ts";
+import { readDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import {
   runDirectiveRuntimeFollowUpProofTwoStepSequence,
   type DirectiveRuntimeFollowUpProofSequenceResult,
-} from "../shared/lib/runtime-follow-up-proof-sequence.ts";
+} from "../runtime/lib/runtime-follow-up-proof-sequence.ts";
 import {
   runDirectiveRuntimeProofCapabilityBoundaryTwoStepSequence,
   type DirectiveRuntimeProofCapabilityBoundarySequenceResult,
-} from "../shared/lib/runtime-proof-capability-boundary-sequence.ts";
+} from "../runtime/lib/runtime-proof-capability-boundary-sequence.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import {
   DIRECTIVE_RUNTIME_NAMED_SEQUENCE_KINDS,
@@ -26,7 +26,7 @@ import {
   type DirectiveRuntimeNamedSequenceInput,
   type DirectiveRuntimeNamedSequenceKind,
   type DirectiveRuntimeNamedSequenceResult,
-} from "../shared/lib/runtime-sequence-invocation.ts";
+} from "../runtime/lib/runtime-sequence-invocation.ts";
 import {
   copyRelativeFiles,
   extractOpenedBy,
@@ -53,7 +53,7 @@ type SequenceConfig = {
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CASE_UNDER_TEST = {
   candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
-  followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+  followUpPath: "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
   runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
   runtimeProofPath: "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
   runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",

@@ -13,19 +13,19 @@
   "createdAt": "2026-04-02T14:54:00.000Z",
   "updatedAt": "2026-04-02T15:05:00.000Z",
   "linkedArtifacts": {
-    "intakeRecordPath": "discovery/intake/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-intake.md",
-    "triageRecordPath": "discovery/triage/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-triage.md",
-    "routingRecordPath": "discovery/routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md",
+    "intakeRecordPath": "discovery/01-intake/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md",
     "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-02T14-54-00-000Z-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-fb7ebe97.json",
     "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-02T14-54-00-000Z-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-fb7ebe97.md",
-    "architectureHandoffPath": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-engine-handoff.md",
-    "architectureDecisionPath": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json",
+    "architectureHandoffPath": "architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-engine-handoff.md",
+    "architectureDecisionPath": "architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json",
     "runtimeFollowUpPath": null,
     "runtimeRecordPath": null,
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md"
+    "resultRecordPath": "architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md"
   },
   "projectionInputs": {
     "discoveryFrontDoor": {
@@ -72,9 +72,9 @@
         "why_this_route": "Recommended architecture because its lane score (21) exceeded the alternatives.",
         "why_not_alternatives": "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring. Transformation signal is present (1/5), which strengthens Runtime-style behavior-preserving work. Meta-usefulness signal is present (5/5), which strengthens Engine-improvement handling inside Architecture or Discovery. Pattern-extraction signal is present (2/5), which favors Architecture when the source text says to retain the pattern without adopting the source itself as runtime capability.",
         "receiving_track_owner": "architecture",
-        "required_next_artifact": "architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-engine-handoff.md",
-        "linked_intake_record": "discovery/intake/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-intake.md",
-        "linked_triage_record": "discovery/triage/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-triage.md",
+        "required_next_artifact": "architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-engine-handoff.md",
+        "linked_intake_record": "discovery/01-intake/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-triage.md",
         "reentry_or_promotion_conditions": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
         "review_cadence": "before any downstream execution or promotion"
       }
@@ -82,10 +82,10 @@
     "noteArchitectureCloseout": {
       "snapshotAt": "2026-04-02T15:05:00.000Z",
       "closedBy": "codex-era-d-self-improvement",
-      "resultSummary": "Recorded one bounded Architecture self-improvement result from runtime callable failure evidence. The retained product value is the already-materialized shared lib and report/check surface around `shared/lib/operational-architecture-improvement-candidates.ts`, which converts bounded callable `validation_error` evidence into a canonical Engine evaluation-quality Architecture candidate and routed handoff path instead of leaving the signal as ad hoc Runtime follow-up pressure.",
-      "primaryEvidencePath": "shared/lib/operational-architecture-improvement-candidates.ts",
+      "resultSummary": "Recorded one bounded Architecture self-improvement result from runtime callable failure evidence. The retained product value is the already-materialized Architecture report/check surface around `architecture/lib/operational-architecture-improvement-candidates.ts`, which converts bounded callable `validation_error` evidence into a canonical Engine evaluation-quality Architecture candidate and routed handoff path instead of leaving the signal as ad hoc Runtime follow-up pressure.",
+      "primaryEvidencePath": "architecture/lib/operational-architecture-improvement-candidates.ts",
       "transformedArtifactsProduced": [
-        "shared/lib/operational-architecture-improvement-candidates.ts",
+        "architecture/lib/operational-architecture-improvement-candidates.ts",
         "scripts/report-operational-architecture-improvement-candidates.ts",
         "scripts/check-operational-architecture-improvement-candidates.ts"
       ],
@@ -101,3 +101,4 @@
     }
   }
 }
+

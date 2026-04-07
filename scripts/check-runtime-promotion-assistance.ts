@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildDirectiveRuntimePromotionAssistanceReport } from "../shared/lib/runtime-promotion-assistance.ts";
+import { buildDirectiveRuntimePromotionAssistanceReport } from "../runtime/lib/runtime-promotion-assistance.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -36,8 +36,49 @@ function main() {
   });
   assert.equal(report.manualRuntimePromotionCycles.totalManualPromotionRecords >= 2, true);
   assert.equal(report.manualRuntimePromotionCycles.validatedLocallyCount >= 2, true);
+  assert.equal(report.callableExecutionEvidence.totalExecutionRecords, 4);
+  assert.equal(report.callableExecutionEvidence.capabilityCount, 3);
+  assert.equal(report.callableExecutionEvidence.successCount, 3);
+  assert.equal(report.callableExecutionEvidence.nonSuccessCount, 1);
+  assert.equal(report.callableExecutionEvidence.matchedPromotionReadinessCaseCount, 2);
 
-  assert.equal(report.topRecommendation, null);
+  assert.deepEqual(report.topRecommendation, {
+    candidateId: "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
+    candidateName: "jackswl/deep-researcher",
+    currentStage: "runtime.promotion_readiness.opened",
+    currentHeadPath:
+      "runtime/05-promotion-readiness/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-readiness.md",
+    sourcePromotionReadinessPath:
+      "runtime/05-promotion-readiness/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-readiness.md",
+    promotionSpecificationPath:
+      "runtime/06-promotion-specifications/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-specification.json",
+    proposedHost: "pending_host_selection",
+    hostScope: "pending_host_selection",
+    assistanceState: "blocked_pending_host_selection",
+    recommendedActionKind: "clarify_repo_native_host_target",
+    recommendedActionSummary:
+      "This case cannot reach a manual promotion decision yet because host selection is still pending. Clarify one bounded repo-native host target first.",
+    approvalRequired: true,
+    readOnly: true,
+    mutatesWorkflowState: false,
+    bypassesApproval: false,
+    supportingArtifacts: {
+      compileContractArtifact: "shared/contracts/runtime-to-host.md",
+      promotionSpecificationArtifact:
+        "runtime/06-promotion-specifications/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-specification.json",
+      existingPromotionRecordPaths: [],
+      parkDecisionArtifact: null,
+    },
+    missingPrerequisites: ["proposedHost"],
+    callableExecutionEvidence: {
+      matchedCapabilityId: null,
+      executionCount: 0,
+      successCount: 0,
+      nonSuccessCount: 0,
+      latestExecutionAt: null,
+      tools: [],
+    },
+  });
 
   const realMiniSweRoute = findRecommendation(
     "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
@@ -105,6 +146,14 @@ function main() {
     scientify.currentStage,
     "runtime.promotion_record.opened",
   );
+  assert.equal(
+    scientify.callableExecutionEvidence.matchedCapabilityId,
+    "dw-source-scientify-research-workflow-plugin-2026-03-27",
+  );
+  assert.equal(scientify.callableExecutionEvidence.executionCount, 1);
+  assert.equal(scientify.callableExecutionEvidence.successCount, 1);
+  assert.equal(scientify.callableExecutionEvidence.nonSuccessCount, 0);
+  assert.deepEqual(scientify.callableExecutionEvidence.tools, ["openalex-search"]);
 
   const openmoss = findRecommendation(
     "dw-mission-openmoss-runtime-orchestration-2026-03-26",
@@ -115,6 +164,8 @@ function main() {
     openmoss.currentStage,
     "runtime.promotion_record.opened",
   );
+  assert.equal(openmoss.callableExecutionEvidence.matchedCapabilityId, null);
+  assert.equal(openmoss.callableExecutionEvidence.executionCount, 0);
 
   const temporal = findRecommendation(
     "dw-source-temporal-durable-execution-2026-04-01",
@@ -130,6 +181,53 @@ function main() {
   assert.equal(
     temporal.supportingArtifacts.existingPromotionRecordPaths.length,
     1,
+  );
+
+  const deepResearcher = findRecommendation(
+    "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
+  ).recommendation;
+  assert.equal(deepResearcher.assistanceState, "blocked_pending_host_selection");
+  assert.equal(deepResearcher.recommendedActionKind, "clarify_repo_native_host_target");
+  assert.equal(deepResearcher.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(deepResearcher.proposedHost, "pending_host_selection");
+  assert.deepEqual(deepResearcher.missingPrerequisites, ["proposedHost"]);
+  assert.equal(deepResearcher.supportingArtifacts.existingPromotionRecordPaths.length, 0);
+
+  const researchVaultBlocked = findRecommendation(
+    "research-engine-web-aakashsharan-com-research-va-20260407t041754z-20260407t051957.",
+  ).recommendation;
+  assert.equal(researchVaultBlocked.assistanceState, "blocked_pending_host_selection");
+  assert.equal(researchVaultBlocked.recommendedActionKind, "clarify_repo_native_host_target");
+  assert.equal(researchVaultBlocked.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(researchVaultBlocked.proposedHost, "pending_host_selection");
+  assert.deepEqual(researchVaultBlocked.missingPrerequisites, ["proposedHost"]);
+  assert.equal(
+    researchVaultBlocked.supportingArtifacts.existingPromotionRecordPaths.length,
+    0,
+  );
+
+  const researchVaultPromoted = findRecommendation(
+    "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  ).recommendation;
+  assert.equal(researchVaultPromoted.assistanceState, "already_promoted_manual_cycle");
+  assert.equal(researchVaultPromoted.recommendedActionKind, "none");
+  assert.equal(researchVaultPromoted.currentStage, "runtime.promotion_readiness.opened");
+  assert.equal(researchVaultPromoted.proposedHost, "pending_host_selection");
+  assert.deepEqual(researchVaultPromoted.missingPrerequisites, ["promotionRecordState.unopened"]);
+  assert.equal(
+    researchVaultPromoted.supportingArtifacts.existingPromotionRecordPaths.length,
+    1,
+  );
+  assert.equal(
+    researchVaultPromoted.callableExecutionEvidence.matchedCapabilityId,
+    "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  );
+  assert.equal(researchVaultPromoted.callableExecutionEvidence.executionCount, 1);
+  assert.equal(researchVaultPromoted.callableExecutionEvidence.successCount, 1);
+  assert.equal(researchVaultPromoted.callableExecutionEvidence.nonSuccessCount, 0);
+  assert.deepEqual(
+    researchVaultPromoted.callableExecutionEvidence.tools,
+    ["query-source-pack"],
   );
 
   const openmossPressure = findRecommendation(
@@ -193,10 +291,11 @@ function main() {
     1,
   );
 
-  assert.equal(report.summary.alreadyPromotedManualCycleCount, 9);
+  assert.equal(report.summary.totalPromotionReadinessCases, 15);
+  assert.equal(report.summary.alreadyPromotedManualCycleCount, 12);
   assert.equal(report.summary.readyForManualPromotionSeamDecisionCount, 0);
   assert.equal(report.summary.readyButExternalHostCandidateCount, 0);
-  assert.equal(report.summary.blockedPendingHostSelectionCount, 0);
+  assert.equal(report.summary.blockedPendingHostSelectionCount, 2);
   assert.equal(report.summary.blockedMissingCallableBoundaryCount, 0);
   assert.equal(report.summary.blockedOtherCount, 1);
 
@@ -210,6 +309,7 @@ function main() {
           topRecommendation: report.topRecommendation,
           summary: report.summary,
           manualRuntimePromotionCycles: report.manualRuntimePromotionCycles,
+          callableExecutionEvidence: report.callableExecutionEvidence,
         },
       },
       null,

@@ -1,11 +1,10 @@
-import fs from "node:fs";
-
 import {
   DIRECTIVE_RUNTIME_MANUAL_ACTION_KINDS,
   DIRECTIVE_RUNTIME_MANUAL_SEQUENCE_KINDS,
   runDirectiveRuntimeManualControl,
   type DirectiveRuntimeManualControlInput,
-} from "../shared/lib/runtime-manual-control.ts";
+} from "../runtime/lib/runtime-manual-control.ts";
+import { readJson } from "./checker-test-helpers.ts";
 
 type CommandName = "action" | "sequence";
 type FlagMap = Record<string, string[]>;
@@ -66,10 +65,6 @@ function readBooleanFlag(flags: FlagMap, name: string) {
   return value === "true";
 }
 
-function readJsonFile<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
 function requireAllowedValue<T extends string>(input: {
   value: string;
   allowed: readonly T[];
@@ -105,7 +100,7 @@ function buildSequenceInput(flags: FlagMap): DirectiveRuntimeManualControlInput 
     allowed: DIRECTIVE_RUNTIME_MANUAL_SEQUENCE_KINDS,
     flagName: "sequence-kind",
   });
-  const steps = readJsonFile<Extract<DirectiveRuntimeManualControlInput, { mode: "sequence" }>["steps"]>(
+  const steps = readJson<Extract<DirectiveRuntimeManualControlInput, { mode: "sequence" }>["steps"]>(
     readRequiredFlag(flags, "steps-json-path"),
   );
 

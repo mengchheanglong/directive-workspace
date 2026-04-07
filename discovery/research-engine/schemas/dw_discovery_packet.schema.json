@@ -52,6 +52,19 @@
         "freshness_signal",
         "freshest_source_updated_at",
         "freshest_source_age_days",
+        "structural_signal_band",
+        "structural_signal_summary",
+        "workflow_phase_labels",
+        "provider_seam_summary",
+        "workflow_boundary_shape_hint",
+        "recommended_lane_target",
+        "lane_target_rationale",
+        "workflow_phase_scores",
+        "structural_extraction_recommendations",
+        "structural_avoid_recommendations",
+        "review_guidance_summary",
+        "review_guidance_action",
+        "review_guidance_stop_line",
         "uncertainty_notes"
       ],
       "properties": {
@@ -76,6 +89,22 @@
         "freshness_signal": { "type": "string" },
         "freshest_source_updated_at": { "type": ["string", "null"] },
         "freshest_source_age_days": { "type": ["integer", "null"] },
+        "structural_signal_band": { "type": "string" },
+        "structural_signal_summary": { "type": "string" },
+        "workflow_phase_labels": { "type": "array", "items": { "type": "string" } },
+        "provider_seam_summary": { "type": ["string", "null"] },
+        "workflow_boundary_shape_hint": { "type": ["string", "null"] },
+        "recommended_lane_target": { "type": ["string", "null"] },
+        "lane_target_rationale": { "type": ["string", "null"] },
+        "workflow_phase_scores": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "structural_extraction_recommendations": { "type": "array", "items": { "type": "string" } },
+        "structural_avoid_recommendations": { "type": "array", "items": { "type": "string" } },
+        "review_guidance_summary": { "type": "string" },
+        "review_guidance_action": { "type": "string" },
+        "review_guidance_stop_line": { "type": "string" },
         "uncertainty_notes": { "type": "array", "items": { "type": "string" } }
       },
       "additionalProperties": false

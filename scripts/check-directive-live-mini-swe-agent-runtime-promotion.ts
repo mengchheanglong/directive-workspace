@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { readStandaloneLiveMiniSweAgentDescriptor } from "../hosts/standalone-host/runtime-lane.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { readDirectiveRuntimePromotionSpecification } from "../shared/lib/runtime-promotion-specification.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { readDirectiveRuntimePromotionSpecification } from "../runtime/lib/runtime-promotion-specification.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "directive_live_mini_swe_agent_runtime_promotion";
@@ -14,9 +14,9 @@ const PROMOTION_READINESS_PATH =
 const PROMOTION_SPECIFICATION_PATH =
   "runtime/06-promotion-specifications/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-specification.json";
 const PROMOTION_RECORD_PATH =
-  "runtime/promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md";
+  "runtime/07-promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md";
 const REGISTRY_ENTRY_PATH =
-  "runtime/registry/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-registry-entry.md";
+  "runtime/08-registry/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-registry-entry.md";
 const EXPECTED_NEXT_LEGAL_STEP =
   "No automatic Runtime step is open; registry acceptance, host integration, runtime execution, and promotion automation remain intentionally unopened.";
 

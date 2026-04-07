@@ -15,17 +15,17 @@
   "linkedArtifacts": {
     "intakeRecordPath": null,
     "triageRecordPath": null,
-    "routingRecordPath": "discovery/routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-routing-record.md",
     "engineRunRecordPath": null,
     "engineRunReportPath": null,
-    "architectureHandoffPath": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
-    "architectureDecisionPath": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result-adoption-decision.json",
+    "architectureHandoffPath": "architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-engine-handoff.md",
+    "architectureDecisionPath": "architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result-adoption-decision.json",
     "runtimeFollowUpPath": null,
     "runtimeRecordPath": null,
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "architecture/02-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md"
+    "resultRecordPath": "architecture/01-experiments/2026-03-24-dw-live-gpt-researcher-engine-pressure-2026-03-24-bounded-result.md"
   },
   "projectionInputs": {
     "noteArchitectureCloseout": {
@@ -46,3 +46,4 @@
     }
   }
 }
+

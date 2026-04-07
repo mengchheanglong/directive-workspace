@@ -19,10 +19,10 @@ Use this contract when:
 - the adapted/improved mechanism needs a product-owned materialization decision
 - an existing adopted mechanism is being re-evaluated for artifact type or scope
 
-If the Decide step needs a deterministic machine-readable resolution, use `shared/lib/architecture-adoption-resolution.ts`.
-If the Decide step also needs a canonical schema-shaped adoption artifact, emit it through `shared/lib/architecture-adoption-artifacts.ts`.
-If the Decide step should resolve review, resolve adoption, and retain the resulting decision as one canonical closeout flow, use `shared/lib/architecture-closeout.ts`.
-If that adoption artifact should be retained beside an adopted record, emit it through `shared/lib/architecture-adoption-decision-writer.ts`.
+If the Decide step needs a deterministic machine-readable resolution, use `architecture/lib/architecture-adoption-resolution.ts`.
+If the Decide step also needs a canonical schema-shaped adoption artifact, emit it through `architecture/lib/architecture-adoption-artifacts.ts`.
+If the Decide step should resolve review, resolve adoption, and retain the resulting decision as one canonical closeout flow, use `architecture/lib/architecture-closeout.ts`.
+If that adoption artifact should be retained beside an adopted record, emit it through `architecture/lib/architecture-adoption-decision-writer.ts`.
 That writer may consume raw review input and resolve the review/adoption path before retaining the decision artifact.
 
 ## Adoption decision surface
@@ -48,9 +48,9 @@ Use this decision matrix to select the target artifact type:
 | An interface or handoff structure between tracks or stages | `contract` | `shared/contracts/` |
 | A data shape that should be standardized for agents and validators | `schema` | `shared/schemas/` |
 | A reusable working document structure that forces consistent execution | `template` | `shared/templates/` |
-| A rule or constraint that governs behavior across the system | `policy` | `shared/contracts/` or `architecture/05-reference-patterns/` |
-| A reusable design or workflow pattern worth preserving as reference | `reference-pattern` | `architecture/05-reference-patterns/` |
-| Executable helper logic that should be product-owned | `shared-lib` | `shared/lib/` |
+| A rule or constraint that governs behavior across the system | `policy` | `shared/contracts/` |
+| A reusable design or workflow pattern not yet productized | `reference-pattern` | legacy classification only - keep experimental until promoted or explicitly deferred |
+| Executable helper logic that should be product-owned | `engine-code` | `engine/` (lane-owned code under `architecture/lib/`, `runtime/lib/`, or `discovery/lib/`; residual support only under `shared/lib/`) |
 | A change to how the system fundamentally operates | `doctrine-update` | `knowledge/` |
 
 Selection rules:
@@ -58,8 +58,8 @@ Selection rules:
 - If the mechanism defines a data shape that agents or code must conform to → `schema`
 - If the mechanism structures human or agent work into repeatable steps → `template`
 - If the mechanism constrains behavior without defining data or interaction shape → `policy`
-- If the mechanism is a good example but not an enforceable rule → `reference-pattern`
-- If the mechanism is executable logic → `shared-lib`
+- If the mechanism is a good example but not yet an enforceable rule → keep it experimental until it can become a contract, template, policy, or doctrine update
+- If the mechanism is executable logic → `engine-code`
 - If the mechanism changes the operating model itself → `doctrine-update`
 - When unclear between `contract` and `policy`, prefer `contract` if there are required fields, prefer `policy` if there are only rules
 - When unclear between `template` and `contract`, prefer `template` if the output is a filled document, prefer `contract` if the output is a constraint set
@@ -87,8 +87,8 @@ The three usefulness levels from the source-analysis contract require different 
 #### Direct usefulness (`direct`)
 - The mechanism is useful immediately for repeated user/runtime use.
 - Default path: extract, adapt, improve, then hand off to Runtime for runtime operationalization.
-- Architecture retains: the adapted framework pattern or operating logic as a reference pattern or contract.
-- Adoption artifact: usually `reference-pattern` or `contract` in Architecture, with a Runtime handoff.
+- Architecture retains: the adapted framework pattern as experimental evidence or the retained operating logic as `engine-code` / contract.
+- Adoption artifact: usually `contract` in Architecture, with a Runtime handoff.
 
 #### Structural usefulness (`structural`)
 - The mechanism is useful for how the system works.

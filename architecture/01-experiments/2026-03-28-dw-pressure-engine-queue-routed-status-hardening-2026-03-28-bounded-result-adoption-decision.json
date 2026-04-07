@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-queue-routed-status-hardening-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-28-dw-pressure-engine-queue-routed-status-hardening-2026-03-28-bounded-result.md",
+  "primary_evidence_path": "hosts/web-host/data.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can present queue lifecycle state more truthfully when routed entries are explicitly downgraded once canonical truth shows the live case already progressed or broke.",
+    "mechanism": "This DEEP bounded result adds one routed-status guard that derives `routed_progressed` and `routed_inconsistent` from canonical current-head truth.",
+    "baseline_observation": "Before this slice, many queue entries still surfaced raw routed status even when their live current head had already advanced to bounded result, promotion-readiness, implementation-result, or a broken route anchor.",
+    "expected_effect": "The queue surface will stop overstating active routing while preserving raw routed status as stored queue evidence and leaving still-live routed stubs unchanged.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "This bounded routed-status slice closes the main remaining queue lifecycle mismatch seam without broadening into queue sync or generic stale-status repair.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

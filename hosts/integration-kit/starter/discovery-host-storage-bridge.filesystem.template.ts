@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { DiscoveryHostStorageBridge } from "./discovery-submission-adapter.template";
+import type { DiscoveryHostStorageBridge } from "./discovery-submission-adapter.template.ts";
 
 type JsonValue = Record<string, unknown>;
 

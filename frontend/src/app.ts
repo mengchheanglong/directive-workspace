@@ -13,6 +13,7 @@ import type {
   FrontendArchitectureStartDetail,
   FrontendArchitectureSummaryCase,
   FrontendDiscoveryRoutingDetail,
+  FrontendGapPressureDetail,
   FrontendEngineRunDetail,
   FrontendEngineRunRecord,
   FrontendEngineRunsOverview,
@@ -21,6 +22,8 @@ import type {
   FrontendLaneCaseStripInput,
   FrontendLegacyRuntimeFollowUpDetail,
   FrontendLegacyRuntimeHandoffDetail,
+  FrontendOperatorDecisionInboxEntry,
+  FrontendOperatorDecisionInboxReport,
   FrontendQueueEntry,
   FrontendQueueOverview,
   FrontendRuntimeFollowUpDetail,
@@ -93,7 +96,11 @@ class DirectiveFrontendApp extends LitElement {
     this.error = "";
     try {
       if (url.pathname === "/") {
-        this.page = { kind: "home", data: await getJson<FrontendSnapshot>("/api/snapshot") };
+        const [snapshot, inbox] = await Promise.all([
+          getJson<FrontendSnapshot>("/api/snapshot"),
+          getJson<FrontendOperatorDecisionInboxReport>("/api/operator-decision-inbox"),
+        ]);
+        this.page = { kind: "home", data: snapshot, inbox };
       } else if (url.pathname === "/discovery") {
         this.page = { kind: "discovery-lane", data: await getJson<FrontendSnapshot>("/api/snapshot") };
       } else if (url.pathname === "/architecture") {
@@ -104,6 +111,17 @@ class DirectiveFrontendApp extends LitElement {
         this.page = { kind: "submit" };
       } else if (url.pathname === "/engine-runs") {
         this.page = { kind: "engine-runs", data: await getJson<FrontendEngineRunsOverview>("/api/engine-runs") };
+      } else if (url.pathname === "/operator-inbox") {
+        this.page = {
+          kind: "operator-inbox",
+          data: await getJson<FrontendOperatorDecisionInboxReport>("/api/operator-decision-inbox"),
+        };
+      } else if (url.pathname === "/workflow-map") {
+        const [snapshot, inbox] = await Promise.all([
+          getJson<FrontendSnapshot>("/api/snapshot"),
+          getJson<FrontendOperatorDecisionInboxReport>("/api/operator-decision-inbox"),
+        ]);
+        this.page = { kind: "workflow-map", snapshot, inbox };
       } else if (url.pathname.startsWith("/engine-runs/")) {
         const runId = decodeURIComponent(url.pathname.replace(/^\/engine-runs\//, ""));
         const [detail, queue, handoffs] = await Promise.all([
@@ -186,6 +204,36 @@ class DirectiveFrontendApp extends LitElement {
     if (!pathValue) return html`<span class="muted">n/a</span>`;
     const href = `/artifacts?path=${encodeURIComponent(pathValue)}`;
     return html`<a href=${href} @click=${(event: Event) => { event.preventDefault(); navTo(href); }}>${pathValue}</a>`;
+  }
+
+  private renderGapPressureSummary(gapPressure: FrontendGapPressureDetail | null | undefined) {
+    if (!gapPressure) {
+      return html`<span class="muted">n/a</span>`;
+    }
+
+    if (!gapPressure.matchedGapId) {
+      return html`No matched open gap. Open gaps considered: ${gapPressure.openGapCount}; gap alignment score: ${gapPressure.gapAlignmentScore ?? "n/a"}.`;
+    }
+
+    return html`${gapPressure.matchedGapId} (rank ${gapPressure.matchedGapRank ?? "n/a"}, priority ${gapPressure.matchedGapPriority ?? "n/a"}): ${gapPressure.matchedGapDescription ?? "n/a"}`;
+  }
+
+  private renderRoutingExplanationBreakdown(detail: FrontendDiscoveryRoutingDetail | null | undefined) {
+    const breakdown = detail?.explanationBreakdown;
+    if (!breakdown) {
+      return nothing;
+    }
+    return html`
+      <section class="panel">
+        <h3>Routing explanation breakdown</h3>
+        <ul>
+          ${breakdown.keywordSignals.map((entry) => html`<li>Keyword: ${entry}</li>`)}
+          ${breakdown.metadataSignals.map((entry) => html`<li>Metadata: ${entry}</li>`)}
+          ${breakdown.gapAlignmentSignals.map((entry) => html`<li>Gap: ${entry}</li>`)}
+          ${breakdown.ambiguitySignals.map((entry) => html`<li>Ambiguity: ${entry}</li>`)}
+        </ul>
+      </section>
+    `;
   }
 
   private currentHeadLink(entry: FrontendQueueEntry) {
@@ -630,6 +678,274 @@ class DirectiveFrontendApp extends LitElement {
     }
   }
 
+  private renderOperatorDecisionEntry(entry: FrontendOperatorDecisionInboxEntry) {
+    return html`
+      <article class=${`decision-entry ${entry.decisionSurface}`}>
+        <div class="queue-card-header">
+          <div>
+            <h3 class="queue-card-title">${entry.candidateName ?? entry.candidateId ?? entry.entryId}</h3>
+            <div class="queue-card-subtitle">${entry.entryId}</div>
+          </div>
+          <div class="queue-tag-row">
+            ${this.renderQueueTag(entry.lane, entry.lane === "runtime" ? "runtime" : entry.lane === "architecture" ? "architecture" : "default")}
+            ${this.renderQueueTag(entry.decisionSurface, "warning")}
+          </div>
+        </div>
+        <div class="queue-kv-grid">
+          <div class="queue-kv"><h4>Current stage</h4><p>${entry.currentStage ?? "n/a"}</p></div>
+          <div class="queue-kv"><h4>Blocked because</h4><p>${entry.blockReason}</p></div>
+          <div class="queue-kv"><h4>Next action</h4><p>${entry.eligibleNextAction}</p></div>
+          <div class="queue-kv"><h4>Source artifact</h4><p>${this.artifactLink(entry.artifactPath)}</p></div>
+        </div>
+        <section class="queue-highlight">
+          <h4>Required proof</h4>
+          <ul>${entry.requiredProof.map((proof) => html`<li>${proof}</li>`)}</ul>
+        </section>
+        <section class="queue-highlight">
+          <h4>Resolver command or artifact</h4>
+          <pre>${entry.resolverCommandOrArtifact}</pre>
+        </section>
+        ${entry.relatedArtifacts.length
+          ? html`<section class="queue-highlight"><h4>Related artifacts</h4><ul>${entry.relatedArtifacts.map((artifact) => html`<li>${this.artifactLink(artifact)}</li>`)}</ul></section>`
+          : nothing}
+        <p class="muted">Stop-line: ${entry.stopLine}</p>
+      </article>
+    `;
+  }
+
+  private renderOperatorDecisionInboxPage(inbox: FrontendOperatorDecisionInboxReport) {
+    const runtimeHostSelection = inbox.entries.filter((entry) => entry.decisionSurface === "runtime_host_selection");
+    const runtimeRegistryAcceptance = inbox.entries.filter((entry) => entry.decisionSurface === "runtime_registry_acceptance");
+    const architectureMaterialization = inbox.entries.filter((entry) => entry.decisionSurface === "architecture_materialization_due");
+    const discoveryRoutingReview = inbox.entries.filter((entry) => entry.decisionSurface === "discovery_routing_review");
+    const renderGroup = (title: string, description: string, entries: FrontendOperatorDecisionInboxEntry[]) => html`
+      <section class="panel">
+        <h2>${title}</h2>
+        <p class="muted">${description}</p>
+        ${entries.length
+          ? html`<div class="decision-entry-list">${entries.map((entry) => this.renderOperatorDecisionEntry(entry))}</div>`
+          : html`<div class="queue-empty muted">No actionable entries for this group.</div>`}
+      </section>
+    `;
+
+    return html`
+      <section class="panel">
+        <h2>Operator Decision Inbox</h2>
+        <p class="muted">Live read-only triage over current Discovery, Architecture, and Runtime decision gates. This page is API-backed by Engine coordination state; it does not resolve routes, write host-selection artifacts, run host adapters, create Architecture materialization artifacts, or write registry entries.</p>
+        <div class="queue-summary-grid">
+          ${this.renderQueueStat("Actionable entries", inbox.summary.totalActionableEntries, "Current Discovery, Architecture, and Runtime decisions requiring explicit operator attention.")}
+          ${this.renderQueueStat("Runtime host selections", inbox.summary.runtimeHostSelectionCount, "Runtime promotion paths blocked on explicit host selection.")}
+          ${this.renderQueueStat("Architecture materialization", inbox.summary.architectureMaterializationDueCount, "Architecture adoptions or implementation targets awaiting explicit lane-native materialization.")}
+          ${this.renderQueueStat("Registry acceptance", inbox.summary.runtimeRegistryAcceptanceCount, "Proof-backed Runtime registry decisions requiring explicit acceptance.")}
+          ${this.renderQueueStat("Discovery routing reviews", inbox.summary.discoveryRoutingReviewCount, "Conflicted or non-high-confidence Discovery routes requiring review.")}
+        </div>
+        <p class="muted">Snapshot: ${inbox.snapshotAt} | version: ${inbox.inboxVersion}</p>
+      </section>
+      <section class="panel message">
+        <h3>Guardrails</h3>
+        <p>Read-only: ${String(inbox.guardrails.readOnly)} | mutates workflow state: ${String(inbox.guardrails.mutatesWorkflowState)} | bypasses review: ${String(inbox.guardrails.bypassesReview)} | writes registry entries: ${String(inbox.guardrails.writesRegistryEntries)} | runs host adapters: ${String(inbox.guardrails.runsHostAdapters)}</p>
+      </section>
+      ${renderGroup("Runtime Host Selection", "Highest-priority review work because it unblocks Runtime promotion paths without claiming execution or registry acceptance.", runtimeHostSelection)}
+      ${renderGroup("Architecture Materialization", "Explicit Architecture due items only: implementation-target creation or implementation-result recording. This group can be empty when Architecture is clean.", architectureMaterialization)}
+      ${renderGroup("Runtime Registry Acceptance", "Proof-backed registry acceptance remains explicitly gated and disabled by default.", runtimeRegistryAcceptance)}
+      ${renderGroup("Discovery Routing Review", "Discovery remains the front door; conflicted or medium-confidence routes need explicit review before downstream continuation.", discoveryRoutingReview)}
+    `;
+  }
+
+  private workflowDecisionForCandidate(
+    inbox: FrontendOperatorDecisionInboxReport,
+    candidateId: string | null | undefined,
+  ) {
+    if (!candidateId) return null;
+    return inbox.entries.find((entry) => entry.candidateId === candidateId) ?? null;
+  }
+
+  private renderWorkflowMapRow(input: {
+    lane: "research" | "discovery" | "architecture" | "runtime" | "host";
+    title: string;
+    stage: string | null | undefined;
+    nextStep: string | null | undefined;
+    artifactPath?: string | null;
+    actionHref?: string | null;
+    actionLabel?: string;
+    decision?: FrontendOperatorDecisionInboxEntry | null;
+    meta?: string | null;
+  }) {
+    const decision = input.decision ?? null;
+    const tone = input.lane === "runtime"
+      ? "runtime"
+      : input.lane === "architecture"
+      ? "architecture"
+      : "default";
+    const status = decision ? "decision needed" : input.stage ?? "live";
+    return html`
+      <details class=${`workflow-row ${input.lane}`}>
+        <summary>
+          <span class="workflow-main">
+            <strong>${input.title}</strong>
+            <span class="muted">${input.stage ?? "stage not resolved"}</span>
+          </span>
+          <span class="workflow-tags">
+            ${this.renderQueueTag(input.lane, tone)}
+            ${decision ? this.renderQueueTag("decision", "warning") : this.renderQueueTag("live", "default")}
+          </span>
+        </summary>
+        <div class="workflow-row-detail">
+          <div class="workflow-detail-grid">
+            <div><h4>Status</h4><p>${status}</p></div>
+            <div><h4>Next legal step</h4><p>${input.nextStep ?? "n/a"}</p></div>
+            <div><h4>Current artifact</h4><p>${input.artifactPath ? this.artifactLink(input.artifactPath) : html`<span class="muted">n/a</span>`}</p></div>
+            <div><h4>Decision gate</h4><p>${decision ? `${decision.decisionSurface}: ${decision.blockReason}` : "none currently surfaced"}</p></div>
+          </div>
+          ${input.meta ? html`<p class="muted">${input.meta}</p>` : nothing}
+          <div class="actions">
+            ${input.actionHref
+              ? html`<a href=${input.actionHref} @click=${(event: Event) => { event.preventDefault(); navTo(input.actionHref || ""); }}>${input.actionLabel ?? "Open detail"}</a>`
+              : nothing}
+            ${decision
+              ? html`<a href="/operator-inbox" @click=${(event: Event) => { event.preventDefault(); navTo("/operator-inbox"); }}>Open inbox decision</a>`
+              : nothing}
+          </div>
+        </div>
+      </details>
+    `;
+  }
+
+  private renderWorkflowMapGroup(input: {
+    title: string;
+    description: string;
+    rows: unknown[];
+    renderRow: (row: any) => unknown;
+  }) {
+    return html`
+      <section class="workflow-group">
+        <div class="workflow-group-heading">
+          <div>
+            <h2>${input.title}</h2>
+            <p class="muted">${input.description}</p>
+          </div>
+          <span class="pill">${input.rows.length}</span>
+        </div>
+        ${input.rows.length
+          ? html`<div class="workflow-row-list">${input.rows.map((row) => input.renderRow(row))}</div>`
+          : html`<div class="queue-empty muted">No live rows in this phase.</div>`}
+      </section>
+    `;
+  }
+
+  private renderWorkflowMapPage(snapshot: FrontendSnapshot, inbox: FrontendOperatorDecisionInboxReport) {
+    const recentRuns = (snapshot.engineRuns.recentRuns || []).slice(0, 6);
+    const discoveryRows = (snapshot.queue.entries || []).slice(0, 12);
+    const architectureRows = [
+      ...(snapshot.architectureSummary.activeCases || []),
+      ...(snapshot.architectureSummary.recentAnchors || []),
+    ].slice(0, 8);
+    const runtimeRows = [
+      ...(snapshot.runtimeSummary.activeCases || []),
+      ...(snapshot.runtimeSummary.recentAnchors || []),
+    ].slice(0, 8);
+    const hostRows = (snapshot.runtimeSummary.activeCases || [])
+      .filter((entry) => (entry.current_case_stage || "").includes("registry") || (entry.current_case_stage || "").includes("promotion_record"))
+      .slice(0, 8);
+
+    return html`
+      <section class="workflow-hero">
+        <div>
+          <h2>Workflow Map</h2>
+          <p>Live source-to-usefulness map. Rows stay compact; open a row for detail.</p>
+        </div>
+        <div class="workflow-hero-stats">
+          <span><strong>${snapshot.queue.totalEntries}</strong><small>Discovery</small></span>
+          <span><strong>${snapshot.architectureSummary.activeCases.length}</strong><small>Architecture</small></span>
+          <span><strong>${snapshot.runtimeSummary.activeCases.length}</strong><small>Runtime</small></span>
+          <span><strong>${inbox.summary.totalActionableEntries}</strong><small>Decisions</small></span>
+        </div>
+      </section>
+      <section class="workflow-map">
+        ${this.renderWorkflowMapGroup({
+          title: "Research Engine / Engine Runs",
+          description: "Recent live analysis and routing records before lane handoff.",
+          rows: recentRuns,
+          renderRow: (run: { record: FrontendEngineRunRecord }) => this.renderWorkflowMapRow({
+            lane: "research",
+            title: run.record.candidate.candidateName,
+            stage: `engine.route.${run.record.selectedLane.laneId}`,
+            nextStep: run.record.integrationProposal?.nextAction,
+            artifactPath: null,
+            actionHref: `/engine-runs/${encodeURIComponent(run.record.runId)}`,
+            actionLabel: "Open run",
+            decision: this.workflowDecisionForCandidate(inbox, run.record.candidate.candidateId),
+            meta: `Usefulness: ${run.record.candidate.usefulnessLevel}; proof: ${run.record.proofPlan?.proofKind ?? "n/a"}`,
+          }),
+        })}
+        ${this.renderWorkflowMapGroup({
+          title: "Discovery",
+          description: "Front-door intake, routing, review pressure, and current downstream pointer.",
+          rows: discoveryRows,
+          renderRow: (entry: FrontendQueueEntry) => this.renderWorkflowMapRow({
+            lane: "discovery",
+            title: entry.candidate_name,
+            stage: entry.current_case_stage ?? entry.status_effective ?? entry.status,
+            nextStep: entry.current_case_next_legal_step,
+            artifactPath: entry.current_head?.artifact_path ?? entry.result_record_path ?? entry.routing_record_path,
+            actionHref: entry.current_head?.view_path ?? (entry.routing_record_path ? `/discovery-routing-records/view?path=${encodeURIComponent(entry.routing_record_path)}` : null),
+            actionLabel: "Open current artifact",
+            decision: this.workflowDecisionForCandidate(inbox, entry.candidate_id),
+            meta: `Route: ${entry.routing_target ?? "n/a"}; integrity: ${entry.integrity_state ?? "n/a"}`,
+          }),
+        })}
+        ${this.renderWorkflowMapGroup({
+          title: "Architecture",
+          description: "Engine-improvement lane heads and materialization due items when they exist.",
+          rows: architectureRows,
+          renderRow: (entry: FrontendArchitectureSummaryCase | FrontendLaneAnchor) => this.renderWorkflowMapRow({
+            lane: "architecture",
+            title: "label" in entry ? entry.label : entry.candidate_name,
+            stage: "currentStage" in entry ? entry.currentStage : entry.current_case_stage,
+            nextStep: "nextLegalStep" in entry ? entry.nextLegalStep : entry.current_case_next_legal_step,
+            artifactPath: "artifactPath" in entry ? entry.artifactPath : entry.current_head?.artifact_path,
+            actionHref: "artifactPath" in entry ? artifactPathToViewPath(entry.artifactPath) : entry.current_head?.view_path,
+            actionLabel: "Open Architecture detail",
+            decision: this.workflowDecisionForCandidate(inbox, "candidateId" in entry ? entry.candidateId : entry.candidate_id),
+            meta: "Architecture rows are live lane heads or recent canonical anchors, not static roadmap items.",
+          }),
+        })}
+        ${this.renderWorkflowMapGroup({
+          title: "Runtime",
+          description: "Reusable capability conversion, proof, promotion, and parked host-selection work.",
+          rows: runtimeRows,
+          renderRow: (entry: FrontendRuntimeSummaryCase | FrontendLaneAnchor) => this.renderWorkflowMapRow({
+            lane: "runtime",
+            title: "label" in entry ? entry.label : entry.candidate_name,
+            stage: "currentStage" in entry ? entry.currentStage : entry.current_case_stage,
+            nextStep: "nextLegalStep" in entry ? entry.nextLegalStep : entry.current_case_next_legal_step,
+            artifactPath: "artifactPath" in entry ? entry.artifactPath : entry.current_head?.artifact_path,
+            actionHref: "artifactPath" in entry ? artifactPathToViewPath(entry.artifactPath) : entry.current_head?.view_path,
+            actionLabel: "Open Runtime detail",
+            decision: this.workflowDecisionForCandidate(inbox, "candidateId" in entry ? entry.candidateId : entry.candidate_id),
+            meta: "runtime_summary" in entry ? `Proposed host: ${entry.runtime_summary?.proposed_host ?? "n/a"}` : "Runtime canonical anchor.",
+          }),
+        })}
+        ${this.renderWorkflowMapGroup({
+          title: "Registry / Host",
+          description: "Host-backed or registry-adjacent Runtime heads; still read-only here.",
+          rows: hostRows,
+          renderRow: (entry: FrontendRuntimeSummaryCase) => this.renderWorkflowMapRow({
+            lane: "host",
+            title: entry.candidate_name,
+            stage: entry.current_case_stage,
+            nextStep: entry.current_case_next_legal_step,
+            artifactPath: entry.current_head?.artifact_path,
+            actionHref: entry.current_head?.view_path,
+            actionLabel: "Open host/runtime artifact",
+            decision: this.workflowDecisionForCandidate(inbox, entry.candidate_id),
+            meta: `Proposed host: ${entry.runtime_summary?.proposed_host ?? "n/a"}`,
+          }),
+        })}
+      </section>
+    `;
+  }
+
   private renderContent() {
     if (this.loading) {
       return html`<section class="panel message"><h2>Loading</h2><p>Reading live Directive Workspace state.</p></section>`;
@@ -641,8 +957,27 @@ class DirectiveFrontendApp extends LitElement {
 
     if (this.page.kind === "home") {
       const snapshot = this.page.data;
+      const inbox = this.page.inbox as FrontendOperatorDecisionInboxReport;
       const runtimePrimary = snapshot.runtimeSummary.activeCases[0] ?? null;
       const architecturePrimary = snapshot.architectureSummary.activeCases[0] ?? null;
+      const queueReviewPressureCount = snapshot.queue.entries.filter((entry) => Boolean(entry.review_pressure)).length;
+      const queueConflictedCount = snapshot.queue.entries.filter((entry) => entry.review_pressure?.route_conflict).length;
+      const conflictSignalCounts = new Map<string, number>();
+      for (const entry of snapshot.queue.entries) {
+        for (const family of entry.review_pressure?.ambiguity_summary?.conflicting_signal_families ?? []) {
+          conflictSignalCounts.set(family, (conflictSignalCounts.get(family) ?? 0) + 1);
+        }
+      }
+      const topConflictSignals = [...conflictSignalCounts.entries()]
+        .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+        .slice(0, 3)
+        .map(([family, count]) => `${family} (${count})`);
+      const runReviewGuidanceCount = (snapshot.engineRuns.recentRuns || []).filter((run: { record: FrontendEngineRunRecord }) =>
+        Boolean(run.record.routingAssessment?.reviewGuidance)
+      ).length;
+      const runConflictCount = (snapshot.engineRuns.recentRuns || []).filter((run: { record: FrontendEngineRunRecord }) =>
+        Boolean(run.record.routingAssessment?.routeConflict)
+      ).length;
       return html`
         <section class="panel"><h2>Directive Workspace overview</h2><p class="muted">Directive Workspace now has real Discovery, Architecture, and Runtime lanes. This overview exposes those lanes directly, while keeping gating and legality inside Engine, Runtime, and Architecture rather than inside the frontend.</p></section>
         ${snapshot.handoffWarnings?.length ? html`<section class="panel warning"><h3>Handoff artifact warnings</h3><ul>${snapshot.handoffWarnings.map((warning: string) => html`<li>${warning}</li>`)}</ul></section>` : nothing}
@@ -653,9 +988,9 @@ class DirectiveFrontendApp extends LitElement {
             description: "Source intake, queue state, routing records, and explicit downstream approvals remain front-door Discovery work.",
             primaryLabel: "Queue entries",
             primaryValue: snapshot.queue.totalEntries,
-            secondaryLabel: "Handoff stubs",
-            secondaryValue: snapshot.handoffStubs.length,
-            tertiary: "Discovery is already operational and should stay explicit rather than auto-advancing downstream work.",
+            secondaryLabel: "Review pressure",
+            secondaryValue: queueReviewPressureCount,
+            tertiary: `Conflicted routes: ${queueConflictedCount}. Discovery stays explicit and should not auto-advance downstream work.`,
             href: "/discovery",
           })}
           ${this.renderLaneOverviewCard({
@@ -674,7 +1009,7 @@ class DirectiveFrontendApp extends LitElement {
           ${this.renderLaneOverviewCard({
             title: "Runtime lane",
             tone: "runtime",
-            description: "Runtime is a real bounded non-executing lane. OpenMOSS is still the active Runtime case at promotion-readiness.",
+            description: "Runtime now exposes bounded host-callable and registry-gated surfaces through live artifacts rather than static frontend claims.",
             primaryLabel: "Tracked cases",
             primaryValue: snapshot.runtimeSummary.activeCases.length,
             secondaryLabel: "Recent anchors",
@@ -685,10 +1020,37 @@ class DirectiveFrontendApp extends LitElement {
             href: "/runtime",
           })}
         </section>
+        <section class="panel message">
+          <h2>Operator decision inbox</h2>
+          <p class="muted">Live read-only review load from Engine coordination. The frontend is showing current repo state from /api/operator-decision-inbox; it does not resolve, accept, or automate anything by itself.</p>
+          <section class="queue-summary-grid">
+            ${this.renderQueueStat("Actionable entries", inbox.summary.totalActionableEntries, "Total live decisions requiring explicit operator attention.")}
+            ${this.renderQueueStat("Runtime host selection", inbox.summary.runtimeHostSelectionCount, "Runtime host-selection blockers surfaced for review.")}
+            ${this.renderQueueStat("Architecture materialization", inbox.summary.architectureMaterializationDueCount, "Architecture due items surfaced from the materialization due-check.")}
+            ${this.renderQueueStat("Registry acceptance", inbox.summary.runtimeRegistryAcceptanceCount, "Proof-backed Runtime registry decisions awaiting explicit acceptance.")}
+            ${this.renderQueueStat("Discovery reviews", inbox.summary.discoveryRoutingReviewCount, "Discovery routing conflicts or non-high-confidence routes awaiting review.")}
+          </section>
+          <div class="actions"><a href="/operator-inbox" @click=${(event: Event) => { event.preventDefault(); navTo("/operator-inbox"); }}>Open operator inbox</a></div>
+        </section>
+        <section class="panel message">
+          <h2>Workflow map</h2>
+          <p class="muted">Compact live phase map from Research Engine and Engine runs through Discovery, Architecture, Runtime, and host/registry surfaces.</p>
+          <div class="actions"><a href="/workflow-map" @click=${(event: Event) => { event.preventDefault(); navTo("/workflow-map"); }}>Open workflow map</a></div>
+        </section>
         <section class="grid">
-          <section class="panel"><h3>Engine runs</h3><div>${snapshot.engineRuns.totalRuns}</div><div class="muted">Persisted Engine-native runs.</div></section>
+          <section class="panel">
+            <h3>Engine runs</h3>
+            <div>${snapshot.engineRuns.totalRuns}</div>
+            <div class="muted">Persisted Engine-native runs.</div>
+            <div class="muted" style="margin-top:8px;">Review-guided runs: ${runReviewGuidanceCount} | conflicted runs: ${runConflictCount}</div>
+          </section>
           <section class="panel"><h3>Product shape</h3><div>3 lanes</div><div class="muted">Discovery, Architecture, and Runtime are now first-class product surfaces.</div></section>
-          <section class="panel"><h3>Current Runtime host</h3><div>Directive Workspace web host</div><div class="muted">The product frontend is the active surface for current Runtime seam review.</div></section>
+          <section class="panel">
+            <h3>Current review load</h3>
+            <div>${queueReviewPressureCount}</div>
+            <div class="muted">Queue entries with explicit review pressure visible before drill-down. Conflicted queue routes: ${queueConflictedCount}.</div>
+            <div class="muted" style="margin-top:8px;">Conflicting signals: ${topConflictSignals.length ? topConflictSignals.join(", ") : "none currently surfaced"}.</div>
+          </section>
         </section>
         ${(runtimePrimary || architecturePrimary)
           ? html`
@@ -723,6 +1085,12 @@ class DirectiveFrontendApp extends LitElement {
       const triagePath = result?.createdPaths?.triageRecordPath ?? null;
       const routingPath = result?.createdPaths?.routingRecordPath ?? null;
       const engineRunId = result?.engine?.record?.runId ?? null;
+      const submitReviewGuidance = result?.engine?.record?.routingAssessment?.reviewGuidance ?? null;
+      const submitRoutingConfidence = result?.engine?.record?.routingAssessment?.confidence
+        ?? result?.engine?.record?.candidate?.confidence
+        ?? result?.discovery?.confidence
+        ?? "n/a";
+      const submitRouteConflict = result?.engine?.record?.routingAssessment?.routeConflict;
       return html`
         <section class="panel">
           <h2>Source submission</h2>
@@ -748,11 +1116,11 @@ class DirectiveFrontendApp extends LitElement {
             <tr><th>source reference</th><td>${result.request.source_reference}</td></tr>
             <tr><th>source type</th><td>${result.sourceType?.canonicalType ?? result.queueEntry?.source_type ?? result.request.source_type ?? "n/a"}</td></tr>
             ${result.sourceType?.normalizedFrom ? html`<tr><th>normalized from source type</th><td>${result.sourceType.normalizedFrom}</td></tr>` : nothing}
-            <tr><th>usefulness level</th><td>${result.discovery?.usefulnessLevel ?? "n/a"}</td></tr>
-            <tr><th>usefulness rationale</th><td>${result.discovery?.usefulnessRationale ?? "n/a"}</td></tr>
-            <tr><th>routing target</th><td>${result.discovery?.routingTarget ?? result.queueEntry?.routing_target ?? "n/a"}</td></tr>
-            <tr><th>decision state</th><td>${result.discovery?.decisionState ?? "n/a"}</td></tr>
-            <tr><th>routing confidence</th><td>${result.discovery?.confidence ?? "n/a"}</td></tr>
+          <tr><th>usefulness level</th><td>${result.discovery?.usefulnessLevel ?? "n/a"}</td></tr>
+          <tr><th>usefulness rationale</th><td>${result.discovery?.usefulnessRationale ?? "n/a"}</td></tr>
+          <tr><th>routing target</th><td>${result.discovery?.routingTarget ?? result.queueEntry?.routing_target ?? "n/a"}</td></tr>
+          <tr><th>decision state</th><td>${result.discovery?.decisionState ?? "n/a"}</td></tr>
+          <tr><th>routing confidence</th><td>${result.discovery?.confidence ?? "n/a"}</td></tr>
             <tr><th>matched capability gap</th><td>${result.discovery?.matchedGapId ?? result.queueEntry?.capability_gap_id ?? "n/a"}</td></tr>
             <tr><th>proof kind</th><td>${result.discovery?.proofKind ?? "n/a"}</td></tr>
             <tr><th>proof objective</th><td>${result.discovery?.proofObjective ?? "n/a"}</td></tr>
@@ -764,6 +1132,14 @@ class DirectiveFrontendApp extends LitElement {
           <section class="panel good">
             <h3>Current boundary</h3>
             <p>This source has now entered through Discovery first, with inspectable intake, triage, routing, queue, and Engine outputs. Opening the next Architecture or Runtime stub still requires explicit human approval from the Discovery routing record.</p>
+            <p class="muted">Routing confidence: ${submitRoutingConfidence} | conflict: ${submitRouteConflict == null ? "n/a" : submitRouteConflict ? "yes" : "no"}</p>
+            ${submitReviewGuidance
+              ? html`
+                  <p>${submitReviewGuidance.summary}</p>
+                  <p class="muted">${submitReviewGuidance.operatorAction}</p>
+                  <p class="muted">Stop-line: ${submitReviewGuidance.stopLine}</p>
+                `
+              : nothing}
             <div class="actions">
               ${engineRunId ? html`<a href=${`/engine-runs/${encodeURIComponent(engineRunId)}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/engine-runs/${encodeURIComponent(engineRunId)}`); }}>Open Engine run detail</a>` : nothing}
               <a href="/queue" @click=${(event: Event) => { event.preventDefault(); navTo("/queue"); }}>Open queue view</a>
@@ -775,9 +1151,28 @@ class DirectiveFrontendApp extends LitElement {
 
     if (this.page.kind === "engine-runs") {
       const overview = this.page.data;
-      return html`<section class="panel"><h2>Engine runs</h2><table><thead><tr><th>run id</th><th>candidate</th><th>lane</th><th>usefulness</th><th>decision</th><th>created</th></tr></thead><tbody>
-        ${overview.recentRuns.length ? overview.recentRuns.map((run: any) => html`<tr><td><a href=${`/engine-runs/${encodeURIComponent(run.record.runId)}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/engine-runs/${encodeURIComponent(run.record.runId)}`); }}>${run.record.runId}</a></td><td>${run.record.candidate.candidateName}</td><td><span class="pill">${run.record.selectedLane.laneId}</span></td><td>${run.record.candidate.usefulnessLevel}</td><td>${run.record.decision.decisionState}</td><td>${run.record.receivedAt}</td></tr>`) : html`<tr><td colspan="6" class="muted">No Engine runs found.</td></tr>`}
+      return html`<section class="panel"><h2>Engine runs</h2><table><thead><tr><th>run id</th><th>candidate</th><th>lane</th><th>usefulness</th><th>review pressure</th><th>decision</th><th>created</th></tr></thead><tbody>
+        ${overview.recentRuns.length ? overview.recentRuns.map((run: any) => {
+          const reviewGuidance = run.record.routingAssessment?.reviewGuidance;
+          const routeConflict = run.record.routingAssessment?.routeConflict;
+          const confidence = run.record.routingAssessment?.confidence ?? run.record.candidate.confidence ?? "n/a";
+          const reviewSummary = reviewGuidance
+            ? `${reviewGuidance.summary} (${confidence}; conflict: ${routeConflict == null ? "n/a" : routeConflict ? "yes" : "no"})`
+            : `No extra review guidance (${confidence}; conflict: ${routeConflict == null ? "n/a" : routeConflict ? "yes" : "no"})`;
+          return html`<tr><td><a href=${`/engine-runs/${encodeURIComponent(run.record.runId)}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/engine-runs/${encodeURIComponent(run.record.runId)}`); }}>${run.record.runId}</a></td><td>${run.record.candidate.candidateName}</td><td><span class="pill">${run.record.selectedLane.laneId}</span></td><td>${run.record.candidate.usefulnessLevel}</td><td>${reviewSummary}</td><td>${run.record.decision.decisionState}</td><td>${run.record.receivedAt}</td></tr>`;
+        }) : html`<tr><td colspan="7" class="muted">No Engine runs found.</td></tr>`}
       </tbody></table></section>`;
+    }
+
+    if (this.page.kind === "operator-inbox") {
+      return this.renderOperatorDecisionInboxPage(this.page.data as FrontendOperatorDecisionInboxReport);
+    }
+
+    if (this.page.kind === "workflow-map") {
+      return this.renderWorkflowMapPage(
+        this.page.snapshot as FrontendSnapshot,
+        this.page.inbox as FrontendOperatorDecisionInboxReport,
+      );
     }
 
     if (this.page.kind === "engine-run-detail") {
@@ -794,6 +1189,18 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>lane</th><td><span class="pill">${record.selectedLane.laneId}</span></td></tr>
           <tr><th>usefulness level</th><td>${record.candidate.usefulnessLevel}</td></tr>
           <tr><th>usefulness rationale</th><td>${record.analysis.usefulnessRationale}</td></tr>
+          <tr><th>routing confidence</th><td>${record.routingAssessment?.confidence ?? record.candidate.confidence ?? "n/a"}</td></tr>
+          <tr><th>matched capability gap</th><td>${record.routingAssessment?.matchedGapId ?? "n/a"}</td></tr>
+          <tr><th>gap pressure</th><td>${this.renderGapPressureSummary(detail.gapPressure)}</td></tr>
+          <tr><th>gap alignment score</th><td>${detail.gapPressure?.gapAlignmentScore ?? "n/a"}</td></tr>
+          <tr><th>open gaps considered</th><td>${detail.gapPressure?.openGapCount ?? "n/a"}</td></tr>
+          <tr><th>gap mission objective</th><td>${detail.gapPressure?.relatedMissionObjective ?? "n/a"}</td></tr>
+          <tr><th>route conflict</th><td>${record.routingAssessment?.routeConflict === undefined ? "n/a" : record.routingAssessment?.routeConflict ? "yes" : "no"}</td></tr>
+          <tr><th>needs human review</th><td>${record.routingAssessment?.needsHumanReview === undefined ? (record.candidate.requiresHumanReview === undefined ? "n/a" : record.candidate.requiresHumanReview ? "yes" : "no") : record.routingAssessment?.needsHumanReview ? "yes" : "no"}</td></tr>
+          <tr><th>ambiguity summary</th><td>${record.routingAssessment?.ambiguitySummary
+            ? `${record.routingAssessment.ambiguitySummary.topLaneId} over ${record.routingAssessment.ambiguitySummary.runnerUpLaneId ?? "none"} by ${record.routingAssessment.ambiguitySummary.scoreDelta}; conflicting signals: ${record.routingAssessment.ambiguitySummary.conflictingSignalFamilies.join(", ") || "none"}`
+            : "n/a"}</td></tr>
+          <tr><th>review guidance</th><td>${record.routingAssessment?.reviewGuidance?.summary ?? "n/a"}</td></tr>
           <tr><th>decision state</th><td>${record.decision.decisionState}</td></tr>
           <tr><th>proof kind</th><td>${record.proofPlan.proofKind}</td></tr>
           <tr><th>integration mode</th><td>${record.integrationProposal.integrationMode}</td></tr>
@@ -801,6 +1208,16 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>record path</th><td>${this.artifactLink(detail.recordPath)}</td></tr>
           <tr><th>report path</th><td>${this.artifactLink(detail.reportPath)}</td></tr>
         </tbody></table></section>
+        ${record.routingAssessment?.reviewGuidance ? html`
+          <section class="panel warning">
+            <h3>Review handling guidance</h3>
+            <p>${record.routingAssessment.reviewGuidance.operatorAction}</p>
+            <ul>
+              ${record.routingAssessment.reviewGuidance.requiredChecks.map((entry) => html`<li>${entry}</li>`)}
+            </ul>
+            <p class="muted">Stop-line: ${record.routingAssessment.reviewGuidance.stopLine}</p>
+          </section>
+        ` : nothing}
         <section class=${noDownstream ? "panel warning" : "panel message"}>
           <h3>Related queue and handoff state</h3>
           <div class="muted">queue status: ${queueEntry?.status ?? "n/a"} | routing target: ${queueEntry?.routing_target ?? "n/a"}</div>
@@ -879,7 +1296,19 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>why not alternatives</th><td>${detail.whyNotAlternatives}</td></tr>
           <tr><th>required next artifact</th><td>${detail.requiredNextArtifact}</td></tr>
           <tr><th>review cadence</th><td>${detail.reviewCadence ?? "n/a"}</td></tr>
+          <tr><th>mission priority score</th><td>${detail.missionPriorityScore ?? "n/a"}</td></tr>
           <tr><th>matched capability gap</th><td>${detail.matchedGapId ?? "n/a"}</td></tr>
+          <tr><th>gap pressure</th><td>${this.renderGapPressureSummary(detail.gapPressure)}</td></tr>
+          <tr><th>gap alignment score</th><td>${detail.gapPressure?.gapAlignmentScore ?? "n/a"}</td></tr>
+          <tr><th>open gaps considered</th><td>${detail.gapPressure?.openGapCount ?? "n/a"}</td></tr>
+          <tr><th>gap mission objective</th><td>${detail.gapPressure?.relatedMissionObjective ?? "n/a"}</td></tr>
+          <tr><th>routing confidence</th><td>${detail.routingConfidence ?? "n/a"}</td></tr>
+          <tr><th>route conflict</th><td>${detail.routeConflict === null || detail.routeConflict === undefined ? "n/a" : detail.routeConflict ? "yes" : "no"}</td></tr>
+          <tr><th>needs human review</th><td>${detail.needsHumanReview === null || detail.needsHumanReview === undefined ? "n/a" : detail.needsHumanReview ? "yes" : "no"}</td></tr>
+          <tr><th>ambiguity summary</th><td>${detail.ambiguitySummary
+            ? `${detail.ambiguitySummary.topLaneId} over ${detail.ambiguitySummary.runnerUpLaneId ?? "none"} by ${detail.ambiguitySummary.scoreDelta}; conflicting signals: ${detail.ambiguitySummary.conflictingSignalFamilies.join(", ") || "none"}`
+            : "n/a"}</td></tr>
+          <tr><th>review guidance</th><td>${detail.reviewGuidance?.summary ?? "n/a"}</td></tr>
           <tr><th>Engine usefulness level</th><td>${detail.usefulnessLevel ?? "n/a"}</td></tr>
           <tr><th>Engine usefulness rationale</th><td>${detail.usefulnessRationale ?? "n/a"}</td></tr>
           <tr><th>linked intake record</th><td>${this.artifactLink(detail.linkedIntakeRecord)}</td></tr>
@@ -887,6 +1316,17 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>Engine run record</th><td>${detail.engineRunRecordPath ? this.artifactLink(detail.engineRunRecordPath) : html`<span class="muted">not resolved</span>`}</td></tr>
           <tr><th>Engine run report</th><td>${detail.engineRunReportPath ? this.artifactLink(detail.engineRunReportPath) : html`<span class="muted">not resolved</span>`}</td></tr>
         </tbody></table></section>
+        ${detail.reviewGuidance ? html`
+          <section class="panel warning">
+            <h3>Review handling guidance</h3>
+            <p>${detail.reviewGuidance.operatorAction}</p>
+            <ul>
+              ${detail.reviewGuidance.requiredChecks.map((entry) => html`<li>${entry}</li>`)}
+            </ul>
+            <p class="muted">Stop-line: ${detail.reviewGuidance.stopLine}</p>
+          </section>
+        ` : nothing}
+        ${this.renderRoutingExplanationBreakdown(detail)}
         <section class=${detail.downstreamStubRelativePath ? "panel good" : detail.approvalAllowed ? "panel message" : "panel warning"}>
           <h3>Route approval</h3>
           <p>${detail.downstreamStubRelativePath
@@ -1626,6 +2066,8 @@ class DirectiveFrontendApp extends LitElement {
           ${this.link("/architecture", "Architecture lane", current === "/architecture")}
           ${this.link("/runtime", "Runtime lane", current === "/runtime")}
           ${this.link("/engine-runs", "Engine Runs", current === "/engine-runs")}
+          ${this.link("/operator-inbox", "Operator Inbox", current === "/operator-inbox")}
+          ${this.link("/workflow-map", "Workflow Map", current === "/workflow-map")}
         </section>
         ${this.renderContent()}
       </main>

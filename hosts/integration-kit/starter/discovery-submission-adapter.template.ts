@@ -1,12 +1,15 @@
 import path from "node:path";
-import type { DiscoveryIntakeQueueDocument } from "../../../shared/lib/discovery-intake-queue-writer.ts";
-import type { DiscoverySubmissionRequest } from "../../../shared/lib/discovery-submission-router.ts";
-import type { DiscoveryFastPathRecordRequest } from "../../../shared/lib/discovery-fast-path-record-writer.ts";
-import type { DiscoveryIntakeTransitionRequest } from "../../../shared/lib/discovery-intake-queue-transition.ts";
-import type { DiscoveryRoutingRecordRequest } from "../../../shared/lib/discovery-routing-record-writer.ts";
-import type { DiscoveryCompletionRecordRequest } from "../../../shared/lib/discovery-completion-record-writer.ts";
-import type { DiscoveryIntakeLifecycleSyncRequest } from "../../../shared/lib/discovery-intake-lifecycle-sync.ts";
+import type { DiscoveryIntakeQueueDocument } from "../../../discovery/lib/discovery-intake-queue-writer.ts";
+import type { DiscoverySubmissionRequest } from "../../../discovery/lib/discovery-submission-router.ts";
+import type { DiscoveryFastPathRecordRequest } from "../../../discovery/lib/discovery-fast-path-record-writer.ts";
+import type { DiscoveryIntakeTransitionRequest } from "../../../discovery/lib/discovery-intake-queue-transition.ts";
+import type { DiscoveryRoutingRecordRequest } from "../../../discovery/lib/discovery-routing-record-writer.ts";
+import type { DiscoveryCompletionRecordRequest } from "../../../discovery/lib/discovery-completion-record-writer.ts";
+import type { DiscoveryIntakeLifecycleSyncRequest } from "../../../discovery/lib/discovery-intake-lifecycle-sync.ts";
 
+// Manual record-shape starter: use this when your host truly needs to author
+// queue_only / fast_path / split_case records itself instead of using the
+// preferred Engine-backed Discovery front-door starter.
 // Replace this bridge with your host's storage/runtime layer.
 export type DiscoveryHostStorageBridge = {
   directiveRoot: string;
@@ -50,71 +53,71 @@ export async function submitDiscoveryEntryWithHostBridge(
   input: SubmitDiscoveryWithHostBridgeOptions,
 ) {
   const intakeQueueWriter = await loadModule(
-    "../../../shared/lib/discovery-intake-queue-writer.ts",
+    "../../../discovery/lib/discovery-intake-queue-writer.ts",
   );
   const submissionRouter = await loadModule(
-    "../../../shared/lib/discovery-submission-router.ts",
+    "../../../discovery/lib/discovery-submission-router.ts",
   );
   const fastPathRecordWriter = await loadModule(
-    "../../../shared/lib/discovery-fast-path-record-writer.ts",
+    "../../../discovery/lib/discovery-fast-path-record-writer.ts",
   );
   const intakeQueueTransition = await loadModule(
-    "../../../shared/lib/discovery-intake-queue-transition.ts",
+    "../../../discovery/lib/discovery-intake-queue-transition.ts",
   );
   const caseRecordWriter = await loadModule(
-    "../../../shared/lib/discovery-case-record-writer.ts",
+    "../../../discovery/lib/discovery-case-record-writer.ts",
   );
   const routingRecordWriter = await loadModule(
-    "../../../shared/lib/discovery-routing-record-writer.ts",
+    "../../../discovery/lib/discovery-routing-record-writer.ts",
   );
   const completionRecordWriter = await loadModule(
-    "../../../shared/lib/discovery-completion-record-writer.ts",
+    "../../../discovery/lib/discovery-completion-record-writer.ts",
   );
   const intakeLifecycleSync = await loadModule(
-    "../../../shared/lib/discovery-intake-lifecycle-sync.ts",
+    "../../../discovery/lib/discovery-intake-lifecycle-sync.ts",
   );
 
   const appendDiscoveryIntakeQueueEntry = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-intake-queue-writer.ts").appendDiscoveryIntakeQueueEntry
+    typeof import("../../../discovery/lib/discovery-intake-queue-writer.ts").appendDiscoveryIntakeQueueEntry
   >(intakeQueueWriter, "appendDiscoveryIntakeQueueEntry");
   const determineDiscoverySubmissionShape = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-submission-router.ts").determineDiscoverySubmissionShape
+    typeof import("../../../discovery/lib/discovery-submission-router.ts").determineDiscoverySubmissionShape
   >(submissionRouter, "determineDiscoverySubmissionShape");
   const toDiscoveryIntakeSubmission = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-submission-router.ts").toDiscoveryIntakeSubmission
+    typeof import("../../../discovery/lib/discovery-submission-router.ts").toDiscoveryIntakeSubmission
   >(submissionRouter, "toDiscoveryIntakeSubmission");
   const renderDiscoveryFastPathRecord = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-fast-path-record-writer.ts").renderDiscoveryFastPathRecord
+    typeof import("../../../discovery/lib/discovery-fast-path-record-writer.ts").renderDiscoveryFastPathRecord
   >(fastPathRecordWriter, "renderDiscoveryFastPathRecord");
   const resolveDiscoveryFastPathRecordPath = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-fast-path-record-writer.ts").resolveDiscoveryFastPathRecordPath
+    typeof import("../../../discovery/lib/discovery-fast-path-record-writer.ts").resolveDiscoveryFastPathRecordPath
   >(fastPathRecordWriter, "resolveDiscoveryFastPathRecordPath");
   const transitionDiscoveryIntakeQueueEntry = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-intake-queue-transition.ts").transitionDiscoveryIntakeQueueEntry
+    typeof import("../../../discovery/lib/discovery-intake-queue-transition.ts").transitionDiscoveryIntakeQueueEntry
   >(intakeQueueTransition, "transitionDiscoveryIntakeQueueEntry");
   const renderDiscoveryIntakeRecord = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-case-record-writer.ts").renderDiscoveryIntakeRecord
+    typeof import("../../../discovery/lib/discovery-case-record-writer.ts").renderDiscoveryIntakeRecord
   >(caseRecordWriter, "renderDiscoveryIntakeRecord");
   const renderDiscoveryTriageRecord = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-case-record-writer.ts").renderDiscoveryTriageRecord
+    typeof import("../../../discovery/lib/discovery-case-record-writer.ts").renderDiscoveryTriageRecord
   >(caseRecordWriter, "renderDiscoveryTriageRecord");
   const resolveDiscoveryIntakeRecordPath = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-case-record-writer.ts").resolveDiscoveryIntakeRecordPath
+    typeof import("../../../discovery/lib/discovery-case-record-writer.ts").resolveDiscoveryIntakeRecordPath
   >(caseRecordWriter, "resolveDiscoveryIntakeRecordPath");
   const resolveDiscoveryTriageRecordPath = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-case-record-writer.ts").resolveDiscoveryTriageRecordPath
+    typeof import("../../../discovery/lib/discovery-case-record-writer.ts").resolveDiscoveryTriageRecordPath
   >(caseRecordWriter, "resolveDiscoveryTriageRecordPath");
   const renderDiscoveryRoutingRecord = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-routing-record-writer.ts").renderDiscoveryRoutingRecord
+    typeof import("../../../discovery/lib/discovery-routing-record-writer.ts").renderDiscoveryRoutingRecord
   >(routingRecordWriter, "renderDiscoveryRoutingRecord");
   const resolveDiscoveryRoutingRecordPath = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-routing-record-writer.ts").resolveDiscoveryRoutingRecordPath
+    typeof import("../../../discovery/lib/discovery-routing-record-writer.ts").resolveDiscoveryRoutingRecordPath
   >(routingRecordWriter, "resolveDiscoveryRoutingRecordPath");
   const renderDiscoveryCompletionRecord = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-completion-record-writer.ts").renderDiscoveryCompletionRecord
+    typeof import("../../../discovery/lib/discovery-completion-record-writer.ts").renderDiscoveryCompletionRecord
   >(completionRecordWriter, "renderDiscoveryCompletionRecord");
   const syncDiscoveryIntakeLifecycle = getRequiredFunction<
-    typeof import("../../../shared/lib/discovery-intake-lifecycle-sync.ts").syncDiscoveryIntakeLifecycle
+    typeof import("../../../discovery/lib/discovery-intake-lifecycle-sync.ts").syncDiscoveryIntakeLifecycle
   >(intakeLifecycleSync, "syncDiscoveryIntakeLifecycle");
 
   const queuePath = queuePathFor(input.storage);

@@ -1,0 +1,24 @@
+# Runtime Record: promptfoo
+
+- Candidate id: promptfoo
+- Candidate name: promptfoo
+- Runtime record date: 2026-03-21
+- Origin path: `runtime/00-follow-up/2026-03-20-promptfoo-runtime-followup.md`
+- Linked follow-up record: `runtime/00-follow-up/2026-03-20-promptfoo-runtime-followup.md`
+- Runtime objective: execute one bounded Promptfoo-backed evaluation run against the Mission Control agent eval surface and prove that Runtime can use a product-owned eval harness for promotion safety.
+- Proposed host: Mission Control
+- Proposed runtime surface: agent eval harness / promotion guard lane
+- Execution slice: one deterministic `eval:agents` run plus eval guard validation and regression check using the existing Mission Control Promptfoo harness.
+- Required proof: evidence artifact showing command, output artifact paths, score/failure/cost metrics, pass/fail result, and rollback.
+- Required gates:
+  - `npm run eval:agents`
+  - `npm run check:agent-evals`
+  - `npm run check:agent-eval-regression`
+  - `npm run check:ops-stack`
+- Risks:
+  - eval dataset may become stale and produce false confidence
+  - current harness is bounded to one small dataset and not a universal quality claim
+  - future provider/config drift can invalidate the current callable status without changing Runtime records
+- Rollback: remove promptfoo-specific Runtime record/proof/promotion/registry artifacts and any slice-specific checker wiring; keep Architecture evaluation patterns and existing Mission Control eval scripts intact.
+- Current status: runtime slice executed; promotion record created (`2026-03-21`)
+- Next decision point: keep bounded callable eval-lane status active only while guard metrics continue to pass.

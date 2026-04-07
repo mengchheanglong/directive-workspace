@@ -32,16 +32,17 @@ Its stable sub-surfaces are:
 - `shared/contracts/` for normative behavioral and workflow rules
 - `shared/schemas/` for machine-readable shape authority
 - `shared/templates/` for canonical record and document templates
-- `shared/lib/` for reusable implementation support used by multiple product surfaces
+- `shared/lib/` for residual reusable support and adapter code that is not the canonical home of lane lifecycle or state logic
 
-New logic belongs in `shared/lib/` when it is reusable support code but does not define the product kernel by itself.
-If a support module becomes the canonical owner of mission, routing, usefulness, decision, or truth semantics, it should be promoted into `engine/` instead of remaining support code.
+New logic belongs in `shared/lib/` only when it is reusable support or adapter code but does not define the product kernel, a lane lifecycle home, or the canonical state surface.
+If a module becomes the canonical owner of mission, routing, usefulness, decision, truth semantics, lane lifecycle, or state resolution, it should live in `engine/` instead of remaining support code.
 
-### Lane Corpora
+### Lane Surfaces
 
-`discovery/`, `architecture/`, and `runtime/` are primarily lane workflow and corpus surfaces.
+`discovery/`, `architecture/`, and `runtime/` are lane-owned surfaces.
 
 They are the home for:
+- lane operating code under each lane's `lib/` folder
 - lane records
 - lane-local operational artifacts
 - bounded experiment results
@@ -49,8 +50,10 @@ They are the home for:
 - follow-up records
 - evaluations and retained results
 
-They are not the default home for new shared product logic.
-Files inside these directories should be treated as workflow or corpus artifacts unless a file is explicitly lane-local code with a clear lane-only owner.
+They are not the default home for new shared product logic, but they are the correct home for lane-local lifecycle code.
+Files inside these directories should be treated according to sub-surface:
+- `*/lib/` = lane operating code with a clear lane owner
+- numbered folders / queue files / routing logs = workflow or corpus artifacts
 
 ### Runtime Assets
 
@@ -117,8 +120,9 @@ Place logic in `engine/` when it:
 
 Place logic in `shared/lib/` when it:
 - is reused by multiple product surfaces
-- supports checks, reports, record handling, or shared utilities
-- does not itself define the primary product kernel
+- supports checks, reports, record handling, storage compatibility, or shared utilities
+- acts as a host-agnostic adapter or integration bridge
+- does not itself define the primary product kernel, a lane lifecycle home, or the canonical state surface
 
 If the module becomes the normative owner of product semantics, move that ownership into `engine/`.
 
@@ -133,13 +137,14 @@ Examples include:
 - lane-only operational support that has no shared consumer
 
 Do not place logic in a lane directory just because the current case happened there first.
+Do place logic in a lane directory when the lane is the durable owner of that lifecycle behavior.
 
 ## Growth Rules
 
 ### Avoid Notes Sprawl
 
 Do not keep creating new note-family artifacts when repeated pressure is pointing at one missing shared behavior.
-When a repeated pattern gains a clear consumer and a bounded target, graduate it into `engine/`, `shared/contracts/`, `shared/schemas/`, `shared/templates/`, or `shared/lib/` as appropriate.
+When a repeated pattern gains a clear consumer and a bounded target, graduate it into `engine/`, `architecture/lib/`, `runtime/lib/`, `discovery/lib/`, `engine/state/`, `shared/contracts/`, `shared/schemas/`, `shared/templates/`, or `shared/lib/` as appropriate.
 
 ### Avoid Host-Specific Drift
 

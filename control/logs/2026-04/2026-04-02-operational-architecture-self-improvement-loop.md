@@ -9,11 +9,11 @@
 ## What changed
 
 - Closed the NOTE-mode Architecture handoff for `dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02` into:
-  - `architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md`
-  - `architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json`
+  - `architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md`
+  - `architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json`
 - Adopted that bounded result into:
-  - `architecture/03-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next.md`
-  - `architecture/03-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next-adoption-decision.json`
+  - `architecture/02-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next.md`
+  - `architecture/02-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next-adoption-decision.json`
 - Materialized the adopted self-improvement through:
   - `architecture/04-implementation-targets/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-implementation-target.md`
   - `architecture/05-implementation-results/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-implementation-result.md`
@@ -36,17 +36,17 @@
 
 - `npm run report:operational-architecture-improvement-candidates`
 - `node --experimental-strip-types scripts/check-operational-architecture-improvement-candidates.ts`
-- `npm run report:directive-workspace-state -- discovery/routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md`
+- `npm run report:directive-workspace-state -- discovery/03-routing-log/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-routing-record.md`
 
 ## Rollback
 
 Revert:
 
 - `shared/lib/operational-architecture-improvement-candidates.ts`
-- `architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md`
-- `architecture/02-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json`
-- `architecture/03-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next.md`
-- `architecture/03-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next-adoption-decision.json`
+- `architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result.md`
+- `architecture/01-experiments/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-bounded-result-adoption-decision.json`
+- `architecture/02-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next.md`
+- `architecture/02-adopted/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-adopted-planned-next-adoption-decision.json`
 - `architecture/04-implementation-targets/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-implementation-target.md`
 - `architecture/05-implementation-results/2026-04-02-dw-pressure-runtime-callable-input-boundary-clarity-2026-04-02-implementation-result.md`
 - this log
@@ -54,3 +54,4 @@ Revert:
 ## Stop-line
 
 Stop once one operational-evidence Architecture case is materially visible through the normal chain to implementation result and the existing report/check/state surfaces can all see that same live state without custom interpretation.
+

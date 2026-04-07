@@ -1,0 +1,31 @@
+# Adopted / Planned-Next: Legacy Runtime Slice Execution Focus Compatibility (2026-03-28)
+
+## decision
+- Final status: `adopt_planned_next`.
+- Lane: `Directive Architecture` only.
+- Source bounded result: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result.md`.
+- Adoption approval: `directive-lead-implementer`.
+- Usefulness level: `meta`.
+- Completion status: `product_partial`.
+
+## why it is retained
+- The canonical state resolver should support direct read-only focus on the historical runtime-slice execution family because those execution artifacts are already part of product history and still surface as unsupported Runtime paths.
+
+## bounded implementation next
+- Restrict the implementation to `shared/lib/dw-state.ts` and focused repo checks.
+- Keep the execution artifacts historical and read-only.
+- Do not map proof-checklist, transformation-proof, promotion, registry, or callable continuation semantics.
+
+## source continuity
+- Candidate id: `dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28`
+- Source handoff stub: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-engine-handoff.md`
+- Source bounded start: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-start.md`
+- Source bounded result: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result.md`
+- Source adoption decision: `architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-bounded-result-adoption-decision.json`
+
+## runtime threshold
+- Would this still be valuable without opening a runtime surface? `yes`
+
+## next artifact
+- `architecture/04-implementation-targets/2026-03-28-dw-pressure-engine-legacy-runtime-slice-execution-focus-compat-2026-03-28-implementation-target.md`
+

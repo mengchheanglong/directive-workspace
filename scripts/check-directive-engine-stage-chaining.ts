@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 import { DirectiveEngine } from "../engine/directive-engine.ts";
 import { createDirectiveWorkspaceEngineLanes } from "../engine/directive-workspace-lanes.ts";
 import type { DirectiveEngineRunRecord } from "../engine/types.ts";
-import { buildRuntimeCallableExecutionEvidenceReport } from "../shared/lib/runtime-callable-execution-evidence.ts";
-import { buildDirectiveRuntimePromotionAssistanceReport } from "../shared/lib/runtime-promotion-assistance.ts";
+import { buildRuntimeCallableExecutionEvidenceReport } from "../runtime/lib/runtime-callable-execution-evidence.ts";
+import { buildDirectiveRuntimePromotionAssistanceReport } from "../runtime/lib/runtime-promotion-assistance.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CHECKER_ID = "directive_engine_stage_chaining" as const;
@@ -29,6 +29,8 @@ type ViolationCode =
   | "handoff_artifact_family_mismatch"
   | "decision_state_mismatch"
   | "usefulness_level_mismatch"
+  | "usefulness_rationale_mismatch"
+  | "routing_explanation_mismatch"
   | "routing_signal_mismatch"
   | "routing_rationale_mismatch";
 
@@ -302,6 +304,33 @@ function metadataOverrideRuntimeInput(): EngineInput {
   };
 }
 
+function metadataArchitectureOverrideInput(): EngineInput {
+  return {
+    mission: {
+      currentObjective: "Improve the Directive Workspace engine.",
+      usefulnessSignals: [
+        "Prefer Engine self-improvement when a source primarily upgrades Directive Workspace workflow judgment.",
+        "Do not force Runtime just because a repo contains executable code when the extracted value is system-improvement logic.",
+      ],
+      capabilityLanes: ["Architecture", "Runtime"],
+    },
+    source: {
+      sourceType: "github-repo",
+      sourceRef: "https://example.com/runtime-evaluator-boundary-kit",
+      title: "Runtime evaluator boundary kit",
+      summary:
+        "Executable code and workflow examples for bounded approval, evaluation, rollback, and reporting boundaries used to improve system judgment.",
+      missionAlignmentHint: "Use this to improve Directive Workspace workflow judgment, not to expose a host-callable runtime surface.",
+      containsExecutableCode: true,
+      containsWorkflowPattern: true,
+      improvesDirectiveWorkspace: true,
+      workflowBoundaryShape: "bounded_protocol",
+      notes: ["engine", "evaluation", "boundary", "protocol", "approval", "reporting"],
+    },
+    gaps: [],
+  };
+}
+
 function discoveryInput(): EngineInput {
   return {
     mission: {
@@ -319,6 +348,129 @@ function discoveryInput(): EngineInput {
       summary: "intake triage routing signal for an unclear source that still needs discovery review",
       missionAlignmentHint: "Useful only if Discovery records it and keeps routing explicit.",
       notes: ["intake", "triage", "routing", "review"],
+    },
+    gaps: [],
+  };
+}
+
+function lowConfidenceFallbackInput(): EngineInput {
+  return {
+    mission: {
+      currentObjective: "Improve the Directive Workspace engine.",
+      usefulnessSignals: [
+        "Keep ambiguous signals in Discovery until routing clarity exists.",
+        "Do not assign early Architecture ownership when a weak note has not earned lane clarity.",
+      ],
+      capabilityLanes: ["Discovery", "Architecture", "Runtime"],
+    },
+    source: {
+      sourceType: "workflow-writeup",
+      sourceRef: "https://example.com/unclear-helper-note",
+      title: "Unclear helper note",
+      summary: "note",
+      missionAlignmentHint: "Unclear value.",
+      notes: [],
+    },
+    gaps: [],
+  };
+}
+
+function gapAlignmentArchitectureInput(): EngineInput {
+  return {
+    mission: {
+      currentObjective: "Improve the Directive Workspace engine.",
+      usefulnessSignals: [
+        "Prefer open-gap alignment when the source is explicitly improving Engine workflow judgment.",
+        "Do not let runtime-looking repo titles override a closer Architecture gap match.",
+      ],
+      capabilityLanes: ["Architecture", "Runtime"],
+    },
+    source: {
+      sourceType: "github-repo",
+      sourceRef: "https://example.com/runtime-guardrail-kit",
+      title: "runtime guardrail kit",
+      summary:
+        "Executable repo with runtime-looking naming, but the extracted value is bounded approval, evaluation, rollback, and reporting discipline for Directive Workspace.",
+      missionAlignmentHint:
+        "Use this to improve Directive Workspace workflow judgment and proof boundaries, not to expose a host-callable runtime package.",
+      containsExecutableCode: true,
+      containsWorkflowPattern: true,
+      improvesDirectiveWorkspace: true,
+      workflowBoundaryShape: "bounded_protocol",
+      notes: ["runtime", "plugin", "approval", "evaluation", "rollback", "reporting", "engine"],
+    },
+    gaps: [
+      {
+        gapId: "runtime_callable_packaging_gap",
+        description: "Need stronger runtime callable packaging and repeated host execution support.",
+        priority: "high",
+        relatedMissionObjective: "Improve reusable runtime capability packaging.",
+        currentState: "Runtime packaging remains manually assembled.",
+        desiredState: "Runtime packaging is easier to reuse across repeated host calls.",
+        detectedAt: "2026-04-01T00:00:00.000Z",
+      },
+      {
+        gapId: "architecture_workflow_boundary_gap",
+        description: "Need stronger engine approval, evaluation, rollback, and reporting boundaries for bounded structural protocols.",
+        priority: "medium",
+        relatedMissionObjective: "Improve Directive Workspace workflow judgment.",
+        currentState: "Engine workflow boundaries are too heuristic.",
+        desiredState: "Engine workflow boundaries are explicit and easier to prove.",
+        detectedAt: "2026-04-02T00:00:00.000Z",
+      },
+    ],
+  };
+}
+
+function ambiguityReviewArchitectureInput(): EngineInput {
+  return {
+    mission: {
+      currentObjective: "Improve the Directive Workspace engine.",
+      usefulnessSignals: [
+        "Surface routing disagreement explicitly when runtime-looking repos are actually Engine-improvement inputs.",
+        "Do not silently flatten keyword-vs-metadata disagreement into a winner without review notes.",
+      ],
+      capabilityLanes: ["Architecture", "Runtime", "Discovery"],
+    },
+    source: {
+      sourceType: "github-repo",
+      sourceRef: "https://example.com/runtime-plugin-boundary-review-kit",
+      title: "Runtime plugin boundary review kit",
+      summary:
+        "Executable runtime plugin examples with repeated callable workflow packaging, plus approval, rollback, and evaluation boundaries for improving Directive Workspace judgment.",
+      missionAlignmentHint:
+        "Use this to improve Directive Workspace routing and workflow boundaries, even though the repo looks like a runtime plugin.",
+      primaryAdoptionTarget: "architecture",
+      containsExecutableCode: true,
+      containsWorkflowPattern: true,
+      improvesDirectiveWorkspace: true,
+      workflowBoundaryShape: "bounded_protocol",
+      notes: ["runtime", "plugin", "callable", "workflow", "approval", "rollback", "evaluation", "engine"],
+    },
+    gaps: [],
+  };
+}
+
+function discoveryArchitectureBoundaryInput(): EngineInput {
+  return {
+    mission: {
+      currentObjective: "Improve the Directive Workspace engine.",
+      usefulnessSignals: [
+        "Route structural workflow logic into Architecture even when the source talks about intake and routing.",
+        "Do not let Discovery front-door vocabulary overread a source that is really describing Engine workflow judgment.",
+      ],
+      capabilityLanes: ["Discovery", "Architecture"],
+    },
+    source: {
+      sourceType: "workflow-writeup",
+      sourceRef: "https://example.com/discovery-intake-review-protocol",
+      title: "Discovery intake routing review protocol",
+      summary:
+        "workflow writeup for intake triage routing review cadence checklist and evaluation boundaries that improve Directive Workspace judgment",
+      missionAlignmentHint:
+        "Use this to improve Directive Workspace intake and routing judgment rather than process one candidate.",
+      containsWorkflowPattern: true,
+      notes: ["intake", "routing", "review cadence", "protocol", "evaluation", "engine"],
     },
     gaps: [],
   };
@@ -369,11 +521,13 @@ async function validate(options: Options = {}): Promise<CheckResult> {
     violations,
   );
   eq(violations, "structural_control", "selected_lane_mismatch", "selectedLane.laneId", structural?.selectedLane.laneId, "architecture", "The staged structural source should still route to Architecture.");
+  eq(violations, "structural_control", "usefulness_level_mismatch", "candidate.usefulnessLevel", structural?.candidate.usefulnessLevel, "meta", "The staged structural source should classify as meta-useful Engine self-improvement once the generated plans preserve Engine-owned stage boundaries.");
   prefix(violations, "structural_control", "extractionPlan.extractedValue", structural?.extractionPlan.extractedValue, "Stage-aware structural pattern:", "Extraction should preserve the staged structural pattern as explicit output.");
   prefix(violations, "structural_control", "extractionPlan.extractedValue", structural?.extractionPlan.extractedValue, "Bounded control/evidence pattern:", "Extraction should preserve the bounded control/evidence pattern as explicit output.");
   match(violations, "structural_control", "adaptation_plan_mismatch", "adaptationPlan.directiveOwnedForm", structural?.adaptationPlan.directiveOwnedForm, /preserves explicit stage boundaries/i, "Adaptation should still preserve explicit stage boundaries instead of flattening them away.");
   match(violations, "structural_control", "improvement_delta_mismatch", "improvementPlan.intendedDelta", structural?.improvementPlan.intendedDelta, /later planning stages can build on the adaptation boundary/i, "Improvement should explicitly depend on the adaptation boundary.");
   match(violations, "structural_control", "improvement_delta_mismatch", "improvementPlan.intendedDelta", structural?.improvementPlan.intendedDelta, /instead of recomputing everything from the same flat input/i, "Improvement should still reject the original flat-plan pattern.");
+  match(violations, "structural_control", "usefulness_rationale_mismatch", "analysis.usefulnessRationale", structural?.analysis.usefulnessRationale, /generated adaptation and improvement plans are Engine-self-improvement oriented/i, "Usefulness rationale should now explain the Architecture verdict from the generated plans instead of only from metadata or lane choice.");
   eq(violations, "structural_control", "proof_kind_mismatch", "proofPlan.proofKind", structural?.proofPlan.proofKind, "architecture_validation", "Proof planning should stay on the Architecture validation path.");
   match(violations, "structural_control", "proof_evidence_mismatch", "proofPlan.requiredEvidence", structural?.proofPlan.requiredEvidence.join("\n"), /prior extraction, adaptation, and improvement stages/i, "Proof should stay anchored to the earlier staged outputs.");
   eq(violations, "structural_control", "proof_gate_mismatch", "proofPlan.requiredGates.0", structural?.proofPlan.requiredGates[0], "adaptation_complete", "Proof should expose the staged adaptation gate that integration now depends on.");
@@ -419,7 +573,75 @@ async function validate(options: Options = {}): Promise<CheckResult> {
   );
   eq(violations, "runtime_metadata_override", "selected_lane_mismatch", "selectedLane.laneId", metadataOverrideRuntime?.selectedLane.laneId, "runtime", "Structured runtime metadata should override architecture-skewing title keywords.");
   eq(violations, "runtime_metadata_override", "usefulness_level_mismatch", "candidate.usefulnessLevel", metadataOverrideRuntime?.candidate.usefulnessLevel, "direct", "A runtime-targeted executable source should keep direct usefulness.");
+  eq(violations, "runtime_metadata_override", "routing_signal_mismatch", "routingAssessment.recommendedRecordShape", metadataOverrideRuntime?.routingAssessment.recommendedRecordShape, "fast_path", "High-confidence Runtime routes without an open gap should still expand into fast-path instead of falling back to queue-only.");
+  eq(violations, "runtime_metadata_override", "routing_signal_mismatch", "routingAssessment.needsHumanReview", metadataOverrideRuntime?.routingAssessment.needsHumanReview, false, "High-confidence Runtime routes without signal conflict should not require extra human review only because no open gap matched.");
+  eq(violations, "runtime_metadata_override", "routing_signal_mismatch", "candidate.requiresHumanReview", metadataOverrideRuntime?.candidate.requiresHumanReview, false, "Candidate review state should stay aligned with the corrected no-gap Runtime routing policy.");
+  match(violations, "runtime_metadata_override", "usefulness_rationale_mismatch", "analysis.usefulnessRationale", metadataOverrideRuntime?.analysis.usefulnessRationale, /generated Runtime adaptation and improvement plans target reusable callable runtime value/i, "Runtime usefulness rationale should now explain the direct verdict from the generated Runtime plans.");
   arrayMatch(violations, "runtime_metadata_override", "routing_rationale_mismatch", "routingAssessment.rationale", metadataOverrideRuntime?.routingAssessment.rationale, /Primary adoption target metadata is set to runtime/i, "Routing rationale should explain that structured adoption-target metadata influenced the decision.");
+  arrayMatch(violations, "runtime_metadata_override", "routing_rationale_mismatch", "routingAssessment.rationale", metadataOverrideRuntime?.routingAssessment.rationale, /strong Runtime signals justify bounded follow-through even without an open gap match/i, "Routing rationale should explain why fast-path remains justified without an open gap.");
+  arrayMatch(violations, "runtime_metadata_override", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.metadataSignals", metadataOverrideRuntime?.routingAssessment.explanationBreakdown.metadataSignals, /Metadata-derived lane scores: discovery=\d+, architecture=\d+, runtime=\d+\./, "Routing assessment should expose a stable metadata score breakdown.");
+
+  const metadataOverrideArchitecture = await processCase(
+    engine,
+    metadataArchitectureOverrideInput(),
+    "architecture_metadata_override",
+    "DirectiveEngine.processSource should succeed for an executable source explicitly marked as system-improvement-oriented.",
+    violations,
+  );
+  eq(violations, "architecture_metadata_override", "selected_lane_mismatch", "selectedLane.laneId", metadataOverrideArchitecture?.selectedLane.laneId, "architecture", "System-improvement metadata should override executable-repo runtime skew when the source is really Engine-improvement work.");
+  eq(violations, "architecture_metadata_override", "usefulness_level_mismatch", "candidate.usefulnessLevel", metadataOverrideArchitecture?.candidate.usefulnessLevel, "meta", "A source explicitly marked as improving Directive Workspace itself should classify as meta-useful.");
+  match(violations, "architecture_metadata_override", "usefulness_rationale_mismatch", "analysis.usefulnessRationale", metadataOverrideArchitecture?.analysis.usefulnessRationale, /generated adaptation and improvement plans are Engine-self-improvement oriented/i, "Architecture usefulness rationale should still be explained from the generated plans.");
+  arrayMatch(violations, "architecture_metadata_override", "routing_rationale_mismatch", "routingAssessment.rationale", metadataOverrideArchitecture?.routingAssessment.rationale, /source primarily improves Directive Workspace itself/i, "Routing rationale should explain the explicit system-improvement metadata signal.");
+  arrayMatch(violations, "architecture_metadata_override", "routing_rationale_mismatch", "routingAssessment.rationale", metadataOverrideArchitecture?.routingAssessment.rationale, /workflow-boundary metadata is set to bounded_protocol/i, "Routing rationale should explain the workflow-boundary-shape signal.");
+  arrayMatch(violations, "architecture_metadata_override", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.metadataSignals", metadataOverrideArchitecture?.routingAssessment.explanationBreakdown.metadataSignals, /source primarily improves Directive Workspace itself/i, "Structured metadata explanation should expose the Architecture-driving system-improvement signal.");
+
+  const architectureGapAlignment = await processCase(
+    engine,
+    gapAlignmentArchitectureInput(),
+    "architecture_gap_alignment",
+    "DirectiveEngine.processSource should succeed for an executable source whose closest open gap is architectural despite runtime-skewing wording.",
+    violations,
+  );
+  eq(violations, "architecture_gap_alignment", "selected_lane_mismatch", "selectedLane.laneId", architectureGapAlignment?.selectedLane.laneId, "architecture", "Open-gap alignment plus structured system-improvement signals should keep this executable source on the Architecture lane.");
+  eq(violations, "architecture_gap_alignment", "usefulness_level_mismatch", "candidate.usefulnessLevel", architectureGapAlignment?.candidate.usefulnessLevel, "meta", "Architecture gap alignment should still classify as meta-useful Engine improvement.");
+  eq(violations, "architecture_gap_alignment", "routing_signal_mismatch", "routingAssessment.matchedGapId", architectureGapAlignment?.routingAssessment.matchedGapId, "architecture_workflow_boundary_gap", "Gap matching should prefer the architecture workflow-boundary gap over the runtime packaging gap.");
+  arrayMatch(violations, "architecture_gap_alignment", "routing_rationale_mismatch", "routingAssessment.rationale", architectureGapAlignment?.routingAssessment.rationale, /Structured source signals added \d+ points of gap alignment for architecture_workflow_boundary_gap/i, "Routing rationale should explain that structured source signals strengthened the selected gap match.");
+  arrayMatch(violations, "architecture_gap_alignment", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.gapAlignmentSignals", architectureGapAlignment?.routingAssessment.explanationBreakdown.gapAlignmentSignals, /Gap-derived lane scores: discovery=\d+, architecture=\d+, runtime=\d+\./, "Routing assessment should expose a stable gap score breakdown.");
+  arrayMatch(violations, "architecture_gap_alignment", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.gapAlignmentSignals", architectureGapAlignment?.routingAssessment.explanationBreakdown.gapAlignmentSignals, /Structured source signals added \d+ points of gap alignment for architecture_workflow_boundary_gap/i, "Structured gap-alignment explanation should expose why the architecture gap won.");
+
+  const ambiguityReviewArchitecture = await processCase(
+    engine,
+    ambiguityReviewArchitectureInput(),
+    "architecture_ambiguity_review",
+    "DirectiveEngine.processSource should succeed for a source whose keyword and metadata winners disagree.",
+    violations,
+  );
+  eq(violations, "architecture_ambiguity_review", "selected_lane_mismatch", "selectedLane.laneId", ambiguityReviewArchitecture?.selectedLane.laneId, "architecture", "Architecture should still win when explicit system-improvement metadata outweighs runtime-skewing repo language.");
+  eq(violations, "architecture_ambiguity_review", "decision_state_mismatch", "decision.decisionState", ambiguityReviewArchitecture?.decision.decisionState, "needs_human_review", "Conflicted Architecture routes should emit the explicit needs_human_review decision state instead of masquerading as already accepted Architecture adoption.");
+  eq(violations, "architecture_ambiguity_review", "routing_signal_mismatch", "routingAssessment.routeConflict", ambiguityReviewArchitecture?.routingAssessment.routeConflict, true, "Route conflict should be raised when signal families disagree on the winning lane.");
+  eq(violations, "architecture_ambiguity_review", "routing_signal_mismatch", "routingAssessment.recommendedRecordShape", ambiguityReviewArchitecture?.routingAssessment.recommendedRecordShape, "split_case", "Conflicted Architecture routes should require the fuller split-case record instead of opening a fast-path.");
+  eq(violations, "architecture_ambiguity_review", "routing_signal_mismatch", "routingAssessment.needsHumanReview", ambiguityReviewArchitecture?.routingAssessment.needsHumanReview, true, "Signal-family disagreement should force human review even when a lane winner exists.");
+  arrayMatch(violations, "architecture_ambiguity_review", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.ambiguitySignals", ambiguityReviewArchitecture?.routingAssessment.explanationBreakdown.ambiguitySignals, /Signal disagreement requires review:/i, "Ambiguity explanation should expose the conflicting signal families.");
+  arrayMatch(violations, "architecture_ambiguity_review", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.ambiguitySignals", ambiguityReviewArchitecture?.routingAssessment.explanationBreakdown.ambiguitySignals, /Top lane architecture beat .* by \d+ points/i, "Ambiguity explanation should expose the top-vs-runner-up score delta.");
+  arrayMatch(violations, "architecture_ambiguity_review", "routing_rationale_mismatch", "routingAssessment.rationale", ambiguityReviewArchitecture?.routingAssessment.rationale, /Signal disagreement requires review:/i, "Routing rationale should explicitly say when signal families disagree.");
+  arrayMatch(violations, "architecture_ambiguity_review", "routing_rationale_mismatch", "routingAssessment.rationale", ambiguityReviewArchitecture?.routingAssessment.rationale, /conflicted Architecture route needs the fuller structural record/i, "Routing rationale should explain why conflicted Architecture routes expand to split-case.");
+  match(violations, "architecture_ambiguity_review", "decision_state_mismatch", "decision.summary", ambiguityReviewArchitecture?.decision.summary, /needs_human_review.*must be reviewed explicitly before downstream adoption/i, "Decision summary should explain that the bounded route still requires explicit review before downstream adoption.");
+
+  const discoveryArchitectureBoundary = await processCase(
+    engine,
+    discoveryArchitectureBoundaryInput(),
+    "discovery_architecture_boundary",
+    "DirectiveEngine.processSource should succeed for a structural source that uses Discovery vocabulary.",
+    violations,
+  );
+  eq(violations, "discovery_architecture_boundary", "selected_lane_mismatch", "selectedLane.laneId", discoveryArchitectureBoundary?.selectedLane.laneId, "architecture", "Discovery-looking workflow vocabulary should not override a structural Architecture source.");
+  eq(violations, "discovery_architecture_boundary", "routing_signal_mismatch", "routingAssessment.confidence", discoveryArchitectureBoundary?.routingAssessment.confidence, "high", "Structural discovery-vs-architecture cases should score confidently toward Architecture after the overread correction.");
+  eq(violations, "discovery_architecture_boundary", "routing_signal_mismatch", "routingAssessment.recommendedRecordShape", discoveryArchitectureBoundary?.routingAssessment.recommendedRecordShape, "split_case", "High-confidence Architecture routes without an open gap should still expand into a split-case record instead of falling back to queue-only.");
+  eq(violations, "discovery_architecture_boundary", "routing_signal_mismatch", "routingAssessment.needsHumanReview", discoveryArchitectureBoundary?.routingAssessment.needsHumanReview, false, "High-confidence Architecture routes without signal conflict should not require extra human review only because no open gap matched.");
+  eq(violations, "discovery_architecture_boundary", "routing_signal_mismatch", "candidate.requiresHumanReview", discoveryArchitectureBoundary?.candidate.requiresHumanReview, false, "Candidate review state should stay aligned with the corrected no-gap Architecture routing policy.");
+  arrayMatch(violations, "discovery_architecture_boundary", "routing_rationale_mismatch", "routingAssessment.rationale", discoveryArchitectureBoundary?.routingAssessment.rationale, /Structural-source correction is present:/i, "Routing rationale should explain the structural discovery-overread correction.");
+  arrayMatch(violations, "discovery_architecture_boundary", "routing_rationale_mismatch", "routingAssessment.rationale", discoveryArchitectureBoundary?.routingAssessment.rationale, /strong Architecture signals justify a fuller structural record even without an open gap match/i, "Routing rationale should explain why split-case remains justified without an open gap.");
+  arrayMatch(violations, "discovery_architecture_boundary", "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.keywordSignals", discoveryArchitectureBoundary?.routingAssessment.explanationBreakdown.keywordSignals, /Structural-source correction is present:/i, "Keyword explanation should expose the structural discovery-overread correction.");
 
   const architectureProofCases = [
     {
@@ -452,11 +674,13 @@ async function validate(options: Options = {}): Promise<CheckResult> {
     );
     eq(violations, `architecture_replay:${proofCase.label}`, "selected_lane_mismatch", "selectedLane.laneId", replay?.selectedLane.laneId, "architecture", `${proofCase.label} should now route to Architecture instead of Runtime.`);
     eq(violations, `architecture_replay:${proofCase.label}`, "usefulness_level_mismatch", "candidate.usefulnessLevel", replay?.candidate.usefulnessLevel, "meta", `${proofCase.label} should now classify as meta-useful Engine pattern extraction.`);
-    eq(violations, `architecture_replay:${proofCase.label}`, "decision_state_mismatch", "decision.decisionState", replay?.decision.decisionState, "accept_for_architecture", `${proofCase.label} should now produce an Architecture adoption decision.`);
+    match(violations, `architecture_replay:${proofCase.label}`, "usefulness_rationale_mismatch", "analysis.usefulnessRationale", replay?.analysis.usefulnessRationale, /generated adaptation and improvement plans are Engine-self-improvement oriented/i, `${proofCase.label} should explain meta usefulness from the generated Architecture plans.`);
+    eq(violations, `architecture_replay:${proofCase.label}`, "decision_state_mismatch", "decision.decisionState", replay?.decision.decisionState, "needs_human_review", `${proofCase.label} should now surface the explicit human-review decision state because the route remains Architecture-oriented but still materially conflicted.`);
     eq(violations, `architecture_replay:${proofCase.label}`, "handoff_artifact_family_mismatch", "integrationProposal.handoffArtifactFamily", replay?.integrationProposal.handoffArtifactFamily, "architecture_adoption", `${proofCase.label} should now hand off through the Architecture adoption family.`);
     eq(violations, `architecture_replay:${proofCase.label}`, "proof_kind_mismatch", "proofPlan.proofKind", replay?.proofPlan.proofKind, "architecture_validation", `${proofCase.label} should now use the Architecture proof path.`);
     gt(violations, `architecture_replay:${proofCase.label}`, "routingAssessment.scoreBreakdown.patternExtractionSignal", replay?.routingAssessment.scoreBreakdown.patternExtractionSignal, 0, `${proofCase.label} should trigger the bounded pattern-extraction correction signal.`);
     arrayMatch(violations, `architecture_replay:${proofCase.label}`, "routing_rationale_mismatch", "routingAssessment.rationale", replay?.routingAssessment.rationale, /Pattern-extraction signal is present/i, `${proofCase.label} should explain the bounded Architecture correction in the routing rationale.`);
+    arrayMatch(violations, `architecture_replay:${proofCase.label}`, "routing_explanation_mismatch", "routingAssessment.explanationBreakdown.keywordSignals", replay?.routingAssessment.explanationBreakdown.keywordSignals, /Keyword-derived lane scores: discovery=\d+, architecture=\d+, runtime=\d+\./, `${proofCase.label} should expose a stable keyword score breakdown.`);
   }
 
   const discovery = await processCase(
@@ -468,6 +692,19 @@ async function validate(options: Options = {}): Promise<CheckResult> {
   );
   eq(violations, "discovery_control", "selected_lane_mismatch", "selectedLane.laneId", discovery?.selectedLane.laneId, "discovery", "The Discovery control source should still route to Discovery.");
   eq(violations, "discovery_control", "decision_state_mismatch", "decision.decisionState", discovery?.decision.decisionState, "hold_in_discovery", "Discovery control decision should still hold the case in Discovery.");
+
+  const lowConfidenceFallback = await processCase(
+    engine,
+    lowConfidenceFallbackInput(),
+    "low_confidence_fallback",
+    "DirectiveEngine.processSource should succeed for a weak structural note that has not earned lane ownership.",
+    violations,
+  );
+  eq(violations, "low_confidence_fallback", "selected_lane_mismatch", "selectedLane.laneId", lowConfidenceFallback?.selectedLane.laneId, "discovery", "Low-confidence no-gap notes should stay in Discovery instead of inheriting weak Architecture ownership.");
+  eq(violations, "low_confidence_fallback", "decision_state_mismatch", "decision.decisionState", lowConfidenceFallback?.decision.decisionState, "hold_in_discovery", "Low-confidence fallback cases should hold in Discovery.");
+  eq(violations, "low_confidence_fallback", "routing_signal_mismatch", "routingAssessment.confidence", lowConfidenceFallback?.routingAssessment.confidence, "low", "The fallback case should remain low-confidence.");
+  eq(violations, "low_confidence_fallback", "routing_signal_mismatch", "routingAssessment.recommendedRecordShape", lowConfidenceFallback?.routingAssessment.recommendedRecordShape, "queue_only", "Low-confidence fallback cases should remain queue-only.");
+  arrayMatch(violations, "low_confidence_fallback", "routing_rationale_mismatch", "routingAssessment.rationale", lowConfidenceFallback?.routingAssessment.rationale, /stays in Discovery instead of assigning early architecture ownership/i, "Routing rationale should explain the low-confidence fallback to Discovery.");
   eq(violations, "discovery_control", "integration_target_mismatch", "integrationProposal.integrationMode", discovery?.integrationProposal.integrationMode, "none", "Discovery control integration should keep the non-integration mode.");
   eq(violations, "discovery_control", "handoff_artifact_family_mismatch", "integrationProposal.handoffArtifactFamily", discovery?.integrationProposal.handoffArtifactFamily, "discovery_backlog", "Discovery control integration should still use the Discovery backlog family.");
   eq(violations, "discovery_control", "integration_action_mismatch", "integrationProposal.nextAction", discovery?.integrationProposal.nextAction, "Keep the candidate in Discovery until routing clarity improves.", "Discovery control integration should keep the default Discovery next action.");

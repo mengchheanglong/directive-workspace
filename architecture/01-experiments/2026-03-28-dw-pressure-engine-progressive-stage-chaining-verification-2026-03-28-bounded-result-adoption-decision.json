@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-stage-chaining-verification-2026-03-28-bounded-result.md",
+  "primary_evidence_path": "scripts/check-directive-engine-stage-chaining.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can keep the progressive Engine stage-chaining path real by proving it in a permanent focused check instead of relying on ad hoc inspection.",
+    "mechanism": "This DEEP bounded result opens one verification slice that exercises staged extraction, adaptation, improvement, proof, and integration through DirectiveEngine.processSource().",
+    "baseline_observation": "Before this DEEP case, the staged Engine path existed in code but only had ad hoc command-level verification.",
+    "expected_effect": "The repo check suite will permanently catch regressions in the progressive planning path without reopening Runtime or host work.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The staged Engine path is now valuable enough that it should have its own focused permanent verification slice.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

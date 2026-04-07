@@ -5,35 +5,53 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import unittest
+from html import escape as html_escape
+from urllib.error import HTTPError
 from unittest import mock
 from pathlib import Path
 
-from research_engine.acquisition import LiveHybridAcquisitionProvider, get_acquisition_provider
-from research_engine.cli import _extract_local_stop_term_suggestion
+from research_engine.acquisition import (
+    AcquisitionResult,
+    EvidenceGapFollowUpResult,
+    LiveHybridAcquisitionProvider,
+    get_acquisition_provider,
+)
+from research_engine.cli import _extract_local_stop_term_suggestion, _load_local_dotenv
 from research_engine.contracts import (
     validate_dw_discovery_packet,
     validate_dw_import_bundle,
     validate_source_intelligence_packet,
+)
+from research_engine.export import (
+    build_source_intelligence_packet,
+    build_dw_packet,
+    render_inspection_html,
+    render_recommendations_markdown,
 )
 from research_engine.fetch import fetch_documents
 from research_engine.live_extract import extract_visible_text
 from research_engine.models import (
     DiscoveryHit,
     MissionConstraints,
+    ProviderHealth,
     ResearchMission,
     SearchPlan,
     SearchQuery,
     SearchTrack,
     SourceDocument,
     SourceFact,
+    ResearchRecord,
     TrustPreferences,
 )
 from research_engine.normalize import (
     build_candidate_shells,
     build_source_type_trust_policy,
+    detect_actionable_evidence_gaps,
     normalize_evidence,
 )
+from research_engine.orchestrator import run_mission
 from research_engine.planning import build_search_plan
 from research_engine.score import score_candidates
 
@@ -183,6 +201,19 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertIn("freshness_signal", dw_packet["candidates"][0])
         self.assertIn("freshest_source_updated_at", dw_packet["candidates"][0])
         self.assertIn("freshest_source_age_days", dw_packet["candidates"][0])
+        self.assertIn("workflow_phase_labels", dw_packet["candidates"][0])
+        self.assertIn("provider_seam_summary", dw_packet["candidates"][0])
+        self.assertIn("workflow_boundary_shape_hint", dw_packet["candidates"][0])
+        self.assertIn("structural_signal_band", dw_packet["candidates"][0])
+        self.assertIn("structural_signal_summary", dw_packet["candidates"][0])
+        self.assertIn("recommended_lane_target", dw_packet["candidates"][0])
+        self.assertIn("lane_target_rationale", dw_packet["candidates"][0])
+        self.assertIn("workflow_phase_scores", dw_packet["candidates"][0])
+        self.assertIn("structural_extraction_recommendations", dw_packet["candidates"][0])
+        self.assertIn("structural_avoid_recommendations", dw_packet["candidates"][0])
+        self.assertIn("review_guidance_summary", dw_packet["candidates"][0])
+        self.assertIn("review_guidance_action", dw_packet["candidates"][0])
+        self.assertIn("review_guidance_stop_line", dw_packet["candidates"][0])
         self.assertIn("source_kind", dw_packet["candidates"][0])
         self.assertIn("initial_baggage_signals", dw_packet["candidates"][0])
         self.assertIn("capability_gap_hint", dw_packet["candidates"][0])
@@ -197,6 +228,30 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertNotIn("adoption_target_hint", dw_packet["candidates"][0])
         self.assertNotIn("usefulness_level_hint", dw_packet["candidates"][0])
         self.assertNotIn("routing_considerations", dw_packet["candidates"][0])
+        open_deep_research = next(
+            candidate
+            for candidate in dw_packet["candidates"]
+            if candidate["candidate_id"] == "open-deep-research"
+        )
+        self.assertIn("planning", open_deep_research["workflow_phase_labels"])
+        self.assertIn("discovery", open_deep_research["workflow_phase_labels"])
+        self.assertIn("compression", open_deep_research["workflow_phase_labels"])
+        self.assertIn("reporting", open_deep_research["workflow_phase_labels"])
+        self.assertEqual(
+            open_deep_research["provider_seam_summary"],
+            "Reusable provider seams for bounded research runs.",
+        )
+        self.assertEqual(
+            open_deep_research["workflow_boundary_shape_hint"],
+            "bounded_protocol",
+        )
+        self.assertEqual(open_deep_research["recommended_lane_target"], "architecture")
+        self.assertIn("planning", open_deep_research["workflow_phase_scores"])
+        self.assertIn("Extract the explicit phase model", open_deep_research["structural_extraction_recommendations"][0])
+        self.assertTrue(
+            any("LangGraph-specific orchestration assumptions" in item for item in open_deep_research["structural_avoid_recommendations"])
+        )
+        self.assertIn("Extractive structural candidate", open_deep_research["review_guidance_summary"])
         self.assertEqual(
             dw_packet["holds_and_rejections"][0]["discovery_signal_band"],
             "hold_or_reject",
@@ -218,6 +273,10 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertIn("signal_scoring", source_intelligence_packet)
         self.assertIn("strong_signals", source_intelligence_packet)
         self.assertIn("weak_signals", source_intelligence_packet)
+        self.assertIn("lane_target_signals", source_intelligence_packet)
+        self.assertIn("structural_recommendations", source_intelligence_packet)
+        self.assertIn("review_guidance", source_intelligence_packet)
+        self.assertIn("review_queue", source_intelligence_packet)
         self.assertIn("open_uncertainties", source_intelligence_packet)
         self.assertIn("machine_friendly_research_packet", source_intelligence_packet)
         self.assertEqual(
@@ -229,6 +288,65 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertIn("PaperQA2", strong_signal_names)
         self.assertIn("STORM / Co-STORM", strong_signal_names)
         self.assertIn("Vane", weak_signal_names)
+        self.assertIn("structural_signals", source_intelligence_packet)
+        structural_signal_names = {
+            item["name"] for item in source_intelligence_packet["structural_signals"]
+        }
+        self.assertIn("Open Deep Research", structural_signal_names)
+        lane_target_map = {
+            item["name"]: item["target"] for item in source_intelligence_packet["lane_target_signals"]
+        }
+        self.assertEqual(lane_target_map["Open Deep Research"], "architecture")
+        recommendation_map = {
+            item["name"]: item for item in source_intelligence_packet["structural_recommendations"]
+        }
+        self.assertTrue(
+            any(
+                "Extract the provider seam" in entry
+                for entry in recommendation_map["Open Deep Research"]["extract"]
+            )
+        )
+        review_guidance_map = {
+            item["name"]: item for item in source_intelligence_packet["review_guidance"]
+        }
+        self.assertIn(
+            "Extractive structural candidate",
+            review_guidance_map["Open Deep Research"]["summary"],
+        )
+        review_queue_map = {
+            item["name"]: item for item in source_intelligence_packet["review_queue"]
+        }
+        self.assertIn("PaperQA2", review_queue_map)
+        self.assertIn("priority_score", review_queue_map["PaperQA2"])
+        self.assertIn("priority_band", review_queue_map["PaperQA2"])
+        self.assertIn("rationale", review_queue_map["PaperQA2"])
+        self.assertIn("action", review_queue_map["PaperQA2"])
+        self.assertIn("stop_line", review_queue_map["PaperQA2"])
+        self.assertIn("uncertainty_count", review_queue_map["PaperQA2"])
+        self.assertIsInstance(review_queue_map["PaperQA2"]["priority_score"], int)
+        self.assertIn(review_queue_map["PaperQA2"]["priority_band"], {"high", "medium", "low"})
+        queue_scores = [item["priority_score"] for item in source_intelligence_packet["review_queue"]]
+        self.assertEqual(queue_scores, sorted(queue_scores, reverse=True))
+        self.assertIn(
+            "structural_signals",
+            source_intelligence_packet["machine_friendly_research_packet"],
+        )
+        self.assertIn(
+            "lane_target_signals",
+            source_intelligence_packet["machine_friendly_research_packet"],
+        )
+        self.assertIn(
+            "structural_recommendations",
+            source_intelligence_packet["machine_friendly_research_packet"],
+        )
+        self.assertIn(
+            "review_guidance",
+            source_intelligence_packet["machine_friendly_research_packet"],
+        )
+        self.assertIn(
+            "review_queue",
+            source_intelligence_packet["machine_friendly_research_packet"],
+        )
 
         import_bundle = json.loads((output_dir / "dw_import_bundle.json").read_text(encoding="utf-8"))
         validate_dw_import_bundle(import_bundle)
@@ -246,26 +364,152 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertIn("4. SIGNAL SCORING", recommendations)
         self.assertIn("5. STRONG SIGNALS", recommendations)
         self.assertIn("6. WEAK / NOISY SIGNALS", recommendations)
-        self.assertIn("7. OPEN UNCERTAINTIES", recommendations)
-        self.assertIn("8. MACHINE-FRIENDLY RESEARCH PACKET", recommendations)
+        self.assertIn("7. STRUCTURAL RECOMMENDATIONS", recommendations)
+        self.assertIn("8. REVIEW GUIDANCE", recommendations)
+        self.assertIn("9. REVIEW QUEUE", recommendations)
+        self.assertIn("10. OPEN UNCERTAINTIES", recommendations)
+        self.assertIn("11. MACHINE-FRIENDLY RESEARCH PACKET", recommendations)
         self.assertIn("known baseline: Vane, GPT Researcher, Open Deep Research", recommendations)
         self.assertIn("PaperQA2", recommendations)
+        self.assertIn("recommended lane target:", recommendations)
+        self.assertIn("review guidance summary:", recommendations)
+        self.assertIn("priority=", recommendations)
+        self.assertIn("uncertainties=", recommendations)
 
         inspection = (output_dir / "inspection.html").read_text(encoding="utf-8")
         self.assertIn("Research Engine Inspection", inspection)
         self.assertIn("Run Snapshot", inspection)
+        self.assertIn("Acquisition notes", inspection)
         self.assertIn("Candidates", inspection)
         self.assertIn("Provider Health", inspection)
+        self.assertIn("Source-Intelligence Review Queue", inspection)
+        self.assertIn("Open Uncertainties", inspection)
         self.assertIn("Summary / Notes", inspection)
         self.assertIn("paperqa2", inspection)
         self.assertIn("source_intelligence_packet.json", inspection)
         self.assertIn("dw_import_bundle.json", inspection)
         self.assertIn("candidates-filter", inspection)
         self.assertIn("providers-filter", inspection)
+        self.assertIn("review-queue-filter", inspection)
         self.assertIn("score-desc", inspection)
+        top_review_entry = source_intelligence_packet["review_queue"][0]
+        self.assertIn(html_escape(top_review_entry["name"]), inspection)
+        self.assertIn(html_escape(top_review_entry["stop_line"]), inspection)
 
         shutil.rmtree(output_dir, ignore_errors=True)
         shutil.rmtree(temp_root, ignore_errors=True)
+
+    def test_inspection_review_queue_empty_boundary(self) -> None:
+        mission = ResearchMission(objective="Boundary coverage for review queue rendering.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset=mission.planning_preset,
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={},
+            selected_acquisition_mode="catalog",
+            tracks=[],
+            queries=[],
+            planning_notes=[],
+        )
+        record = ResearchRecord(
+            mission=mission,
+            plan=plan,
+            trust_policy={},
+            acquisition_notes=[],
+            provider_health=[],
+            discovery_hits=[],
+            source_documents=[],
+            evidence_bundle=[],
+            candidates=[],
+            rejections=[],
+            dw_discovery_packet=build_dw_packet(mission, [], [], []),
+        )
+
+        inspection = render_inspection_html(record)
+        self.assertIn("Source-Intelligence Review Queue", inspection)
+        self.assertIn("Open Uncertainties", inspection)
+        self.assertIn("none in the current run", inspection)
+
+        recommendations = render_recommendations_markdown(record)
+        self.assertIn("9. REVIEW QUEUE", recommendations)
+        self.assertIn("10. OPEN UNCERTAINTIES", recommendations)
+        self.assertIn("11. MACHINE-FRIENDLY RESEARCH PACKET", recommendations)
+        self.assertIn("- none in the current run", recommendations)
+
+    def test_source_intelligence_open_uncertainties_include_strict_acquisition_health_context(self) -> None:
+        mission = ResearchMission(objective="Boundary coverage for strict acquisition uncertainty propagation.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset=mission.planning_preset,
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={},
+            selected_acquisition_mode="local-first",
+            tracks=[],
+            queries=[],
+            planning_notes=[],
+        )
+        record = ResearchRecord(
+            mission=mission,
+            plan=plan,
+            trust_policy={},
+            acquisition_notes=[
+                "Local corpus directory had no files and strict local-first mode prevented catalog fallback."
+            ],
+            provider_health=[
+                ProviderHealth(
+                    provider="local-corpus",
+                    discovery_queries=1,
+                    discovery_hits=0,
+                    fetch_attempts=0,
+                    fetch_successes=0,
+                    fetch_failures=0,
+                    fallback_used=False,
+                    status="degraded",
+                    reason_codes=["local-corpus-empty", "strict-no-fallback"],
+                    status_summary=(
+                        "No local corpus files were available and strict local-first mode prevented fallback."
+                    ),
+                    notes=["Strict local-first mode active."],
+                )
+            ],
+            discovery_hits=[],
+            source_documents=[],
+            evidence_bundle=[],
+            candidates=[],
+            rejections=[],
+            dw_discovery_packet=build_dw_packet(mission, [], [], []),
+        )
+
+        source_intelligence_packet = build_source_intelligence_packet(record)
+        self.assertTrue(
+            any(
+                "Acquisition health pressure:" in note
+                for note in source_intelligence_packet["open_uncertainties"]
+            )
+        )
+        self.assertTrue(
+            any(
+                "strict no-fallback" in note.lower()
+                for note in source_intelligence_packet["open_uncertainties"]
+            )
+        )
+        machine_packet = source_intelligence_packet["machine_friendly_research_packet"]
+        self.assertIn("acquisition_health_uncertainties", machine_packet)
+        self.assertTrue(machine_packet["acquisition_health_uncertainties"])
+
+        recommendations = render_recommendations_markdown(record)
+        self.assertIn("Acquisition health pressure:", recommendations)
+        self.assertIn("strict no-fallback", recommendations.lower())
+
+        inspection = render_inspection_html(record)
+        self.assertIn("Acquisition health pressure:", inspection)
+        self.assertIn("strict no-fallback", inspection.lower())
 
     def test_codex_session_prepares_and_resumes(self) -> None:
         temp_root = ROOT / ".tmp"
@@ -884,6 +1128,28 @@ class ResearchEngineRunTest(unittest.TestCase):
             )
         )
 
+    def test_cli_loads_local_dotenv_without_overriding_existing_env(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            dotenv_path = Path(temp_dir) / ".env"
+            dotenv_path.write_text(
+                "\n".join(
+                    [
+                        "# local-only provider keys",
+                        "RESEARCH_ENGINE_TAVILY_API_KEY=dotenv-tavily",
+                        "RESEARCH_ENGINE_EXA_API_KEY=dotenv-exa",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            with mock.patch.dict(
+                os.environ,
+                {"RESEARCH_ENGINE_EXA_API_KEY": "existing-exa"},
+                clear=False,
+            ):
+                _load_local_dotenv(dotenv_path)
+                self.assertEqual(os.environ.get("RESEARCH_ENGINE_TAVILY_API_KEY"), "dotenv-tavily")
+                self.assertEqual(os.environ.get("RESEARCH_ENGINE_EXA_API_KEY"), "existing-exa")
+
     def test_normalization_extracts_source_age_and_candidate_freshness(self) -> None:
         mission = ResearchMission(objective="Find reusable research workflow systems.")
         document = SourceDocument(
@@ -1127,11 +1393,79 @@ class ResearchEngineRunTest(unittest.TestCase):
         )
         self.assertEqual(
             plan.track_provider_preferences["github-repos"],
-            ["github", "gitlab", "web"],
+            ["github", "gitlab", "exa", "tavily", "firecrawl", "web"],
         )
         self.assertTrue(
             any(
                 "Applied provider preference for official-docs: github." == note
+                for note in plan.planning_notes
+            )
+        )
+
+    def test_query_planning_adds_mission_diversified_queries_when_budget_allows(self) -> None:
+        mission = ResearchMission(
+            objective=(
+                "Find reusable research workflow systems with provenance attestation, "
+                "verification envelopes, and evidence lineage traceability."
+            ),
+            planning_preset="balanced-discovery",
+            constraints=MissionConstraints(max_queries=8),
+        )
+
+        plan = build_search_plan(mission)
+        diversified_queries = [query for query in plan.queries if "-mission" in query.query_id]
+        self.assertEqual(len(plan.queries), 8)
+        self.assertTrue(diversified_queries)
+        self.assertTrue(any("provenance" in query.text for query in diversified_queries))
+        self.assertTrue(
+            any(
+                "Added mission-diversified query for official-docs:" in note
+                for note in plan.planning_notes
+            )
+        )
+
+    def test_query_planning_mission_diversification_respects_saturated_budget(self) -> None:
+        mission = ResearchMission(
+            objective=(
+                "Find reusable research workflow systems with provenance attestation, "
+                "verification envelopes, and evidence lineage traceability."
+            ),
+            planning_preset="balanced-discovery",
+            constraints=MissionConstraints(max_queries=6),
+        )
+
+        plan = build_search_plan(mission)
+        self.assertEqual(len(plan.queries), 6)
+        self.assertFalse(any("-mission" in query.query_id for query in plan.queries))
+        self.assertTrue(
+            any(
+                "Mission diversification skipped: query budget already saturated." == note
+                for note in plan.planning_notes
+            )
+        )
+
+    def test_query_planning_mission_diversification_notes_match_budgeted_queries(self) -> None:
+        mission = ResearchMission(
+            objective=(
+                "Find reusable research workflow systems with provenance attestation, "
+                "verification envelopes, and evidence lineage traceability."
+            ),
+            planning_preset="balanced-discovery",
+            constraints=MissionConstraints(max_queries=7),
+        )
+
+        plan = build_search_plan(mission)
+        diversified_queries = [query for query in plan.queries if "-mission" in query.query_id]
+        added_notes = [
+            note
+            for note in plan.planning_notes
+            if note.startswith("Added mission-diversified query for ")
+        ]
+        self.assertEqual(len(plan.queries), 7)
+        self.assertEqual(len(added_notes), len(diversified_queries))
+        self.assertTrue(
+            any(
+                "Mission diversification dropped 1 query(ies) due to query budget." == note
                 for note in plan.planning_notes
             )
         )
@@ -1194,6 +1528,207 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertEqual(first_duplicate.duplicate_evidence_ids, ["repo-example-clustered-e2"])
         contradictory_item = next(item for item in evidence if item.evidence_id == "repo-example-clustered-e3")
         self.assertEqual(contradictory_item.contradiction_evidence_ids, ["repo-example-clustered-e4"])
+
+    def test_detect_actionable_evidence_gaps_identifies_missing_classes(self) -> None:
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        document = SourceDocument(
+            candidate_id="candidate-gap-a",
+            source_url="https://blog.example.com/candidate-gap-a",
+            source_type="blog-post",
+            title="candidate-gap-a",
+            summary="Blog summary without primary-source or maintenance coverage.",
+            provider="web-live",
+            track_id="comparisons",
+            fetched_at="2026-04-01T00:00:00+00:00",
+            facts=[
+                SourceFact(
+                    fact_type="architecture",
+                    confidence="medium",
+                    excerpt="Architecture overview only.",
+                    notes=[],
+                )
+            ],
+        )
+
+        evidence = normalize_evidence(
+            [document],
+            trust_policy=build_source_type_trust_policy(mission),
+        )
+        candidates = build_candidate_shells(evidence)
+        directives = detect_actionable_evidence_gaps(candidates, evidence, max_directives=3)
+
+        self.assertEqual(len(directives), 1)
+        gaps = set(directives[0]["gaps"])
+        self.assertIn("missing-primary-source-evidence", gaps)
+        self.assertIn("missing-technical-facts", gaps)
+        self.assertIn("missing-maintenance-freshness", gaps)
+        self.assertIn("missing-comparative-evidence", gaps)
+
+    def test_run_mission_executes_single_evidence_gap_follow_up_pass(self) -> None:
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset="balanced-discovery",
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={"official-docs": ["web"]},
+            selected_acquisition_mode="live-hybrid",
+            tracks=[
+                SearchTrack(
+                    track_id="official-docs",
+                    name="Official Docs",
+                    intent="Find candidate references.",
+                    priority=1,
+                    provider_hint="live-hybrid",
+                )
+            ],
+            queries=[
+                SearchQuery(
+                    query_id="q1",
+                    track_id="official-docs",
+                    query_type="official-docs",
+                    text="candidate gap evidence",
+                    rationale="Bounded test query.",
+                )
+            ],
+            planning_notes=[],
+        )
+        initial_hit = DiscoveryHit(
+            provider="web-live",
+            track_id="official-docs",
+            query="candidate gap evidence",
+            url="https://blog.example.com/candidate-gap-a",
+            title="candidate-gap-a",
+            snippet="Blog summary without strong primary evidence.",
+            hit_type="doc",
+            candidate_id="candidate-gap-a",
+            matched_terms=["candidate", "evidence"],
+        )
+        initial_document = SourceDocument(
+            candidate_id="candidate-gap-a",
+            source_url="https://blog.example.com/candidate-gap-a",
+            source_type="blog-post",
+            title="candidate-gap-a",
+            summary="Blog summary without strong primary evidence.",
+            provider="web-live",
+            track_id="official-docs",
+            fetched_at="2026-04-01T00:00:00+00:00",
+            facts=[
+                SourceFact(
+                    fact_type="architecture",
+                    confidence="medium",
+                    excerpt="Architecture overview only.",
+                    notes=[],
+                )
+            ],
+        )
+        follow_up_hit = DiscoveryHit(
+            provider="github-live",
+            track_id="official-docs",
+            query="candidate-gap-a official docs repository github gitlab readme",
+            url="https://github.com/example/candidate-gap-a",
+            title="example/candidate-gap-a",
+            snippet="Repository with workflow, integration, and maintenance signals.",
+            hit_type="repo",
+            candidate_id="candidate-gap-a",
+            matched_terms=["repository", "workflow"],
+        )
+        follow_up_document = SourceDocument(
+            candidate_id="candidate-gap-a",
+            source_url="https://github.com/example/candidate-gap-a",
+            source_type="github-repo",
+            title="example/candidate-gap-a",
+            summary="Repository follow-up evidence.",
+            provider="github-live",
+            track_id="official-docs",
+            fetched_at="2026-04-01T00:00:00+00:00",
+            facts=[
+                SourceFact("workflow", "high", "Workflow stages are explicit and bounded.", []),
+                SourceFact("integration", "high", "Integration uses provider adapters.", []),
+                SourceFact(
+                    "maintenance",
+                    "high",
+                    "Stars=12, forks=2, open_issues=1, last_push=2026-03-31T00:00:00+00:00.",
+                    [],
+                ),
+            ],
+        )
+
+        class _FakeGapProvider:
+            def __init__(self) -> None:
+                self.follow_up_calls = 0
+                self.received_gap_directives: list[dict[str, object]] = []
+
+            def acquire(self, plan: SearchPlan, mission: ResearchMission, output_dir: Path | None = None) -> AcquisitionResult:
+                del plan, mission, output_dir
+                return AcquisitionResult(
+                    discovery_hits=[initial_hit],
+                    source_documents=[initial_document],
+                    notes=["Initial acquisition for bounded gap-follow-up test."],
+                    provider_health=[
+                        ProviderHealth(
+                            provider="live-hybrid",
+                            discovery_queries=1,
+                            discovery_hits=1,
+                            fetch_attempts=1,
+                            fetch_successes=1,
+                            fetch_failures=0,
+                            fallback_used=False,
+                        )
+                    ],
+                )
+
+            def acquire_evidence_gap_follow_up(
+                self,
+                *,
+                plan: SearchPlan,
+                mission: ResearchMission,
+                gap_directives: list[dict[str, object]],
+                existing_documents: list[SourceDocument],
+            ) -> EvidenceGapFollowUpResult:
+                del plan, mission, existing_documents
+                self.follow_up_calls += 1
+                self.received_gap_directives = gap_directives
+                return EvidenceGapFollowUpResult(
+                    discovery_hits=[follow_up_hit],
+                    source_documents=[follow_up_document],
+                    notes=["Evidence-gap follow-up pass engaged in bounded test."],
+                    provider_health=[
+                        ProviderHealth(
+                            provider="live-hybrid-follow-up",
+                            discovery_queries=1,
+                            discovery_hits=1,
+                            fetch_attempts=1,
+                            fetch_successes=1,
+                            fetch_failures=0,
+                            fallback_used=False,
+                            notes=["Follow-up provider telemetry preserved."],
+                        )
+                    ],
+                )
+
+        provider = _FakeGapProvider()
+        with (
+            mock.patch("research_engine.orchestrator.build_search_plan", return_value=plan),
+            mock.patch("research_engine.orchestrator.get_acquisition_provider", return_value=provider),
+        ):
+            record = run_mission(mission, output_dir=None, acquisition_mode="live-hybrid")
+
+        self.assertEqual(provider.follow_up_calls, 1)
+        self.assertGreaterEqual(len(provider.received_gap_directives), 1)
+        self.assertEqual(len(record.source_documents), 2)
+        self.assertTrue(any("Evidence-gap scan found" in note for note in record.acquisition_notes))
+        self.assertTrue(any("Evidence-gap follow-up pass engaged" in note for note in record.acquisition_notes))
+        self.assertTrue(any(health.provider == "live-hybrid-follow-up" for health in record.provider_health))
+        self.assertTrue(
+            any(
+                item.trust_signal == "primary"
+                for item in record.evidence_bundle
+                if item.candidate_id == "candidate-gap-a"
+            )
+        )
 
     def test_scoring_applies_recency_decay_to_maintenance_health(self) -> None:
         mission = ResearchMission(objective="Find reusable research workflow systems.")
@@ -1372,6 +1907,80 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertTrue(any("Collapsed 4 evidence items into 3 clusters." in line for line in duplicates.scorecard.rationale))
         self.assertTrue(any("Contradiction flags: workflow-contradiction." in line for line in contradiction.scorecard.rationale))
 
+    def test_scoring_penalizes_fallback_majority_evidence(self) -> None:
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        direct_document = SourceDocument(
+            candidate_id="repo-example-direct-evidence",
+            source_url="https://github.com/example/direct",
+            source_type="github-repo",
+            title="example/direct",
+            summary="Repository summary.",
+            provider="github-live",
+            track_id="github-repos",
+            fetched_at="2026-04-01T00:00:00+00:00",
+            facts=[
+                SourceFact("architecture", "high", "Uses explicit phase boundaries.", [], "direct"),
+                SourceFact("workflow", "high", "Separates acquisition from scoring.", [], "direct"),
+                SourceFact("integration", "medium", "Supports provider adapters.", [], "direct"),
+                SourceFact(
+                    "maintenance",
+                    "high",
+                    "Stars=12, forks=2, open_issues=1, last_push=2026-03-30T00:00:00+00:00.",
+                    [],
+                    "derived",
+                ),
+            ],
+        )
+        fallback_document = SourceDocument(
+            candidate_id="repo-example-fallback-evidence",
+            source_url="https://github.com/example/fallback",
+            source_type="github-repo",
+            title="example/fallback",
+            summary="Repository summary.",
+            provider="github-live",
+            track_id="github-repos",
+            fetched_at="2026-04-01T00:00:00+00:00",
+            facts=[
+                SourceFact("architecture", "medium", "Repository summary.", [], "fallback"),
+                SourceFact("workflow", "medium", "Repository summary.", [], "fallback"),
+                SourceFact("integration", "medium", "Repository summary.", [], "fallback"),
+                SourceFact(
+                    "maintenance",
+                    "high",
+                    "Stars=12, forks=2, open_issues=1, last_push=2026-03-30T00:00:00+00:00.",
+                    [],
+                    "derived",
+                ),
+            ],
+        )
+
+        evidence = normalize_evidence(
+            [direct_document, fallback_document],
+            trust_policy=build_source_type_trust_policy(mission),
+        )
+        candidates = build_candidate_shells(evidence)
+        accepted, rejected = score_candidates(candidates, evidence, mission)
+        scored = {candidate.candidate_id: candidate for candidate in accepted}
+        scored.update(
+            {
+                rejection.candidate_id: next(
+                    candidate for candidate in candidates if candidate.candidate_id == rejection.candidate_id
+                )
+                for rejection in rejected
+            }
+        )
+
+        direct = scored["repo-example-direct-evidence"]
+        fallback = scored["repo-example-fallback-evidence"]
+        self.assertGreater(direct.scorecard.total, fallback.scorecard.total)
+        self.assertEqual(direct.scorecard.breakdown["extraction_fidelity_penalty"], 0)
+        self.assertLess(fallback.scorecard.breakdown["extraction_fidelity_penalty"], 0)
+        self.assertIn("fallback-evidence-majority", fallback.rejection_flags)
+        self.assertIn("fallback=3", fallback.extraction_fidelity_summary)
+        self.assertTrue(
+            any("Fallback-derived evidence penalty applied" in line for line in fallback.scorecard.rationale)
+        )
+
     def test_live_hybrid_request_retry_telemetry_records_timeout_and_backoff(self) -> None:
         provider = LiveHybridAcquisitionProvider()
         provider._reset_request_telemetry()
@@ -1446,6 +2055,101 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertEqual(payload, [])
         self.assertEqual(captured_headers.get("private-token"), "gl-test-token")
 
+    def test_post_json_uses_exa_auth_header_when_token_present(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        captured_headers: dict[str, str] = {}
+
+        def fake_read_bytes(request):
+            nonlocal captured_headers
+            captured_headers = {key.lower(): value for key, value in request.header_items()}
+            return b'{"results": []}'
+
+        with (
+            mock.patch.dict(os.environ, {"RESEARCH_ENGINE_EXA_API_KEY": "exa-test-key"}, clear=False),
+            mock.patch.object(provider, "_read_bytes", side_effect=fake_read_bytes),
+        ):
+            payload = provider._post_json(
+                "https://api.exa.ai/search",
+                provider_key="exa-discovery",
+                body={"query": "research workflow"},
+            )
+
+        self.assertEqual(payload, {"results": []})
+        self.assertEqual(captured_headers.get("x-api-key"), "exa-test-key")
+
+    def test_post_json_uses_tavily_auth_header_when_token_present(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        captured_headers: dict[str, str] = {}
+
+        def fake_read_bytes(request):
+            nonlocal captured_headers
+            captured_headers = {key.lower(): value for key, value in request.header_items()}
+            return b'{"results": []}'
+
+        with (
+            mock.patch.dict(os.environ, {"RESEARCH_ENGINE_TAVILY_API_KEY": "tv-test-key"}, clear=False),
+            mock.patch.object(provider, "_read_bytes", side_effect=fake_read_bytes),
+        ):
+            payload = provider._post_json(
+                "https://api.tavily.com/search",
+                provider_key="tavily-discovery",
+                body={"query": "research workflow"},
+            )
+
+        self.assertEqual(payload, {"results": []})
+        self.assertEqual(captured_headers.get("authorization"), "Bearer tv-test-key")
+
+    def test_post_json_uses_firecrawl_auth_header_when_token_present(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        captured_headers: dict[str, str] = {}
+
+        def fake_read_bytes(request):
+            nonlocal captured_headers
+            captured_headers = {key.lower(): value for key, value in request.header_items()}
+            return b'{"data": {"markdown": "# ok"}}'
+
+        with (
+            mock.patch.dict(os.environ, {"RESEARCH_ENGINE_FIRECRAWL_API_KEY": "fc-test-key"}, clear=False),
+            mock.patch.object(provider, "_read_bytes", side_effect=fake_read_bytes),
+        ):
+            payload = provider._post_json(
+                "https://api.firecrawl.dev/v1/scrape",
+                provider_key="firecrawl-fetch",
+                body={"url": "https://example.com"},
+            )
+
+        self.assertEqual(payload, {"data": {"markdown": "# ok"}})
+        self.assertEqual(captured_headers.get("authorization"), "Bearer fc-test-key")
+
+    def test_read_json_closes_http_error_response_handle_on_failure(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        response_fp = tempfile.TemporaryFile()
+        response_fp.write(b"forbidden")
+        response_fp.seek(0)
+        error = HTTPError(
+            url="https://api.github.com/search/repositories?q=research-engine",
+            code=403,
+            msg="Forbidden",
+            hdrs=None,
+            fp=response_fp,
+        )
+
+        try:
+            with (
+                mock.patch("research_engine.acquisition.sleep"),
+                mock.patch.object(provider, "_read_bytes", side_effect=error),
+            ):
+                with self.assertRaises(HTTPError):
+                    provider._read_json(
+                        "https://api.github.com/search/repositories?q=research-engine",
+                        provider_key="github-discovery",
+                        github=True,
+                    )
+            self.assertTrue(response_fp.closed)
+        finally:
+            if not response_fp.closed:
+                response_fp.close()
+
     def test_live_hybrid_notes_include_detected_auth_tokens(self) -> None:
         mission = ResearchMission(objective="Find reusable research workflow systems.")
         plan = SearchPlan(
@@ -1485,17 +2189,26 @@ class ResearchEngineRunTest(unittest.TestCase):
                 {
                     "RESEARCH_ENGINE_GITHUB_TOKEN": "gh-test-token",
                     "RESEARCH_ENGINE_GITLAB_TOKEN": "gl-test-token",
+                    "RESEARCH_ENGINE_TAVILY_API_KEY": "tv-test-key",
+                    "RESEARCH_ENGINE_EXA_API_KEY": "exa-test-key",
+                    "RESEARCH_ENGINE_FIRECRAWL_API_KEY": "fc-test-key",
                 },
                 clear=False,
             ),
             mock.patch.object(provider, "_github_hits_for_query", return_value=[]),
             mock.patch.object(provider, "_gitlab_hits_for_query", return_value=[]),
+            mock.patch.object(provider, "_tavily_hits_for_query", return_value=[]),
+            mock.patch.object(provider, "_exa_hits_for_query", return_value=[]),
+            mock.patch.object(provider, "_firecrawl_hits_for_query", return_value=[]),
             mock.patch.object(provider, "_web_hits_for_query", return_value=[]),
         ):
             result = provider.acquire(plan, mission)
 
         self.assertTrue(any("GitHub API token detected" in note for note in result.notes))
         self.assertTrue(any("GitLab token detected" in note for note in result.notes))
+        self.assertTrue(any("Tavily API key detected" in note for note in result.notes))
+        self.assertTrue(any("Exa API key detected" in note for note in result.notes))
+        self.assertTrue(any("Firecrawl API key detected" in note for note in result.notes))
 
     def test_live_hybrid_provider_health_reports_retry_timeout_telemetry(self) -> None:
         mission = ResearchMission(objective="Find reusable research workflow systems.")
@@ -1668,6 +2381,979 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertEqual(gitlab_discovery.discovery_queries, 1)
         self.assertTrue(any(health.provider == "catalog-fallback" for health in result.provider_health))
 
+    def test_live_hybrid_supports_optional_provider_preferences_when_enabled(self) -> None:
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset="balanced-discovery",
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={"github-repos": ["exa", "tavily", "firecrawl"]},
+            selected_acquisition_mode="live-hybrid",
+            tracks=[
+                SearchTrack(
+                    track_id="github-repos",
+                    name="GitHub Repos",
+                    intent="Find candidate repositories.",
+                    priority=1,
+                    provider_hint="live-hybrid",
+                )
+            ],
+            queries=[
+                SearchQuery(
+                    query_id="q1",
+                    track_id="github-repos",
+                    query_type="repo-search",
+                    text="reusable research workflow",
+                    rationale="Bounded optional provider test query.",
+                )
+            ],
+            planning_notes=[],
+        )
+        provider = LiveHybridAcquisitionProvider()
+
+        with (
+            mock.patch.dict(
+                os.environ,
+                {
+                    "RESEARCH_ENGINE_TAVILY_API_KEY": "tv-test-key",
+                    "RESEARCH_ENGINE_EXA_API_KEY": "exa-test-key",
+                    "RESEARCH_ENGINE_FIRECRAWL_API_KEY": "fc-test-key",
+                },
+                clear=False,
+            ),
+            mock.patch.object(provider, "_exa_hits_for_query", return_value=[]) as exa_query,
+            mock.patch.object(provider, "_tavily_hits_for_query", return_value=[]) as tavily_query,
+            mock.patch.object(provider, "_firecrawl_hits_for_query", return_value=[]) as firecrawl_query,
+            mock.patch.object(provider, "_web_hits_for_query", return_value=[]) as web_query,
+        ):
+            result = provider.acquire(plan, mission)
+
+        self.assertEqual(exa_query.call_count, 1)
+        self.assertEqual(tavily_query.call_count, 1)
+        self.assertEqual(firecrawl_query.call_count, 1)
+        self.assertEqual(web_query.call_count, 0)
+        self.assertEqual(
+            next(health for health in result.provider_health if health.provider == "exa-discovery").discovery_queries,
+            1,
+        )
+        self.assertEqual(
+            next(health for health in result.provider_health if health.provider == "tavily-discovery").discovery_queries,
+            1,
+        )
+        self.assertEqual(
+            next(health for health in result.provider_health if health.provider == "firecrawl-discovery").discovery_queries,
+            1,
+        )
+
+    def test_tavily_hits_for_query_maps_search_results(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "results": [
+                {
+                    "url": "https://docs.example.com/api/reference",
+                    "title": "Example API Reference",
+                    "content": "Official API reference for a reusable research workflow.",
+                }
+            ]
+        }
+
+        with (
+            mock.patch.dict(os.environ, {"RESEARCH_ENGINE_TAVILY_API_KEY": "tv-test-key"}, clear=False),
+            mock.patch.object(provider, "_post_json", return_value=payload),
+        ):
+            hits = provider._tavily_hits_for_query(
+                "reusable research workflow",
+                "official-docs",
+                3,
+                set(),
+            )
+
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].provider, "tavily-live")
+        self.assertEqual(hits[0].hit_type, "doc")
+        self.assertEqual(hits[0].url, "https://docs.example.com/api/reference")
+
+    def test_exa_hits_for_query_maps_search_results(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "results": [
+                {
+                    "url": "https://github.com/example/research-engine",
+                    "title": "example/research-engine",
+                    "summary": "Composable research workflow repository with bounded provider seams.",
+                }
+            ]
+        }
+
+        with (
+            mock.patch.dict(os.environ, {"RESEARCH_ENGINE_EXA_API_KEY": "exa-test-key"}, clear=False),
+            mock.patch.object(provider, "_post_json", return_value=payload),
+        ):
+            hits = provider._exa_hits_for_query(
+                "reusable research workflow",
+                "github-repos",
+                3,
+                set(),
+            )
+
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].provider, "exa-live")
+        self.assertEqual(hits[0].hit_type, "repo")
+        self.assertEqual(hits[0].candidate_id, "repo-example-research-engine")
+
+    def test_read_web_text_prefers_firecrawl_scrape_when_token_present(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+
+        with (
+            mock.patch.dict(os.environ, {"RESEARCH_ENGINE_FIRECRAWL_API_KEY": "fc-test-key"}, clear=False),
+            mock.patch.object(
+                provider,
+                "_post_json",
+                return_value={"data": {"markdown": "# Firecrawl summary\nUseful research workflow details."}},
+            ) as post_json,
+            mock.patch.object(provider, "_read_text", side_effect=AssertionError("raw web fetch should not run")),
+        ):
+            text = provider._read_web_text("https://docs.example.com/api/reference")
+
+        self.assertIn("Firecrawl summary", text)
+        self.assertEqual(provider._fetch_backend_attempts["firecrawl-fetch"], 1)
+        self.assertEqual(provider._fetch_backend_successes["firecrawl-fetch"], 1)
+        post_json.assert_called_once()
+
+    def test_live_web_hits_include_abstract_results_and_related_topics(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "Heading": "Example Docs",
+            "AbstractURL": "https://docs.example.com/overview",
+            "AbstractText": "Official documentation overview for a bounded research workflow.",
+            "Results": [
+                {
+                    "FirstURL": "https://github.com/example/research-engine",
+                    "Text": "example/research-engine repository with reusable provider seams.",
+                }
+            ],
+            "RelatedTopics": [
+                {
+                    "FirstURL": "https://example.com/docs/api/reference",
+                    "Text": "API reference for workflow endpoints and auth details.",
+                }
+            ],
+        }
+
+        with mock.patch.object(provider, "_read_json", return_value=payload):
+            hits = provider._web_hits_for_query(
+                query="research workflow api",
+                track_id="official-docs",
+                max_candidates=10,
+                seen_candidates=set(),
+            )
+
+        self.assertEqual(len(hits), 3)
+        repo_hit = next(hit for hit in hits if "github.com" in hit.url)
+        self.assertEqual(repo_hit.hit_type, "repo")
+        self.assertTrue(repo_hit.candidate_id.startswith("repo-"))
+        doc_hit = next(hit for hit in hits if "example.com/docs/api/reference" in hit.url)
+        self.assertEqual(doc_hit.hit_type, "doc")
+
+    def test_live_web_hits_prefetch_selection_prefers_authoritative_when_fit_is_similar(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "RelatedTopics": [
+                {
+                    "FirstURL": "https://blog.example.com/posts/research-workflow-integration",
+                    "Text": "Research workflow API integration walkthrough and implementation notes.",
+                },
+                {
+                    "FirstURL": "https://docs.example.com/api/reference",
+                    "Text": "Official API reference for research workflow integration endpoints.",
+                },
+            ]
+        }
+
+        with mock.patch.object(provider, "_read_json", return_value=payload):
+            hits = provider._web_hits_for_query(
+                query="research workflow api integration",
+                track_id="official-docs",
+                max_candidates=1,
+                seen_candidates=set(),
+            )
+
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].url, "https://docs.example.com/api/reference")
+
+    def test_live_web_hits_prefetch_preserves_unique_forum_comparative_signal(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "RelatedTopics": [
+                {
+                    "FirstURL": "https://docs.example.com/api/reference",
+                    "Text": "Official API reference for research workflow integration endpoints.",
+                },
+                {
+                    "FirstURL": "https://docs.example.com/getting-started",
+                    "Text": "Getting started setup guide for the research workflow API.",
+                },
+                {
+                    "FirstURL": "https://news.ycombinator.com/item?id=999",
+                    "Text": "Discussion of workflow tradeoff and benchmark comparison across provider approaches.",
+                },
+            ]
+        }
+
+        with mock.patch.object(provider, "_read_json", return_value=payload):
+            hits = provider._web_hits_for_query(
+                query="research workflow api integration",
+                track_id="comparisons",
+                max_candidates=2,
+                seen_candidates=set(),
+            )
+
+        self.assertEqual(len(hits), 2)
+        urls = {hit.url for hit in hits}
+        self.assertIn("https://docs.example.com/api/reference", urls)
+        self.assertIn("https://news.ycombinator.com/item?id=999", urls)
+
+    def test_live_web_hits_prefetch_reduces_duplicate_and_low_value_noise(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "RelatedTopics": [
+                {
+                    "FirstURL": "https://docs.example.com/reference?ref=one",
+                    "Text": "Reference page for research workflow benchmark methods and integration boundaries.",
+                },
+                {
+                    "FirstURL": "https://docs.example.com/reference?ref=two",
+                    "Text": "Reference page for research workflow benchmark methods and integration boundaries.",
+                },
+                {
+                    "FirstURL": "https://arxiv.org/abs/2501.01234",
+                    "Text": "Research paper abstract with benchmark evaluation protocol for workflow systems.",
+                },
+                {
+                    "FirstURL": "https://example.com/",
+                    "Text": "hello",
+                },
+            ]
+        }
+
+        with mock.patch.object(provider, "_read_json", return_value=payload):
+            hits = provider._web_hits_for_query(
+                query="research workflow benchmark",
+                track_id="architecture-patterns",
+                max_candidates=5,
+                seen_candidates=set(),
+            )
+
+        urls = [hit.url for hit in hits]
+        self.assertEqual(sum(1 for url in urls if "docs.example.com/reference" in url), 1)
+        self.assertIn("https://arxiv.org/abs/2501.01234", urls)
+        self.assertNotIn("https://example.com/", urls)
+
+    def test_live_web_hits_prefetch_keeps_best_same_url_entry(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "RelatedTopics": [
+                {
+                    "FirstURL": "https://docs.example.com/api/reference",
+                    "Text": "Short note.",
+                },
+                {
+                    "FirstURL": "https://docs.example.com/api/reference",
+                    "Text": "Official API reference for research workflow integration endpoints, authentication, and provider setup.",
+                },
+            ]
+        }
+
+        with mock.patch.object(provider, "_read_json", return_value=payload):
+            hits = provider._web_hits_for_query(
+                query="research workflow api integration",
+                track_id="official-docs",
+                max_candidates=3,
+                seen_candidates=set(),
+            )
+
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].url, "https://docs.example.com/api/reference")
+        self.assertIn("authentication", hits[0].snippet.lower())
+
+    def test_live_web_hits_prefetch_does_not_fill_with_weak_leftovers(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        payload = {
+            "RelatedTopics": [
+                {
+                    "FirstURL": "https://docs.example.com/api/reference",
+                    "Text": "Official API reference for research workflow integration endpoints.",
+                },
+                {
+                    "FirstURL": "https://example.com/",
+                    "Text": "tiny",
+                },
+                {
+                    "FirstURL": "https://example.org/",
+                    "Text": "short",
+                },
+            ]
+        }
+
+        with mock.patch.object(provider, "_read_json", return_value=payload):
+            hits = provider._web_hits_for_query(
+                query="research workflow api integration",
+                track_id="official-docs",
+                max_candidates=3,
+                seen_candidates=set(),
+            )
+
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].url, "https://docs.example.com/api/reference")
+
+    def test_live_evidence_gap_follow_up_pass_is_bounded(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset="balanced-discovery",
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={"official-docs": ["web"]},
+            selected_acquisition_mode="live-hybrid",
+            tracks=[],
+            queries=[],
+            planning_notes=[],
+        )
+        gap_directives = [
+            {
+                "candidate_id": "candidate-a",
+                "candidate_name": "candidate-a",
+                "gaps": ["missing-primary-source-evidence"],
+            },
+            {
+                "candidate_id": "candidate-b",
+                "candidate_name": "candidate-b",
+                "gaps": ["missing-technical-facts"],
+            },
+            {
+                "candidate_id": "candidate-c",
+                "candidate_name": "candidate-c",
+                "gaps": ["missing-maintenance-freshness"],
+            },
+            {
+                "candidate_id": "candidate-d",
+                "candidate_name": "candidate-d",
+                "gaps": ["missing-comparative-evidence"],
+            },
+        ]
+
+        call_counter = {"value": 0}
+
+        def fake_web_hits(
+            query: str,
+            track_id: str,
+            max_candidates: int,
+            seen_candidates: set[str],
+        ) -> list[DiscoveryHit]:
+            del track_id, max_candidates, seen_candidates
+            call_counter["value"] += 1
+            index = call_counter["value"]
+            return [
+                DiscoveryHit(
+                    provider="web-live",
+                    track_id="official-docs",
+                    query=query,
+                    url=f"https://docs.example.com/follow-up/{index}",
+                    title=f"follow-up-{index}",
+                    snippet="Follow-up evidence candidate.",
+                    hit_type="doc",
+                    candidate_id=f"web-follow-up-{index}",
+                    matched_terms=["follow", "evidence"],
+                )
+            ]
+
+        def fake_documents_from_hits(hits: list[DiscoveryHit], max_fetches: int) -> list[SourceDocument]:
+            del max_fetches
+            return [
+                SourceDocument(
+                    candidate_id=hit.candidate_id,
+                    source_url=hit.url,
+                    source_type="product-doc",
+                    title=hit.title,
+                    summary=hit.snippet,
+                    provider=hit.provider,
+                    track_id=hit.track_id,
+                    fetched_at="2026-04-01T00:00:00+00:00",
+                    facts=[
+                        SourceFact(
+                            fact_type="signal",
+                            confidence="medium",
+                            excerpt=hit.snippet,
+                            notes=[],
+                        )
+                    ],
+                )
+                for hit in hits
+            ]
+
+        with (
+            mock.patch.object(provider, "_web_hits_for_query", side_effect=fake_web_hits) as web_query,
+            mock.patch.object(provider, "_documents_from_hits", side_effect=fake_documents_from_hits),
+        ):
+            result = provider.acquire_evidence_gap_follow_up(
+                plan=plan,
+                mission=mission,
+                gap_directives=gap_directives,
+                existing_documents=[],
+            )
+
+        self.assertEqual(web_query.call_count, 3)
+        self.assertEqual(len(result.discovery_hits), 3)
+        self.assertEqual(len(result.source_documents), 3)
+        self.assertTrue(any("Evidence-gap follow-up pass engaged" in note for note in result.notes))
+
+    def test_live_evidence_gap_follow_up_does_not_silently_drop_later_query_hits(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset="balanced-discovery",
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={"official-docs": ["web"]},
+            selected_acquisition_mode="live-hybrid",
+            tracks=[],
+            queries=[],
+            planning_notes=[],
+        )
+        gap_directives = [
+            {
+                "candidate_id": "candidate-a",
+                "candidate_name": "candidate-a",
+                "gaps": ["missing-primary-source-evidence"],
+            },
+            {
+                "candidate_id": "candidate-b",
+                "candidate_name": "candidate-b",
+                "gaps": ["missing-technical-facts"],
+            },
+        ]
+
+        first_query_hits = [
+            DiscoveryHit(
+                provider="web-live",
+                track_id="official-docs",
+                query="q1",
+                url=f"https://docs.example.com/start/{index}",
+                title=f"start-{index}",
+                snippet="Seed follow-up evidence.",
+                hit_type="doc",
+                candidate_id=f"web-seed-{index}",
+                matched_terms=["seed", "evidence"],
+            )
+            for index in range(1, 4)
+        ]
+        second_query_hits = [
+            DiscoveryHit(
+                provider="web-live",
+                track_id="architecture-patterns",
+                query="q2",
+                url="https://docs.example.com/second/query-hit",
+                title="second-query-hit",
+                snippet="Second query enrichment signal.",
+                hit_type="doc",
+                candidate_id="web-second-query-hit",
+                matched_terms=["second", "enrichment"],
+            )
+        ]
+
+        query_results = [first_query_hits, second_query_hits]
+
+        def fake_web_hits(
+            query: str,
+            track_id: str,
+            max_candidates: int,
+            seen_candidates: set[str],
+        ) -> list[DiscoveryHit]:
+            del query, track_id, max_candidates, seen_candidates
+            return query_results.pop(0) if query_results else []
+
+        def fake_documents_from_hits(hits: list[DiscoveryHit], max_fetches: int) -> list[SourceDocument]:
+            return [
+                SourceDocument(
+                    candidate_id=hit.candidate_id,
+                    source_url=hit.url,
+                    source_type="product-doc",
+                    title=hit.title,
+                    summary=hit.snippet,
+                    provider=hit.provider,
+                    track_id=hit.track_id,
+                    fetched_at="2026-04-01T00:00:00+00:00",
+                    facts=[SourceFact("signal", "medium", hit.snippet, [])],
+                )
+                for hit in hits[:max_fetches]
+            ]
+
+        with (
+            mock.patch.object(provider, "_web_hits_for_query", side_effect=fake_web_hits),
+            mock.patch.object(provider, "_documents_from_hits", side_effect=fake_documents_from_hits),
+        ):
+            result = provider.acquire_evidence_gap_follow_up(
+                plan=plan,
+                mission=mission,
+                gap_directives=gap_directives,
+                existing_documents=[],
+            )
+
+        urls = {hit.url for hit in result.discovery_hits}
+        self.assertIn("https://docs.example.com/second/query-hit", urls)
+        self.assertEqual(len(result.discovery_hits), 4)
+
+    def test_live_evidence_gap_follow_up_replaces_weaker_duplicate_url_and_enforces_global_cap(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset="balanced-discovery",
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={"official-docs": ["web"]},
+            selected_acquisition_mode="live-hybrid",
+            tracks=[],
+            queries=[],
+            planning_notes=[],
+        )
+        gap_directives = [
+            {
+                "candidate_id": "candidate-a",
+                "candidate_name": "candidate-a",
+                "gaps": ["missing-primary-source-evidence"],
+            },
+            {
+                "candidate_id": "candidate-b",
+                "candidate_name": "candidate-b",
+                "gaps": ["missing-technical-facts"],
+            },
+            {
+                "candidate_id": "candidate-c",
+                "candidate_name": "candidate-c",
+                "gaps": ["missing-maintenance-freshness"],
+            },
+        ]
+
+        duplicate_short = DiscoveryHit(
+            provider="web-live",
+            track_id="official-docs",
+            query="q1",
+            url="https://docs.example.com/reference",
+            title="reference",
+            snippet="short note",
+            hit_type="doc",
+            candidate_id="web-ref-short",
+            matched_terms=["reference"],
+        )
+        duplicate_strong = DiscoveryHit(
+            provider="web-live",
+            track_id="official-docs",
+            query="q2",
+            url="https://docs.example.com/reference",
+            title="reference",
+            snippet=(
+                "Official API reference for research workflow integration, authentication, maintenance details, and examples."
+            ),
+            hit_type="doc",
+            candidate_id="web-ref-strong",
+            matched_terms=["official", "reference", "workflow", "integration"],
+        )
+
+        query_results = [
+            [
+                duplicate_short,
+                *[
+                    DiscoveryHit(
+                        provider="web-live",
+                        track_id="official-docs",
+                        query="q1",
+                        url=f"https://docs.example.com/start/{index}",
+                        title=f"start-{index}",
+                        snippet="Seed evidence item.",
+                        hit_type="doc",
+                        candidate_id=f"web-seed-{index}",
+                        matched_terms=["seed", "evidence"],
+                    )
+                    for index in range(1, 4)
+                ],
+            ],
+            [
+                duplicate_strong,
+                *[
+                    DiscoveryHit(
+                        provider="web-live",
+                        track_id="architecture-patterns",
+                        query="q2",
+                        url=f"https://docs.example.com/extra/{index}",
+                        title=f"extra-{index}",
+                        snippet="Extra evidence item for cap pressure.",
+                        hit_type="doc",
+                        candidate_id=f"web-extra-{index}",
+                        matched_terms=["extra", "evidence"],
+                    )
+                    for index in range(1, 5)
+                ],
+            ],
+            [
+                DiscoveryHit(
+                    provider="web-live",
+                    track_id="comparisons",
+                    query="q3",
+                    url="https://news.example.com/analysis",
+                    title="analysis",
+                    snippet="Comparative analysis and tradeoff discussion.",
+                    hit_type="doc",
+                    candidate_id="web-analysis",
+                    matched_terms=["analysis", "tradeoff"],
+                )
+            ],
+        ]
+
+        def fake_web_hits(
+            query: str,
+            track_id: str,
+            max_candidates: int,
+            seen_candidates: set[str],
+        ) -> list[DiscoveryHit]:
+            del query, track_id, max_candidates, seen_candidates
+            return query_results.pop(0) if query_results else []
+
+        def fake_documents_from_hits(hits: list[DiscoveryHit], max_fetches: int) -> list[SourceDocument]:
+            return [
+                SourceDocument(
+                    candidate_id=hit.candidate_id,
+                    source_url=hit.url,
+                    source_type="product-doc",
+                    title=hit.title,
+                    summary=hit.snippet,
+                    provider=hit.provider,
+                    track_id=hit.track_id,
+                    fetched_at="2026-04-01T00:00:00+00:00",
+                    facts=[SourceFact("signal", "medium", hit.snippet, [])],
+                )
+                for hit in hits[:max_fetches]
+            ]
+
+        with (
+            mock.patch.object(provider, "_web_hits_for_query", side_effect=fake_web_hits),
+            mock.patch.object(provider, "_documents_from_hits", side_effect=fake_documents_from_hits),
+        ):
+            result = provider.acquire_evidence_gap_follow_up(
+                plan=plan,
+                mission=mission,
+                gap_directives=gap_directives,
+                existing_documents=[],
+            )
+
+        self.assertLessEqual(len(result.discovery_hits), 6)
+        self.assertLessEqual(len(result.source_documents), 6)
+        reference_hits = [hit for hit in result.discovery_hits if "docs.example.com/reference" in hit.url]
+        self.assertEqual(len(reference_hits), 1)
+        self.assertIn("Official API reference", reference_hits[0].snippet)
+        self.assertTrue(any("dedupe replaced" in note for note in result.notes))
+        self.assertTrue(any("cap applied" in note for note in result.notes))
+
+    def test_live_evidence_gap_follow_up_can_enrich_existing_candidate(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        mission = ResearchMission(objective="Find reusable research workflow systems.")
+        plan = SearchPlan(
+            mission_id=mission.mission_id,
+            planning_preset="balanced-discovery",
+            required_track_ids=[],
+            excluded_track_ids=[],
+            required_query_types_by_track={},
+            excluded_query_types_by_track={},
+            track_provider_preferences={"official-docs": ["web"]},
+            selected_acquisition_mode="live-hybrid",
+            tracks=[
+                SearchTrack(
+                    track_id="official-docs",
+                    name="Official Docs",
+                    intent="Find candidate references.",
+                    priority=1,
+                    provider_hint="live-hybrid",
+                )
+            ],
+            queries=[],
+            planning_notes=[],
+        )
+        gap_directives = [
+            {
+                "candidate_id": "candidate-gap-a",
+                "gaps": ["missing-primary-source-evidence"],
+                "source_type": "blog-post",
+                "evidence_count": 1,
+            }
+        ]
+        existing_hit = DiscoveryHit(
+            provider="web-live",
+            track_id="official-docs",
+            query="candidate gap evidence",
+            url="https://blog.example.com/candidate-gap-a",
+            title="candidate-gap-a",
+            snippet="Existing low-trust evidence.",
+            hit_type="doc",
+            candidate_id="candidate-gap-a",
+            matched_terms=["candidate", "evidence"],
+        )
+        existing_document = SourceDocument(
+            candidate_id="candidate-gap-a",
+            source_url="https://blog.example.com/candidate-gap-a",
+            source_type="blog-post",
+            title="candidate-gap-a",
+            summary="Existing low-trust evidence.",
+            provider="web-live",
+            track_id="official-docs",
+            fetched_at="2026-04-01T00:00:00+00:00",
+            facts=[
+                SourceFact(
+                    fact_type="architecture",
+                    confidence="medium",
+                    excerpt="Architecture overview only.",
+                    notes=[],
+                )
+            ],
+        )
+
+        def fake_web_hits(
+            query: str,
+            track_id: str,
+            max_candidates: int,
+            seen_candidates: set[str],
+        ) -> list[DiscoveryHit]:
+            del query, track_id, max_candidates
+            if "candidate-gap-a" in seen_candidates:
+                return []
+            return [
+                DiscoveryHit(
+                    provider="github-live",
+                    track_id="official-docs",
+                    query="candidate-gap-a official docs repository github gitlab readme",
+                    url="https://github.com/example/candidate-gap-a",
+                    title="example/candidate-gap-a",
+                    snippet="Repository with workflow, integration, and maintenance signals.",
+                    hit_type="repo",
+                    candidate_id="candidate-gap-a",
+                    matched_terms=["repository", "workflow"],
+                )
+            ]
+
+        def fake_documents_from_hits(hits: list[DiscoveryHit], *, max_fetches: int) -> list[SourceDocument]:
+            del max_fetches
+            return [
+                SourceDocument(
+                    candidate_id=hit.candidate_id,
+                    source_url=hit.url,
+                    source_type="github-repo",
+                    title=hit.title,
+                    summary="Repository follow-up evidence.",
+                    provider=hit.provider,
+                    track_id=hit.track_id,
+                    fetched_at="2026-04-01T00:00:00+00:00",
+                    facts=[
+                        SourceFact("workflow", "high", "Workflow stages are explicit and bounded.", []),
+                        SourceFact("integration", "high", "Integration uses provider adapters.", []),
+                        SourceFact(
+                            "maintenance",
+                            "high",
+                            "Stars=12, forks=2, open_issues=1, last_push=2026-03-31T00:00:00+00:00.",
+                            [],
+                        ),
+                    ],
+                )
+                for hit in hits
+            ]
+
+        with (
+            mock.patch.object(provider, "_web_hits_for_query", side_effect=fake_web_hits),
+            mock.patch.object(provider, "_documents_from_hits", side_effect=fake_documents_from_hits),
+        ):
+            result = provider.acquire_evidence_gap_follow_up(
+                plan=plan,
+                mission=mission,
+                gap_directives=gap_directives,
+                existing_documents=[existing_document],
+            )
+
+        self.assertEqual(len(result.discovery_hits), 1)
+        self.assertEqual(result.discovery_hits[0].candidate_id, "candidate-gap-a")
+        self.assertEqual(len(result.source_documents), 1)
+        self.assertTrue(any(health.provider == "live-hybrid-follow-up" for health in result.provider_health))
+
+    def test_web_candidate_ids_distinguish_deeper_paths(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+
+        api_ref = provider._candidate_id_from_url("https://example.com/docs/api/reference")
+        docs_guide = provider._candidate_id_from_url("https://example.com/docs/guide/start")
+
+        self.assertNotEqual(api_ref, docs_guide)
+
+    def test_documents_from_hits_routes_web_repo_hits_to_repo_fetch(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="web-live",
+            track_id="github-repos",
+            query="reusable research workflow",
+            url="https://github.com/example/research-engine",
+            title="example/research-engine",
+            snippet="Repository candidate from web search.",
+            hit_type="repo",
+            candidate_id="repo-example-research-engine",
+            matched_terms=["research", "workflow"],
+        )
+        expected = SourceDocument(
+            candidate_id=hit.candidate_id,
+            source_url=hit.url,
+            source_type="github-repo",
+            title=hit.title,
+            summary=hit.snippet,
+            provider=hit.provider,
+            track_id=hit.track_id,
+            fetched_at="2026-04-07T00:00:00+00:00",
+            facts=[
+                SourceFact(
+                    fact_type="signal",
+                    confidence="medium",
+                    excerpt=hit.snippet,
+                    notes=[],
+                )
+            ],
+        )
+
+        with (
+            mock.patch.object(provider, "_build_github_document", return_value=expected) as github_fetch,
+            mock.patch.object(provider, "_build_web_document") as web_fetch,
+        ):
+            documents = provider._documents_from_hits([hit], max_fetches=1)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].source_type, "github-repo")
+        self.assertEqual(github_fetch.call_count, 1)
+        self.assertEqual(web_fetch.call_count, 0)
+
+    def test_official_docs_followthrough_is_bounded_to_three_pages(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        homepage = "https://docs.example.com"
+        homepage_html = """
+        <html>
+          <body>
+            <a href="/getting-started">Getting started</a>
+            <a href="/api/reference">API reference</a>
+            <a href="/guides/tutorial">Tutorial guide</a>
+            <a href="/docs/architecture">Architecture docs</a>
+          </body>
+        </html>
+        """
+        page_html = {
+            "https://docs.example.com/": homepage_html,
+            "https://docs.example.com/getting-started": "<html><body><main>Getting started steps for setup and workflow.</main></body></html>",
+            "https://docs.example.com/api/reference": "<html><body><main>API reference for POST /v1/research/jobs endpoint.</main></body></html>",
+            "https://docs.example.com/guides/tutorial": "<html><body><main>Tutorial guide for bounded integration flows.</main></body></html>",
+            "https://docs.example.com/docs/architecture": "<html><body><main>Architecture docs for system boundaries.</main></body></html>",
+        }
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            canonical = provider._canonical_hit_url(url)
+            return page_html.get(canonical, "")
+
+        with mock.patch.object(provider, "_read_text", side_effect=fake_read_text):
+            pages = provider._official_docs_followthrough(
+                repo_url="https://github.com/example/research-engine",
+                homepage=homepage,
+                readme_text="",
+                seed_urls=[],
+                max_pages=3,
+            )
+
+        self.assertEqual(len(pages), 3)
+        self.assertTrue(all(url.startswith("https://docs.example.com") for url, _ in pages))
+
+    def test_live_github_document_follows_official_docs_for_stronger_evidence(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="github-live",
+            track_id="github-repos",
+            query="reusable research workflow",
+            url="https://github.com/example/research-engine",
+            title="example/research-engine",
+            snippet="Repository candidate.",
+            hit_type="repo",
+            candidate_id="repo-example-research-engine",
+            matched_terms=["research", "workflow"],
+        )
+        repo_payload = {
+            "full_name": "example/research-engine",
+            "description": "Composable research workflow candidate.",
+            "stargazers_count": 42,
+            "forks_count": 7,
+            "open_issues_count": 3,
+            "language": "Python",
+            "pushed_at": "2026-03-30T10:00:00Z",
+            "topics": ["research", "workflow"],
+            "homepage": "https://docs.example.com",
+        }
+        release_payload = {
+            "published_at": "2026-03-28T12:00:00Z",
+        }
+        readme_text = (
+            "[Quickstart](https://docs.example.com/getting-started)\n"
+            "[API Reference](https://docs.example.com/api/reference)"
+        )
+        page_html = {
+            "https://docs.example.com/": """
+            <html>
+              <head><meta property=\"article:modified_time\" content=\"2026-03-30T08:15:00Z\" /></head>
+              <body>
+                <main>
+                  <a href=\"/getting-started\">Getting started</a>
+                  <a href=\"/api/reference\">API reference</a>
+                </main>
+              </body>
+            </html>
+            """,
+            "https://docs.example.com/getting-started": """
+            <html><body><main>Quickstart guide steps for setting up the research workflow.</main></body></html>
+            """,
+            "https://docs.example.com/api/reference": """
+            <html><body><main>API reference covers provider integration with POST /v1/research/jobs.</main></body></html>
+            """,
+        }
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            canonical = provider._canonical_hit_url(url)
+            return page_html.get(canonical, "")
+
+        with (
+            mock.patch.object(provider, "_read_json", side_effect=[repo_payload, release_payload]),
+            mock.patch.object(provider, "_fetch_github_readme", return_value=readme_text),
+            mock.patch.object(provider, "_read_text", side_effect=fake_read_text),
+        ):
+            document = provider._build_github_document(hit)
+
+        self.assertIsNotNone(document)
+        signal_facts = [fact for fact in document.facts if fact.fact_type == "signal"]
+        self.assertTrue(any("Official docs follow-through captured" in fact.excerpt for fact in signal_facts))
+        workflow_facts = [fact for fact in document.facts if fact.fact_type == "workflow"]
+        integration_facts = [fact for fact in document.facts if fact.fact_type == "integration"]
+        maintenance_facts = [fact for fact in document.facts if fact.fact_type == "maintenance"]
+        self.assertIn("Quickstart guide steps", workflow_facts[0].excerpt)
+        self.assertIn("POST /v1/research/jobs", integration_facts[0].excerpt)
+        self.assertIn("docs_followthrough_pages=3", maintenance_facts[0].notes)
+
     def test_api_provider_mode_is_strict_and_does_not_fallback_to_catalog(self) -> None:
         mission = ResearchMission(objective="Find reusable research workflow systems.")
         plan = SearchPlan(
@@ -1759,6 +3445,57 @@ class ResearchEngineRunTest(unittest.TestCase):
         )
         self.assertEqual(evidence[0].source_updated_at, "2026-03-29T09:30:00+00:00")
 
+    def test_live_gitlab_document_follows_official_docs_links_from_description(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="gitlab-live",
+            track_id="github-repos",
+            query="reusable research workflow",
+            url="https://gitlab.com/example/research-engine",
+            title="example/research-engine",
+            snippet="Repository candidate.",
+            hit_type="repo",
+            candidate_id="repo-example-gitlab-research-engine",
+            matched_terms=["research", "workflow"],
+        )
+        project_payload = {
+            "path_with_namespace": "example/research-engine",
+            "description": "Docs: https://docs.example.org/getting-started for workflow setup and provider integration.",
+            "star_count": 12,
+            "forks_count": 3,
+            "open_issues_count": 2,
+            "last_activity_at": "2026-03-27T12:00:00Z",
+            "language": "Python",
+            "topics": ["research", "workflow"],
+            "web_url": "https://gitlab.com/example/research-engine",
+        }
+        release_payload = {
+            "released_at": "2026-03-29T09:30:00Z",
+        }
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            if "docs.example.org/getting-started" in url:
+                return (
+                    "<html><body><main>Getting started steps for provider integration and API workflow setup."
+                    "</main></body></html>"
+                )
+            return ""
+
+        with (
+            mock.patch.object(provider, "_read_json", side_effect=[project_payload, release_payload]),
+            mock.patch.object(provider, "_read_text", side_effect=fake_read_text),
+        ):
+            document = provider._build_gitlab_document(hit)
+
+        self.assertIsNotNone(document)
+        signal_facts = [fact for fact in document.facts if fact.fact_type == "signal"]
+        self.assertTrue(any("Official docs follow-through captured" in fact.excerpt for fact in signal_facts))
+        workflow_facts = [fact for fact in document.facts if fact.fact_type == "workflow"]
+        maintenance_facts = [fact for fact in document.facts if fact.fact_type == "maintenance"]
+        self.assertIn("Getting started steps", workflow_facts[0].excerpt)
+        self.assertIn("docs_followthrough_pages=1", maintenance_facts[0].notes)
+
     def test_live_web_document_extracts_source_updated_timestamp(self) -> None:
         provider = LiveHybridAcquisitionProvider()
         hit = DiscoveryHit(
@@ -1839,6 +3576,225 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertIn("POST /v1/research/jobs", integration_facts[0].excerpt)
         self.assertEqual(integration_facts[0].confidence, "high")
 
+    def test_live_web_document_followthrough_enriches_api_doc_signals(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="web-live",
+            track_id="api-docs",
+            query="research workflow api docs",
+            url="https://docs.example.com/getting-started",
+            title="Example Getting Started",
+            snippet="Getting started guide.",
+            hit_type="doc",
+            candidate_id="web-example-api-docs-followthrough",
+            matched_terms=["api", "workflow"],
+        )
+        page_html = {
+            "https://docs.example.com/getting-started": """
+            <html>
+              <head><title>Getting Started</title></head>
+              <body>
+                <main>
+                  <p>Quickstart guide covers setup basics.</p>
+                  <a href="/api/reference">API reference</a>
+                  <a href="/docs/authentication">Authentication docs</a>
+                </main>
+              </body>
+            </html>
+            """,
+            "https://docs.example.com/api/reference": """
+            <html><body><main>API endpoint POST /v1/research/jobs returns JSON payloads for workflow execution.</main></body></html>
+            """,
+            "https://docs.example.com/docs/authentication": """
+            <html><body><main>Bearer token authentication is required for API calls.</main></body></html>
+            """,
+        }
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            canonical = provider._canonical_hit_url(url)
+            return page_html.get(canonical, "")
+
+        with mock.patch.object(provider, "_read_text", side_effect=fake_read_text):
+            document = provider._build_web_document(hit)
+
+        self.assertIsNotNone(document)
+        signal_facts = [fact for fact in document.facts if fact.fact_type == "signal"]
+        integration_facts = [fact for fact in document.facts if fact.fact_type == "integration"]
+        self.assertTrue(any("Web authoritative follow-through captured 2 page(s)." in fact.excerpt for fact in signal_facts))
+        self.assertTrue(any("Follow-through pages: 2" in note for fact in signal_facts for note in fact.notes))
+        self.assertIn("POST /v1/research/jobs", integration_facts[0].excerpt)
+
+    def test_live_web_document_followthrough_is_same_host_and_capped(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="web-live",
+            track_id="api-docs",
+            query="research workflow api docs",
+            url="https://docs.example.com/docs/start",
+            title="Example Docs Start",
+            snippet="Documentation start page.",
+            hit_type="doc",
+            candidate_id="web-example-api-docs-followthrough-cap",
+            matched_terms=["api", "workflow"],
+        )
+        page_html = {
+            "https://docs.example.com/docs/start": """
+            <html>
+              <body>
+                <main>
+                  <a href="/api/reference-a">Reference A</a>
+                  <a href="/api/reference-b">Reference B</a>
+                  <a href="/api/reference-c">Reference C</a>
+                  <a href="https://external.example.org/api/reference-z">External Reference</a>
+                </main>
+              </body>
+            </html>
+            """,
+            "https://docs.example.com/api/reference-a": """
+            <html><body><main>Endpoint A details.</main></body></html>
+            """,
+            "https://docs.example.com/api/reference-b": """
+            <html><body><main>Endpoint B details.</main></body></html>
+            """,
+            "https://docs.example.com/api/reference-c": """
+            <html><body><main>Endpoint C details.</main></body></html>
+            """,
+            "https://external.example.org/api/reference-z": """
+            <html><body><main>SHOULD_NOT_APPEAR</main></body></html>
+            """,
+        }
+        requested: list[str] = []
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            canonical = provider._canonical_hit_url(url)
+            requested.append(canonical)
+            return page_html.get(canonical, "")
+
+        with mock.patch.object(provider, "_read_text", side_effect=fake_read_text):
+            document = provider._build_web_document(hit)
+
+        self.assertIsNotNone(document)
+        signal_facts = [fact for fact in document.facts if fact.fact_type == "signal"]
+        integration_facts = [fact for fact in document.facts if fact.fact_type == "integration"]
+        self.assertTrue(any("Web authoritative follow-through captured 2 page(s)." in fact.excerpt for fact in signal_facts))
+        self.assertTrue(any("Follow-through pages: 2" in note for fact in signal_facts for note in fact.notes))
+        self.assertNotIn("SHOULD_NOT_APPEAR", integration_facts[0].excerpt)
+        self.assertFalse(any("external.example.org" in url for url in requested))
+        self.assertIn("https://docs.example.com/api/reference-a", requested)
+        self.assertIn("https://docs.example.com/api/reference-b", requested)
+        self.assertNotIn("https://docs.example.com/api/reference-c", requested)
+
+    def test_live_web_document_followthrough_enriches_academic_paper_signals(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="web-live",
+            track_id="comparisons",
+            query="research workflow benchmarking paper",
+            url="https://arxiv.org/abs/2501.01234",
+            title="A Bounded Research Pipeline Paper",
+            snippet="Academic paper summary.",
+            hit_type="doc",
+            candidate_id="web-example-academic-paper-followthrough",
+            matched_terms=["research", "workflow", "benchmark"],
+        )
+        page_html = {
+            "https://arxiv.org/abs/2501.01234": """
+            <html>
+              <body>
+                <main>
+                  <p>We present a bounded method for evidence assembly.</p>
+                  <a href="/html/2501.01234">Paper HTML</a>
+                  <a href="/pdf/2501.01234">Paper PDF</a>
+                  <a href="https://external.example.org/post">External commentary</a>
+                </main>
+              </body>
+            </html>
+            """,
+            "https://arxiv.org/html/2501.01234": """
+            <html><body><main>Evaluation results include ablation studies across benchmark datasets.</main></body></html>
+            """,
+            "https://arxiv.org/pdf/2501.01234": "PDF_SHOULD_NOT_BE_FETCHED",
+            "https://external.example.org/post": "EXTERNAL_SHOULD_NOT_BE_FETCHED",
+        }
+        requested: list[str] = []
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            canonical = provider._canonical_hit_url(url)
+            requested.append(canonical)
+            return page_html.get(canonical, "")
+
+        with mock.patch.object(provider, "_read_text", side_effect=fake_read_text):
+            document = provider._build_web_document(hit)
+
+        self.assertIsNotNone(document)
+        self.assertEqual(document.source_type, "academic-paper")
+        signal_facts = [fact for fact in document.facts if fact.fact_type == "signal"]
+        self.assertTrue(
+            any("Academic authoritative follow-through captured 1 page(s)." in fact.excerpt for fact in signal_facts)
+        )
+        self.assertTrue(any("Follow-through pages: 1" in note for fact in signal_facts for note in fact.notes))
+        shaped_excerpts = " ".join(
+            fact.excerpt.lower()
+            for fact in document.facts
+            if fact.fact_type in {"signal", "architecture", "workflow"}
+        )
+        self.assertIn("ablation", shaped_excerpts)
+        self.assertIn("https://arxiv.org/html/2501.01234", requested)
+        self.assertNotIn("https://arxiv.org/pdf/2501.01234", requested)
+        self.assertFalse(any("external.example.org" in url for url in requested))
+
+    def test_live_web_document_academic_followthrough_skips_pdf_only_candidates(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="web-live",
+            track_id="comparisons",
+            query="research workflow preprint",
+            url="https://arxiv.org/abs/2501.09999",
+            title="PDF-only academic source",
+            snippet="Academic source with limited follow-through links.",
+            hit_type="doc",
+            candidate_id="web-example-academic-paper-pdf-only",
+            matched_terms=["research", "workflow"],
+        )
+        page_html = {
+            "https://arxiv.org/abs/2501.09999": """
+            <html>
+              <body>
+                <main>
+                  <p>Preprint abstract with method summary.</p>
+                  <a href="/pdf/2501.09999">Download PDF</a>
+                  <a href="https://external.example.org/discussion">Discussion</a>
+                </main>
+              </body>
+            </html>
+            """,
+            "https://arxiv.org/pdf/2501.09999": "PDF_SHOULD_NOT_BE_FETCHED",
+            "https://external.example.org/discussion": "EXTERNAL_SHOULD_NOT_BE_FETCHED",
+        }
+        requested: list[str] = []
+
+        def fake_read_text(url: str, provider_key: str) -> str:
+            del provider_key
+            canonical = provider._canonical_hit_url(url)
+            requested.append(canonical)
+            return page_html.get(canonical, "")
+
+        with mock.patch.object(provider, "_read_text", side_effect=fake_read_text):
+            document = provider._build_web_document(hit)
+
+        self.assertIsNotNone(document)
+        self.assertEqual(document.source_type, "academic-paper")
+        signal_facts = [fact for fact in document.facts if fact.fact_type == "signal"]
+        self.assertFalse(any("Academic authoritative follow-through captured" in fact.excerpt for fact in signal_facts))
+        self.assertTrue(any("Extraction profile: academic-paper-shaping" in note for fact in signal_facts for note in fact.notes))
+        self.assertTrue(any("Academic follow-through captured 0 pages" in note for fact in signal_facts for note in fact.notes))
+        self.assertEqual(requested.count("https://arxiv.org/abs/2501.09999"), 1)
+        self.assertNotIn("https://arxiv.org/pdf/2501.09999", requested)
+        self.assertFalse(any("external.example.org" in url for url in requested))
+
     def test_live_web_document_classifies_forum_source_type(self) -> None:
         provider = LiveHybridAcquisitionProvider()
         hit = DiscoveryHit(
@@ -1875,6 +3831,43 @@ class ResearchEngineRunTest(unittest.TestCase):
         self.assertIn("three-step workflow", workflow_facts[0].excerpt)
         self.assertEqual(signal_facts[0].confidence, "low")
         self.assertEqual(integration_facts[0].confidence, "low")
+
+    def test_live_web_document_marks_generic_fallback_evidence(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        hit = DiscoveryHit(
+            provider="web-live",
+            track_id="comparisons",
+            query="research workflow discussion",
+            url="https://example.com/overview",
+            title="Example overview",
+            snippet="Generic product summary for a research workflow tool.",
+            hit_type="doc",
+            candidate_id="web-example-generic-overview",
+            matched_terms=["research", "workflow"],
+        )
+        html = """
+        <html>
+          <head><title>Example overview</title></head>
+          <body>
+            <main>
+              <p>Generic product summary for a research workflow tool.</p>
+            </main>
+          </body>
+        </html>
+        """
+        with mock.patch.object(provider, "_read_text", return_value=html):
+            document = provider._build_web_document(hit)
+
+        self.assertIsNotNone(document)
+        evidence = normalize_evidence(
+            [document],
+            trust_policy=build_source_type_trust_policy(
+                ResearchMission(objective="Find reusable research workflow systems.")
+            ),
+        )
+        signal_item = next(item for item in evidence if item.fact_type == "signal")
+        self.assertEqual(signal_item.extraction_fidelity, "fallback")
+        self.assertIn("fallback-derived-evidence", signal_item.rejection_flags)
 
     def test_live_web_document_captures_jsonld_profile_metadata(self) -> None:
         provider = LiveHybridAcquisitionProvider()

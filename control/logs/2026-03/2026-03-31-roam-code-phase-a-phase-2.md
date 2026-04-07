@@ -16,11 +16,11 @@ Mission usefulness:
 - turns the preserved Roam-code source into a bounded, explicit future spike packet against current Engine, dw-state, and control/report truth so the next thread can test the source without reopening broad comparison or adoption work
 
 Proof path:
-- `discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md`
-- `architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-engine-handoff.md`
-- `architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
+- `discovery/03-routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md`
+- `architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-engine-handoff.md`
+- `architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
 - `discovery/intake-queue.json`
-- `npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
+- `npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
 - `npm run report:directive-workspace-state`
 - `npm run check`
 
@@ -35,13 +35,13 @@ Stop-line:
 
 Files touched:
 - `discovery/intake-queue.json`
-- `discovery/routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md`
-- `architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-engine-handoff.md`
-- `architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
+- `discovery/03-routing-log/2026-03-31-dw-source-roam-code-2026-03-31-phase-a-phase-2-routing-record.md`
+- `architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-engine-handoff.md`
+- `architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
 - `control/logs/2026-03/2026-03-31-roam-code-phase-a-phase-2.md`
 
 Verification run:
-- `npm run report:directive-workspace-state -- architecture/02-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
+- `npm run report:directive-workspace-state -- architecture/01-experiments/2026-03-31-dw-source-roam-code-2026-03-31-bounded-start.md`
 - `npm run report:directive-workspace-state`
 - `npm run check`
 
@@ -53,3 +53,4 @@ Next likely move:
 
 Risks / notes:
 - this slice intentionally does not install Roam-code, run `roam init`, produce a bounded result, or reopen Backstage or Temporal
+

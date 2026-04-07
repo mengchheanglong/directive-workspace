@@ -1,0 +1,66 @@
+{
+  "reportVersion": "standalone_blisspixel_deepr_host_callable_execution_report/v1",
+  "generatedAt": "2026-04-07T10:15:00.000Z",
+  "candidateId": "research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.",
+  "candidateName": "blisspixel/deepr",
+  "hostName": "Directive Workspace standalone host",
+  "hostSurface": "Directive Workspace standalone host descriptor callable",
+  "callableSurface": "standalone_host.blisspixel_deepr_descriptor_summary.v1",
+  "promotionRecordPath": "runtime/07-promotion-records/2026-04-07-research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.-promotion-record.md",
+  "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-04-07-research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.-promotion-specification.json",
+  "sampleInvocation": {
+    "action": "summarize_descriptor",
+    "status": "ok",
+    "descriptorCallableExecuted": true,
+    "summary": "blisspixel/deepr is exposed through the standalone host as a read-only descriptor-summary callable backed by the candidate promotion record and promotion specification."
+  },
+  "acceptance": {
+    "callableThroughHost": true,
+    "descriptorCallableOnly": true,
+    "sourceRuntimeExecutionClaimed": false,
+    "hostIntegrationClaimed": false,
+    "registryAcceptanceClaimed": false,
+    "promotionAutomation": false
+  },
+  "hostCallableAdapter": {
+    "contractVersion": "host_callable_adapter.v1",
+    "contractPath": "shared/contracts/host-callable-adapter.md",
+    "schemaPath": "shared/schemas/host-callable-adapter.v1.schema.json",
+    "adapterId": "research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.:standalone_host:blisspixel_deepr_descriptor_callable_adapter",
+    "candidateId": "research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.",
+    "candidateName": "blisspixel/deepr",
+    "hostName": "Directive Workspace standalone host",
+    "hostSurface": "Directive Workspace standalone host descriptor callable",
+    "callableSurface": "standalone_host.blisspixel_deepr_descriptor_summary.v1",
+    "capabilityKind": "descriptor_callable",
+    "evidencePaths": {
+      "promotionRecordPath": "runtime/07-promotion-records/2026-04-07-research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.-promotion-record.md",
+      "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-04-07-research-engine-repo-blisspixel-deepr-20260407t052643z-20260407t072402.-promotion-specification.json"
+    },
+    "acceptance": {
+      "callableThroughHost": true,
+      "descriptorCallableOnly": true,
+      "runtimeCallableExecution": false,
+      "sourceRuntimeExecutionClaimed": false,
+      "hostIntegrationClaimed": false,
+      "registryAcceptanceClaimed": false,
+      "promotionAutomation": false,
+      "runtimeInternalsBypassed": false
+    },
+    "proof": {
+      "primaryChecker": "npm run check:standalone-blisspixel-deepr-host-callable",
+      "supportingCheckers": [
+        "npm run check:runtime-host-callable-adapter-contract"
+      ]
+    },
+    "stopLine": "blisspixel/deepr exposes a descriptor callable only; imported-source execution, registry acceptance, promotion automation, and generic host integration remain unopened."
+  },
+  "proof": {
+    "primaryChecker": "npm run check:standalone-blisspixel-deepr-host-callable",
+    "supportingCheckers": [
+      "npm run check:standalone-blisspixel-deepr-host-callable",
+      "npm run check:runtime-host-callable-adapter-contract"
+    ]
+  },
+  "stopLine": "One second fresh Runtime import now has a standalone-host callable descriptor summary; imported-source runtime execution, registry acceptance, promotion automation, and generic host integration remain intentionally unopened."
+}

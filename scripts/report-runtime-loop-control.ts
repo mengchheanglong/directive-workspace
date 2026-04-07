@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildDirectiveRuntimeLoopControlReport } from "../shared/lib/runtime-loop-control.ts";
+import { buildDirectiveRuntimeLoopControlReport } from "../runtime/lib/runtime-loop-control.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 

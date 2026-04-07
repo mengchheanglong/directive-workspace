@@ -1,10 +1,10 @@
-import { createMemoryDiscoveryHostStorageBridge } from "./discovery-host-storage-bridge.memory.template";
+import { createMemoryDiscoveryHostStorageBridge } from "./discovery-host-storage-bridge.memory.template.ts";
 import {
   submitMaintenanceWatchdogSignalWithHostBridge,
   submitRuntimeVerificationSignalWithHostBridge,
   type MaintenanceWatchdogSignal,
   type RuntimeVerificationSignal,
-} from "./discovery-signal-adapter.template";
+} from "./discovery-signal-adapter.template.ts";
 
 function assertCondition(condition: unknown, message: string): asserts condition {
   if (!condition) {

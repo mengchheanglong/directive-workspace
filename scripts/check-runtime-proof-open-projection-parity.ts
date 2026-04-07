@@ -6,11 +6,11 @@ import { fileURLToPath } from "node:url";
 import {
   materializeDirectiveRuntimeProofOpenProjectionSet,
   writeDirectiveRuntimeProofOpenProjectionSet,
-} from "../shared/lib/runtime-proof-open-projections.ts";
-import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
-import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../runtime/lib/runtime-proof-open-projections.ts";
+import { openDirectiveRuntimeRecordProof } from "../runtime/lib/runtime-record-proof-opener.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import {
   copyRelativeFile,
   extractOpenedBy,
@@ -24,13 +24,13 @@ const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const RUNTIME_PROOF_CASES = [
   {
     candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
-    followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+    followUpPath: "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
     runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
     runtimeProofPath: "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
   },
   {
     candidateId: "dw-mission-openmoss-runtime-orchestration-2026-03-26",
-    followUpPath: "runtime/follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md",
+    followUpPath: "runtime/00-follow-up/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-follow-up-record.md",
     runtimeRecordPath: "runtime/02-records/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-runtime-record.md",
     runtimeProofPath: "runtime/03-proof/2026-03-26-dw-mission-openmoss-runtime-orchestration-2026-03-26-proof.md",
   },

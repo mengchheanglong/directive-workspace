@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-07T07:38:59.586Z",
+  "candidateId": "research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.",
+  "candidateName": "Build a deep research agent - Docs by LangChain",
+  "sourcePromotionReadinessPath": "runtime/05-promotion-readiness/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-promotion-readiness.md",
+  "integrationMode": "reimplement",
+  "targetRuntimeSurface": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary. Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims.",
+  "owner": "directive-workspace",
+  "sourceIntentArtifact": "runtime/04-capability-boundaries/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-runtime-capability-boundary.md",
+  "compileContractArtifact": "shared/contracts/runtime-to-host.md",
+  "runtimePermissionsProfile": {
+    "readOnlyLane": "read_only",
+    "writeLane": null
+  },
+  "safeOutputScope": null,
+  "sanitizePolicy": null,
+  "requiredGates": [
+    "behavior_preservation",
+    "metric_improvement_or_equivalent_value",
+    "runtime_boundary_review"
+  ],
+  "rollbackPlan": "Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.",
+  "proofArtifactPath": "runtime/03-proof/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-proof.md",
+  "proposedHost": "Directive Workspace standalone host (hosts/standalone-host/)",
+  "hostDependence": "host_adapter_required",
+  "executionState": "not executing, not host-integrated, not implemented, not promoted",
+  "linkedArtifacts": {
+    "capabilityBoundaryPath": "runtime/04-capability-boundaries/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-runtime-capability-boundary.md",
+    "runtimeProofPath": "runtime/03-proof/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-proof.md",
+    "runtimeRecordPath": "runtime/02-records/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.-runtime-record.md",
+    "followUpPath": "runtime/00-follow-up/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643-runtime-follow-up-record.md",
+    "routingPath": "discovery/03-routing-log/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402--routing-record.md",
+    "callableStubPath": null,
+    "promotionRecordPath": null
+  },
+  "openDecisions": [
+    "Implementation: runtime implementation has not been opened.",
+    "Promotion: host-facing promotion has not been opened.",
+    "Host integration: host integration has not been opened."
+  ],
+  "hostConsumableDescription": "If promoted, Directive Workspace standalone host (hosts/standalone-host/) would receive a reimplement integration of \"Build a deep research agent - Docs by LangChain\" (Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary. Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims.). The host would need to provide a runtime surface for the integration mode \"reimplement\" with the required gates: behavior_preservation, metric_improvement_or_equivalent_value, runtime_boundary_review."
+}

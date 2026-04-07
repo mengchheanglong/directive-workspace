@@ -1,0 +1,52 @@
+# Runtime Promotion-Readiness Artifact: Research Vault: Open Source Agentic AI Research Assistant (2026-04-07)
+
+## runtime capability boundary identity
+- Candidate id: `research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.`
+- Candidate name: `Research Vault: Open Source Agentic AI Research Assistant`
+- Runtime capability boundary path: `runtime/04-capability-boundaries/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-capability-boundary.md`
+- Source Runtime proof artifact: `runtime/03-proof/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-proof.md`
+- Source Runtime v0 record: `runtime/02-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702--routing-record.md`
+- Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`
+- Opened by: `directive-autonomous-loop`
+- Opened on: `2026-04-07`
+- Current status: `promotion_readiness_opened`
+
+## bounded runtime usefulness preserved
+- Runtime objective: Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary. Use promotion assistance only as a reviewable soft signal; keep explicit callable-boundary clarity before any later promotion follow-through. Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims.
+- Proposed host: `pending_host_selection`
+- Proposed runtime surface: reimplement
+- Capability form: non-executing promotion-readiness artifact
+- Execution state: not executing, not host-integrated, not implemented, not promoted
+
+## what is now explicit
+- The bounded runtime capability boundary has been explicitly reviewed as a possible future promotion candidate.
+- Required proof items remain explicit:
+  - runtime objective
+  - evaluation method
+  - rollback path
+  - host-integration boundary note
+- Required gates remain explicit:
+  - `bounded_runtime_scope`
+  - `proof_artifact_present`
+  - `host_adapter_review`
+- This artifact does not approve host-facing promotion, runtime execution, callable implementation, or host integration.
+
+## validation boundary
+- Validate against the bounded runtime capability boundary, Runtime proof artifact, Runtime v0 record, source follow-up record, and linked Discovery routing record only.
+- Do not infer runtime readiness, host readiness, or automatic promotion from this artifact.
+- A separate host-facing promotion record remains unopened and out of scope.
+
+## rollback boundary
+- Rollback: Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.
+- No-op path: Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.
+- Review cadence: before any downstream execution or promotion
+
+## artifact linkage
+- Promotion-readiness artifact: `runtime/05-promotion-readiness/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-readiness.md`
+- Runtime capability boundary: `runtime/04-capability-boundaries/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-capability-boundary.md`
+- Runtime proof artifact: `runtime/03-proof/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-proof.md`
+- Runtime v0 record: `runtime/02-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-runtime-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702--routing-record.md`

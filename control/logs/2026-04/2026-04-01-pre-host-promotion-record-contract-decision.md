@@ -20,7 +20,7 @@
 - The repo already has the product-owned promotion-record contract surfaces:
   - `shared/templates/promotion-record.md`
   - `shared/lib/runtime-promotion-record-writer.ts`
-  - `runtime/promotion-records/README.md`
+  - `runtime/07-promotion-records/README.md`
   - `shared/contracts/runtime-to-host.md`
 - The repo also already has the inputs needed to prepare a non-executing pre-host contract honestly:
   - Runtime record

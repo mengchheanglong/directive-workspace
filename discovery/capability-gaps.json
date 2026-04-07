@@ -90,7 +90,7 @@
       "candidate_ids": [],
       "detected_at": "2026-03-31",
       "resolved_at": "2026-04-01",
-      "resolution_notes": "Created shared/lib/run-evidence-aggregation.ts with aggregateRunEvidence function and scripts/report-run-evidence-aggregation.ts report script. Aggregates all 39 runs across 7 dimensions plus temporal trends and lifecycle summary."
+      "resolution_notes": "Created the canonical run-evidence aggregation surface (now at engine/execution/run-evidence-aggregation.ts) with aggregateRunEvidence plus scripts/report-run-evidence-aggregation.ts. Aggregates all 39 runs across 7 dimensions plus temporal trends and lifecycle summary."
     },
     {
       "gap_id": "gap-runtime-promotion-seam",
@@ -225,7 +225,7 @@
       "candidate_ids": ["dw-handoff-autoresearch-arch-to-runtime"],
       "detected_at": "2026-03-22",
       "resolved_at": "2026-03-22",
-      "resolution_notes": "Formal handoff record created at runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md. Exercises all required contract fields. Real work (Architecture extraction → Runtime bounded run → promotion) completed 2026-03-19–2026-03-20."
+      "resolution_notes": "Formal handoff record created at runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md. Exercises all required contract fields. Real work (Architecture extraction → Runtime bounded run → promotion) completed 2026-03-19–2026-03-20."
     },
     {
       "gap_id": "gap-evaluator-dimensional-proof",

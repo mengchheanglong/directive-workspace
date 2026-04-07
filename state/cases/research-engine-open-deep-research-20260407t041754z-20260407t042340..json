@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "research-engine-open-deep-research-20260407t041754z-20260407t042340.",
+  "candidateId": "research-engine-open-deep-research-20260407t041754z-20260407t042340.",
+  "candidateName": "Open Deep Research",
+  "sourceType": "external-system",
+  "sourceReference": "https://github.com/langchain-ai/open_deep_research",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": "note",
+  "queueStatus": "routed",
+  "createdAt": "2026-04-07T04:23:40.021Z",
+  "updatedAt": "2026-04-07T04:23:40.021Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/01-intake/2026-04-07-research-engine-open-deep-research-20260407t041754z-20260407t042340--intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-04-07-research-engine-open-deep-research-20260407t041754z-20260407t042340--triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-04-07-research-engine-open-deep-research-20260407t041754z-20260407t042340--routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-07T04-23-40-021Z-research-engine-open-deep-research-20260407t041754z-20260407t042-7e791b31.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-07T04-23-40-021Z-research-engine-open-deep-research-20260407t041754z-20260407t042-7e791b31.md",
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": null
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-04-07",
+      "decisionState": "adopt",
+      "intake": {
+        "intake_date": "2026-04-07",
+        "source_type": "external-system",
+        "source_reference": "https://github.com/langchain-ai/open_deep_research",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Breaks deep research into typed phases instead of collapsing everything into an answer loop. Imported from research-engine for Directive Workspace Discovery review only.",
+        "initial_relevance_to_workspace": "Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+        "suspected_adoption_target": "engine-owned product logic",
+        "immediate_notes": "Engine run 7e791b31-9dcf-4e40-9db9-ce44e8be7fd3 selected architecture. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-04-07",
+        "first_pass_summary": "Breaks deep research into typed phases instead of collapsing everything into an answer loop. Imported from research-engine for Directive Workspace Discovery review only.",
+        "problem_it_appears_to_solve": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.",
+        "extractable_value_hypothesis": "Breaks deep research into typed phases instead of collapsing everything into an answer loop. Imported from research-engine for Directive Workspace Discovery review only. | Imported source candidate open-deep-research from research-engine bundle C:/Users/User/AppData/Local/Temp/research-engine-live-6ccdc76b-1288-4eef-9de9-74998e4efbd8/dw_import_bundle.json. Bundle decision boundary: This bundle is import-ready for Directive Workspace Discovery review only; it must not be treated as a routing or adoption decision. Source intelligence boundary: Research Engine gathers source intelligence and scoring signals only; it does not decide what Directive Workspace Discovery should adopt or route. Discovery packet boundary: Research Engine prepares Discovery-facing candidate packets; Directive Workspace Discovery retains final route and adoption authority. Research-engine source kind: framework Recommended lane target: architecture Lane target rationale: Primary value is Architecture-oriented extraction: preserve workflow/provider boundaries while keeping baseline-overlap expectations explicit. Discovery signal band: review Signal score summary: Baseline-overlap candidate still carries bounded structural extraction value. Structurally useful despite baseline overlap: preserve the bounded workflow or mechanism signal for extraction, but do not treat the source as a novel primary base. Score summary: total=74; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=8/10; novelty=1/10. Signal total score: 74. Workflow phase scores: planning=9, discovery=10, acquisition=9, compression=9, reporting=7, reflection=8. Initial value hypothesis: Best conceptual base for Research Engine because its orchestration boundaries map cleanly to planning, discovery, compression, and reporting. Baggage signals: LangGraph-flavored orchestration assumptions | Report-centric end shape. Capability gap hint: Need reusable phase boundaries and provider seams for bounded research runs. Freshness: Latest normalized evidence captured at 2026-04-07T04:17:17+00:00. Freshest observed source update at 2026-04-04T00:58:28+00:00 (3 days old at capture; 6/6 evidence items carried source dates; signal=current). Evidence bundle refs: open-deep-research-e1, open-deep-research-e2, open-deep-research-e3, open-deep-research-e4, open-deep-research-e5, open-deep-research-e6. Evidence cluster summary: Collapsed 6 evidence items into 6 clusters. | No duplicate evidence clusters detected. | No contradiction flags detected across clustered evidence.. Provenance: primary via exa-live:official-docs (github-repo). Extract recommendations: Extract the explicit phase model (planning, discovery, acquisition, compression, reporting) as a Directive-owned workflow contract. | Extract the provider seam as a bounded interface between acquisition and downstream synthesis/reporting. | Extract the bounded protocol boundary so acquisition, compression, and reporting remain separable.. Avoid recommendations: Do not import LangGraph-specific orchestration assumptions wholesale. | Do not import the report-centric or answer-first end shape wholesale. | Do not treat the source as a novel primary base without stronger live evidence.. Review guidance summary: Extractive structural candidate: keep the reusable mechanism and bounded workflow, but hold novelty claims low. Review guidance action: Use this as an Architecture extraction/reference source. Extract only the bounded mechanisms listed here and reject wholesale framework adoption. Review guidance stop-line: Do not auto-promote this source to primary-base status or direct Runtime adoption without stronger live evidence. Uncertainty notes: Extraction fidelity: direct=0, derived=3, fallback=3 across 6 evidence items. Reconsideration triggers: Replace generic fallback summaries/snippets with targeted source excerpts before adoption scoring.. | record_shape:queue_only",
+        "routing_recommendation": "Shared Engine routing selected architecture with usefulness level meta.",
+        "proposed_adoption_target": "engine-owned product logic",
+        "stack_shape_summary": "external-system source; host dependence engine_only; integration mode adapt.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.",
+        "suggested_decision_state": "needs_human_review",
+        "fit_to_current_direction": "Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+        "reusability_across_surfaces": "Value remains useful without a host runtime surface.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "low",
+        "can_current_gates_validate_safely": "partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "missing_evidence": "adapted mechanism described, excluded baggage described, engine or product boundary improvement explained, improvement delta stays anchored to prior extraction, adaptation, and improvement stages",
+        "next_action": "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete.",
+        "monitor_defer_trigger_conditions": "If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.",
+        "reentry_conditions": "Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer."
+      },
+      "routing": {
+        "route_date": "2026-04-07",
+        "source_type": "external-system",
+        "decision_state": "adopt",
+        "adoption_target": "engine-owned product logic",
+        "route_destination": "architecture",
+        "why_this_route": "Recommended architecture because its lane score (29) exceeded the alternatives.",
+        "why_not_alternatives": "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring. Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap. Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring. Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone. Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code. Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens. Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery. Signal disagreement requires review: keyword evidence pointed to runtime instead of architecture. Route explanation breakdown for architecture: keyword=15, metadata=14, gap=0.",
+        "receiving_track_owner": "architecture",
+        "required_next_artifact": "architecture/01-experiments/2026-04-07-research-engine-open-deep-research-20260407t041754z-20260407t042-engine-handoff.md",
+        "linked_intake_record": "discovery/01-intake/2026-04-07-research-engine-open-deep-research-20260407t041754z-20260407t042340--intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-04-07-research-engine-open-deep-research-20260407t041754z-20260407t042340--triage.md",
+        "reentry_or_promotion_conditions": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "review_cadence": "before any downstream execution or promotion",
+        "mission_priority_score": 49,
+        "routing_confidence": "medium",
+        "matched_gap_id": null,
+        "matched_gap_rank": null,
+        "route_conflict": true,
+        "needs_human_review": true,
+        "ambiguity_summary": {
+          "top_track": "architecture",
+          "runner_up_track": "runtime",
+          "score_delta": 7,
+          "conflicting_signal_families": [
+            "keyword"
+          ],
+          "conflicting_tracks": [
+            "runtime"
+          ]
+        },
+        "review_guidance": {
+          "guidance_kind": "conflicted_architecture_review",
+          "summary": "Conflicted Architecture route requires explicit structural review before downstream adoption.",
+          "operator_action": "Review the competing Runtime-vs-Architecture signals, confirm Architecture ownership explicitly, and keep the fuller split-case record until the conflict is resolved.",
+          "required_checks": [
+            "Confirm why Architecture still owns the candidate despite the competing Runtime signal.",
+            "Record why the alternative lane was rejected before any downstream adoption step.",
+            "Keep the split-case structural record explicit during review."
+          ],
+          "stop_line": "Do not treat this as a fast-path Architecture adoption or open downstream Runtime follow-through until the conflict is explicitly resolved."
+        },
+        "explanation_breakdown": {
+          "keyword_signals": [
+            "Meta-usefulness signal is present (4/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+            "Keyword-derived lane scores: discovery=15, architecture=15, runtime=18."
+          ],
+          "metadata_signals": [
+            "Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+            "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+            "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+            "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+            "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+            "Metadata-derived lane scores: discovery=0, architecture=14, runtime=4."
+          ],
+          "gap_alignment_signals": [
+            "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+            "Gap-derived lane scores: discovery=0, architecture=0, runtime=0."
+          ],
+          "ambiguity_signals": [
+            "Top lane architecture beat runtime by 7 points after ambiguity penalties.",
+            "Signal disagreement requires review: keyword evidence pointed to runtime instead of architecture."
+          ]
+        }
+      }
+    }
+  }
+}

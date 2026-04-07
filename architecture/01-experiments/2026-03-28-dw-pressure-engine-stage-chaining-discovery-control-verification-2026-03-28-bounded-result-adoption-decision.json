@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-28-dw-pressure-engine-stage-chaining-discovery-control-verification-2026-03-28-bounded-result.md",
+  "primary_evidence_path": "scripts/check-directive-engine-stage-chaining.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can keep the shared Engine refactor honest by proving the staged Architecture refactor also preserves Discovery behavior.",
+    "mechanism": "This DEEP bounded result extends the focused staged Engine check with one Discovery control source.",
+    "baseline_observation": "Before this DEEP case, the staged Engine check covered Architecture and Runtime but relied on ad hoc discovery inspection for full-lane confidence.",
+    "expected_effect": "Future shared Engine refactors will fail quickly if they alter the default Discovery proof or integration behavior.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The staged Engine verification is worth extending with one Discovery control case.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

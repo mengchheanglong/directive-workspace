@@ -13,19 +13,19 @@
   "createdAt": "2026-04-01T00:00:00.000Z",
   "updatedAt": "2026-04-01T08:33:11.746Z",
   "linkedArtifacts": {
-    "intakeRecordPath": "discovery/intake/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-intake.md",
-    "triageRecordPath": "discovery/triage/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-triage.md",
-    "routingRecordPath": "discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
+    "intakeRecordPath": "discovery/01-intake/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
     "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-01T00-00-00-000Z-dw-source-temporal-durable-execution-2026-04-01-a3c77d39.json",
     "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-01T00-00-00-000Z-dw-source-temporal-durable-execution-2026-04-01-a3c77d39.md",
     "architectureHandoffPath": null,
     "architectureDecisionPath": null,
-    "runtimeFollowUpPath": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+    "runtimeFollowUpPath": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
     "runtimeRecordPath": "runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md",
     "runtimeProofPath": "runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md",
     "runtimeCapabilityBoundaryPath": "runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md",
     "runtimePromotionReadinessPath": "runtime/05-promotion-readiness/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-promotion-readiness.md",
-    "resultRecordPath": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md"
+    "resultRecordPath": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md"
   },
   "projectionInputs": {
     "discoveryFrontDoor": {
@@ -72,9 +72,9 @@
         "why_this_route": "Recommended runtime because its lane score (19) exceeded the alternatives.",
         "why_not_alternatives": "Matched open gap gap-engine-lane-boundary-enforcement (rank 2) as the closest current mission pressure. Meta-usefulness signal is present (1/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
         "receiving_track_owner": "runtime",
-        "required_next_artifact": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
-        "linked_intake_record": "discovery/intake/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-intake.md",
-        "linked_triage_record": "discovery/triage/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-triage.md",
+        "required_next_artifact": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+        "linked_intake_record": "discovery/01-intake/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-triage.md",
         "reentry_or_promotion_conditions": "bounded_runtime_scope, proof_artifact_present, host_adapter_review",
         "review_cadence": "before any downstream execution or promotion"
       }
@@ -85,7 +85,7 @@
       "followUpDate": "2026-04-01",
       "candidateId": "dw-source-temporal-durable-execution-2026-04-01",
       "candidateName": "Temporal Durable Execution Platform",
-      "followUpRelativePath": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+      "followUpRelativePath": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
       "runtimeRecordRelativePath": "runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md",
       "runtimeProofRelativePath": "runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md",
       "currentDecisionState": "route_to_runtime_follow_up",
@@ -119,7 +119,7 @@
       "rollback": "Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.",
       "noOpPath": "Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.",
       "reviewCadence": "before any downstream execution or promotion",
-      "linkedHandoffPath": "discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md"
+      "linkedHandoffPath": "discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md"
     },
     "runtimeProofOpen": {
       "snapshotAt": "2026-04-01T08:33:11.376Z",
@@ -129,7 +129,7 @@
       "candidateName": "Temporal Durable Execution Platform",
       "runtimeRecordRelativePath": "runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md",
       "runtimeProofRelativePath": "runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md",
-      "linkedFollowUpRecord": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+      "linkedFollowUpRecord": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
       "runtimeObjective": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.",
       "proposedHost": "pending_host_selection",
       "proposedRuntimeSurface": "reimplement",
@@ -151,7 +151,7 @@
       "rollback": "Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete.",
       "noOpPath": "Leave the candidate routed with a follow-up stub only and do not materialize runtime execution yet.",
       "reviewCadence": "before any downstream execution or promotion",
-      "linkedHandoffPath": "discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
+      "linkedHandoffPath": "discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
       "sourceRecordStatus": "pending_proof_boundary",
       "nextDecisionPoint": "Approve one bounded Runtime proof artifact or leave the record pending."
     },
@@ -163,8 +163,8 @@
       "candidateName": "Temporal Durable Execution Platform",
       "runtimeProofRelativePath": "runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md",
       "runtimeRecordRelativePath": "runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md",
-      "linkedFollowUpRecord": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
-      "linkedRoutingPath": "discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
+      "linkedFollowUpRecord": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+      "linkedRoutingPath": "discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
       "runtimeCapabilityBoundaryRelativePath": "runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md",
       "runtimeObjective": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.",
       "proposedHost": "pending_host_selection",
@@ -194,8 +194,8 @@
       "capabilityBoundaryRelativePath": "runtime/04-capability-boundaries/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-capability-boundary.md",
       "linkedRuntimeProofPath": "runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md",
       "linkedRuntimeRecordPath": "runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md",
-      "linkedFollowUpPath": "runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
-      "linkedRoutingPath": "discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
+      "linkedFollowUpPath": "runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md",
+      "linkedRoutingPath": "discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md",
       "linkedCallableStubPath": null,
       "promotionReadinessRelativePath": "runtime/05-promotion-readiness/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-promotion-readiness.md",
       "runtimeObjective": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary.",

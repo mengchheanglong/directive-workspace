@@ -4,7 +4,7 @@
 - Candidate id: `dw-live-mini-swe-agent-engine-pressure-2026-03-24`
 - Candidate name: `mini-swe-agent Runtime Capability Pressure`
 - Runtime v0 record path: `runtime/02-records/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-record.md`
-- Source follow-up record path: `runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Source follow-up record path: `runtime/00-follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
 - Proof opening decision: `approved_for_bounded_proof_artifact`
 - Opened by: `directive-lead-runtime-review`
 - Opened on: `2026-03-24`
@@ -12,8 +12,8 @@
 
 ## source inputs required
 - Runtime v0 record: `runtime/02-records/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`
 - Runtime objective: Runtime operationalization and behavior-preserving transformation. Assess whether a minimal shell-first coding agent can become a reusable callable capability, bounded automation surface, or runtime workflow for the host with clearer reliability and lower scaffolding cost.
 - Proposed host: `Directive Workspace standalone host (hosts/standalone-host/)`
 - Proposed runtime surface: reimplement
@@ -60,5 +60,5 @@
 ## artifact linkage
 - Runtime proof artifact: `runtime/03-proof/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-routing-record.md`

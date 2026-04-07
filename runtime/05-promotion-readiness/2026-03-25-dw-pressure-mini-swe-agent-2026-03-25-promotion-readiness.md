@@ -6,8 +6,8 @@
 - Runtime capability boundary path: `runtime/04-capability-boundaries/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-capability-boundary.md`
 - Source Runtime proof artifact: `runtime/03-proof/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-proof.md`
 - Source Runtime v0 record: `runtime/02-records/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md`
 - Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`
 - Opened by: `codex-pressure-run-2026-03-25`
 - Opened on: `2026-03-25`
@@ -65,5 +65,5 @@
 - Runtime capability boundary: `runtime/04-capability-boundaries/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-capability-boundary.md`
 - Runtime proof artifact: `runtime/03-proof/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-proof.md`
 - Runtime v0 record: `runtime/02-records/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-25-dw-pressure-mini-swe-agent-2026-03-25-routing-record.md`

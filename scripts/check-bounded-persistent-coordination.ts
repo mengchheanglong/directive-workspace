@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 import {
   buildDirectiveBoundedPersistentCoordinationReport,
   readDirectiveCoordinationLedger,
-} from "../shared/lib/bounded-persistent-coordination.ts";
+} from "../engine/coordination/bounded-persistent-coordination.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const QUEUE_PATH = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
@@ -79,8 +79,12 @@ function main() {
     );
   }
 
-  assert.equal(report.upstreamReport.totalLiveCases, 32);
+  assert.equal(report.upstreamReport.totalLiveCases, 47);
   assert.equal(report.ledgerPath, "control/state/coordination-ledger.json");
+  assert.equal(report.persistenceSignals.totalPreviousChecks, 2);
+  assert.equal(report.persistenceSignals.staleCases.length, 18);
+  assert.equal(report.persistenceSignals.newCases.length, 15);
+  assert.equal(report.persistenceSignals.resolvedCases.length, 0);
 
   assert.ok(fs.existsSync(LEDGER_PATH), "Ledger file must exist on disk");
 

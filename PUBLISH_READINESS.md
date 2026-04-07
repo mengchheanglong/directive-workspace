@@ -10,7 +10,7 @@ What is publish-ready now:
 - product doctrine
 - ownership boundaries
 - initial canonical engine surface under `engine/`
-- initial Engine-owned Discovery / Runtime / Architecture lane set
+- lane-owned Discovery / Runtime / Architecture operating surfaces
 - Discovery / Runtime / Architecture lane structure
 - shared contracts, status vocabulary, and decision vocabulary
 - architecture records and experiments
@@ -28,7 +28,7 @@ What is publish-ready now:
 
 What is not complete yet as a broader standalone host surface:
 - deeper engine coverage beyond the current source intake -> routing -> proof-plan -> integration-proposal slice
-- deeper lane coverage so more Discovery / Runtime / Architecture behavior runs through the Engine-owned lane model
+- deeper lane coverage so more Discovery / Runtime / Architecture behavior runs through the canonical lane surfaces with less host-side reconstruction
 - fuller canonical engine-owned runtime/state model for source intake, routing, adaptation, proof, and integration
 - explicit host-adapter layer over that engine
 - Runtime runtime implementation
@@ -39,7 +39,7 @@ What is not complete yet as a broader standalone host surface:
 Current runtime reality:
 - Mission Control is the first broad runtime host
 - Directive Workspace now has an initial canonical engine surface for host embedding
-- Directive Workspace now has an initial Engine-owned Discovery / Runtime / Architecture lane set
+- Directive Workspace now has lane-owned Discovery / Runtime / Architecture operating surfaces
 - Directive Workspace now ships a configurable standalone filesystem reference host for local execution, host-proof flows, bounded local HTTP API usage, optional bearer auth, persisted runtime status/access logging, and a Discovery front door that can persist full Engine run records
 - Directive Workspace now also ships a minimal product-owned standalone frontend for direct product operation and testing over the same artifacts without replacing Mission Control
 - that reference host now also supports a bounded local Runtime workflow for writing follow-up/record/proof/transformation/promotion/registry artifacts and reading Runtime overview state
@@ -113,7 +113,7 @@ Still pending before a public code release:
 - choose and add a license
 - lock the public versioning scheme (current root package uses placeholder `0.0.0-private`)
 - expand the current DW engine slice so hosts embed one product kernel rather than many helper flows
-- move more Discovery / Runtime / Architecture behavior into the Engine-owned lane model so host helpers stop reconstructing the core system
+- reduce remaining host-side reconstruction by expanding canonical Engine and lane surfaces where repeated pressure proves they belong
 - decide whether to publish doctrine plus operating assets only, or include selected package/code artifacts too
 - decide whether Runtime host mirrors stay internal or become part of the release story
 - complete the broader standalone host surface beyond the current configurable filesystem/API/SQLite reference host

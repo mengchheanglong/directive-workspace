@@ -9,9 +9,9 @@ import {
   type DirectiveFrontendServerHandle,
 } from "./frontend-check-helpers.ts";
 import { listCandidateMarkdownFiles } from "./list-candidate-markdown-files.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { buildDirectiveRuntimePromotionAssistanceReport } from "../shared/lib/runtime-promotion-assistance.ts";
-import { readDirectiveRuntimePromotionSpecification } from "../shared/lib/runtime-promotion-specification.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { buildDirectiveRuntimePromotionAssistanceReport } from "../runtime/lib/runtime-promotion-assistance.ts";
+import { readDirectiveRuntimePromotionSpecification } from "../runtime/lib/runtime-promotion-specification.ts";
 
 export const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const EXPECTED_DW_WEB_HOST = "Directive Workspace web host (frontend/ + hosts/web-host/)";
@@ -23,7 +23,7 @@ export const EXPECTED_RUNTIME_PROMOTION_NEXT_STEP_PROMOTED =
   "No automatic Runtime step is open; registry acceptance, host integration, runtime execution, and promotion automation remain intentionally unopened.";
 
 const DW_WEB_HOST_GUARD_PATH = "shared/contracts/dw-web-host-seam-review-guard.md";
-const PROFILE_CATALOG_PATH = "runtime/PROMOTION_PROFILES.json";
+const PROFILE_CATALOG_PATH = "runtime/meta/PROMOTION_PROFILES.json";
 const EXPECTED_PROFILE = "dw_web_host_seam_review_guard/v1";
 const EXPECTED_FAMILY = "bounded_dw_web_host_seam_review";
 const EXPECTED_PROOF_SHAPE = "dw_web_host_seam_review_snapshot/v1";
@@ -89,7 +89,7 @@ export function loadDwWebHostPromotionCheckerState(input: {
   const promotionRecordPresent = focus?.currentStage === EXPECTED_RUNTIME_PROMOTION_STAGE_PROMOTED;
   const promotionRecordPaths = listCandidateMarkdownFiles({
     directiveRoot: DIRECTIVE_ROOT,
-    relativeDir: "runtime/promotion-records",
+    relativeDir: "runtime/07-promotion-records",
     candidateId: input.candidateId,
   });
   const registryEntryPaths = listCandidateMarkdownFiles({
@@ -151,19 +151,19 @@ const DW_WEB_HOST_SYNC_CASES = {
     promotionSpecPath:
       "runtime/06-promotion-specifications/2026-03-26-dw-pressure-openmoss-architecture-loop-2026-03-26-promotion-specification.json",
     promotionRecordPath:
-      "runtime/promotion-records/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-promotion-record.md",
+      "runtime/07-promotion-records/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-promotion-record.md",
     compileContractPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-seam-review-compile-contract-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-seam-review-compile-contract-01.md",
     inputPackagePath:
-      "runtime/follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-promotion-input-package-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-promotion-input-package-01.md",
     decisionPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-profile-checker-decision-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-profile-checker-decision-01.md",
     implementationSlicePath:
-      "runtime/follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-runtime-implementation-slice-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-runtime-implementation-slice-01.md",
     implementationResultPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-runtime-implementation-slice-01-result.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-openmoss-architecture-loop-dw-web-host-runtime-implementation-slice-01-result.md",
     registryEntryPath:
-      "runtime/registry/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-registry-entry.md",
+      "runtime/08-registry/2026-04-02-dw-pressure-openmoss-architecture-loop-2026-03-26-registry-entry.md",
     commands: {
       compileContract: "npm run check:directive-openmoss-pressure-dw-web-host-seam-review-compile-contract",
       inputPackage: "npm run check:directive-openmoss-pressure-dw-web-host-promotion-input-package",
@@ -192,19 +192,19 @@ const DW_WEB_HOST_SYNC_CASES = {
     promotionSpecPath:
       "runtime/06-promotion-specifications/2026-03-25-dw-pressure-scientify-2026-03-25-promotion-specification.json",
     promotionRecordPath:
-      "runtime/promotion-records/2026-04-02-dw-pressure-scientify-2026-03-25-promotion-record.md",
+      "runtime/07-promotion-records/2026-04-02-dw-pressure-scientify-2026-03-25-promotion-record.md",
     compileContractPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-seam-review-compile-contract-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-seam-review-compile-contract-01.md",
     inputPackagePath:
-      "runtime/follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-promotion-input-package-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-promotion-input-package-01.md",
     decisionPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-profile-checker-decision-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-profile-checker-decision-01.md",
     implementationSlicePath:
-      "runtime/follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-runtime-implementation-slice-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-runtime-implementation-slice-01.md",
     implementationResultPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-runtime-implementation-slice-01-result.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-scientify-dw-web-host-runtime-implementation-slice-01-result.md",
     registryEntryPath:
-      "runtime/registry/2026-04-02-dw-pressure-scientify-2026-03-25-registry-entry.md",
+      "runtime/08-registry/2026-04-02-dw-pressure-scientify-2026-03-25-registry-entry.md",
     commands: {
       compileContract: "npm run check:directive-pressure-scientify-dw-web-host-seam-review-compile-contract",
       inputPackage: "npm run check:directive-pressure-scientify-dw-web-host-promotion-input-package",
@@ -233,19 +233,19 @@ const DW_WEB_HOST_SYNC_CASES = {
     promotionSpecPath:
       "runtime/06-promotion-specifications/2026-03-25-dw-pressure-puppeteer-bounded-tool-2026-03-25-promotion-specification.json",
     promotionRecordPath:
-      "runtime/promotion-records/2026-04-02-dw-pressure-puppeteer-bounded-tool-2026-03-25-promotion-record.md",
+      "runtime/07-promotion-records/2026-04-02-dw-pressure-puppeteer-bounded-tool-2026-03-25-promotion-record.md",
     compileContractPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-seam-review-compile-contract-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-seam-review-compile-contract-01.md",
     inputPackagePath:
-      "runtime/follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-promotion-input-package-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-promotion-input-package-01.md",
     decisionPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-profile-checker-decision-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-profile-checker-decision-01.md",
     implementationSlicePath:
-      "runtime/follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-runtime-implementation-slice-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-runtime-implementation-slice-01.md",
     implementationResultPath:
-      "runtime/follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-runtime-implementation-slice-01-result.md",
+      "runtime/00-follow-up/2026-04-02-dw-pressure-puppeteer-bounded-tool-dw-web-host-runtime-implementation-slice-01-result.md",
     registryEntryPath:
-      "runtime/registry/2026-04-02-dw-pressure-puppeteer-bounded-tool-2026-03-25-registry-entry.md",
+      "runtime/08-registry/2026-04-02-dw-pressure-puppeteer-bounded-tool-2026-03-25-registry-entry.md",
     commands: {
       compileContract: "npm run check:directive-puppeteer-pressure-dw-web-host-seam-review-compile-contract",
       inputPackage: "npm run check:directive-puppeteer-pressure-dw-web-host-promotion-input-package",
@@ -274,19 +274,19 @@ const DW_WEB_HOST_SYNC_CASES = {
     promotionSpecPath:
       "runtime/06-promotion-specifications/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-promotion-specification.json",
     promotionRecordPath:
-      "runtime/promotion-records/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-promotion-record.md",
+      "runtime/07-promotion-records/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-promotion-record.md",
     compileContractPath:
-      "runtime/follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-seam-review-compile-contract-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-seam-review-compile-contract-01.md",
     inputPackagePath:
-      "runtime/follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-promotion-input-package-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-promotion-input-package-01.md",
     decisionPath:
-      "runtime/follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-profile-checker-decision-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-profile-checker-decision-01.md",
     implementationSlicePath:
-      "runtime/follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-runtime-implementation-slice-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-runtime-implementation-slice-01.md",
     implementationResultPath:
-      "runtime/follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-runtime-implementation-slice-01-result.md",
+      "runtime/00-follow-up/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-dw-web-host-runtime-implementation-slice-01-result.md",
     registryEntryPath:
-      "runtime/registry/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-registry-entry.md",
+      "runtime/08-registry/2026-04-02-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-registry-entry.md",
     commands: {
       compileContract: "npm run check:directive-real-mini-swe-agent-runtime-route-dw-web-host-seam-review-compile-contract",
       inputPackage: "npm run check:directive-real-mini-swe-agent-runtime-route-v0-dw-web-host-promotion-input-package",
@@ -315,19 +315,19 @@ const DW_WEB_HOST_SYNC_CASES = {
     promotionSpecPath:
       "runtime/06-promotion-specifications/2026-03-24-dw-live-scientify-engine-pressure-2026-03-24-promotion-specification.json",
     promotionRecordPath:
-      "runtime/promotion-records/2026-04-02-dw-live-scientify-engine-pressure-2026-03-24-promotion-record.md",
+      "runtime/07-promotion-records/2026-04-02-dw-live-scientify-engine-pressure-2026-03-24-promotion-record.md",
     compileContractPath:
-      "runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-seam-review-compile-contract-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-seam-review-compile-contract-01.md",
     inputPackagePath:
-      "runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-promotion-input-package-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-promotion-input-package-01.md",
     decisionPath:
-      "runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-profile-checker-decision-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-profile-checker-decision-01.md",
     implementationSlicePath:
-      "runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-runtime-implementation-slice-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-runtime-implementation-slice-01.md",
     implementationResultPath:
-      "runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-runtime-implementation-slice-01-result.md",
+      "runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-dw-web-host-runtime-implementation-slice-01-result.md",
     registryEntryPath:
-      "runtime/registry/2026-04-02-dw-live-scientify-engine-pressure-2026-03-24-registry-entry.md",
+      "runtime/08-registry/2026-04-02-dw-live-scientify-engine-pressure-2026-03-24-registry-entry.md",
     commands: {
       compileContract: "npm run check:directive-scientify-dw-web-host-seam-review-compile-contract",
       inputPackage: "npm run check:directive-scientify-dw-web-host-promotion-input-package",
@@ -357,19 +357,19 @@ const DW_WEB_HOST_SYNC_CASES = {
     promotionSpecPath:
       "runtime/06-promotion-specifications/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-promotion-specification.json",
     promotionRecordPath:
-      "runtime/promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md",
+      "runtime/07-promotion-records/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-promotion-record.md",
     compileContractPath:
-      "runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-seam-review-compile-contract-01.md",
     inputPackagePath:
-      "runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-promotion-input-package-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-promotion-input-package-01.md",
     decisionPath:
-      "runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-profile-checker-decision-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-profile-checker-decision-01.md",
     implementationSlicePath:
-      "runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01.md",
+      "runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01.md",
     implementationResultPath:
-      "runtime/follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01-result.md",
+      "runtime/00-follow-up/2026-04-02-dw-source-temporal-durable-execution-dw-web-host-runtime-implementation-slice-01-result.md",
     registryEntryPath:
-      "runtime/registry/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-registry-entry.md",
+      "runtime/08-registry/2026-04-02-dw-source-temporal-durable-execution-2026-04-01-registry-entry.md",
     commands: {
       compileContract: "npm run check:directive-temporal-durable-execution-dw-web-host-seam-review-compile-contract",
       inputPackage: "npm run check:directive-temporal-durable-execution-dw-web-host-promotion-input-package",
@@ -515,7 +515,7 @@ function assertCommonRecordState(
   );
   if (promotionRecordPresent) {
     assert.equal(
-      `runtime/promotion-records/${promotionRecordPaths[0]?.name}`,
+      `runtime/07-promotion-records/${promotionRecordPaths[0]?.name}`,
       config.promotionRecordPath,
       "unexpected_promotion_record_path",
     );

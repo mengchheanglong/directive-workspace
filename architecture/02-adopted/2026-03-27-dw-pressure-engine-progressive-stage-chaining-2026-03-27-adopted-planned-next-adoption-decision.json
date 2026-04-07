@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-progressive-stage-chaining-2026-03-27",
+  "adoption_date": "2026-03-27",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-progressive-stage-chaining-2026-03-27-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-27-dw-pressure-engine-progressive-stage-chaining-2026-03-27-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-adopted/2026-03-27-dw-pressure-engine-progressive-stage-chaining-2026-03-27-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "adequate",
+  "self_improvement": {
+    "category": "adaptation_quality",
+    "claim": "Directive Workspace can improve future Engine source adaptation quality by letting later planning stages consume typed outputs from earlier stages instead of recomputing everything from the same flat input.",
+    "mechanism": "This DEEP Architecture case opens one bounded extraction-to-adaptation chaining slice in engine/directive-engine.ts rather than a broad pipeline rewrite.",
+    "baseline_observation": "Before this DEEP opener, the Engine planning pipeline constructed extraction, adaptation, improvement, proof, and integration plans independently from the same planningInput, and the ts-edge finding existed only as a parked STANDARD source case.",
+    "expected_effect": "The first chained seam will make progressive stage-output planning real in Engine code and provide a concrete base for later bounded chaining work if it proves worthwhile.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The parked ts-edge STANDARD result justifies one separate DEEP Architecture implementation slice to materialize the first progressive stage-output chaining seam in Engine code.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

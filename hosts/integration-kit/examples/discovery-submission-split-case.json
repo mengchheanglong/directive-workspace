@@ -46,7 +46,8 @@
       "why_this_route": "Primary value is reusable internal operating logic rather than a runtime capability.",
       "why_not_alternatives": "Runtime would be premature because runtime form is not yet justified.",
       "receiving_track_owner": "directive-workspace",
-      "required_next_artifact": "architecture/02-experiments/2026-03-22-example-split-case-slice-01.md"
+      "required_next_artifact": "architecture/01-experiments/2026-03-22-example-split-case-slice-01.md"
     }
   }
 }
+

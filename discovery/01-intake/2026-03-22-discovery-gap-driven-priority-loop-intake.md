@@ -1,0 +1,34 @@
+# Discovery Fast-Path Record
+
+- Candidate id: `dw-discovery-gap-driven-priority-loop`
+- Candidate name: `Discovery Gap-Driven Priority Loop`
+- Record date: `2026-03-22`
+- Source type: `internal-signal`
+- Source reference: `knowledge/active-mission.md` + `discovery/capability-gaps.json` + `discovery/intake-queue.json`
+- Source location on disk: `C:\Users\User\.openclaw\workspace\directive-workspace\discovery`
+- Claimed value: turn the open capability-gap registry into the actual Discovery prioritization surface instead of leaving gap selection implicit
+- First-pass summary: Discovery has a queue and a gap registry, but nothing currently enforces "open gaps decide the next slice." Add a checked worklist and close that operating gap with one bounded Architecture slice.
+- Stack language: `json + markdown + typescript`
+- Stack runtime: `node`
+- Stack framework: `Directive Workspace + Mission Control checks`
+- Stack package tool: `npm`
+- Stack deployment: `local workspace`
+- Stack external dependencies: `none`
+- Stack data model assumptions: open gaps are tracked in `capability-gaps.json`; queue candidates are tracked in `intake-queue.json`
+- Stack integration shape: `Discovery priority surface + host checker`
+- Adoption target: `Directive Architecture`
+- Decision state: `accept for architecture`
+- Route destination: `architecture`
+- Why this route: the result is reusable internal operating logic for Discovery and should become product-owned contract/schema/worklist behavior
+- Why not the alternatives: `Runtime` is not the right owner because this is not runtime capability; `Discovery holding` would preserve the problem instead of correcting it
+- Need bounded proof: `yes`
+- Next artifact: `architecture/01-experiments/2026-03-22-discovery-gap-driven-priority-loop-slice-01.md`
+- Compaction profile (if compacted): `n/a`
+- Compaction status (`full | compacted | bypass`): `bypass`
+- Compaction reason (required if bypass): `internal operating slice; no source compaction needed`
+- Re-entry trigger (if held): `n/a`
+- Review cadence (if held): `n/a`
+- Mission alignment (which active-mission objective does this serve): `Discovery as operational front door`
+- Addresses known capability gap (gap_id or n/a): `gap-discovery-front-door-coverage`
+- Gap worklist rank (if selected from `discovery/gap-worklist.json`): `1`
+

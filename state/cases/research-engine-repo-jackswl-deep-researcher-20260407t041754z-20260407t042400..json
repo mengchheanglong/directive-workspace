@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400.",
+  "candidateId": "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400.",
+  "candidateName": "jackswl/deep-researcher",
+  "sourceType": "external-system",
+  "sourceReference": "https://github.com/jackswl/deep-researcher",
+  "decisionState": "adopt",
+  "routeTarget": "runtime",
+  "operatingMode": "note",
+  "queueStatus": "routed",
+  "createdAt": "2026-04-07T04:24:00.337Z",
+  "updatedAt": "2026-04-07T04:24:00.337Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/01-intake/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400--intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400--triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400--routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-07T04-24-00-337Z-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20-8bb71ef4.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-07T04-24-00-337Z-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20-8bb71ef4.md",
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": null
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-04-07",
+      "decisionState": "adopt",
+      "intake": {
+        "intake_date": "2026-04-07",
+        "source_type": "external-system",
+        "source_reference": "https://github.com/jackswl/deep-researcher",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Live-discovered candidate requiring source analysis. Imported from research-engine for Directive Workspace Discovery review only.",
+        "initial_relevance_to_workspace": "Direct usefulness: the generated Runtime adaptation and improvement plans target reusable callable runtime value with bounded behavior-preserving improvement, so the value is primarily useful as something the host can call or run again.",
+        "suspected_adoption_target": "reusable runtime capability",
+        "immediate_notes": "Engine run 8bb71ef4-b3d8-436d-b48b-9601f13560ad selected runtime. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-04-07",
+        "first_pass_summary": "Live-discovered candidate requiring source analysis. Imported from research-engine for Directive Workspace Discovery review only.",
+        "problem_it_appears_to_solve": "Operationalize the value in a reusable runtime shape with stronger boundaries than the source. Runtime callable execution evidence signal: 3 bounded execution records exist across 2 capabilities, and 1 non-success result is already captured as validation_error for dw-transform-code-normalizer.",
+        "extractable_value_hypothesis": "Live-discovered candidate requiring source analysis. Imported from research-engine for Directive Workspace Discovery review only. | Imported source candidate repo-jackswl-deep-researcher from research-engine bundle C:/Users/User/AppData/Local/Temp/research-engine-live-6ccdc76b-1288-4eef-9de9-74998e4efbd8/dw_import_bundle.json. Bundle decision boundary: This bundle is import-ready for Directive Workspace Discovery review only; it must not be treated as a routing or adoption decision. Source intelligence boundary: Research Engine gathers source intelligence and scoring signals only; it does not decide what Directive Workspace Discovery should adopt or route. Discovery packet boundary: Research Engine prepares Discovery-facing candidate packets; Directive Workspace Discovery retains final route and adoption authority. Research-engine source kind: system Recommended lane target: runtime Lane target rationale: Primary value appears reusable as a runtime capability rather than an Engine workflow improvement. Discovery signal band: strong Signal score summary: Strong Discovery review signal from Research Engine scoring. Score summary: total=87; relevance=9/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=9/10; novelty=8/10. Signal total score: 87. Workflow phase scores: discovery=10. Initial value hypothesis: Potential reusable component based on live discovery evidence. Baggage signals: Unverified live candidate profile. Capability gap hint: Need source analysis contract pass before adoption. Freshness: Latest normalized evidence captured at 2026-04-07T04:17:30+00:00. Freshest observed source update at 2026-04-04T11:22:59+00:00 (2 days old at capture; 5/5 evidence items carried source dates; signal=current). Evidence bundle refs: repo-jackswl-deep-researcher-e1, repo-jackswl-deep-researcher-e2, repo-jackswl-deep-researcher-e3, repo-jackswl-deep-researcher-e4, repo-jackswl-deep-researcher-e5. Evidence cluster summary: Collapsed 5 evidence items into 5 clusters. | No duplicate evidence clusters detected. | No contradiction flags detected across clustered evidence.. Provenance: primary via exa-live:github-repos (github-repo). Review guidance summary: Runtime-oriented candidate: preserve the reusable capability boundary and require proof before promotion. Review guidance action: Route through Discovery into Runtime review and keep the reusable capability/package boundary explicit. Review guidance stop-line: Do not treat the source as a structural Architecture improvement unless a separate Engine-workflow benefit is proven. Uncertainty notes: No major unresolved uncertainty was extracted beyond normal evidence interpretation risk. | record_shape:queue_only",
+        "routing_recommendation": "Shared Engine routing selected runtime with usefulness level direct.",
+        "proposed_adoption_target": "reusable runtime capability",
+        "stack_shape_summary": "external-system source; host dependence host_adapter_required; integration mode reimplement.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Directive-owned runtime capability or transformation artifact behind a host adapter boundary.. Excluded baggage: source-specific implementation baggage, host-local assumptions from the original source.",
+        "suggested_decision_state": "route_to_runtime_follow_up",
+        "fit_to_current_direction": "Direct usefulness: the generated Runtime adaptation and improvement plans target reusable callable runtime value with bounded behavior-preserving improvement, so the value is primarily useful as something the host can call or run again.",
+        "reusability_across_surfaces": "Value depends on a later host adapter boundary for repeated runtime use.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "medium",
+        "can_current_gates_validate_safely": "partially - proof plan runtime_runtime_proof defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "bounded_runtime_scope, proof_artifact_present, host_adapter_review",
+        "missing_evidence": "runtime objective, evaluation method, rollback path, host-integration boundary note",
+        "next_action": "Open a bounded Runtime follow-up and only involve host code through the engine adapter boundary. Use callable execution evidence only as a reviewable soft signal; keep explicit failure-pattern review before widening host consumption or broader Runtime surface claims.",
+        "monitor_defer_trigger_conditions": "If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.",
+        "reentry_conditions": "Respect rollback boundary: Keep the candidate at follow-up/prototype status and avoid promotion until runtime proof becomes concrete."
+      },
+      "routing": {
+        "route_date": "2026-04-07",
+        "source_type": "external-system",
+        "decision_state": "adopt",
+        "adoption_target": "reusable runtime capability",
+        "route_destination": "runtime",
+        "why_this_route": "Recommended runtime because its lane score (31) exceeded the alternatives.",
+        "why_not_alternatives": "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring. Primary adoption target metadata is set to runtime, which contributes directly to lane scoring instead of relying only on keyword overlap. Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring. Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone. Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code. Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens. Meta-usefulness signal is present (5/5), which strengthens Engine-improvement handling inside Architecture or Discovery. Route explanation breakdown for runtime: keyword=21, metadata=10, gap=0.",
+        "receiving_track_owner": "runtime",
+        "required_next_artifact": "runtime/00-follow-up/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20-runtime-follow-up-record.md",
+        "linked_intake_record": "discovery/01-intake/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400--intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t042400--triage.md",
+        "reentry_or_promotion_conditions": "bounded_runtime_scope, proof_artifact_present, host_adapter_review",
+        "review_cadence": "before any downstream execution or promotion",
+        "mission_priority_score": 51,
+        "routing_confidence": "high",
+        "matched_gap_id": null,
+        "matched_gap_rank": null,
+        "route_conflict": false,
+        "needs_human_review": false,
+        "ambiguity_summary": {
+          "top_track": "runtime",
+          "runner_up_track": "architecture",
+          "score_delta": 5,
+          "conflicting_signal_families": [],
+          "conflicting_tracks": []
+        },
+        "review_guidance": null,
+        "explanation_breakdown": {
+          "keyword_signals": [
+            "Meta-usefulness signal is present (5/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+            "Keyword-derived lane scores: discovery=15, architecture=18, runtime=21."
+          ],
+          "metadata_signals": [
+            "Primary adoption target metadata is set to runtime, which contributes directly to lane scoring instead of relying only on keyword overlap.",
+            "Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring.",
+            "Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone.",
+            "Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code.",
+            "Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens.",
+            "Metadata-derived lane scores: discovery=0, architecture=8, runtime=10."
+          ],
+          "gap_alignment_signals": [
+            "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+            "Gap-derived lane scores: discovery=0, architecture=0, runtime=0."
+          ],
+          "ambiguity_signals": [
+            "Top lane runtime beat architecture by 5 points after ambiguity penalties.",
+            "No material signal-family disagreement remained after scoring; keyword, metadata, and gap alignment all supported runtime or had no competing winner."
+          ]
+        }
+      }
+    }
+  }
+}

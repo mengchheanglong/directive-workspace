@@ -3,37 +3,40 @@ import http, { type IncomingMessage, type Server as NodeHttpServer, type ServerR
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
+import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
 import {
   closeDirectiveArchitectureBoundedStart,
   closeDirectiveArchitectureNoteHandoff,
   continueDirectiveArchitectureFromBoundedResult,
-} from "../../shared/lib/architecture-bounded-closeout.ts";
+} from "../../architecture/lib/architecture-bounded-closeout.ts";
 import {
   createDirectiveArchitectureImplementationTarget,
-} from "../../shared/lib/architecture-implementation-target.ts";
+} from "../../architecture/lib/architecture-implementation-target.ts";
 import {
   createDirectiveArchitectureImplementationResult,
-} from "../../shared/lib/architecture-implementation-result.ts";
+} from "../../architecture/lib/architecture-implementation-result.ts";
 import {
   confirmDirectiveArchitectureRetention,
-} from "../../shared/lib/architecture-retention.ts";
+} from "../../architecture/lib/architecture-retention.ts";
 import {
   createDirectiveArchitectureIntegrationRecord,
-} from "../../shared/lib/architecture-integration-record.ts";
+} from "../../architecture/lib/architecture-integration-record.ts";
 import {
   recordDirectiveArchitectureConsumption,
-} from "../../shared/lib/architecture-consumption-record.ts";
+} from "../../architecture/lib/architecture-consumption-record.ts";
 import {
   evaluateDirectiveArchitectureConsumption,
-} from "../../shared/lib/architecture-post-consumption-evaluation.ts";
-import { ARCHITECTURE_DEEP_TAIL_STAGES } from "../../shared/lib/architecture-deep-tail-stage-map.ts";
+} from "../../architecture/lib/architecture-post-consumption-evaluation.ts";
+import { ARCHITECTURE_DEEP_TAIL_STAGES } from "../../architecture/lib/architecture-deep-tail-stage-map.ts";
 import {
   reopenDirectiveArchitectureFromEvaluation,
-} from "../../shared/lib/architecture-reopen-from-evaluation.ts";
-import { adoptDirectiveArchitectureResult } from "../../shared/lib/architecture-result-adoption.ts";
-import { startDirectiveArchitectureFromHandoff } from "../../shared/lib/architecture-handoff-start.ts";
+} from "../../architecture/lib/architecture-reopen-from-evaluation.ts";
+import { adoptDirectiveArchitectureResult } from "../../architecture/lib/architecture-result-adoption.ts";
+import { startDirectiveArchitectureFromHandoff } from "../../architecture/lib/architecture-handoff-start.ts";
 import { createStandaloneFilesystemHost } from "../standalone-host/runtime.ts";
+import {
+  buildOperatorDecisionInboxReport,
+} from "../../engine/coordination/operator-decision-inbox.ts";
 import {
   readDirectiveFrontendDiscoveryRoutingDetail,
   readDirectiveFrontendRuntimeRecordDetail,
@@ -193,6 +196,9 @@ export function startDirectiveFrontendServer(
     try {
       if (method === "GET" && pathname === "/api/snapshot") {
         return void writeJson(res, 200, readDirectiveFrontendSnapshot({ directiveRoot, maxRuns: 200, maxQueueEntries: 500, maxHandoffs: 250 }));
+      }
+      if (method === "GET" && pathname === "/api/operator-decision-inbox") {
+        return void writeJson(res, 200, buildOperatorDecisionInboxReport({ directiveRoot }));
       }
       if (method === "GET" && pathname === "/api/engine-runs") {
         return void writeJson(res, 200, readDirectiveFrontendSnapshot({ directiveRoot, maxRuns: 200 }).engineRuns);

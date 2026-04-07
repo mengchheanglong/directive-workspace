@@ -1,0 +1,33 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-autoresearch-loop-protocol-2026-03-26",
+  "adoption_date": "2026-03-26",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-26-dw-pressure-autoresearch-loop-protocol-2026-03-26-bounded-result.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can carry this bounded Architecture slice forward into direct adoption without reopening the prior Engine, handoff, and post-consumption evidence chain by hand.",
+    "mechanism": "The bounded closeout now records an adoption-ready Architecture result and paired decision artifact directly on the bounded-result record.",
+    "baseline_observation": "Before this closeout, the reopened bounded slice still depended on manual interpretation to decide whether it could move forward as retained Directive-owned Architecture output.",
+    "expected_effect": "The bounded result 'Updated engine/directive-engine.ts so Architecture analysis for iterative structural loop protocols now preserves explicit preconditions, verification, rollback, decision, and results logging boundaries instead of flattening them into generic workflow text. Proof method: reran DirectiveEngine.processSource on the same Autoresearch Autonomous Loop Protocol source and confirmed that analysis, extraction, adaptation, and improvement planning now surface those loop-control signals explicitly, then ran npm.cmd run check. This keeps repo-local command sequences and autonomous execution policy out of scope while materializing one Engine-owned loop-discipline improvement.' can now move directly into the normal adoption/materialization path as Architecture-owned output.",
+    "verification_method": "structural_inspection"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The mechanism passed review, met adoption readiness, and remains valuable as Directive-owned Architecture output.",
+    "completion_status": "product_materialized",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

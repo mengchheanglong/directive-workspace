@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "mirrorKind": "discovery_front_door_submission",
+  "caseId": "dw-test-open-deep-research-autoloop-2026-04-06",
+  "candidateId": "dw-test-open-deep-research-autoloop-2026-04-06",
+  "candidateName": "Open Deep Research Autoloop Test",
+  "sourceType": "external-system",
+  "sourceReference": "https://github.com/langchain-ai/open_deep_research",
+  "decisionState": "adopt",
+  "routeTarget": "architecture",
+  "operatingMode": null,
+  "queueStatus": "routed",
+  "createdAt": "2026-04-06T15:10:00.000Z",
+  "updatedAt": "2026-04-06T15:10:00.000Z",
+  "linkedArtifacts": {
+    "intakeRecordPath": "discovery/01-intake/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-intake.md",
+    "triageRecordPath": "discovery/02-triage/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-triage.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-routing-record.md",
+    "engineRunRecordPath": "runtime/standalone-host/engine-runs/2026-04-06T15-10-00-000Z-dw-test-open-deep-research-autoloop-2026-04-06-66b7e9ee.json",
+    "engineRunReportPath": "runtime/standalone-host/engine-runs/2026-04-06T15-10-00-000Z-dw-test-open-deep-research-autoloop-2026-04-06-66b7e9ee.md",
+    "architectureHandoffPath": null,
+    "architectureDecisionPath": null,
+    "runtimeFollowUpPath": null,
+    "runtimeRecordPath": null,
+    "runtimeProofPath": null,
+    "runtimeCapabilityBoundaryPath": null,
+    "runtimePromotionReadinessPath": null,
+    "resultRecordPath": null
+  },
+  "projectionInputs": {
+    "discoveryFrontDoor": {
+      "routeDate": "2026-04-06",
+      "decisionState": "adopt",
+      "intake": {
+        "intake_date": "2026-04-06",
+        "source_type": "external-system",
+        "source_reference": "https://github.com/langchain-ai/open_deep_research",
+        "submitted_by": "directive-workspace-discovery-front-door",
+        "why_it_entered_the_system": "This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.",
+        "claimed_value": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.",
+        "initial_relevance_to_workspace": "Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+        "suspected_adoption_target": "engine-owned product logic",
+        "immediate_notes": "Engine run 66b7e9ee-cc70-4eed-b211-2994220b4b3f selected architecture. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution."
+      },
+      "triage": {
+        "triage_date": "2026-04-06",
+        "first_pass_summary": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design.",
+        "problem_it_appears_to_solve": "Turn extracted mechanisms into Directive-owned improvements that compound future source consumption.",
+        "extractable_value_hypothesis": "Research Engine identified this source as useful for typed research phases, reusable provider seams, and bounded acquisition-versus-synthesis workflow design. | Real source found via research-engine live-hybrid run on 2026-04-06. Testing whether Discovery plus Engine routing can advance a clearly structural source through the downstream loop without extra manual steps. | record_shape:auto",
+        "routing_recommendation": "Shared Engine routing selected architecture with usefulness level meta.",
+        "proposed_adoption_target": "engine-owned product logic",
+        "stack_shape_summary": "external-system source; host dependence engine_only; integration mode adapt.",
+        "boilerplate_vs_product_boundary": "Directive-owned form: Directive-owned Engine logic or operating-code asset such as a contract, schema, template, policy, or shared lib.. Excluded baggage: source-specific implementation baggage, unadapted source terminology.",
+        "suggested_decision_state": "accept_for_architecture",
+        "fit_to_current_direction": "Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.",
+        "reusability_across_surfaces": "Value remains useful without a host runtime surface.",
+        "operational_risk": "Discovery only recorded the route and proof boundary; downstream execution remains out of scope and human review is still required.",
+        "integration_cost": "low",
+        "can_current_gates_validate_safely": "partially - proof plan architecture_validation defines required evidence and gates, but human review still decides whether to advance.",
+        "immediate_risks": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "missing_evidence": "adapted mechanism described, excluded baggage described, engine or product boundary improvement explained, improvement delta stays anchored to prior extraction, adaptation, and improvement stages",
+        "next_action": "Materialize the adapted mechanism as engine-owned product logic only after the staged proof boundary for \"improve engine self-improvement quality\" remains explicit through adaptation_complete.",
+        "monitor_defer_trigger_conditions": "If the route is rejected in human review, keep the source in Discovery instead of forcing downstream work.",
+        "reentry_conditions": "Respect rollback boundary: Keep the result at experiment status and do not integrate it into the engine until the staged proof boundary is clearer."
+      },
+      "routing": {
+        "route_date": "2026-04-06",
+        "source_type": "external-system",
+        "decision_state": "adopt",
+        "adoption_target": "engine-owned product logic",
+        "route_destination": "architecture",
+        "why_this_route": "Recommended architecture because its lane score (23) exceeded the alternatives.",
+        "why_not_alternatives": "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring. Primary adoption target metadata is set to architecture, which contributes directly to lane scoring instead of relying only on keyword overlap. Structured source metadata says executable code is present, which strengthens repeated-runtime usefulness scoring. Structured source metadata says a workflow pattern is present, which strengthens architecture/runtime workflow interpretation beyond title keywords alone. Structured source metadata says the source primarily improves Directive Workspace itself, which strengthens Architecture scoring even when the source also contains executable code. Structured workflow-boundary metadata is set to bounded_protocol, which strengthens Architecture interpretation of explicit reusable workflow boundaries instead of relying only on title/summary tokens. Meta-usefulness signal is present (3/5), which strengthens Engine-improvement handling inside Architecture or Discovery. Route explanation breakdown for architecture: keyword=9, metadata=14, gap=0.",
+        "receiving_track_owner": "architecture",
+        "required_next_artifact": "architecture/01-experiments/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-engine-handoff.md",
+        "linked_intake_record": "discovery/01-intake/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-intake.md",
+        "linked_triage_record": "discovery/02-triage/2026-04-06-dw-test-open-deep-research-autoloop-2026-04-06-triage.md",
+        "reentry_or_promotion_conditions": "adaptation_complete, improvement_complete, engine_boundary_preserved, decision_review",
+        "review_cadence": "before any downstream execution or promotion"
+      }
+    }
+  }
+}

@@ -12,7 +12,8 @@ import {
   readDirectiveWorkbenchHandoffDetail,
   readDirectiveWorkbenchSnapshot,
 } from "../hosts/web-host/data.ts";
-import { evaluateDirectiveArchitectureConsumption } from "../shared/lib/architecture-post-consumption-evaluation.ts";
+import { evaluateDirectiveArchitectureConsumption } from "../architecture/lib/architecture-post-consumption-evaluation.ts";
+import { writeJson } from "./checker-test-helpers.ts";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const DIRECTIVE_ROOT = path.resolve(SCRIPT_DIR, "..");
@@ -20,10 +21,6 @@ const DIRECTIVE_ROOT = path.resolve(SCRIPT_DIR, "..");
 function writeUtf8(filePath: string, content: string) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
-}
-
-function writeJson(filePath: string, value: unknown) {
-  writeUtf8(filePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
 function sampleRunRecord(input: {
@@ -34,6 +31,9 @@ function sampleRunRecord(input: {
   nextAction?: string;
 } = {}) {
   return {
+    $schema: "shared/schemas/directive-engine-run-record.schema.json",
+    schemaVersion: 2,
+    recordKind: "directive_engine_run_record",
     runId: input.runId ?? "sample-engine-run",
     receivedAt: "2026-03-24T00:00:00.000Z",
     source: {
@@ -43,7 +43,55 @@ function sampleRunRecord(input: {
     },
     routingAssessment: {
       matchedGapId: "gap-directive-engine-materialization",
+      matchedGapRank: 1,
+      confidence: "high",
+      needsHumanReview: true,
+      routeConflict: true,
+      ambiguitySummary: {
+        topLaneId: "architecture",
+        runnerUpLaneId: "runtime",
+        scoreDelta: 3,
+        conflictingSignalFamilies: ["keyword", "metadata"],
+        conflictingLaneIds: ["architecture", "runtime"],
+      },
+      reviewGuidance: {
+        guidanceKind: "bounded_lane_review",
+        summary: "Bounded lane review remains required before downstream adoption.",
+        operatorAction: "Keep the bounded lane recommendation visible, review the remaining uncertainty explicitly, and only proceed after that review is recorded.",
+        requiredChecks: [
+          "Confirm the lane still matches the best bounded interpretation.",
+          "Record the remaining uncertainty before downstream advancement.",
+        ],
+        stopLine: "Do not widen downstream work while this bounded review requirement remains open.",
+      },
+      explanationBreakdown: {
+        keywordSignals: [
+          "Architecture language outweighs the competing runtime vocabulary.",
+        ],
+        metadataSignals: [
+          "The source is explicitly framed as improving Directive Workspace itself.",
+        ],
+        gapAlignmentSignals: [
+          "The matched gap pressures Engine workflow-boundary materialization.",
+        ],
+        ambiguitySignals: [
+          "Architecture still leads runtime despite the remaining route conflict.",
+        ],
+      },
+      scoreBreakdown: {
+        gapAlignment: 16,
+      },
     },
+    openGaps: [
+      {
+        gapId: "gap-directive-engine-materialization",
+        description: "Engine workflow boundary still needs stronger stage-aware materialization.",
+        priority: "high",
+        relatedMissionObjective: "Improve Directive Workspace Engine workflow judgment.",
+        currentState: "Stage-aware routing and reporting still rely on fragmented operator context.",
+        desiredState: "Operators can see explicit gap pressure directly from Engine run and Discovery routing surfaces.",
+      },
+    ],
     selectedLane: {
       laneId: "architecture",
       label: "Architecture",
@@ -55,6 +103,7 @@ function sampleRunRecord(input: {
       candidateName: input.candidateName ?? "Sample engine run candidate",
       recommendedLaneId: "architecture",
       usefulnessLevel: "meta",
+      missionPriorityScore: 82,
       confidence: "high",
       requiresHumanReview: true,
       rationale: ["Architecture improvement pressure detected."],
@@ -348,7 +397,7 @@ async function assertShadowTextDoesNotContain(page: Page, text: string) {
 function assertLegacyRuntimeHandoffRepoDetails() {
   const scientify = readDirectiveWorkbenchHandoffDetail({
     directiveRoot: DIRECTIVE_ROOT,
-    relativePath: "runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md",
+    relativePath: "runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md",
   });
   assert.equal(scientify.ok, true, "Legacy Scientify Runtime handoff should be readable through the workbench handoff detail surface");
   if (!scientify.ok || scientify.kind !== "runtime_handoff_legacy") {
@@ -357,16 +406,16 @@ function assertLegacyRuntimeHandoffRepoDetails() {
   assert.equal(scientify.candidateId, "scientify-literature-monitoring");
   assert.equal(
     scientify.runtimeFollowUpPath,
-    "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md",
+    "runtime/00-follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md",
   );
   assert.equal(
     scientify.originatingArchitectureRecordPath,
-    "architecture/03-adopted/2026-03-23-scientify-mixed-value-partition-adopted.md",
+    "architecture/02-adopted/2026-03-23-scientify-mixed-value-partition-adopted.md",
   );
 
   const autoresearch = readDirectiveWorkbenchHandoffDetail({
     directiveRoot: DIRECTIVE_ROOT,
-    relativePath: "runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md",
+    relativePath: "runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md",
   });
   assert.equal(autoresearch.ok, true, "Legacy autoresearch Runtime handoff should be readable through the workbench handoff detail surface");
   if (!autoresearch.ok || autoresearch.kind !== "runtime_handoff_legacy") {
@@ -375,11 +424,11 @@ function assertLegacyRuntimeHandoffRepoDetails() {
   assert.equal(autoresearch.candidateId, "autoresearch");
   assert.equal(
     autoresearch.originatingArchitectureRecordPath,
-    "architecture/03-adopted/2026-03-19-autoresearch-slice-1-adopted-planned-next.md",
+    "architecture/02-adopted/2026-03-19-autoresearch-slice-1-adopted-planned-next.md",
   );
   assert.equal(
     autoresearch.runtimeRecordPath,
-    "runtime/records/2026-03-19-autoresearch-runtime-record.md",
+    "runtime/legacy-records/2026-03-19-autoresearch-runtime-record.md",
   );
 }
 
@@ -395,14 +444,14 @@ function assertLegacyRuntimeHandoffRepoStubs() {
   );
 
   const scientify = legacyHandoffs.find((stub) =>
-    stub.relativePath === "runtime/handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md"
+    stub.relativePath === "runtime/legacy-handoff/2026-03-23-scientify-literature-monitoring-architecture-to-runtime-handoff.md"
   );
   assert.ok(scientify, "Expected the historical Scientify Runtime handoff stub to be present in the workbench handoff list.");
   assert.equal(scientify?.status, "historical_handoff");
   assert.match(scientify?.warning || "", /Historical Runtime handoff/i);
 
   const autoresearch = legacyHandoffs.find((stub) =>
-    stub.relativePath === "runtime/handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md"
+    stub.relativePath === "runtime/legacy-handoff/2026-03-22-autoresearch-architecture-to-runtime-handoff.md"
   );
   assert.ok(autoresearch, "Expected the historical autoresearch Runtime handoff stub to be present in the workbench handoff list.");
   assert.equal(autoresearch?.status, "historical_handoff");
@@ -412,7 +461,7 @@ function assertLegacyRuntimeHandoffRepoStubs() {
 function assertLegacyRuntimeFollowUpRepoCompatibility() {
   const cliAnything = readDirectiveWorkbenchHandoffDetail({
     directiveRoot: DIRECTIVE_ROOT,
-    relativePath: "runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md",
+    relativePath: "runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md",
   });
   assert.equal(
     cliAnything.ok,
@@ -425,7 +474,7 @@ function assertLegacyRuntimeFollowUpRepoCompatibility() {
   assert.equal(cliAnything.candidateId, "al-parked-cli-anything");
   assert.equal(
     cliAnything.reentryContractPath,
-    "runtime/follow-up/2026-03-20-cli-anything-reentry-contract.md",
+    "runtime/00-follow-up/2026-03-20-cli-anything-reentry-contract.md",
   );
   assert.equal(
     cliAnything.currentStatus,
@@ -436,7 +485,7 @@ function assertLegacyRuntimeFollowUpRepoCompatibility() {
     directiveRoot: DIRECTIVE_ROOT,
   });
   const stub = snapshot.handoffStubs.find((entry) =>
-    entry.relativePath === "runtime/follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md"
+    entry.relativePath === "runtime/00-follow-up/2026-03-20-cli-anything-runtime-follow-up-record.md"
   );
   assert.ok(stub, "The legacy CLI-anything Runtime follow-up should be present in the handoff list.");
   assert.equal(stub?.kind, "runtime_follow_up_legacy");
@@ -447,7 +496,7 @@ function assertLegacyRuntimeFollowUpRepoCompatibility() {
 function assertLegacyRuntimeActiveFollowUpRepoCompatibility() {
   const scientify = readDirectiveWorkbenchHandoffDetail({
     directiveRoot: DIRECTIVE_ROOT,
-    relativePath: "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md",
+    relativePath: "runtime/00-follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md",
   });
   assert.equal(
     scientify.ok,
@@ -466,7 +515,7 @@ function assertLegacyRuntimeActiveFollowUpRepoCompatibility() {
     directiveRoot: DIRECTIVE_ROOT,
   });
   const stub = snapshot.handoffStubs.find((entry) =>
-    entry.relativePath === "runtime/follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md"
+    entry.relativePath === "runtime/00-follow-up/2026-03-23-scientify-literature-monitoring-runtime-followup.md"
   );
   assert.ok(stub, "The active bounded legacy Scientify Runtime follow-up should be present in the handoff list.");
   assert.equal(stub?.kind, "runtime_follow_up_legacy");
@@ -477,19 +526,19 @@ function assertLegacyRuntimeActiveFollowUpRepoCompatibility() {
 function assertLegacyNarrativeRuntimeFollowUpRepoCompatibility() {
   const cases = [
     {
-      relativePath: "runtime/follow-up/2026-03-20-agent-orchestrator-runtime-followup.md",
+      relativePath: "runtime/00-follow-up/2026-03-20-agent-orchestrator-runtime-followup.md",
       candidateId: "agent-orchestrator",
       candidateName: "Agent-Orchestrator",
       currentStatus: "active",
     },
     {
-      relativePath: "runtime/follow-up/2026-03-20-promptfoo-runtime-followup.md",
+      relativePath: "runtime/00-follow-up/2026-03-20-promptfoo-runtime-followup.md",
       candidateId: "promptfoo",
       candidateName: "Promptfoo",
       currentStatus: "planned",
     },
     {
-      relativePath: "runtime/follow-up/2026-03-20-puppeteer-browser-runtime-followup.md",
+      relativePath: "runtime/00-follow-up/2026-03-20-puppeteer-browser-runtime-followup.md",
       candidateId: "puppeteer-browser",
       candidateName: "Puppeteer Browser",
       currentStatus: "completed (bounded browser smoke lane promoted 2026-03-21)",
@@ -537,8 +586,8 @@ function assertCurrentArchitectureHandoffWarningsStayClean() {
   );
 
   const guardedPaths = [
-    "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md",
-    "architecture/02-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md",
+    "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md",
+    "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md",
   ];
 
   for (const relativePath of guardedPaths) {
@@ -563,17 +612,17 @@ async function main() {
   const gapsPath = path.join(directiveRoot, "discovery", "capability-gaps.json");
   const missionPath = path.join(directiveRoot, "knowledge", "active-mission.md");
   const approvalRoutingRelativePath =
-    "discovery/routing-log/2026-03-24-route-approval-routing-record.md";
+    "discovery/03-routing-log/2026-03-24-route-approval-routing-record.md";
   const approvalIntakeRelativePath =
-    "discovery/intake/2026-03-24-route-approval-intake.md";
+    "discovery/01-intake/2026-03-24-route-approval-intake.md";
   const approvalTriageRelativePath =
-    "discovery/triage/2026-03-24-route-approval-triage.md";
+    "discovery/02-triage/2026-03-24-route-approval-triage.md";
   const approvalHandoffRelativePath =
-    "architecture/02-experiments/2026-03-24-route-approval-engine-handoff.md";
+    "architecture/01-experiments/2026-03-24-route-approval-engine-handoff.md";
   const handoffRelativePath =
-    "architecture/02-experiments/2026-03-24-sample-engine-handoff.md";
+    "architecture/01-experiments/2026-03-24-sample-engine-handoff.md";
   const runtimeFollowUpRelativePath =
-    "runtime/follow-up/2026-03-24-sample-runtime-follow-up-record.md";
+    "runtime/00-follow-up/2026-03-24-sample-runtime-follow-up-record.md";
   const runtimeRecordRelativePath =
     "runtime/02-records/2026-03-24-sample-runtime-runtime-record.md";
   const runtimeProofRelativePath =
@@ -583,7 +632,7 @@ async function main() {
   const runtimePromotionReadinessRelativePath =
     "runtime/05-promotion-readiness/2026-03-24-sample-runtime-promotion-readiness.md";
   const runtimeRoutingRelativePath =
-    "discovery/routing-log/2026-03-24-sample-runtime-routing.md";
+    "discovery/03-routing-log/2026-03-24-sample-runtime-routing.md";
   const handoffAbsolutePath = path.join(directiveRoot, handoffRelativePath);
   const approvalRunRecordPath = path.join(
     directiveRoot,
@@ -640,10 +689,10 @@ async function main() {
         capability_gap_id: "gap-directive-engine-materialization",
         assigned_worker: null,
         intake_record_path: null,
-        fast_path_record_path: "discovery/intake/2026-03-24-sample-fast-path.md",
+        fast_path_record_path: "discovery/01-intake/2026-03-24-sample-fast-path.md",
         routed_at: "2026-03-24",
         completed_at: null,
-        routing_record_path: "discovery/routing-log/2026-03-24-sample-routing.md",
+        routing_record_path: "discovery/03-routing-log/2026-03-24-sample-routing.md",
         result_record_path: handoffRelativePath,
         notes: "Seeded for frontend check.",
       },
@@ -694,6 +743,15 @@ async function main() {
       "## Usefulness Rationale",
       "",
       "Meta-usefulness from shared Engine judgment.",
+      "",
+      "## Review Handling Guidance",
+      "",
+      "- Guidance kind: `bounded_lane_review`",
+      "- Summary: Bounded lane review remains required before downstream adoption.",
+      "- Operator action: Keep the bounded lane recommendation visible, review the remaining uncertainty explicitly, and only proceed after that review is recorded.",
+      "- Required check: Confirm the lane still matches the best bounded interpretation.",
+      "- Required check: Record the remaining uncertainty before downstream advancement.",
+      "- Stop-line: Do not widen downstream work while this bounded review requirement remains open.",
       "",
     ].join("\n"),
   );
@@ -801,7 +859,7 @@ async function main() {
       "- Current status: `pending_review`",
       "",
       "Linked handoff:",
-      "- `discovery/routing-log/2026-03-24-sample-runtime-routing.md`",
+      "- `discovery/03-routing-log/2026-03-24-sample-runtime-routing.md`",
       "",
     ].join("\n"),
   );
@@ -826,7 +884,7 @@ async function main() {
       `- Required next artifact: ${runtimeFollowUpRelativePath}`,
       "- Re-entry/Promotion trigger conditions: bounded_proof_review, runtime_boundary_review",
       "- Review cadence: before any downstream execution or promotion",
-      "- Linked intake record: discovery/intake/2026-03-24-sample-runtime-intake.md",
+      "- Linked intake record: discovery/01-intake/2026-03-24-sample-runtime-intake.md",
       "",
     ].join("\n"),
   );
@@ -858,7 +916,7 @@ async function main() {
       "- Source reference: `https://example.com/source`",
       "- Engine run record: `runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-sample-engine-run-candidate-sample-e.json`",
       "- Engine run report: `runtime/standalone-host/engine-runs/2026-03-24T00-00-00-000Z-sample-engine-run-candidate-sample-e.md`",
-      "- Discovery routing record: `discovery/routing-log/2026-03-24-sample-routing.md`",
+      "- Discovery routing record: `discovery/03-routing-log/2026-03-24-sample-routing.md`",
       "- Usefulness level: `meta`",
       "- Usefulness rationale: Meta-usefulness from shared Engine judgment.",
       "",
@@ -923,16 +981,40 @@ async function main() {
       directiveRoot,
       frontendBuildDirectiveRoot: DIRECTIVE_ROOT,
     }, async (handle) => {
-      await page.goto(`${handle.origin}/`, { waitUntil: "networkidle0", timeout: 30000 });
+    await page.goto(`${handle.origin}/`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Directive Workspace Frontend");
     await waitForBodyText(page, "Directive Workspace overview");
     await waitForBodyText(page, "Discovery lane");
     await waitForBodyText(page, "Architecture lane");
     await waitForBodyText(page, "Runtime lane");
+    await waitForBodyText(page, "Review pressure");
+    await waitForBodyText(page, "Current review load");
+    await waitForBodyText(page, "Review-guided runs:");
+    await waitForBodyText(page, "Conflicting signals:");
+    await waitForBodyText(page, "Operator decision inbox");
+    await waitForBodyText(page, "Actionable entries");
+    await waitForBodyText(page, "Workflow map");
+    const operatorInbox = await page.evaluate(async () => {
+      const response = await fetch("/api/operator-decision-inbox");
+      if (!response.ok) {
+        throw new Error(await response.text());
+      }
+      return response.json();
+    });
+    assert.equal(operatorInbox.ok, true);
+    assert.equal(operatorInbox.guardrails.readOnly, true);
+    assert.equal(operatorInbox.guardrails.mutatesWorkflowState, false);
+    assert.equal(operatorInbox.summary.totalActionableEntries, operatorInbox.entries.length);
+    assert.equal(
+      operatorInbox.summary.architectureMaterializationDueCount,
+      operatorInbox.entries.filter((entry: any) => entry.decisionSurface === "architecture_materialization_due").length,
+    );
 
     await page.goto(`${handle.origin}/discovery`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Discovery lane");
     await waitForBodyText(page, "Open source submission");
+    await waitForBodyText(page, "Review pressure");
+    await waitForBodyText(page, "Conflicted routes");
 
     await page.goto(`${handle.origin}/architecture`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Architecture lane");
@@ -956,6 +1038,8 @@ async function main() {
     await waitForBodyText(page, "Open Engine run detail", 60000);
     await waitForBodyText(page, "Open Discovery routing record", 60000);
     await waitForBodyText(page, "This source has now entered through Discovery first", 60000);
+    await waitForBodyText(page, "Routing confidence:", 60000);
+    await waitForBodyText(page, "conflict:", 60000);
     const canonicalQueueEntry = await page.evaluate(async () => {
       const response = await fetch("/api/queue-entry?candidateId=frontend-submit-check");
       if (!response.ok) {
@@ -999,6 +1083,12 @@ async function main() {
     );
     await waitForBodyText(page, "Discovery routing record");
     await waitForBodyText(page, "Approve Architecture handoff");
+    await waitForBodyText(page, "mission priority score");
+    await waitForBodyText(page, "Bounded lane review remains required before downstream adoption.");
+    await waitForBodyText(page, "Keep the bounded lane recommendation visible, review the remaining uncertainty explicitly, and only proceed after that review is recorded.");
+    await waitForBodyText(page, "Routing explanation breakdown");
+    await waitForBodyText(page, "Keyword:");
+    await waitForBodyText(page, "Ambiguity:");
     const openedStubPath = await page.evaluate(async (routingPath) => {
       const response = await fetch("/api/discovery/open-route", {
         method: "POST",
@@ -1024,14 +1114,43 @@ async function main() {
 
     await page.goto(`${handle.origin}/engine-runs`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "sample-engine-run");
+    await waitForBodyText(page, "review pressure");
+    await waitForBodyText(page, "Bounded lane review remains required before downstream adoption.");
+    await waitForBodyText(page, "conflict: yes");
+
+    await page.goto(`${handle.origin}/operator-inbox`, { waitUntil: "networkidle0", timeout: 30000 });
+    await waitForBodyText(page, "Operator Decision Inbox");
+    await waitForBodyText(page, "Runtime Host Selection");
+    await waitForBodyText(page, "Architecture Materialization");
+    await waitForBodyText(page, "Discovery Routing Review");
+    await waitForBodyText(page, "Read-only: true");
+    await waitForBodyText(page, "Resolver command or artifact");
+
+    await page.goto(`${handle.origin}/workflow-map`, { waitUntil: "networkidle0", timeout: 30000 });
+    await waitForBodyText(page, "Workflow Map");
+    await waitForBodyText(page, "Rows stay compact; open a row for detail.");
+    await waitForBodyText(page, "Research Engine / Engine Runs");
+    await waitForBodyText(page, "Discovery");
+    await waitForBodyText(page, "Architecture");
+    await waitForBodyText(page, "Runtime");
+    await waitForBodyText(page, "Registry / Host");
+    await waitForBodyText(page, "Decision");
 
     await page.goto(`${handle.origin}/engine-runs/sample-engine-run`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Sample engine run candidate");
     await waitForBodyText(page, "Meta-usefulness from shared Engine judgment.");
+    await waitForBodyText(page, "gap-directive-engine-materialization");
+    await waitForBodyText(page, "Engine workflow boundary still needs stronger stage-aware materialization.");
+    await waitForBodyText(page, "gap alignment score");
+    await waitForBodyText(page, "Bounded lane review remains required before downstream adoption.");
+    await waitForBodyText(page, "Keep the bounded lane recommendation visible, review the remaining uncertainty explicitly, and only proceed after that review is recorded.");
 
     await page.goto(`${handle.origin}/queue`, { waitUntil: "networkidle0", timeout: 30000 });
     await waitForBodyText(page, "Discovery queue");
     await waitForBodyText(page, "Sample engine run candidate");
+    await waitForBodyText(page, "Bounded lane review remains required before downstream adoption.");
+    await waitForBodyText(page, "conflict: yes");
+    await waitForBodyText(page, "Why conflicted:");
 
     await page.goto(
       `${handle.origin}/handoffs/view?path=${encodeURIComponent(handoffRelativePath)}`,
@@ -1260,3 +1379,4 @@ async function main() {
 }
 
 void main();
+

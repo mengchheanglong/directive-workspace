@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { evaluatePreHostRuntimePromotionRecordPrerequisites } from "../shared/lib/runtime-promotion-record-writer.ts";
+import { evaluatePreHostRuntimePromotionRecordPrerequisites } from "../runtime/lib/runtime-promotion-record-writer.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SCIENTIFY_PROMOTION_READINESS_PATH =
@@ -49,7 +49,7 @@ function main() {
   assert.equal(scientify.linkedArtifacts.callableStub.required, true);
   assert.equal(scientify.promotionRecordState.unopened, false);
   assert.deepEqual(scientify.promotionRecordState.existingPaths, [
-    "runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
+    "runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md",
   ]);
 
   assert.equal(
@@ -81,7 +81,7 @@ function main() {
   assert.equal(openmoss.linkedArtifacts.callableStub.required, false);
   assert.equal(openmoss.promotionRecordState.unopened, false);
   assert.deepEqual(openmoss.promotionRecordState.existingPaths, [
-    "runtime/promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md",
+    "runtime/07-promotion-records/2026-04-01-dw-mission-openmoss-runtime-orchestration-2026-03-26-promotion-record.md",
   ]);
 
   process.stdout.write(

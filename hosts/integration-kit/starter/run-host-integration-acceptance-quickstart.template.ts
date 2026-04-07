@@ -3,7 +3,7 @@ import path from "node:path";
 import {
   writeHostIntegrationAcceptanceReport,
   type WriteHostIntegrationAcceptanceReportOptions,
-} from "./write-host-integration-acceptance-report.template";
+} from "./write-host-integration-acceptance-report.template.ts";
 
 export type RunHostIntegrationAcceptanceQuickstartOptions = Omit<
   WriteHostIntegrationAcceptanceReportOptions,

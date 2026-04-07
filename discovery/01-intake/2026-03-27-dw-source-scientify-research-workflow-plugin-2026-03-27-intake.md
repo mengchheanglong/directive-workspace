@@ -1,0 +1,23 @@
+# Discovery Intake Record: Scientify Research Workflow Plugin
+
+- Candidate id: dw-source-scientify-research-workflow-plugin-2026-03-27
+- Candidate name: Scientify Research Workflow Plugin
+- Intake date: 2026-03-27
+- Source type: github-repo
+- Source reference: sources/intake/scientify
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Scientify is a real OpenClaw plugin that automates academic research workflows through LLM-driven sub-agents. It contains 10+ research skills (literature survey, deep analysis, implementation plan, code implementation, review, experiment, idea generation, subscription management), 6+ tools (arxiv search/download, openalex, unpaywall, github search, paper browser), hooks (cron injection, research mode, skill injection), and a knowledge-state system. This source has direct value as reusable research workflow capability and structural/meta value for how it organizes multi-phase orchestrated skill pipelines with verification between steps. It is the strongest available external source that has not yet been processed through the modern Engine path.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: discovery-held candidate
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 1cc5281c-5ea5-48eb-a9b2-ad63b79b75c3 selected discovery. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-triage.md

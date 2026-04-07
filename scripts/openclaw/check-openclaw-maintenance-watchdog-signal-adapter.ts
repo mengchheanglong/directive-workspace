@@ -5,11 +5,11 @@ import { fileURLToPath } from "node:url";
 
 import {
   adaptOpenClawMaintenanceWatchdogSignalToDirectiveRequest,
-} from "../../shared/lib/openclaw-maintenance-watchdog-signal-adapter.ts";
+} from "../../hosts/adapters/openclaw-maintenance-watchdog-signal-adapter.ts";
 import {
   determineDiscoverySubmissionShape,
   toDiscoveryIntakeSubmission,
-} from "../../shared/lib/discovery-submission-router.ts";
+} from "../../discovery/lib/discovery-submission-router.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const QUEUE_PATH = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");

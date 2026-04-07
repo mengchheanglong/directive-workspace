@@ -1,3 +1,5 @@
+/// <reference types="node" />
+
 import crypto from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,10 +15,14 @@ import {
   resolveDirectiveEngineLane,
   type DirectiveEngineLanePlanningInput,
   type DirectiveEngineLaneProofPlanningInput,
+  type DirectiveEngineLaneUsefulnessPlanningInput,
   type DirectiveEngineLaneSet,
 } from "./lane.ts";
 import { normalizeDirectiveEngineSourceType } from "./source-type-normalization.ts";
 import {
+  DIRECTIVE_ENGINE_RUN_RECORD_KIND,
+  DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_REF,
+  DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_VERSION,
   type DirectiveEngineAdaptationPlan,
   type DirectiveEngineAnalysis,
   type DirectiveEngineCandidate,
@@ -37,9 +43,10 @@ import {
   type DirectiveEngineRunRecord,
   type DirectiveEngineSelectedLane,
   type DirectiveEngineSourceItem,
+  type DirectiveEngineWorkflowBoundaryShape,
 } from "./types.ts";
-import { buildRuntimeCallableExecutionEvidenceReport } from "../shared/lib/runtime-callable-execution-evidence.ts";
-import { buildDirectiveRuntimePromotionAssistanceReport } from "../shared/lib/runtime-promotion-assistance.ts";
+import { buildRuntimeCallableExecutionEvidenceReport } from "../runtime/lib/runtime-callable-execution-evidence.ts";
+import { buildDirectiveRuntimePromotionAssistanceReport } from "../runtime/lib/runtime-promotion-assistance.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -62,6 +69,15 @@ function normalizePrimaryAdoptionTarget(
   value: unknown,
 ): DirectiveEnginePrimaryAdoptionTarget | null {
   if (value === "discovery" || value === "architecture" || value === "runtime") {
+    return value;
+  }
+  return null;
+}
+
+function normalizeWorkflowBoundaryShape(
+  value: unknown,
+): DirectiveEngineWorkflowBoundaryShape | null {
+  if (value === "bounded_protocol" || value === "iterative_loop") {
     return value;
   }
   return null;
@@ -238,6 +254,8 @@ function flattenSourceSignals(source: DirectiveEngineSourceItem) {
     source.primaryAdoptionTarget ? `primary-adoption-target:${source.primaryAdoptionTarget}` : "",
     source.containsExecutableCode ? "contains executable code" : "",
     source.containsWorkflowPattern ? "contains workflow pattern" : "",
+    source.improvesDirectiveWorkspace ? "improves directive workspace itself" : "",
+    source.workflowBoundaryShape ? `workflow-boundary-shape:${source.workflowBoundaryShape}` : "",
     ...(source.notes ?? []),
   ]
     .filter(Boolean)
@@ -850,6 +868,8 @@ function buildDecision(input: {
   let decisionState: DirectiveEngineDecision["decisionState"];
   if (input.lane.laneId === "discovery") {
     decisionState = "hold_in_discovery";
+  } else if (input.candidate.requiresHumanReview) {
+    decisionState = "needs_human_review";
   } else if (input.lane.laneId === "architecture") {
     decisionState = "accept_for_architecture";
   } else {
@@ -862,7 +882,9 @@ function buildDecision(input: {
     adoptionTargetLaneLabel: input.lane.label,
     requiresHumanApproval: true,
     summary:
-      `Preliminary engine decision: ${decisionState} for ${input.lane.label}${input.candidate.requiresHumanReview ? " with additional human review required" : ""}, pending human approval before final adoption.`,
+      decisionState === "needs_human_review"
+        ? `Preliminary engine decision: needs_human_review for ${input.lane.label}; the route is bounded but must be reviewed explicitly before downstream adoption.`
+        : `Preliminary engine decision: ${decisionState} for ${input.lane.label}${input.candidate.requiresHumanReview ? " with additional human review required" : ""}, pending human approval before final adoption.`,
     rationale: [
       ...input.candidate.rationale,
       input.integrationProposal.nextAction,
@@ -1007,6 +1029,8 @@ export class DirectiveEngine {
       primaryAdoptionTarget: normalizePrimaryAdoptionTarget(input.source.primaryAdoptionTarget),
       containsExecutableCode: normalizeOptionalBoolean(input.source.containsExecutableCode),
       containsWorkflowPattern: normalizeOptionalBoolean(input.source.containsWorkflowPattern),
+      improvesDirectiveWorkspace: normalizeOptionalBoolean(input.source.improvesDirectiveWorkspace),
+      workflowBoundaryShape: normalizeWorkflowBoundaryShape(input.source.workflowBoundaryShape),
       notes: normalizeNotes(input.source.notes),
     };
     const candidateId = deriveCandidateId(source);
@@ -1029,38 +1053,13 @@ export class DirectiveEngine {
       routingAssessment,
       lane,
     };
-    const usefulnessLevel = this.laneSet.refineUsefulness
-      ? this.laneSet.refineUsefulness(planningInput)
-      : classifyDirectiveEngineUsefulness(planningInput);
-    const usefulnessRationale = explainDirectiveEngineUsefulness(
-      planningInput,
-      usefulnessLevel,
-    );
+    const extractionPlan = buildExtractionPlan(planningInput);
     const selectedLane: DirectiveEngineSelectedLane = {
       laneId: lane.laneId,
       label: lane.label,
       hostDependence: lane.hostDependence,
       valuableWithoutHostRuntime: lane.valuableWithoutHostRuntime,
     };
-    const candidate: DirectiveEngineCandidate = {
-      candidateId,
-      candidateName: source.title || candidateId,
-      recommendedLaneId: routingAssessment.recommendedLaneId,
-      recommendedLaneLabel: lane.label,
-      recommendedRecordShape: routingAssessment.recommendedRecordShape,
-      usefulnessLevel,
-      missionPriorityScore: routingAssessment.missionPriorityScore,
-      confidence: routingAssessment.confidence,
-      matchedGapId: routingAssessment.matchedGapId,
-      matchedGapRank: routingAssessment.matchedGapRank,
-      requiresHumanReview: routingAssessment.needsHumanReview,
-      rationale: [...routingAssessment.rationale],
-    };
-    const analysis = buildSourceAnalysis({
-      planningInput,
-      usefulnessRationale,
-    });
-    const extractionPlan = buildExtractionPlan(planningInput);
     const runtimePromotionFeedbackSignal =
       selectedLane.laneId === "runtime"
         ? readRuntimePromotionFeedbackSignal()
@@ -1080,6 +1079,37 @@ export class DirectiveEngine {
       adaptationPlan,
       runtimePromotionFeedbackSignal,
       runtimeExecutionEvidenceSignal,
+    });
+    const usefulnessPlanningInput: DirectiveEngineLaneUsefulnessPlanningInput = {
+      planningInput,
+      extractionPlan,
+      adaptationPlan,
+      improvementPlan,
+    };
+    const usefulnessLevel = this.laneSet.refineUsefulness
+      ? this.laneSet.refineUsefulness(usefulnessPlanningInput)
+      : classifyDirectiveEngineUsefulness(usefulnessPlanningInput);
+    const usefulnessRationale = explainDirectiveEngineUsefulness(
+      usefulnessPlanningInput,
+      usefulnessLevel,
+    );
+    const candidate: DirectiveEngineCandidate = {
+      candidateId,
+      candidateName: source.title || candidateId,
+      recommendedLaneId: routingAssessment.recommendedLaneId,
+      recommendedLaneLabel: lane.label,
+      recommendedRecordShape: routingAssessment.recommendedRecordShape,
+      usefulnessLevel,
+      missionPriorityScore: routingAssessment.missionPriorityScore,
+      confidence: routingAssessment.confidence,
+      matchedGapId: routingAssessment.matchedGapId,
+      matchedGapRank: routingAssessment.matchedGapRank,
+      requiresHumanReview: routingAssessment.needsHumanReview,
+      rationale: [...routingAssessment.rationale],
+    };
+    const analysis = buildSourceAnalysis({
+      planningInput,
+      usefulnessRationale,
     });
     const proofPlan = lane.planProof
       ? lane.planProof({
@@ -1113,6 +1143,9 @@ export class DirectiveEngine {
       usefulnessRationale,
     });
     const runRecord: DirectiveEngineRunRecord = {
+      $schema: DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_REF,
+      schemaVersion: DIRECTIVE_ENGINE_RUN_RECORD_SCHEMA_VERSION,
+      recordKind: DIRECTIVE_ENGINE_RUN_RECORD_KIND,
       runId: crypto.randomUUID(),
       receivedAt,
       source,

@@ -9,9 +9,9 @@
 ## What changed
 
 - Added one Mission Control-specific external-host compile-contract artifact for this case only:
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-compile-contract-01.md`
 - Added one bounded external-host promotion-input package for this case only:
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-promotion-input-package-01.md`
 - Bound the promotion-readiness artifact to those pre-integration artifacts without opening a promotion record, Mission Control integration, runtime execution, or automation.
 - Added one dedicated checker for the stronger pre-integration stop:
   - `npm run check:directive-scientify-mission-control-external-host-input-package`

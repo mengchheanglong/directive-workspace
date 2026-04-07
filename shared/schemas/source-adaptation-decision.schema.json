@@ -73,7 +73,7 @@
           },
           "target_artifact_type": {
             "type": "string",
-            "enum": ["contract", "schema", "template", "policy", "reference-pattern", "shared-lib", "doctrine-update"]
+            "enum": ["contract", "schema", "template", "policy", "engine-code", "reference-pattern", "shared-lib", "doctrine-update"]
           },
           "target_path": {
             "type": "string"
@@ -214,7 +214,6 @@
             "shared/contracts",
             "shared/schemas",
             "shared/templates",
-            "architecture/05-reference-patterns",
             "knowledge",
             "shared/lib"
           ]

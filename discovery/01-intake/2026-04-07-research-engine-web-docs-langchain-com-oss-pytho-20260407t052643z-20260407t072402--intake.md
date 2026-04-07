@@ -1,0 +1,23 @@
+# Discovery Intake Record: Build a deep research agent - Docs by LangChain
+
+- Candidate id: research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402.
+- Candidate name: Build a deep research agent - Docs by LangChain
+- Intake date: 2026-04-07
+- Source type: external-system
+- Source reference: https://docs.langchain.com/oss/python/deepagents/deep-research
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Live-discovered candidate requiring source analysis. Imported from research-engine for Directive Workspace Discovery review only.
+- Initial relevance to the workspace: Direct usefulness: the generated Runtime adaptation and improvement plans target reusable callable runtime value with bounded behavior-preserving improvement, so the value is primarily useful as something the host can call or run again.
+- Suspected adoption target: reusable runtime capability
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run ece63829-4407-4ffa-90eb-89ff3b0b997c selected runtime. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-04-07-research-engine-web-docs-langchain-com-oss-pytho-20260407t052643z-20260407t072402--triage.md

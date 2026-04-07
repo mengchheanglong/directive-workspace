@@ -6,32 +6,32 @@ import { fileURLToPath } from "node:url";
 import {
   readDirectiveActionRunnerRecord,
   type DirectiveRunnerActionResult,
-} from "../shared/lib/directive-runner-state.ts";
-import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
-import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
-import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
+} from "../engine/execution/directive-runner-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { readDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
+import { openDirectiveRuntimeRecordProof } from "../runtime/lib/runtime-record-proof-opener.ts";
+import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../runtime/lib/runtime-proof-runtime-capability-boundary-opener.ts";
 import {
   DIRECTIVE_RUNTIME_SHARED_INVOCATION_ACTIONS,
   runDirectiveRuntimeActionByExplicitInvocation,
   type DirectiveRuntimeSharedInvocationActionKind,
   type DirectiveRuntimeSharedInvocationInterruptionPoint,
   type DirectiveRuntimeSharedInvocationResult,
-} from "../shared/lib/runtime-runner-invocation.ts";
+} from "../runtime/lib/runtime-runner-invocation.ts";
 import {
   runDirectiveRuntimeCapabilityBoundaryWithRunner,
   type DirectiveRuntimeCapabilityBoundaryRunnerResult,
-} from "../shared/lib/runtime-capability-boundary-runner.ts";
+} from "../runtime/lib/runtime-capability-boundary-runner.ts";
 import {
   runDirectiveRuntimeFollowUpWithRunner,
   type DirectiveRuntimeFollowUpRunnerResult,
-} from "../shared/lib/runtime-follow-up-runner.ts";
+} from "../runtime/lib/runtime-follow-up-runner.ts";
 import {
   runDirectiveRuntimePromotionReadinessWithRunner,
   type DirectiveRuntimePromotionReadinessRunnerResult,
-} from "../shared/lib/runtime-promotion-readiness-runner.ts";
+} from "../runtime/lib/runtime-promotion-readiness-runner.ts";
 import {
   copyRelativeFile,
   copyRelativeFiles,
@@ -45,7 +45,7 @@ import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 import {
   runDirectiveRuntimeProofOpenWithRunner,
   type DirectiveRuntimeProofOpenRunnerResult,
-} from "../shared/lib/runtime-proof-open-runner.ts";
+} from "../runtime/lib/runtime-proof-open-runner.ts";
 
 type RuntimeFocus = NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
 
@@ -86,7 +86,7 @@ const EXPECTED_PRE_PROMOTION_NEXT_STEP =
   "No automatic Runtime step is open; host-facing promotion, callable implementation, host integration, and runtime execution remain intentionally unopened.";
 const CASE_UNDER_TEST = {
   candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
-  followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+  followUpPath: "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
   runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
   runtimeProofPath: "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
   runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",

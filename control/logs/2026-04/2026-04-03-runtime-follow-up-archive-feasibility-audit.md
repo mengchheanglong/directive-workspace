@@ -2,7 +2,7 @@
 
 - Date: 2026-04-03
 - Slice type: archive-feasibility audit
-- Scope: `runtime/follow-up/`, `scripts/`, `runtime/05-promotion-readiness/`, `runtime/06-promotion-specifications/`, `runtime/promotion-records/`, `control/state/operator-simplicity-migration-*.json`
+- Scope: `runtime/00-follow-up/`, `scripts/`, `runtime/05-promotion-readiness/`, `runtime/06-promotion-specifications/`, `runtime/07-promotion-records/`, `control/state/operator-simplicity-migration-*.json`
 
 ## Why this slice
 
@@ -11,11 +11,11 @@ The operator-simplicity selector advanced to `runtime_follow_up_archive_feasibil
 ## What the audit proved
 
 - broad archive moves are still unsafe:
-  - active Runtime surfaces still reference many `runtime/follow-up/` artifacts directly
+  - active Runtime surfaces still reference many `runtime/00-follow-up/` artifacts directly
   - one-case checkers still reference many promotion-support bundles directly
 - the prior blanket block was too coarse:
   - at least one closed historical artifact is now provably reference-free
-  - `runtime/follow-up/2026-03-20-hermes-agent-utility-cutover.md` has no repo-local references by exact path or basename
+  - `runtime/00-follow-up/2026-03-20-hermes-agent-utility-cutover.md` has no repo-local references by exact path or basename
   - that artifact is already marked `closed (reference-only)`, so it does not participate in current Runtime continuation truth
 
 ## Registry outcome
@@ -26,4 +26,4 @@ The operator-simplicity selector advanced to `runtime_follow_up_archive_feasibil
 
 ## Stop-line
 
-The archive frontier is now narrower and truthful: one bounded archive move is open, but broad `runtime/follow-up/` cleanup remains out of scope.
+The archive frontier is now narrower and truthful: one bounded archive move is open, but broad `runtime/00-follow-up/` cleanup remains out of scope.

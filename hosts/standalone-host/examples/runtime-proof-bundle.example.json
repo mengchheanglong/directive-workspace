@@ -2,7 +2,7 @@
   "candidate_id": "standalone-runtime-example",
   "candidate_name": "Standalone Runtime Example",
   "proof_date": "2026-03-23",
-  "linked_runtime_record": "runtime/records/2026-03-23-standalone-runtime-example-runtime-record.md",
+  "linked_runtime_record": "runtime/legacy-records/2026-03-23-standalone-runtime-example-runtime-record.md",
   "required_proof_items": [
     "Runtime record exists",
     "Gate snapshot JSON exists",
@@ -13,8 +13,8 @@
     "check:directive-standalone-api-host"
   ],
   "source_proof_artifacts": [
-    "runtime/follow-up/2026-03-23-standalone-runtime-example-runtime-follow-up-record.md",
-    "runtime/records/2026-03-23-standalone-runtime-example-runtime-record.md"
+    "runtime/00-follow-up/2026-03-23-standalone-runtime-example-runtime-follow-up-record.md",
+    "runtime/legacy-records/2026-03-23-standalone-runtime-example-runtime-record.md"
   ],
   "gate_snapshot": {
     "overall_result": "pass",

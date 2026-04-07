@@ -40,6 +40,13 @@ export type DirectiveEngineLanePlanningInput = {
   lane: DirectiveEngineLaneDefinition;
 };
 
+export type DirectiveEngineLaneUsefulnessPlanningInput = {
+  planningInput: DirectiveEngineLanePlanningInput;
+  extractionPlan: DirectiveEngineExtractionPlan;
+  adaptationPlan: DirectiveEngineAdaptationPlan;
+  improvementPlan: DirectiveEngineImprovementPlan;
+};
+
 export type DirectiveEngineLaneProofPlanningInput = {
   planningInput: DirectiveEngineLanePlanningInput;
   extractionPlan: DirectiveEngineExtractionPlan;
@@ -59,7 +66,7 @@ export type DirectiveEngineLaneSet = {
   laneSetId: string;
   label: string;
   lanes: DirectiveEngineLaneDefinition[];
-  refineUsefulness?: (input: DirectiveEngineLanePlanningInput) => DirectiveEngineUsefulnessLevel;
+  refineUsefulness?: (input: DirectiveEngineLaneUsefulnessPlanningInput) => DirectiveEngineUsefulnessLevel;
 };
 
 export function resolveDirectiveEngineLane(input: {

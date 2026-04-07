@@ -86,9 +86,10 @@ Stable root export lanes:
 - `@directive-workspace/product/frontend`
 - `@directive-workspace/product/frontend/cli`
 - `@directive-workspace/product/frontend/server`
-- `@directive-workspace/product/shared/discovery`
-- `@directive-workspace/product/shared/architecture`
-- `@directive-workspace/product/shared/workspace-state`
+- `@directive-workspace/product/discovery`
+- `@directive-workspace/product/architecture`
+- `@directive-workspace/product/runtime`
+- `@directive-workspace/product/engine/state`
 - `@directive-workspace/product/runtime/core/runtime-core-contract`
 - `@directive-workspace/product/runtime/core/v0` (legacy compatibility alias)
 
@@ -115,11 +116,11 @@ That Engine surface is host-agnostic and already supports one real source-proces
 
 The important boundary now is:
 
-- `engine/` = stable kernel plus Engine-owned lane definitions
-- `discovery/`, `runtime/`, `architecture/` = lane operating surfaces, records, proofs, and adopted assets
-- `hosts/` = adapters and reference hosts that consume the Engine
+- `engine/` = stable kernel plus cross-lane state/truth
+- `discovery/`, `runtime/`, `architecture/` = lane-owned operating code under `lib/` plus records, proofs, and adopted assets
+- `hosts/` = adapters and reference hosts that consume the Engine and lane surfaces
 
-Hosts should keep the Engine API stable and tailor lane behavior through Engine-owned lane definitions, not by rebuilding the kernel.
+Hosts should keep the Engine API stable and consume the canonical lane surfaces, not rebuild the kernel or recreate lane lifecycle behavior host-locally.
 
 ## Current Direction
 
@@ -155,7 +156,7 @@ Directive Workspace also ships a minimal product-owned standalone frontend at:
 
 `hosts/web-host/`
 
-This standalone frontend is a direct product surface over the same Engine-native artifacts. The canonical frontend app lives in `frontend/` (Vite + Lit), and `hosts/web-host/` is the thin product-owned API/static host that serves it. It keeps Discovery as the front door, materializes inspectable Discovery intake/triage/routing artifacts from one real source submission, shows persisted Engine runs and queue state, derives the current live case artifact from the canonical resolver instead of treating the first downstream stub as the practical pointer, keeps downstream Architecture or Runtime advancement explicit through approval boundaries instead of automatic progression, and now exposes the Runtime follow-up review/open boundary, the Runtime record proof-open boundary, the Runtime proof runtime-capability-boundary-open boundary, and the runtime-capability-boundary promotion-readiness-open boundary as bounded non-executing Runtime steps.
+This standalone frontend is a direct product surface over the same Engine-native artifacts. The canonical frontend app lives in `frontend/` (Vite + Lit), and `hosts/web-host/` is the thin product-owned API/static host that serves it. It keeps Discovery as the front door, materializes inspectable Discovery intake/triage/routing artifacts from one real source submission, shows persisted Engine runs and queue state, derives the current live case artifact from the canonical resolver instead of treating the first downstream stub as the practical pointer, keeps downstream Architecture or Runtime advancement explicit through approval boundaries instead of automatic progression, exposes the Runtime follow-up review/open boundary, the Runtime record proof-open boundary, the Runtime proof runtime-capability-boundary-open boundary, and the runtime-capability-boundary promotion-readiness-open boundary as bounded Runtime steps, reads the operator decision inbox dynamically from `GET /api/operator-decision-inbox` for Discovery routing review, Architecture materialization due items, and Runtime host/registry decisions, and includes a compact `/workflow-map` page over live snapshot + inbox data instead of static phase text.
 For Architecture bounded starts, the same frontend now surfaces derived closeout assistance from the bounded-start artifact plus linked Engine-run truth so the operator can review mission fit, extracted value, stage-preservation expectations, and suggested closeout summary language without losing explicit closeout control.
 
 ## Validation
@@ -210,7 +211,7 @@ Directive Workspace is now operating on a simplified v1 baseline:
 - CLAUDE-aligned core completion is achieved
 - the active operator path is shorter and defaults to truthful early stop-lines
 - Runtime follow-up navigation has one canonical report surface instead of raw folder-recency browsing
-- Architecture DEEP-only materialization is physically collapsed under `architecture/deep-materialization/` while logical artifact paths remain stable
+- Architecture DEEP-only materialization is physically collapsed under `architecture/04-materialization/` while logical artifact paths remain stable
 - check infrastructure is faster and less repetitive through shared helpers for frontend build, frontend host startup, temporary Directive roots, and DW web-host checker families
 
 This means the current repo emphasis is:
@@ -248,17 +249,29 @@ npm run import:research-engine-discovery-bundle -- --bundle ../research-engine/a
 
 ## Structure
 
-- `engine/` - shared core machinery and default Directive Workspace lane definitions
+- `engine/` - shared core machinery plus `engine/state/` for canonical cross-lane state resolution
 - `sources/` - raw source snapshots, parked upstream material, and source notes that feed the Engine
 - `discovery/` - Discovery lane operating surfaces and records
-- `runtime/` - Runtime lane operating surfaces, proofs, records, and registry
-- `architecture/` - Architecture lane experiments, adoptions, deferred decisions, and DEEP-only materialization storage under `architecture/deep-materialization/`
+- `runtime/` - Runtime lane: `runtime/lib/` (operating code), `runtime/core/` + `runtime/capabilities/` (callable capabilities), plus records, proofs, and registry
+- `architecture/` - Architecture lane: `architecture/lib/` (operating code), plus experiments, adoptions, deferred decisions, and DEEP-only materialization
 - `shared/` - product-owned contracts, schemas, templates, and shared vocabulary
 - `knowledge/` - supporting reference material, mission framing, and historical planning context
 - `control/` - active run-control surfaces, policies, logs, and machine-readable control state
 - `state/` - case/event persistence
 - `hosts/` - host adapters, reference hosts, and integration state
 - `scratch/` - local non-authoritative scratch only
+
+## Code vs Artifact Surfaces
+
+Each lane folder owns both its operating code and its artifact records:
+
+- `architecture/lib/` = Architecture lane operating code; `architecture/01-experiments/` etc. = artifact records
+- `runtime/lib/` = Runtime lane operating code; `runtime/core/` + `runtime/capabilities/` = callable capabilities; `runtime/02-records/` etc. = artifact records
+- `discovery/lib/` = Discovery lane operating code; `discovery/intake-queue.json`, `03-routing-log/` etc. = artifact records
+- `engine/` = shared kernel (source processing, routing, usefulness) + `engine/state/` (cross-lane state resolver)
+- `shared/lib/` = cross-cutting support: case management, lifecycle coordination, evidence aggregation, host-neutral adapters
+
+This means lane operating work now lands primarily in each lane's own `lib/` folder while recording proof in the lane corpus. `shared/lib/` is reserved for residual cross-cutting support rather than as the default home of lane code.
 
 ## Start Here
 
@@ -278,3 +291,6 @@ Useful operator reports:
 - `npm run report:runtime-follow-up-navigation`
 - `npm run report:runtime-loop-control`
 - `npm run report:read-only-lifecycle-coordination`
+- `npm run report:operator-decision-inbox`
+- `npm run report:operator-decision-inbox-markdown`
+

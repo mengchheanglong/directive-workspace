@@ -1,0 +1,23 @@
+# Discovery Intake Record: Microsoft GraphRAG
+
+- Candidate id: research-engine-microsoft-graphrag-20260406t145339z-20260406t145353.
+- Candidate name: Microsoft GraphRAG
+- Intake date: 2026-04-06
+- Source type: external-system
+- Source reference: https://github.com/microsoft/graphrag
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Adds richer post-acquisition evidence memory and multi-mode retrieval over accumulated corpora. Imported from research-engine for Directive Workspace Discovery review only.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: discovery-held candidate
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 70631a60-c540-41bc-91cf-f77b177780a7 selected discovery. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-04-06-research-engine-microsoft-graphrag-20260406t145339z-20260406t145353--triage.md

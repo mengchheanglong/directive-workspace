@@ -6,7 +6,7 @@ import {
   getDirectiveFrontendCheckJson,
   withDirectiveFrontendCheckServer,
 } from "./frontend-check-helpers.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const DIRECTIVE_ROOT = path.resolve(SCRIPT_DIR, "..");

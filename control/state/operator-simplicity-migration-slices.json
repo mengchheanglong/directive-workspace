@@ -68,7 +68,7 @@
         "npm run check"
       ],
       "rollbackSurface": [
-        "runtime/follow-up/README.md",
+        "runtime/00-follow-up/README.md",
         "operator-start.md",
         "control/logs/2026-04/2026-04-02-runtime-follow-up-history-vs-active-boundary.md"
       ],
@@ -133,7 +133,7 @@
       ],
       "blockingReason": null,
       "proofCommands": [
-        "rg -n \"runtime/follow-up/\" scripts package.json shared control runtime -g '!node_modules'",
+        "rg -n \"runtime/00-follow-up/\" scripts package.json shared control runtime -g '!node_modules'",
         "npm run check:directive-workspace-composition",
         "npm run check"
       ],

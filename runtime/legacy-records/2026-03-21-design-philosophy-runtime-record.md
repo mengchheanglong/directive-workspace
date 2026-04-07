@@ -1,0 +1,24 @@
+# Runtime Record: software-design-philosophy-skill
+
+- Candidate id: software-design-philosophy-skill
+- Candidate name: software-design-philosophy-skill
+- Runtime record date: 2026-03-21
+- Origin path: `runtime/00-follow-up/2026-03-20-software-design-philosophy-skill-cutover.md`
+- Linked follow-up record: `runtime/00-follow-up/2026-03-20-software-design-philosophy-skill-cutover.md`
+- Runtime objective: import one bounded `Design Philosophy Reviewer` agent through the Mission Control `agents/import-packs` route and prove that Runtime can promote a compact design-review guidance lane without adopting upstream installation flow or a generic skill-pack runtime.
+- Proposed host: Mission Control
+- Proposed runtime surface: explicit-only bounded design review skill import lane
+- Execution slice: one isolated import-pack smoke run against a temporary SQLite catalog plus one sync-existing rerun and one default-import exclusion proof.
+- Required proof: evidence artifact showing import smoke report path, imported reviewer metadata, pack asset labels, import/sync counts, guard result, and rollback.
+- Required gates:
+  - `npm run runtime:design-philosophy:smoke`
+  - `npm run check:directive-design-philosophy-runtime`
+  - `npm run check:agents-import-packs-api-backend`
+  - `npm run check:ops-stack`
+- Risks:
+  - lane depends on the existing backend import-pack route and reviewer seed definition remaining aligned with the Runtime-owned pack
+  - lane is intentionally bounded to one review operator, not a general packaging system or upstream install workflow
+  - asset drift inside the cutover pack could silently weaken the reviewer prompt if not guarded
+- Rollback: remove design-philosophy-specific Runtime record/proof/promotion/registry artifacts, restore source-pack classification to `follow_up_only`, restore import-source policy requirements to follow-up/manual mode, and remove the slice-specific Runtime checker wiring; keep generic import-pack infrastructure only if it remains independently useful.
+- Current status: runtime slice executed; promotion record created (`2026-03-21`)
+- Next decision point: keep bounded callable design-review status active only while explicit import remains required, default import stays clean, and host checks continue to pass with deterministic imported metadata.

@@ -1,6 +1,6 @@
-import { runDiscoveryOverviewStarterSmoke } from "./discovery-overview-reader.smoke.template";
-import { runDiscoverySignalStarterSmoke } from "./discovery-signal-adapter.smoke.template";
-import { runDiscoveryStarterSmoke } from "./discovery-submission-adapter.smoke.template";
+import { runDiscoveryOverviewStarterSmoke } from "./discovery-overview-reader.smoke.template.ts";
+import { runDiscoverySignalStarterSmoke } from "./discovery-signal-adapter.smoke.template.ts";
+import { runDiscoveryStarterSmoke } from "./discovery-submission-adapter.smoke.template.ts";
 
 export type HostIntegrationAcceptanceModuleSurface =
   | "package_import"

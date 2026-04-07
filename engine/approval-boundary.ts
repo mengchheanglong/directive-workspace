@@ -1,8 +1,10 @@
+/// <reference types="node" />
+
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import { resolveDirectiveWorkspaceState } from "./state/index.ts";
 
 export function normalizeDirectiveWorkspaceRoot(directiveRoot?: string) {
   const root = directiveRoot

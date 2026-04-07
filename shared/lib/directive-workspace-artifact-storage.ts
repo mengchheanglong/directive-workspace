@@ -4,7 +4,7 @@ import path from "node:path";
 import {
   ARCHITECTURE_DEEP_TAIL_STAGES,
   resolveArchitectureDeepTailStage,
-} from "./architecture-deep-tail-stage-map.ts";
+} from "../../architecture/lib/architecture-deep-tail-stage-map.ts";
 
 function normalizeRelativePath(relativePath: string) {
   return String(relativePath || "").trim().replace(/\\/g, "/");

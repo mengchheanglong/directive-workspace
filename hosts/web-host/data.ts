@@ -12,72 +12,73 @@ import {
   type DirectiveArchitectureResultEvidenceSlot,
   type DirectiveArchitectureBoundedResultArtifact,
   type DirectiveArchitectureBoundedStartArtifact,
-} from "../../shared/lib/architecture-bounded-closeout.ts";
+} from "../../architecture/lib/architecture-bounded-closeout.ts";
 import {
   readDirectiveArchitectureAdoptionDetail,
   type DirectiveArchitectureAdoptionDetail,
-} from "../../shared/lib/architecture-result-adoption.ts";
+} from "../../architecture/lib/architecture-result-adoption.ts";
 import {
   readDirectiveArchitectureImplementationTargetDetail,
   readDirectiveArchitectureImplementationTargetPathForAdoption,
   type DirectiveArchitectureImplementationTargetDetail,
-} from "../../shared/lib/architecture-implementation-target.ts";
+} from "../../architecture/lib/architecture-implementation-target.ts";
 import {
   readDirectiveArchitectureImplementationResultDetail,
   readDirectiveArchitectureImplementationResultPathForTarget,
   type DirectiveArchitectureImplementationResultDetail,
-} from "../../shared/lib/architecture-implementation-result.ts";
+} from "../../architecture/lib/architecture-implementation-result.ts";
 import {
   readDirectiveArchitectureRetentionDetail,
   type DirectiveArchitectureRetentionDetail,
-} from "../../shared/lib/architecture-retention.ts";
+} from "../../architecture/lib/architecture-retention.ts";
 import {
   readDirectiveArchitectureIntegrationRecordDetail,
   type DirectiveArchitectureIntegrationRecordDetail,
-} from "../../shared/lib/architecture-integration-record.ts";
+} from "../../architecture/lib/architecture-integration-record.ts";
 import {
   readDirectiveArchitectureConsumptionRecordDetail,
   type DirectiveArchitectureConsumptionRecordDetail,
-} from "../../shared/lib/architecture-consumption-record.ts";
+} from "../../architecture/lib/architecture-consumption-record.ts";
 import {
   readDirectiveArchitecturePostConsumptionEvaluationDetail,
   type DirectiveArchitecturePostConsumptionEvaluationDetail,
-} from "../../shared/lib/architecture-post-consumption-evaluation.ts";
+} from "../../architecture/lib/architecture-post-consumption-evaluation.ts";
 import {
   readDirectiveArchitectureHandoffArtifact,
   type DirectiveArchitectureHandoffArtifact,
-} from "../../shared/lib/architecture-handoff-start.ts";
+} from "../../architecture/lib/architecture-handoff-start.ts";
 import {
   readDirectiveDiscoveryRoutingArtifact,
   type DirectiveDiscoveryRoutingArtifact,
-} from "../../shared/lib/discovery-route-opener.ts";
+} from "../../discovery/lib/discovery-route-opener.ts";
 import {
   readDirectiveRuntimeFollowUpArtifact,
   type DirectiveRuntimeFollowUpArtifact,
-} from "../../shared/lib/runtime-follow-up-opener.ts";
+} from "../../runtime/lib/runtime-follow-up-opener.ts";
 import {
   readDirectiveRuntimeRecordArtifact,
   type DirectiveRuntimeRecordArtifact,
-} from "../../shared/lib/runtime-record-proof-opener.ts";
+} from "../../runtime/lib/runtime-record-proof-opener.ts";
 import {
   readDirectiveRuntimeProofArtifact,
   type DirectiveRuntimeProofArtifact,
-} from "../../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
+} from "../../runtime/lib/runtime-proof-runtime-capability-boundary-opener.ts";
 import {
   readDirectiveRuntimeRuntimeCapabilityBoundaryArtifact,
   type DirectiveRuntimeRuntimeCapabilityBoundaryArtifact,
-} from "../../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
+} from "../../runtime/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
 import {
   readDirectiveEngineRunDetail,
   readDirectiveEngineRunsOverview,
   type DirectiveEngineRunDetail,
   type DirectiveEngineRunsOverview,
-} from "../../shared/lib/engine-run-artifacts.ts";
-import { resolveDirectiveWorkspaceState } from "../../shared/lib/dw-state.ts";
+} from "../../engine/execution/engine-run-artifacts.ts";
+import { resolveDirectiveWorkspaceState } from "../../engine/state/index.ts";
 import {
   ARCHITECTURE_DEEP_TAIL_STAGE,
+  matchesArchitectureDeepTailStagePath,
   type ArchitectureDeepTailStageId,
-} from "../../shared/lib/architecture-deep-tail-stage-map.ts";
+} from "../../architecture/lib/architecture-deep-tail-stage-map.ts";
 import {
   resolveDirectiveWorkspaceArtifactAbsolutePath,
 } from "../../shared/lib/directive-workspace-artifact-storage.ts";
@@ -114,6 +115,22 @@ export type FrontendQueueEntry = StoredFrontendQueueEntry & {
   current_case_stage: string | null;
   current_case_next_legal_step: string | null;
   current_head: FrontendCurrentHead | null;
+  review_pressure: {
+    guidance_kind: string;
+    summary: string;
+    operator_action: string;
+    stop_line: string;
+    routing_confidence: string | null;
+    route_conflict: boolean | null;
+    needs_human_review: boolean | null;
+    ambiguity_summary: {
+      top_lane_id: string;
+      runner_up_lane_id: string | null;
+      score_delta: number;
+      conflicting_signal_families: string[];
+      conflicting_lane_ids: string[];
+    } | null;
+  } | null;
   runtime_summary: {
     proposed_host: string | null;
     promotion_readiness_blockers: string[];
@@ -287,7 +304,42 @@ export type DirectiveFrontendDiscoveryRoutingDetail =
       engineRunReportPath: string | null;
       usefulnessLevel: string | null;
       usefulnessRationale: string | null;
+      missionPriorityScore: number | null;
       matchedGapId: string | null;
+      gapPressure: {
+        openGapCount: number;
+        gapAlignmentScore: number | null;
+        matchedGapId: string | null;
+        matchedGapRank: number | null;
+        matchedGapPriority: string | null;
+        matchedGapDescription: string | null;
+        relatedMissionObjective: string | null;
+        currentState: string | null;
+        desiredState: string | null;
+      } | null;
+      routingConfidence: string | null;
+      routeConflict: boolean | null;
+      needsHumanReview: boolean | null;
+      explanationBreakdown: {
+        keywordSignals: string[];
+        metadataSignals: string[];
+        gapAlignmentSignals: string[];
+        ambiguitySignals: string[];
+      } | null;
+      ambiguitySummary: {
+        topLaneId: string;
+        runnerUpLaneId: string | null;
+        scoreDelta: number;
+        conflictingSignalFamilies: string[];
+        conflictingLaneIds: string[];
+      } | null;
+      reviewGuidance: {
+        guidanceKind: string;
+        summary: string;
+        operatorAction: string;
+        requiredChecks: string[];
+        stopLine: string;
+      } | null;
       downstreamStubRelativePath: string | null;
       approvalAllowed: boolean;
       content: string;
@@ -871,6 +923,43 @@ function buildFrontendQueueEntry(input: {
   directiveRoot: string;
   entry: StoredFrontendQueueEntry;
 }): FrontendQueueEntry {
+  const reviewPressure = (() => {
+    if (!input.entry.routing_record_path) {
+      return null;
+    }
+
+    try {
+      const routing = readDirectiveDiscoveryRoutingArtifact({
+        directiveRoot: input.directiveRoot,
+        relativePath: input.entry.routing_record_path,
+      });
+      if (!routing.reviewGuidance) {
+        return null;
+      }
+
+      return {
+        guidance_kind: routing.reviewGuidance.guidanceKind,
+        summary: routing.reviewGuidance.summary,
+        operator_action: routing.reviewGuidance.operatorAction,
+        stop_line: routing.reviewGuidance.stopLine,
+        routing_confidence: routing.routingConfidence,
+        route_conflict: routing.routeConflict,
+        needs_human_review: routing.needsHumanReview,
+        ambiguity_summary: routing.ambiguitySummary
+          ? {
+              top_lane_id: routing.ambiguitySummary.topLaneId,
+              runner_up_lane_id: routing.ambiguitySummary.runnerUpLaneId,
+              score_delta: routing.ambiguitySummary.scoreDelta,
+              conflicting_signal_families: [...routing.ambiguitySummary.conflictingSignalFamilies],
+              conflicting_lane_ids: [...routing.ambiguitySummary.conflictingLaneIds],
+            }
+          : null,
+      };
+    } catch {
+      return null;
+    }
+  })();
+
   const resolutionPath = input.entry.routing_record_path ?? input.entry.result_record_path ?? null;
   if (!resolutionPath) {
     return {
@@ -881,6 +970,7 @@ function buildFrontendQueueEntry(input: {
       current_case_stage: null,
       current_case_next_legal_step: null,
       current_head: null,
+      review_pressure: reviewPressure,
       runtime_summary: null,
     };
   }
@@ -913,6 +1003,7 @@ function buildFrontendQueueEntry(input: {
           artifact_lane: input.entry.routing_target ?? "unknown",
           view_path: `/artifacts?path=${encodeURIComponent(resolutionPath)}`,
         },
+        review_pressure: reviewPressure,
         runtime_summary: null,
       };
     }
@@ -948,6 +1039,7 @@ function buildFrontendQueueEntry(input: {
       ...status,
       current_case_stage: focus.currentStage,
       current_case_next_legal_step: focus.nextLegalStep,
+      review_pressure: reviewPressure,
       current_head: {
         artifact_path: focus.currentHead.artifactPath,
         artifact_kind: focus.currentHead.artifactKind,
@@ -974,6 +1066,7 @@ function buildFrontendQueueEntry(input: {
       current_case_stage: null,
       current_case_next_legal_step:
         `Current case head could not be resolved from "${resolutionPath}": ${String((error as Error).message || error)}`,
+      review_pressure: reviewPressure,
       current_head: {
         artifact_path: resolutionPath,
         artifact_kind: "unknown",
@@ -1140,7 +1233,7 @@ function deriveLegacyRuntimeFollowUpCandidateName(title: string) {
 }
 
 function isLegacyRuntimeFollowUpRelativePath(relativePath: string) {
-  return relativePath.startsWith("runtime/follow-up/")
+  return relativePath.startsWith("runtime/00-follow-up/")
     && (
       relativePath.endsWith("-runtime-follow-up-record.md")
       || relativePath.endsWith("-runtime-followup.md")
@@ -1239,7 +1332,7 @@ function readRuntimeFollowUpStubs(input: {
   directiveRoot: string;
   maxEntries?: number;
 }): FrontendHandoffStub[] {
-  const followUpRoot = path.join(input.directiveRoot, "runtime", "follow-up");
+  const followUpRoot = path.join(input.directiveRoot, "runtime", "00-follow-up");
   if (!fs.existsSync(followUpRoot)) {
     return [];
   }
@@ -1247,12 +1340,12 @@ function readRuntimeFollowUpStubs(input: {
   return fs
     .readdirSync(followUpRoot, { withFileTypes: true })
     .filter((entry) => entry.isFile() && isLegacyRuntimeFollowUpRelativePath(
-      normalizeRelativePath(path.join("runtime", "follow-up", entry.name)),
+      normalizeRelativePath(path.join("runtime", "00-follow-up", entry.name)),
     ))
     .sort((left, right) => right.name.localeCompare(left.name))
     .slice(0, Math.max(1, input.maxEntries ?? 20))
     .map((entry) => {
-      const relativePath = normalizeRelativePath(path.join("runtime", "follow-up", entry.name));
+      const relativePath = normalizeRelativePath(path.join("runtime", "00-follow-up", entry.name));
       try {
         const detail = readDirectiveFrontendHandoffDetail({
           directiveRoot: input.directiveRoot,
@@ -1331,7 +1424,7 @@ function readLegacyRuntimeHandoffStubs(input: {
   directiveRoot: string;
   maxEntries?: number;
 }): FrontendHandoffStub[] {
-  const handoffRoot = path.join(input.directiveRoot, "runtime", "handoff");
+  const handoffRoot = path.join(input.directiveRoot, "runtime", "legacy-handoff");
   if (!fs.existsSync(handoffRoot)) {
     return [];
   }
@@ -1342,7 +1435,7 @@ function readLegacyRuntimeHandoffStubs(input: {
     .sort((left, right) => right.name.localeCompare(left.name))
     .slice(0, Math.max(1, input.maxEntries ?? 20))
     .flatMap((entry) => {
-      const relativePath = normalizeRelativePath(path.join("runtime", "handoff", entry.name));
+      const relativePath = normalizeRelativePath(path.join("runtime", "legacy-handoff", entry.name));
       const detail = readDirectiveFrontendHandoffDetail({
         directiveRoot: input.directiveRoot,
         relativePath,
@@ -1368,7 +1461,7 @@ function readArchitectureHandoffStubs(input: {
   directiveRoot: string;
   maxEntries?: number;
 }) {
-  const experimentsRoot = path.join(input.directiveRoot, "architecture", "02-experiments");
+  const experimentsRoot = path.join(input.directiveRoot, "architecture", "01-experiments");
   const maxEntries = Math.max(1, input.maxEntries ?? 20);
   if (!fs.existsSync(experimentsRoot)) {
     return {
@@ -1386,7 +1479,7 @@ function readArchitectureHandoffStubs(input: {
     .sort((left, right) => right.name.localeCompare(left.name))
     .slice(0, maxEntries)
     .map((entry) => {
-      const relativePath = normalizeRelativePath(path.join("architecture", "02-experiments", entry.name));
+      const relativePath = normalizeRelativePath(path.join("architecture", "01-experiments", entry.name));
 
       try {
         const handoff = readDirectiveArchitectureHandoffArtifact({
@@ -1614,7 +1707,7 @@ export function readDirectiveFrontendDiscoveryRoutingDetail(input: {
   }
 
   if (
-    !relativePath.startsWith("discovery/routing-log/")
+    !relativePath.startsWith("discovery/03-routing-log/")
     || !relativePath.endsWith("-routing-record.md")
   ) {
     return {
@@ -1656,7 +1749,15 @@ export function readDirectiveFrontendDiscoveryRoutingDetail(input: {
       engineRunReportPath: artifact.engineRunReportPath,
       usefulnessLevel: artifact.usefulnessLevel,
       usefulnessRationale: artifact.usefulnessRationale,
+      missionPriorityScore: artifact.missionPriorityScore,
       matchedGapId: artifact.matchedGapId,
+      gapPressure: artifact.gapPressure,
+      routingConfidence: artifact.routingConfidence,
+      routeConflict: artifact.routeConflict,
+      needsHumanReview: artifact.needsHumanReview,
+      explanationBreakdown: artifact.explanationBreakdown,
+      ambiguitySummary: artifact.ambiguitySummary,
+      reviewGuidance: artifact.reviewGuidance,
       downstreamStubRelativePath: artifact.downstreamStubRelativePath,
       approvalAllowed: artifact.approvalAllowed,
       content: artifactText.content,
@@ -1691,7 +1792,7 @@ export function readDirectiveFrontendHandoffDetail(input: {
     });
 
     if (
-      relativePath.startsWith("architecture/02-experiments/")
+      relativePath.startsWith("architecture/01-experiments/")
       && relativePath.endsWith("-engine-handoff.md")
     ) {
       return {
@@ -1707,7 +1808,7 @@ export function readDirectiveFrontendHandoffDetail(input: {
     }
 
     if (
-      relativePath.startsWith("runtime/handoff/")
+      relativePath.startsWith("runtime/legacy-handoff/")
       && relativePath.endsWith("-architecture-to-runtime-handoff.md")
     ) {
       const title = extractMarkdownTitle(artifactText.content);
@@ -1881,8 +1982,7 @@ export function readDirectiveFrontendArchitectureStartDetail(input: {
   }
 
   if (
-    (!relativePath.startsWith("architecture/02-experiments/")
-      && !relativePath.startsWith("architecture/01-bounded-starts/"))
+    !relativePath.startsWith("architecture/01-experiments/")
     || !relativePath.endsWith("-bounded-start.md")
   ) {
     return {
@@ -2232,8 +2332,7 @@ export function readDirectiveFrontendArchitectureResultDetail(input: {
   }
 
   if (
-    (!relativePath.startsWith("architecture/02-experiments/")
-      && !relativePath.startsWith("architecture/01-bounded-starts/"))
+    !relativePath.startsWith("architecture/01-experiments/")
     || !relativePath.endsWith("-bounded-result.md")
   ) {
     return {
@@ -2319,7 +2418,7 @@ function readDirectiveArchitectureAdoptionPathForResult(input: {
   directiveRoot: string;
   resultRelativePath: string;
 }) {
-  const adoptedRoot = path.join(input.directiveRoot, "architecture", "03-adopted");
+  const adoptedRoot = path.join(input.directiveRoot, "architecture", "02-adopted");
   if (!fs.existsSync(adoptedRoot)) {
     return null;
   }
@@ -2333,7 +2432,7 @@ function readDirectiveArchitectureAdoptionPathForResult(input: {
   for (const candidate of adoptedCandidates) {
     const absolute = path.join(adoptedRoot, candidate);
     if (fs.existsSync(absolute)) {
-      return normalizeRelativePath(path.join("architecture", "03-adopted", candidate));
+      return normalizeRelativePath(path.join("architecture", "02-adopted", candidate));
     }
   }
   return null;
@@ -2383,7 +2482,7 @@ function readDirectiveArchitectureReopenedStartPathForEvaluation(input: {
   directiveRoot: string;
   evaluationRelativePath: string;
 }) {
-  const startsRoot = path.join(input.directiveRoot, "architecture", "01-bounded-starts");
+  const startsRoot = path.join(input.directiveRoot, "architecture", "01-experiments");
   if (!fs.existsSync(startsRoot)) {
     return null;
   }
@@ -2399,7 +2498,7 @@ function readDirectiveArchitectureReopenedStartPathForEvaluation(input: {
     return null;
   }
 
-  return normalizeRelativePath(path.join("architecture", "01-bounded-starts", candidate));
+  return normalizeRelativePath(path.join("architecture", "01-experiments", candidate));
 }
 
 export function readDirectiveFrontendArchitectureAdoptionDetail(input: {
@@ -2416,7 +2515,7 @@ export function readDirectiveFrontendArchitectureAdoptionDetail(input: {
   }
 
   if (
-    !relativePath.startsWith("architecture/03-adopted/")
+    !relativePath.startsWith("architecture/02-adopted/")
     || !relativePath.endsWith(".md")
   ) {
     return {
@@ -2528,7 +2627,7 @@ function readDirectiveFrontendArchitectureDeepTailDetail<TSuccess extends { ok: 
   }
 
   const stage = ARCHITECTURE_DEEP_TAIL_STAGE[input.stage];
-  if (!relativePath.startsWith(stage.pathPrefix) || !relativePath.endsWith(".md")) {
+  if (!matchesArchitectureDeepTailStagePath(stage, relativePath) || !relativePath.endsWith(".md")) {
     return {
       ok: false,
       error: input.invalidPathError,
@@ -2901,3 +3000,4 @@ export const readDirectiveWorkbenchArchitectureConsumptionRecordDetail =
   readDirectiveFrontendArchitectureConsumptionRecordDetail;
 export const readDirectiveWorkbenchArchitecturePostConsumptionEvaluationDetail =
   readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail;
+

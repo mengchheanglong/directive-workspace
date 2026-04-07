@@ -45,6 +45,7 @@ Available commands:
 - `runtime-promotion-write`
 - `runtime-registry-write`
 - `runtime-scientify-bundle`
+- `runtime-research-vault-descriptor`
 - `runtime-live-mini-swe-agent`
 - `runtime-overview`
 - `serve`
@@ -118,6 +119,7 @@ Current bounded Runtime-side local workflow support:
 - write a Runtime promotion record from JSON input
 - write a Runtime registry entry from JSON input
 - read a non-executing Scientify literature-access bundle descriptor from canonical Runtime truth
+- read one fresh promoted Research Vault Runtime descriptor from canonical promotion-record truth
 - read a non-executing live mini-swe callable descriptor from canonical Runtime truth
 - load the canonical Scientify promotion specification through a bounded standalone-host adapter view without opening host integration or execution
 - read a Runtime overview across local follow-up, record, proof, transformation proof, transformation record, promotion, and registry artifacts

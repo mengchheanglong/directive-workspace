@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-adopted/2026-03-28-dw-pressure-engine-progressive-proof-stage-chaining-2026-03-28-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "adaptation_quality",
+    "claim": "Directive Workspace can improve future Engine source adaptation quality by making the proof stage consume the typed extraction, adaptation, and improvement boundaries produced earlier in the same planning pipeline.",
+    "mechanism": "This DEEP Architecture case opens one bounded proof-stage chaining slice in engine/directive-engine.ts and the lane proof interface rather than a broad redesign of integration planning.",
+    "baseline_observation": "Before this DEEP opener, extraction fed adaptation, improvement consumed both earlier outputs, and proof still consumed only planningInput.",
+    "expected_effect": "The third chained seam will make progressive planning deeper in Engine code while preserving a clear stop-line before integration chaining.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The prior DEEP slices and current Engine code justify one separate bounded implementation slice for proof-stage chaining.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

@@ -9,41 +9,34 @@ import {
   readDirectiveActionRunnerRecord,
   readDirectiveRuntimeTwoStepSequenceRecord,
   type DirectiveRunnerActionResult,
-} from "../shared/lib/directive-runner-state.ts";
-import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../engine/execution/directive-runner-state.ts";
+import { readDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 import {
   DIRECTIVE_RUNTIME_MANUAL_ACTION_KINDS,
   DIRECTIVE_RUNTIME_MANUAL_SEQUENCE_KINDS,
   type DirectiveRuntimeManualControlResult,
-} from "../shared/lib/runtime-manual-control.ts";
+} from "../runtime/lib/runtime-manual-control.ts";
 import {
   runDirectiveRuntimeActionByExplicitInvocation,
   type DirectiveRuntimeSharedInvocationInput,
   type DirectiveRuntimeSharedInvocationResult,
-} from "../shared/lib/runtime-runner-invocation.ts";
+} from "../runtime/lib/runtime-runner-invocation.ts";
 import {
-import { withTempDirectiveRoot } from "./temp-directive-root.ts";
   runDirectiveRuntimeNamedSequenceByExplicitInvocation,
   type DirectiveRuntimeNamedSequenceInput,
   type DirectiveRuntimeNamedSequenceResult,
-} from "../shared/lib/runtime-sequence-invocation.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-  notes?: string | null;
-  completed_at?: string | null;
-  operating_mode?: string | null;
-};
+} from "../runtime/lib/runtime-sequence-invocation.ts";
+import {
+  copyRelativeFiles,
+  extractOpenedBy,
+  extractReviewedBy,
+  readJson,
+  writeJson,
+} from "./checker-test-helpers.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 
 type ManualActionSuccess = Extract<
   DirectiveRuntimeManualControlResult,
@@ -66,61 +59,22 @@ const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const MANUAL_CONTROL_SCRIPT_PATH = path.join(DIRECTIVE_ROOT, "scripts", "runtime-manual-control.ts");
 const CASE_UNDER_TEST = {
   candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
-  followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+  followUpPath: "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
   runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
   runtimeProofPath: "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
   runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",
   runtimePromotionReadinessPath: "runtime/05-promotion-readiness/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-promotion-readiness.md",
 } as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
 function readRelativeContent(directiveRoot: string, relativePath: string) {
   return fs.readFileSync(path.join(directiveRoot, relativePath), "utf8");
-}
-
-function uniqueRelativePaths(items: Array<string | null | undefined>) {
-  return [...new Set(items.filter((value): value is string => Boolean(value)))];
-}
-
-function copyRelativeFile(relativePath: string, tempRoot: string) {
-  const sourcePath = path.join(DIRECTIVE_ROOT, relativePath);
-  assert.ok(fs.existsSync(sourcePath), `Missing source file for manual-surface copy: ${relativePath}`);
-  const targetPath = path.join(tempRoot, relativePath);
-  fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-  fs.copyFileSync(sourcePath, targetPath);
-}
-
-function copyRelativeFiles(relativePaths: Array<string | null | undefined>, directiveRoot: string) {
-  for (const relativePath of uniqueRelativePaths(relativePaths)) {
-    copyRelativeFile(relativePath, directiveRoot);
-  }
-}
-
-function extractReviewedBy(markdown: string) {
-  const match = markdown.match(/- Reviewed by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime review actor");
-  return match[1];
-}
-
-function extractOpenedBy(markdown: string) {
-  const match = markdown.match(/- Opened by: `([^`]+)`/u);
-  assert.ok(match?.[1], "Unable to parse Runtime opened-by actor");
-  return match[1];
 }
 
 function seedQueueBackedDirectiveRoot(input: {
   directiveRoot: string;
   extraRelativePaths?: Array<string | null | undefined>;
 }) {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
   const queueEntry = queueDocument.entries.find(
@@ -141,7 +95,7 @@ function seedQueueBackedDirectiveRoot(input: {
     routing.engineRunReportPath,
     CASE_UNDER_TEST.followUpPath,
     ...(input.extraRelativePaths ?? []),
-  ], input.directiveRoot);
+  ], DIRECTIVE_ROOT, input.directiveRoot, "Missing source file for manual-surface copy");
 
   writeJson(path.join(input.directiveRoot, "discovery", "intake-queue.json"), {
     status: "primary",

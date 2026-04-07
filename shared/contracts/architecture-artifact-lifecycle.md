@@ -6,15 +6,15 @@ Profile: `architecture_artifact_lifecycle/v2`
 
 Define the taxonomy, required fields, transition rules, and lifecycle governance for Architecture artifacts.
 
-Without this contract, Architecture records have no type system. Experiments, adopted records, reference patterns, and deferred decisions look structurally similar, differ in ad hoc ways, and transition between states without explicit criteria.
+Without this contract, Architecture records have no type system. Experiments, adopted records, and deferred decisions look structurally similar, differ in ad hoc ways, and transition between states without explicit criteria.
 
 ## Artifact states
 
-Every Architecture artifact exists in exactly one of these states:
+Every active Architecture artifact exists in exactly one of these states:
 
 ### `experiment`
 
-Location: `architecture/02-experiments/`
+Location: `architecture/01-experiments/`
 
 An experiment is a bounded proof slice. It tests whether a mechanism has extractable value.
 
@@ -33,18 +33,30 @@ An experiment may reference `source-analysis-contract` and `adaptation-decision-
 
 ### `adopted`
 
-Location: `architecture/03-adopted/`
+Location: `architecture/02-adopted/`
 
-An adopted record declares that a mechanism has been accepted into the Architecture operating system and materialized as a product-owned artifact.
+An adopted record declares that a mechanism has been accepted into the Architecture operating system.
+
+Default rule:
+- `adopted` is the normal finish surface after a bounded experiment when the result is accepted.
+- An adopted record does not automatically open the deep materialization tail.
+- Continue into implementation-target / implementation-result / retained / integration / consumption / evaluation only when the adoption explicitly requires deep continuation.
 
 Required fields:
 - adoption date
 - candidate id or name
 - status class (per `architecture-completion-rubric`)
 - usefulness level: `direct` | `structural` | `meta`
-- materialized artifacts (list of product-owned file paths)
 - rationale (why adopted, what value it provides)
 - rollback path
+- deep continuation required: `yes` | `no`
+
+Required when `deep continuation required: no`:
+- retained value in product-owned Architecture form
+
+Required when `deep continuation required: yes`:
+- next bounded implementation target or explicitly described implementation continuation boundary
+- materialized artifacts (list of product-owned file paths) once implementation/result is recorded
 
 Required for source-driven adoptions:
 - source reference (pinned commit or URL)
@@ -59,33 +71,21 @@ Recommended for all adoptions:
 - adoption criteria reference (per `architecture-adoption-criteria`)
 - Runtime handoff note (explicit: yes with ref, or no with threshold justification)
 
-### `reference-pattern`
+### Legacy `reference-pattern` records
 
-Location: `architecture/05-reference-patterns/`
+`reference-pattern` remains a historical classification term only.
 
-A reference pattern is a preserved mechanism or policy that is useful as context but has not been promoted to a shared product-owned artifact.
+There is no longer an active `architecture/05-reference-patterns/` surface.
+Do not create new reference-pattern artifacts.
 
-Required fields:
-- date
-- candidate id or source
-- track (Architecture)
-- type: `pattern` | `policy` | `contract-draft` | `analysis-notes`
-- retained value (what is worth preserving)
-- excluded baggage (what was deliberately excluded)
-
-Admission criteria:
-- it has surviving value worth preserving as context
-- it is not yet ready for promotion to shared contracts/schemas/templates
-- or it has been deliberately kept as reference without enforcement intent
-
-A reference pattern is not:
-- a parking lot for unfinished work (use experiments or deferred)
-- a source note or repo commentary (use `sources/`)
-- a draft contract that should be in shared/contracts (promote it)
+For new work:
+- keep the mechanism in `architecture/01-experiments/` until it is clear enough to promote
+- or defer/reject it in `architecture/03-deferred-or-rejected/`
+- or materialize it directly into `shared/contracts/`, `shared/schemas/`, `shared/templates/`, `engine/`, or lane-owned code
 
 ### `deferred`
 
-Location: `architecture/04-deferred-or-rejected/`
+Location: `architecture/03-deferred-or-rejected/`
 
 A deferred record preserves a decision not to adopt, with re-entry criteria.
 
@@ -119,9 +119,13 @@ Track Runtime handoff through:
 Requirements:
 - experiment result is positive
 - adoption criteria are met (per `architecture-adoption-criteria`)
-- at least one product-owned artifact is materialized
 - usefulness level is classified
 - if meta-useful, self-improvement evidence block is included
+
+Default finish rule:
+- `experiment -> adopted` is enough for normal NOTE/STANDARD Architecture work
+- deep continuation is exceptional and must be explicit on the adopted record
+- do not assume every adopted Architecture result needs implementation-target, retained, integration, consumption, or post-consumption evaluation artifacts
 
 ### experiment -> deferred
 
@@ -130,40 +134,12 @@ Requirements:
 - re-entry criteria are explicit
 - extracted value retained is documented
 
-### experiment -> reference-pattern
+### Legacy reference-pattern handling
 
-Requirements:
-- experiment produced useful context but not enough for adoption
-- the value is worth preserving for future reference
-- the mechanism does not belong in shared contracts/schemas/templates yet
-
-### reference-pattern -> adopted
-
-Trigger:
-- a subsequent Architecture slice determines the reference pattern has enough value and specificity to become a shared product-owned artifact
-- the promotion goes through the normal adoption criteria
-
-Evidence:
-- the promoting slice must explain what changed since the reference pattern was created
-- the promoted artifact must be materialized in shared contracts/schemas/templates/lib
-
-### reference-pattern -> retired
-
-Trigger:
-- the reference pattern's value has been fully absorbed by a shared contract, schema, template, or lib surface
-- or the reference pattern is no longer relevant to the active mission
-
-Retirement checklist:
-1. Identify the absorbing artifact (shared contract, schema, template, or lib module).
-2. Verify that all substantive value from the reference pattern is represented in the absorbing artifact.
-3. Add a retirement header to the reference pattern file: `Status: retired (<date>)` and `Absorbed by: <path to absorbing artifact>`.
-4. Update the corpus normalization record to reflect the retirement.
-5. Do not delete the file - preserve history per doctrine.
-
-Retirement candidates are identified during corpus normalization or cycle evaluation. A reference pattern is a retirement candidate when:
-- a shared contract exists that covers the same mechanism
-- the reference pattern adds no value beyond what the shared contract provides
-- no other Architecture work references the reference pattern as a dependency
+If historical repo records mention `reference-pattern`, treat that as a legacy classification:
+- either promote the value into an active product-owned surface
+- or leave it as historical evidence only
+- do not reopen the deleted `architecture/05-reference-patterns/` surface
 
 ### adopted -> Runtime handoff
 
@@ -179,9 +155,8 @@ For quick classification of an Architecture record:
 
 1. Does it test a hypothesis? -> `experiment`
 2. Does it declare a materialized product artifact? -> `adopted`
-3. Does it preserve useful context without enforcement? -> `reference-pattern`
-4. Does it explain why something was not adopted? -> `deferred`
-5. Does it describe runtime work remaining after Architecture is done? -> still `adopted`, with a Runtime handoff note
+3. Does it explain why something was not adopted? -> `deferred`
+4. Does it describe runtime work remaining after Architecture is done? -> still `adopted`, with a Runtime handoff note
 
 ## Pre-doctrine records
 
@@ -240,7 +215,7 @@ When reviewing a pre-doctrine adopted record, check these items:
 - State must be inferable from the artifact's location and content.
 - Runtime handoff is a transition note on an adopted record, not a separate state.
 - Transitions require explicit evidence, not implicit drift.
-- Reference patterns are not a default parking state - use experiments for work-in-progress and deferred for rejected/blocked work.
+- Preserve useful but not-yet-promoted value in experiments until it can be promoted or explicitly deferred.
 - The corpus normalization record tracks the classification state of all adopted Architecture work.
 
 ## Relationship to other contracts
@@ -249,4 +224,5 @@ When reviewing a pre-doctrine adopted record, check these items:
 - Works with: `architecture-self-improvement-contract` (meta-usefulness evidence for adopted records)
 - Works with: `architecture-completion-rubric` (status classes for completion tracking)
 - Works with: `architecture-to-runtime` (Runtime handoff transition)
-- Governs: all records in `architecture/02-experiments/`, `03-adopted/`, `04-deferred-or-rejected/`, `05-reference-patterns/`
+- Governs: all active records in `architecture/01-experiments/`, `03-adopted/`, `04-deferred-or-rejected/`
+

@@ -1,0 +1,23 @@
+# Discovery Intake Record: Agentics Issue Triage Workflow
+
+- Candidate id: dw-mission-agentics-issue-triage-discovery-restart-2026-03-26
+- Candidate name: Agentics Issue Triage Workflow
+- Intake date: 2026-03-26
+- Source type: workflow-writeup
+- Source reference: sources/intake/agentics/workflows/issue-triage.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: After the closed Architecture ratchet batch, Directive Workspace needs a real next source through Discovery. This issue-triage workflow could improve Discovery intake filtering, backlog prioritization, spam/off-topic rejection, and evidence-backed routing discipline without opening GitHub execution, Runtime execution, or host integration.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: discovery-held candidate
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 34f1b525-0d74-4890-b825-3e2cdd51d240 selected discovery. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-26-dw-mission-agentics-issue-triage-discovery-restart-2026-03-26-triage.md

@@ -1,0 +1,23 @@
+# Discovery Intake Record: ESLint Custom Rule System
+
+- Candidate id: dw-source-eslint-custom-rules-2026-03-30
+- Candidate name: ESLint Custom Rule System
+- Intake date: 2026-03-30
+- Source type: product-doc
+- Source reference: https://eslint.org/docs/latest/extend/custom-rules
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Engine-building mission pressure: extract one Architecture-owned checker-definition schema pattern with explicit metadata, option-shape validation, severity posture, suppression boundaries, and self-test expectations so Directive Workspace can improve proof/evaluator quality without reopening runtime execution, planner-driven execution, host-admin seams, or structural-mapping expansion.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 82144c93-1e15-43fa-847d-7376a884e6c7 selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-30-dw-source-eslint-custom-rules-2026-03-30-triage.md

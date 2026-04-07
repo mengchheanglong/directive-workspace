@@ -1,12 +1,12 @@
 import path from "node:path";
 
-import type { DiscoverySubmissionRequest } from "../../shared/lib/discovery-submission-router.ts";
-import { submitDirectiveDiscoveryFrontDoor } from "../../shared/lib/discovery-front-door.ts";
-import { openDirectiveDiscoveryRoute } from "../../shared/lib/discovery-route-opener.ts";
-import { openDirectiveRuntimeFollowUp } from "../../shared/lib/runtime-follow-up-opener.ts";
-import { openDirectiveRuntimeRecordProof } from "../../shared/lib/runtime-record-proof-opener.ts";
-import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
-import { openDirectiveRuntimePromotionReadiness } from "../../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
+import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
+import { submitDirectiveDiscoveryFrontDoor } from "../../discovery/lib/discovery-front-door.ts";
+import { openDirectiveDiscoveryRoute } from "../../discovery/lib/discovery-route-opener.ts";
+import { openDirectiveRuntimeFollowUp } from "../../runtime/lib/runtime-follow-up-opener.ts";
+import { openDirectiveRuntimeRecordProof } from "../../runtime/lib/runtime-record-proof-opener.ts";
+import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../../runtime/lib/runtime-proof-runtime-capability-boundary-opener.ts";
+import { openDirectiveRuntimePromotionReadiness } from "../../runtime/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
 import {
   DirectiveEngine,
   createDirectiveWorkspaceEngineLanes,
@@ -30,13 +30,14 @@ import {
   submitDiscoveryEntryWithHostBridge,
 } from "../integration-kit/starter/discovery-submission-adapter.template.ts";
 import { createStandaloneHostPersistenceLedger } from "./persistence.ts";
-import type { RuntimeFollowUpRecordRequest } from "../../shared/lib/runtime-follow-up-record-writer.ts";
-import type { RuntimeProofBundleRequest } from "../../shared/lib/runtime-proof-bundle-writer.ts";
-import type { RuntimePromotionRecordRequest } from "../../shared/lib/runtime-promotion-record-writer.ts";
-import type { RuntimeRegistryEntryRequest } from "../../shared/lib/runtime-registry-entry-writer.ts";
-import type { RuntimeRecordRequest } from "../../shared/lib/runtime-record-writer.ts";
-import type { RuntimeTransformationProofRequest } from "../../shared/lib/runtime-transformation-proof-writer.ts";
-import type { RuntimeTransformationRecordRequest } from "../../shared/lib/runtime-transformation-record-writer.ts";
+import type { RuntimeFollowUpRecordRequest } from "../../runtime/lib/runtime-follow-up-record-writer.ts";
+import type { RuntimeProofBundleRequest } from "../../runtime/lib/runtime-proof-bundle-writer.ts";
+import type { RuntimePromotionRecordRequest } from "../../runtime/lib/runtime-promotion-record-writer.ts";
+import type { RuntimeRegistryEntryRequest } from "../../runtime/lib/runtime-registry-entry-writer.ts";
+import type { RuntimeRecordRequest } from "../../runtime/lib/runtime-record-writer.ts";
+import type { RuntimeTransformationProofRequest } from "../../runtime/lib/runtime-transformation-proof-writer.ts";
+import type { RuntimeTransformationRecordRequest } from "../../runtime/lib/runtime-transformation-record-writer.ts";
+import { describeDirectiveEngineGapPressure } from "../../engine/execution/engine-run-artifacts.ts";
 
 type JsonValue = Record<string, unknown>;
 
@@ -109,6 +110,8 @@ function buildDirectiveEngineSourceFromDiscoverySubmission(
     primaryAdoptionTarget: request.primary_adoption_target ?? null,
     containsExecutableCode: request.contains_executable_code ?? null,
     containsWorkflowPattern: request.contains_workflow_pattern ?? null,
+    improvesDirectiveWorkspace: request.improves_directive_workspace ?? null,
+    workflowBoundaryShape: request.workflow_boundary_shape ?? null,
   };
 }
 
@@ -166,6 +169,7 @@ function renderStandaloneHostEngineRunReport(input: {
   };
 }) {
   const { record } = input;
+  const gapPressure = describeDirectiveEngineGapPressure(record);
 
   return [
     "# Directive Engine Run",
@@ -176,6 +180,8 @@ function renderStandaloneHostEngineRunReport(input: {
     `- Candidate Name: ${record.candidate.candidateName}`,
     `- Source Type: \`${record.source.sourceType}\``,
     `- Source Ref: \`${record.source.sourceRef}\``,
+    `- Schema version: \`${record.schemaVersion ?? "n/a"}\``,
+    `- Schema ref: \`${record.$schema ?? "n/a"}\``,
     `- Selected Lane: \`${record.selectedLane.laneId}\``,
     `- Usefulness Level: \`${record.candidate.usefulnessLevel}\``,
     `- Decision State: \`${record.decision.decisionState}\``,
@@ -198,6 +204,37 @@ function renderStandaloneHostEngineRunReport(input: {
     "## Routing Rationale",
     "",
     ...record.candidate.rationale.map((entry) => `- ${entry}`),
+    "",
+    "## Routing Explanation Breakdown",
+    "",
+    ...record.routingAssessment.explanationBreakdown.keywordSignals.map((entry) => `- Keyword: ${entry}`),
+    ...record.routingAssessment.explanationBreakdown.metadataSignals.map((entry) => `- Metadata: ${entry}`),
+    ...record.routingAssessment.explanationBreakdown.gapAlignmentSignals.map((entry) => `- Gap: ${entry}`),
+    ...record.routingAssessment.explanationBreakdown.ambiguitySignals.map((entry) => `- Ambiguity: ${entry}`),
+    "",
+    "## Gap Pressure",
+    "",
+    `- Open gaps considered: \`${gapPressure.openGapCount}\``,
+    `- Gap alignment score: \`${gapPressure.gapAlignmentScore ?? "n/a"}\``,
+    `- Matched gap: \`${gapPressure.matchedGapId ?? "n/a"}\``,
+    `- Gap rank: \`${gapPressure.matchedGapRank ?? "n/a"}\``,
+    `- Gap priority: \`${gapPressure.matchedGapPriority ?? "n/a"}\``,
+    `- Gap description: ${gapPressure.matchedGapDescription ?? "n/a"}`,
+    `- Related mission objective: ${gapPressure.relatedMissionObjective ?? "n/a"}`,
+    `- Current state: ${gapPressure.currentState ?? "n/a"}`,
+    `- Desired state: ${gapPressure.desiredState ?? "n/a"}`,
+    "",
+    "## Review Handling Guidance",
+    "",
+    ...(record.routingAssessment.reviewGuidance
+      ? [
+          `- Guidance kind: \`${record.routingAssessment.reviewGuidance.guidanceKind}\``,
+          `- Summary: ${record.routingAssessment.reviewGuidance.summary}`,
+          `- Operator action: ${record.routingAssessment.reviewGuidance.operatorAction}`,
+          ...record.routingAssessment.reviewGuidance.requiredChecks.map((entry) => `- Required check: ${entry}`),
+          `- Stop-line: ${record.routingAssessment.reviewGuidance.stopLine}`,
+        ]
+      : ["- No additional review guidance beyond the normal bounded approval path."]),
     "",
     "## Next Action",
     "",
@@ -495,6 +532,62 @@ export function createStandaloneFilesystemHost(
         await loadStandaloneRuntimeLaneModule();
       return readStandaloneLiveMiniSweAgentDescriptor({
         directiveRoot: harness.directiveRoot,
+      });
+    },
+    async readResearchVaultDescriptor() {
+      const { readStandaloneResearchVaultDescriptor } =
+        await loadStandaloneRuntimeLaneModule();
+      return readStandaloneResearchVaultDescriptor({
+        directiveRoot: harness.directiveRoot,
+      });
+    },
+    async invokeResearchVaultDescriptorCallable(input: {
+      action: "summarize_descriptor";
+      includeOpenDecisions?: boolean;
+      executedAt?: string;
+    }) {
+      const { invokeStandaloneResearchVaultDescriptorCallable } =
+        await loadStandaloneRuntimeLaneModule();
+      return invokeStandaloneResearchVaultDescriptorCallable({
+        directiveRoot: harness.directiveRoot,
+        request: input,
+      });
+    },
+    async invokeResearchVaultSourcePackTool(input: {
+      tool: "query-source-pack";
+      input: {
+        query: string;
+        includeEvidence?: boolean;
+        maxItems?: number;
+      };
+      timeoutMs?: number;
+      executionAt?: string;
+      persistArtifacts?: boolean;
+    }) {
+      const { invokeStandaloneResearchVaultSourcePackTool } =
+        await loadStandaloneRuntimeLaneModule();
+      return invokeStandaloneResearchVaultSourcePackTool({
+        directiveRoot: harness.directiveRoot,
+        request: input,
+      });
+    },
+    async readBlisspixelDeeprDescriptor() {
+      const { readStandaloneBlisspixelDeeprDescriptor } =
+        await loadStandaloneRuntimeLaneModule();
+      return readStandaloneBlisspixelDeeprDescriptor({
+        directiveRoot: harness.directiveRoot,
+      });
+    },
+    async invokeBlisspixelDeeprDescriptorCallable(input: {
+      action: "summarize_descriptor";
+      includeOpenDecisions?: boolean;
+      executedAt?: string;
+    }) {
+      const { invokeStandaloneBlisspixelDeeprDescriptorCallable } =
+        await loadStandaloneRuntimeLaneModule();
+      return invokeStandaloneBlisspixelDeeprDescriptorCallable({
+        directiveRoot: harness.directiveRoot,
+        request: input,
       });
     },
     readQueue() {

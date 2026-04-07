@@ -36,22 +36,26 @@ Default path (NOTE/STANDARD):
 - one bounded experiment/result slice
 - one adopted or deferred outcome only when the result justifies extension
 - normal finish line: `bounded-result`
+- adopted records are a valid default stop when the accepted value is already retained in product-owned Architecture form
+
+The old Architecture-local intake, triage, and bounded-start compatibility folders were removed from the active tree. New Architecture work should start in `architecture/01-experiments/` after Discovery has already handled intake, triage, and routing. Reopened Architecture slices also now live in `architecture/01-experiments/`.
 
 DEEP-only continuation bundle:
-- `implementation-target` (logical artifact paths stay under `architecture/04-implementation-targets/`; physical storage lives under `architecture/deep-materialization/04-implementation-targets/`)
-- `implementation-result` (logical artifact paths stay under `architecture/05-implementation-results/`; physical storage lives under `architecture/deep-materialization/05-implementation-results/`)
-- `retained` (logical artifact paths stay under `architecture/06-retained/`; physical storage lives under `architecture/deep-materialization/06-retained/`)
-- `integration-record` (logical artifact paths stay under `architecture/07-integration-records/`; physical storage lives under `architecture/deep-materialization/07-integration-records/`)
-- `consumption-record` (logical artifact paths stay under `architecture/08-consumption-records/`; physical storage lives under `architecture/deep-materialization/08-consumption-records/`)
-- `post-consumption-evaluation` (logical artifact paths stay under `architecture/09-post-consumption-evaluations/`; physical storage lives under `architecture/deep-materialization/09-post-consumption-evaluations/`)
+- `implementation-target` (logical artifact paths stay under `architecture/04-implementation-targets/`; physical storage lives under `architecture/04-materialization/04-implementation-targets/`)
+- `implementation-result` (logical artifact paths stay under `architecture/05-implementation-results/`; physical storage lives under `architecture/04-materialization/05-implementation-results/`)
+- `retained` (logical artifact paths stay under `architecture/06-retained/`; physical storage lives under `architecture/04-materialization/06-retained/`)
+- `integration-record` (logical artifact paths stay under `architecture/07-integration-records/`; physical storage lives under `architecture/04-materialization/07-integration-records/`)
+- `consumption-record` (logical artifact paths stay under `architecture/08-consumption-records/`; physical storage lives under `architecture/04-materialization/08-consumption-records/`)
+- `post-consumption-evaluation` (logical artifact paths stay under `architecture/09-post-consumption-evaluations/`; physical storage lives under `architecture/04-materialization/09-post-consumption-evaluations/`)
 
 Only continue into this bundle when the next stage adds a concrete new Directive-owned artifact or required consumption proof.
+Treat this bundle as explicit DEEP continuation, not the normal Architecture path.
 
 Operator navigation map:
-- Start and stop by default in `architecture/02-experiments/`.
-- Use `architecture/03-adopted/` or `architecture/04-deferred-or-rejected/` only when the bounded result requires an explicit decision surface.
-- Do not open the DEEP materialization bundle under `architecture/deep-materialization/` unless the case is explicitly DEEP-mode.
-- Deep-tail logical artifact links remain stable at `architecture/04-...` through `architecture/09-...` even though the physical files now live under `architecture/deep-materialization/`.
+- Start and stop by default in `architecture/01-experiments/`.
+- Use `architecture/02-adopted/` or `architecture/03-deferred-or-rejected/` only when the bounded result requires an explicit decision surface.
+- Do not open the DEEP materialization bundle under `architecture/04-materialization/` unless the case is explicitly DEEP-mode.
+- Deep-tail logical artifact links remain stable at `architecture/04-...` through `architecture/09-...` even though the physical files now live under `architecture/04-materialization/`.
 
 Canonical references:
 - `C:\Users\User\projects\directive-workspace\CLAUDE.md`
@@ -59,3 +63,4 @@ Canonical references:
 - `C:\Users\User\projects\directive-workspace\knowledge\README.md`
 - `C:\Users\User\projects\directive-workspace\knowledge\architecture-completion-rubric.md`
 - `C:\Users\User\projects\directive-workspace\architecture\ARCHITECTURE_EXPLORATION.md`
+

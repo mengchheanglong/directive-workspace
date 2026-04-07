@@ -10,7 +10,7 @@
 ## What changed
 
 - Added the first manual Scientify Runtime promotion record:
-  - `runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
+  - `runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
 - Linked that promotion record into canonical Runtime truth:
   - `runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md`
   - `shared/lib/dw-state.ts`
@@ -31,7 +31,7 @@
 
 - Scientify now resolves from promotion-readiness to:
   - `currentStage = runtime.promotion_record.opened`
-  - `currentHead = runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
+  - `currentHead = runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
 - The promotion record is explicit and checked.
 - Registry acceptance remains unopened.
 - Host integration remains unopened.
@@ -47,7 +47,7 @@
 ## Proof path
 
 - `npm run report:directive-workspace-state -- runtime/05-promotion-readiness/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-readiness.md`
-- `npm run report:directive-workspace-state -- runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
+- `npm run report:directive-workspace-state -- runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
 - `npm run check:runtime-promotion-specification`
 - `npm run check:standalone-scientify-host-adapter`
 - `npm run check:directive-scientify-runtime-callable`
@@ -59,7 +59,7 @@
 
 Revert:
 
-- `runtime/promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
+- `runtime/07-promotion-records/2026-04-01-dw-source-scientify-research-workflow-plugin-2026-03-27-promotion-record.md`
 - the Scientify promotion-readiness and promotion-specification artifacts
 - the Scientify promotion-record checker and host/callable proof expectations
 - canonical Runtime current-head linking for promotion records

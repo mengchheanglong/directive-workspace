@@ -1,0 +1,23 @@
+# Discovery Intake Record: Autoresearch Advanced Patterns
+
+- Candidate id: dw-source-autoresearch-advanced-patterns-2026-03-30
+- Candidate name: Autoresearch Advanced Patterns
+- Intake date: 2026-03-30
+- Source type: workflow-writeup
+- Source reference: sources/intake/autoresearch/guide/advanced-patterns.md
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Engine-building mission pressure: extract guarded verification, fast custom evaluator-script patterns, composite metric measurement, and explicit guard-recovery discipline that could improve Directive Workspace proof quality and Architecture adaptation discipline without reopening runtime execution lanes.
+- Initial relevance to the workspace: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 0b83a61b-7f57-4765-8554-c18114629d7a selected architecture. Matched capability gap gap-directive-engine-materialization. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-03-30-dw-source-autoresearch-advanced-patterns-2026-03-30-triage.md

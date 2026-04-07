@@ -22,9 +22,9 @@
   - `shared/contracts/scientify-mission-control-external-host-guard.md`
   - `npm run check:directive-scientify-mission-control-external-host-guard`
 - The one-case compile-contract artifact, promotion-input package, and review-boundary record are explicit and green:
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-compile-contract-01.md`
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-promotion-input-package-01.md`
-  - `runtime/follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-review-boundary-record-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-compile-contract-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-promotion-input-package-01.md`
+  - `runtime/00-follow-up/2026-04-02-dw-live-scientify-engine-pressure-mission-control-external-host-review-boundary-record-01.md`
 - The remaining live blocker is still the shared host-loading contract:
   - `shared/contracts/runtime-to-host.md` does not authorize `mission-control` as a current bounded host-loading target
   - current bounded manual host-loading seams are still repo-native only

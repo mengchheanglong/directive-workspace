@@ -1,0 +1,23 @@
+# Discovery Intake Record: Open Deep Research
+
+- Candidate id: research-engine-open-deep-research-20260407t052643z-20260407t052702.
+- Candidate name: Open Deep Research
+- Intake date: 2026-04-07
+- Source type: external-system
+- Source reference: https://github.com/langchain-ai/open_deep_research
+- Source location on disk: n/a
+- Submitted by: directive-workspace-discovery-front-door
+- Why it entered the system: This source entered through Discovery first so Directive Workspace could record mission-aware usefulness, routing, and proof boundaries before any downstream lane work.
+- Claimed value: Breaks deep research into typed phases instead of collapsing everything into an answer loop. Imported from research-engine for Directive Workspace Discovery review only.
+- Initial relevance to the workspace: Meta-usefulness: the generated adaptation and improvement plans are Engine-self-improvement oriented, so the value is primarily about improving how Directive Workspace discovers, judges, adapts, proves, or integrates future sources rather than exposing repeated host-call value.
+- Suspected adoption target: engine-owned product logic
+- Stack language: n/a
+- Stack runtime: n/a
+- Stack framework: n/a
+- Stack package tool: n/a
+- Stack deployment: n/a
+- Stack external dependencies: n/a
+- Stack data model assumptions: n/a
+- Stack integration shape: n/a
+- Immediate notes: Engine run 21c6546d-ba73-446c-855a-e4ca799a338a selected architecture. No open capability gap matched strongly enough. Human review remains explicit before downstream lane execution.
+- Linked triage record: discovery/02-triage/2026-04-07-research-engine-open-deep-research-20260407t052643z-20260407t052702--triage.md

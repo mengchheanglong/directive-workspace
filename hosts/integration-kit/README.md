@@ -35,7 +35,7 @@ When possible, consume the package-ready module surface at:
 - `hosts/integration-kit/index.ts`
 - `hosts/integration-kit/cli/host-integration-kit-cli.ts`
 
-Do not start by inventing host-local payloads or host-local Engine lane definitions.
+Do not start by inventing host-local payloads or host-local lane lifecycle definitions.
 
 ## Minimum host responsibilities
 
@@ -60,22 +60,23 @@ A host must not redefine:
 - schema:
   - `shared/schemas/discovery-submission-request.schema.json`
 - shared libs:
-  - `shared/lib/discovery-submission-router.ts`
-  - `shared/lib/discovery-intake-queue-writer.ts`
-  - `shared/lib/discovery-fast-path-record-writer.ts`
-  - `shared/lib/discovery-case-record-writer.ts`
-  - `shared/lib/discovery-routing-record-writer.ts`
-  - `shared/lib/discovery-completion-record-writer.ts`
-  - `shared/lib/discovery-intake-queue-transition.ts`
-  - `shared/lib/discovery-intake-lifecycle-sync.ts`
+  - `discovery/lib/discovery-front-door.ts`
+  - `discovery/lib/discovery-submission-router.ts`
+  - `discovery/lib/discovery-intake-queue-writer.ts`
+  - `discovery/lib/discovery-fast-path-record-writer.ts`
+  - `discovery/lib/discovery-case-record-writer.ts`
+  - `discovery/lib/discovery-routing-record-writer.ts`
+  - `discovery/lib/discovery-completion-record-writer.ts`
+  - `discovery/lib/discovery-intake-queue-transition.ts`
+  - `discovery/lib/discovery-intake-lifecycle-sync.ts`
 
 ### Discovery prioritization
 
 - schema:
   - `shared/schemas/discovery-gap-worklist.schema.json`
 - shared libs:
-  - `shared/lib/discovery-gap-priority.ts`
-  - `shared/lib/discovery-gap-worklist-generator.ts`
+  - `discovery/lib/discovery-gap-priority.ts`
+  - `discovery/lib/discovery-gap-worklist-generator.ts`
 
 ### OpenClaw-compatible upstream signals
 
@@ -96,12 +97,14 @@ A host must not redefine:
 - `shared/contracts/runtime-to-host.md`
 - `shared/contracts/host-integration-boundary.md`
 - `shared/contracts/host-integration-acceptance.md`
-- `runtime/BOUNDARY_INVENTORY.json`
+- `runtime/meta/BOUNDARY_INVENTORY.json`
 
 ## Example payloads
 
 These examples are host-neutral seed payloads, not Mission Control-specific forms.
 
+- preferred Engine-backed Discovery front-door submission:
+  - `hosts/integration-kit/examples/discovery-submission-front-door.json`
 - queue-only Discovery submission:
   - `hosts/integration-kit/examples/discovery-submission-queue-only.json`
 - fast-path Discovery submission:
@@ -125,10 +128,13 @@ These examples are host-neutral seed payloads, not Mission Control-specific form
   - `hosts/integration-kit/starter/index.ts`
 - starter readme:
   - `hosts/integration-kit/starter/README.md`
+- preferred Engine-backed front-door starter:
+  - `hosts/integration-kit/starter/discovery-front-door-adapter.template.ts`
 - starter adapter template:
   - `hosts/integration-kit/starter/discovery-submission-adapter.template.ts`
 
-The starter template shows one concrete host-bridge shape that composes the canonical shared libs while leaving storage, API framework, and path policy to the integrating host.
+The preferred front-door starter shows the current product-truth integration path: submit a canonical Discovery request through Discovery first, let the Engine produce the route/review truth, and consume the resulting queue, routing, and Engine-run artifacts.
+The older submission adapter template remains available when a host truly must author `queue_only`, `fast_path`, or `split_case` records directly.
 The starter folder also includes a memory bridge template and a smoke template so a new host can validate its adapter shape before wiring real storage.
 It also includes a Discovery overview reader starter so hosts can render recent Discovery movement from the canonical queue document without importing Mission Control backend service code.
 It also includes a signal adapter starter so hosts can convert runtime verification or maintenance/watchdog events into canonical Discovery submissions instead of inventing host-local intake paths.
@@ -156,8 +162,11 @@ Example commands:
 
 ```powershell
 npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts acceptance-quickstart --host-name "Example Host" --module-surface package_import --output-root C:\temp
+npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-submission-example --shape front_door
 npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts submission-memory-dry-run --input-json-path <directive-workspace-root>\hosts\integration-kit\examples\discovery-submission-fast-path.json
 npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-submission-example --shape fast_path
+npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-signal-example --kind runtime_verification
+npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts signal-adapter-dry-run --kind maintenance_watchdog --input-json-path <directive-workspace-root>\hosts\integration-kit\examples\openclaw-maintenance-watchdog-signal.json
 ```
 
 ## Host adapter patterns
@@ -166,7 +175,8 @@ Recommended adapter shapes:
 
 1. **API adapter**
    - validate incoming payload against canonical schema
-   - call canonical Directive Workspace shared lib
+   - prefer the Engine-backed Discovery front door when you can keep Discovery first and let the Engine decide route/review truth
+   - only use direct record-shape writers when your host genuinely needs to author manual `fast_path` or `split_case` records
    - persist resulting queue/artifact output in the product-owned structure
 
 2. **UI adapter**

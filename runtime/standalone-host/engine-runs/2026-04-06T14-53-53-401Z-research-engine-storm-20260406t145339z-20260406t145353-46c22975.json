@@ -1,0 +1,296 @@
+{
+  "$schema": "shared/schemas/directive-engine-run-record.schema.json",
+  "schemaVersion": 2,
+  "recordKind": "directive_engine_run_record",
+  "runId": "46c22975-103b-478a-a858-0dfeee2edf28",
+  "receivedAt": "2026-04-06T14:53:53.401Z",
+  "source": {
+    "sourceId": "research-engine-storm-20260406t145339z-20260406t145353.",
+    "sourceType": "external-system",
+    "sourceRef": "https://github.com/stanford-oval/storm",
+    "title": "STORM / Co-STORM",
+    "summary": "Makes acquisition-vs-synthesis boundaries explicit through staged research, outline generation, and cited writing. Imported from research-engine for Directive Workspace Discovery review only.",
+    "notes": [
+      "Imported source candidate storm from research-engine bundle C:/Users/User/projects/directive-workspace/discovery/research-engine/artifacts-live-test/dw_import_bundle.json. Bundle decision boundary: This bundle is import-ready for Directive Workspace Discovery review only; it must not be treated as a routing or adoption decision. Source intelligence boundary: Research Engine gathers source intelligence and scoring signals only; it does not decide what Directive Workspace Discovery should adopt or route. Discovery packet boundary: Research Engine prepares Discovery-facing candidate packets; Directive Workspace Discovery retains final route and adoption authority. Research-engine source kind: system Discovery signal band: strong Signal score summary: Strong Discovery review signal from Research Engine scoring. Score summary: total=80; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=8/10; novelty=4/10. Signal total score: 80. Strong signal: Strong signal for further Discovery review because the current run shows high relevance, solid evidence quality, and bounded subsystem-reuse potential. Initial value hypothesis: Useful source-intelligence signal for inspectable curation workflow and collaborative evidence gathering. Baggage signals: Long-form report bias | Article-generation framing. Capability gap hint: Need explicit acquisition-vs-synthesis separation and inspectable curation stages. Freshness: Latest normalized evidence captured at 2026-04-06T14:53:39+00:00. Freshest observed source update at 2026-03-28T00:00:00+00:00 (9 days old at capture; 5/5 evidence items carried source dates; signal=current). Evidence bundle refs: storm-e1, storm-e2, storm-e3, storm-e4, storm-e5. Evidence cluster summary: Collapsed 5 evidence items into 5 clusters. | No duplicate evidence clusters detected. | No contradiction flags detected across clustered evidence.. Provenance: primary via catalog:official-docs (github-repo). Uncertainty notes: Current run is catalog-backed and should later be upgraded to live-provider evidence.",
+      "record_shape:queue_only"
+    ],
+    "missionAlignmentHint": "Makes acquisition-vs-synthesis boundaries explicit through staged research, outline generation, and cited writing. Imported from research-engine for Directive Workspace Discovery review only.",
+    "capabilityGapId": null,
+    "primaryAdoptionTarget": null,
+    "containsExecutableCode": null,
+    "containsWorkflowPattern": null,
+    "improvesDirectiveWorkspace": null,
+    "workflowBoundaryShape": null
+  },
+  "mission": {
+    "missionId": "directive-workspace-discovery-front-door",
+    "currentObjective": "Build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.",
+    "usefulnessSignals": [
+      "Useful means anything that materially improves:",
+      "revenue and conversion",
+      "execution speed and automation strength",
+      "decision quality and strategic leverage",
+      "cost efficiency and reliability",
+      "orchestration quality and agent coordination",
+      "capability-gap detection and self-improvement velocity"
+    ],
+    "capabilityLanes": [
+      "Directive engine materialization - one reusable executable core that hosts can embed cleanly",
+      "Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior",
+      "Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions",
+      "Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement",
+      "Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)",
+      "Evaluation quality - dimensional measurement (evaluators), not just binary gates",
+      "Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling"
+    ],
+    "activeMissionMarkdown": "# Active Mission\n\nLast updated: 2026-03-24\nStatus: canonical\n\n## Current Objective\n\nBuild and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.\n\n## What Usefulness Means Under This Objective\n\nUseful means anything that materially improves:\n- revenue and conversion\n- execution speed and automation strength\n- decision quality and strategic leverage\n- cost efficiency and reliability\n- orchestration quality and agent coordination\n- capability-gap detection and self-improvement velocity\n\n## Capability Lanes That Matter Most\n\n1. Directive engine materialization - one reusable executable core that hosts can embed cleanly\n   Architecture is currently the closest lane to this objective because the current mission is to improve the Engine itself.\n2. Runtime operationalization (Runtime) - converting proven patterns into callable, bounded, measurable runtime behavior\n3. Orchestration reliability (OpenClaw) - persistent, looping, memory-backed coordination across agents and sessions\n4. Discovery as operational front door - mission-aware intake, routing, capability-gap detection, and review-cadence enforcement\n5. Behavior-preserving transformation - same capability, better implementation (speed, cost, reliability, maintainability)\n6. Evaluation quality - dimensional measurement (evaluators), not just binary gates\n7. Unified runtime host (Mission Control) - coherent command surface, less fragmented tooling\n\n## Known Capability Gaps (Open)\n\n- gap: Canonical Directive engine surface only partially materialized\n  risk: The first engine slice exists, but Directive Workspace behavior is still too distributed across host helpers, reference hosts, and Markdown-first operating assets, and the Engine/lane split is not yet deep enough to keep Discovery / Runtime / Architecture logic centered inside the Engine\n  success condition: one executable engine owns substantially more source intake, routing, adaptation/improvement, proof, and integration state with explicit host-adapter boundaries while Discovery / Runtime / Architecture operate as clear Engine lanes rather than loose top-level features\n\n## Recently Resolved Gaps\n\n- gap: Discovery as actual front door for most work - RESOLVED 2026-03-23\n  resolution: `shared/lib/discovery-front-door-coverage.ts` now measures front-door routine usage from the live corpus. Current metrics are 22 queue entries total, 14 post-primary entries, 13 native-like post-primary entries, and 100% native-like post-primary intake linkage coverage. The only post-primary entry without intake linkage is a backfill (`al-parked-cli-anything`), so Discovery-first routine usage is now confirmed for native work.\n\n- gap: OpenClaw to Discovery coordination - RESOLVED 2026-03-22\n  resolution: Root helper plus dry-run checker are active, and `dw-openclaw-discovery-submission-flow` proves a real OpenClaw-originated candidate can enter the primary Discovery queue without bypass.\n\n- gap: Architecture-to-Runtime handoff - RESOLVED 2026-03-22\n  resolution: Formal handoff record created for autoresearch bounded-run pattern. All contract fields exercised.\n\n- gap: Evaluator lane dimensional proof - RESOLVED 2026-03-22\n  resolution: Backend test boilerplate consolidation uses dimensional evaluator with numeric before/after (20.6% line reduction, 16.9% byte reduction). First non-vacuous dimensional proof.\n\n- gap: Discovery intake queue native usage - RESOLVED 2026-03-22\n  resolution: 5 native primary-mode queue entries achieved (threshold: 5+). 14 total entries (5 native, 9 backfill). Three behavior-preserving transformation candidates processed end-to-end through native queue.\n\n- gap: agent-lab legacy dependency - RESOLVED 2026-03-22\n  resolution: OpenClaw root external-tool bridge migrated to `scripts/external-tools/` with no live runtime path into `workspace/agent-lab/orchestration`. Runtime-backed adapters now read from current source packs and host-backed lanes resolve through Mission Control or OpenClaw-owned state."
+  },
+  "openGaps": [],
+  "selectedLane": {
+    "laneId": "discovery",
+    "label": "Discovery",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true
+  },
+  "candidate": {
+    "candidateId": "research-engine-storm-20260406t145339z-20260406t145353",
+    "candidateName": "STORM / Co-STORM",
+    "recommendedLaneId": "discovery",
+    "recommendedLaneLabel": "Discovery",
+    "recommendedRecordShape": "queue_only",
+    "usefulnessLevel": "meta",
+    "missionPriorityScore": 31,
+    "confidence": "medium",
+    "matchedGapId": null,
+    "matchedGapRank": null,
+    "requiresHumanReview": true,
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended discovery because its lane score (15) exceeded the alternatives.",
+      "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for discovery: keyword=15, metadata=0, gap=0.",
+      "Queue-only is recommended because the candidate still needs more routing clarity before record expansion."
+    ]
+  },
+  "analysis": {
+    "missionFitSummary": "Makes acquisition-vs-synthesis boundaries explicit through staged research, outline generation, and cited writing. Imported from research-engine for Directive Workspace Discovery review only.",
+    "primaryAdoptionQuestion": "What is the primary adoption target of the extracted value?",
+    "matchedCapabilityGapId": null,
+    "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended discovery because its lane score (15) exceeded the alternatives.",
+      "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for discovery: keyword=15, metadata=0, gap=0.",
+      "Queue-only is recommended because the candidate still needs more routing clarity before record expansion."
+    ]
+  },
+  "routingAssessment": {
+    "recommendedLaneId": "discovery",
+    "recommendedRecordShape": "queue_only",
+    "missionPriorityScore": 31,
+    "confidence": "medium",
+    "matchedGapId": null,
+    "matchedGapRank": null,
+    "explicitRouteDestination": null,
+    "routeConflict": false,
+    "needsHumanReview": true,
+    "ambiguitySummary": {
+      "topLaneId": "discovery",
+      "runnerUpLaneId": "runtime",
+      "scoreDelta": 3,
+      "conflictingSignalFamilies": [],
+      "conflictingLaneIds": []
+    },
+    "reviewGuidance": {
+      "guidanceKind": "bounded_lane_review",
+      "summary": "Bounded lane review remains required before downstream adoption.",
+      "operatorAction": "Keep the bounded lane recommendation visible, review the remaining uncertainty explicitly, and only proceed after that review is recorded.",
+      "requiredChecks": [
+        "Confirm the lane still matches the best bounded interpretation.",
+        "Record the remaining uncertainty before downstream advancement."
+      ],
+      "stopLine": "Do not widen downstream work while this bounded review requirement remains open."
+    },
+    "scoreBreakdown": {
+      "missionFit": 5,
+      "gapAlignment": 0,
+      "laneScores": {
+        "discovery": 15,
+        "architecture": 6,
+        "runtime": 12
+      },
+      "keywordLaneScores": {
+        "discovery": 15,
+        "architecture": 6,
+        "runtime": 12
+      },
+      "metadataLaneScores": {
+        "discovery": 0,
+        "architecture": 0,
+        "runtime": 0
+      },
+      "gapLaneScores": {
+        "discovery": 0,
+        "architecture": 0,
+        "runtime": 0
+      },
+      "metaUsefulnessSignal": 2,
+      "patternExtractionSignal": 0,
+      "transformationSignal": 0,
+      "runtimeSignal": 4,
+      "ambiguityPenalty": 1,
+      "total": 31
+    },
+    "explanationBreakdown": {
+      "keywordSignals": [
+        "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+        "Keyword-derived lane scores: discovery=15, architecture=6, runtime=12."
+      ],
+      "metadataSignals": [
+        "Metadata-derived lane scores: discovery=0, architecture=0, runtime=0."
+      ],
+      "gapAlignmentSignals": [
+        "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+        "Gap-derived lane scores: discovery=0, architecture=0, runtime=0."
+      ],
+      "ambiguitySignals": [
+        "Top lane discovery beat runtime by 3 points after ambiguity penalties.",
+        "No material signal-family disagreement remained after scoring; keyword, metadata, and gap alignment all supported discovery or had no competing winner."
+      ]
+    },
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended discovery because its lane score (15) exceeded the alternatives.",
+      "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for discovery: keyword=15, metadata=0, gap=0.",
+      "Queue-only is recommended because the candidate still needs more routing clarity before record expansion."
+    ]
+  },
+  "extractionPlan": {
+    "extractedValue": [
+      "Makes acquisition-vs-synthesis boundaries explicit through staged research, outline generation, and cited writing. Imported from research-engine for Directive Workspace Discovery review only.",
+      "Imported source candidate storm from research-engine bundle C:/Users/User/projects/directive-workspace/discovery/research-engine/artifacts-live-test/dw_import_bundle.json. Bundle decision boundary: This bundle is import-ready for Directive Workspace Discovery review only; it must not be treated as a routing or adoption decision. Source intelligence boundary: Research Engine gathers source intelligence and scoring signals only; it does not decide what Directive Workspace Discovery should adopt or route. Discovery packet boundary: Research Engine prepares Discovery-facing candidate packets; Directive Workspace Discovery retains final route and adoption authority. Research-engine source kind: system Discovery signal band: strong Signal score summary: Strong Discovery review signal from Research Engine scoring. Score summary: total=80; relevance=8/10; evidence_quality=9/10; inspectability=9/10; subsystem_reuse=8/10; novelty=4/10. Signal total score: 80. Strong signal: Strong signal for further Discovery review because the current run shows high relevance, solid evidence quality, and bounded subsystem-reuse potential. Initial value hypothesis: Useful source-intelligence signal for inspectable curation workflow and collaborative evidence gathering. Baggage signals: Long-form report bias | Article-generation framing. Capability gap hint: Need explicit acquisition-vs-synthesis separation and inspectable curation stages. Freshness: Latest normalized evidence captured at 2026-04-06T14:53:39+00:00. Freshest observed source update at 2026-03-28T00:00:00+00:00 (9 days old at capture; 5/5 evidence items carried source dates; signal=current). Evidence bundle refs: storm-e1, storm-e2, storm-e3, storm-e4, storm-e5. Evidence cluster summary: Collapsed 5 evidence items into 5 clusters. | No duplicate evidence clusters detected. | No contradiction flags detected across clustered evidence.. Provenance: primary via catalog:official-docs (github-repo). Uncertainty notes: Current run is catalog-backed and should later be upgraded to live-provider evidence.",
+      "record_shape:queue_only"
+    ],
+    "excludedBaggage": [
+      "source-specific implementation baggage",
+      "unadapted source terminology"
+    ]
+  },
+  "adaptationPlan": {
+    "directiveOwnedForm": "Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes.",
+    "adaptedValue": [
+      "Normalize the source into a Discovery-owned intake and routing case.",
+      "Preserve ambiguity without forcing downstream adoption too early."
+    ]
+  },
+  "improvementPlan": {
+    "improvementGoals": [
+      "improve intake efficiency",
+      "improve routing clarity"
+    ],
+    "intendedDelta": "Make source selection and routing clearer and more reusable than the original source context."
+  },
+  "proofPlan": {
+    "proofKind": "discovery_review",
+    "objective": "Confirm the source is captured and routed correctly against mission \"Build and operate a revenue-generating personal AI workspace that continuously strengthens its own capabilities through mission-driven ingestion, proof-backed adoption, and persistent orchestration.\".",
+    "requiredEvidence": [
+      "mission-fit rationale recorded",
+      "routing rationale recorded",
+      "next bounded action chosen"
+    ],
+    "requiredGates": [
+      "routing_review",
+      "human_decision_required"
+    ],
+    "rollbackPrompt": "Keep the candidate in Discovery, downgrade confidence, or defer without integrating downstream work."
+  },
+  "decision": {
+    "decisionState": "hold_in_discovery",
+    "adoptionTargetLaneId": "discovery",
+    "adoptionTargetLaneLabel": "Discovery",
+    "requiresHumanApproval": true,
+    "summary": "Preliminary engine decision: hold_in_discovery for Discovery with additional human review required, pending human approval before final adoption.",
+    "rationale": [
+      "No unresolved gap matched strongly enough, so the assessment relied on mission-fit and lane-signal scoring.",
+      "Recommended discovery because its lane score (15) exceeded the alternatives.",
+      "Meta-usefulness signal is present (2/5), which strengthens Engine-improvement handling inside Architecture or Discovery.",
+      "Route explanation breakdown for discovery: keyword=15, metadata=0, gap=0.",
+      "Queue-only is recommended because the candidate still needs more routing clarity before record expansion.",
+      "Keep the candidate in Discovery until routing clarity improves."
+    ]
+  },
+  "integrationProposal": {
+    "targetLaneId": "discovery",
+    "targetLaneLabel": "Discovery",
+    "integrationMode": "none",
+    "hostDependence": "engine_only",
+    "valuableWithoutHostRuntime": true,
+    "handoffArtifactFamily": "discovery_backlog",
+    "nextAction": "Keep the candidate in Discovery until routing clarity improves.",
+    "requiresHumanReview": true
+  },
+  "reportPlan": {
+    "reportKind": "discovery_routing_report",
+    "summary": "Sync the hold_in_discovery decision and none integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+    "usefulnessRationale": "Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources.",
+    "requiredDestinations": [
+      "directive_workspace_record",
+      "directive_workspace_report_sync"
+    ],
+    "syncRequired": true
+  },
+  "events": [
+    {
+      "type": "source_ingested",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Source captured for candidate research-engine-storm-20260406t145339z-20260406t145353."
+    },
+    {
+      "type": "source_analyzed",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Makes acquisition-vs-synthesis boundaries explicit through staged research, outline generation, and cited writing. Imported from research-engine for Directive Workspace Discovery review only. Usefulness rationale: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources."
+    },
+    {
+      "type": "candidate_routed",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Candidate routed to discovery with usefulness level meta. Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources."
+    },
+    {
+      "type": "value_extracted",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Extracted 3 value signals and excluded 2 baggage signals."
+    },
+    {
+      "type": "value_adapted",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Mission-aware Discovery intake case with explicit routing, boundary, and usefulness notes."
+    },
+    {
+      "type": "value_improved",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Make source selection and routing clearer and more reusable than the original source context."
+    },
+    {
+      "type": "proof_planned",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Proof plan discovery_review prepared."
+    },
+    {
+      "type": "decision_recorded",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Preliminary engine decision: hold_in_discovery for Discovery with additional human review required, pending human approval before final adoption."
+    },
+    {
+      "type": "integration_proposed",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Integration proposal targets discovery via discovery_backlog."
+    },
+    {
+      "type": "report_planned",
+      "at": "2026-04-06T14:53:53.401Z",
+      "summary": "Sync the hold_in_discovery decision and none integration plan into Directive Workspace reporting surfaces. Usefulness rationale: Meta-usefulness: shared Engine analysis detected engine-improvement signals, so the value appears to improve how Directive Workspace discovers, judges, adapts, proves, or integrates future sources."
+    }
+  ]
+}

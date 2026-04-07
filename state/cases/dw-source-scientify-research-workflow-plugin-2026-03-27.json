@@ -15,7 +15,7 @@
   "linkedArtifacts": {
     "intakeRecordPath": null,
     "triageRecordPath": null,
-    "routingRecordPath": "discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
+    "routingRecordPath": "discovery/03-routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md",
     "engineRunRecordPath": null,
     "engineRunReportPath": null,
     "architectureHandoffPath": null,
@@ -25,7 +25,7 @@
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md"
+    "resultRecordPath": "runtime/00-follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md"
   },
   "projectionInputs": null
 }

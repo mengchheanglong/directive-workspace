@@ -6,15 +6,15 @@ import { fileURLToPath } from "node:url";
 import {
   readDirectiveActionRunnerEvents,
   readDirectiveActionRunnerRecord,
-} from "../shared/lib/directive-runner-state.ts";
-import type { DiscoveryIntakeQueueEntry } from "../shared/lib/discovery-intake-queue-writer.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
-import { readDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
-import { openDirectiveRuntimeRecordProof } from "../shared/lib/runtime-record-proof-opener.ts";
-import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../shared/lib/runtime-proof-runtime-capability-boundary-opener.ts";
-import { openDirectiveRuntimePromotionReadiness } from "../shared/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
-import { runDirectiveRuntimePromotionReadinessWithRunner } from "../shared/lib/runtime-promotion-readiness-runner.ts";
+} from "../engine/execution/directive-runner-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import { readDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
+import { openDirectiveRuntimeRecordProof } from "../runtime/lib/runtime-record-proof-opener.ts";
+import { openDirectiveRuntimeProofRuntimeCapabilityBoundary } from "../runtime/lib/runtime-proof-runtime-capability-boundary-opener.ts";
+import { openDirectiveRuntimePromotionReadiness } from "../runtime/lib/runtime-runtime-capability-boundary-promotion-readiness-opener.ts";
+import { runDirectiveRuntimePromotionReadinessWithRunner } from "../runtime/lib/runtime-promotion-readiness-runner.ts";
 import {
   copyRelativeFile,
   extractOpenedBy,
@@ -27,7 +27,7 @@ import { withTempDirectiveRoot } from "./temp-directive-root.ts";
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const CASE_UNDER_TEST = {
   candidateId: "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
-  followUpPath: "runtime/follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
+  followUpPath: "runtime/00-follow-up/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-follow-up-record.md",
   runtimeRecordPath: "runtime/02-records/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-record.md",
   runtimeProofPath: "runtime/03-proof/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-proof.md",
   runtimeCapabilityBoundaryPath: "runtime/04-capability-boundaries/2026-03-25-dw-real-mini-swe-agent-runtime-route-v0-2026-03-25-runtime-capability-boundary.md",
@@ -116,6 +116,18 @@ function assertResolvedStateMatchesLive(input: {
   assert.equal(tempFocus.nextLegalStep, input.liveFocus.nextLegalStep);
 }
 
+function copyDownstreamPromotionChain(
+  directiveRoot: string,
+  liveFocus: NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>,
+) {
+  for (const relativePath of uniqueRelativePaths([
+    liveFocus.linkedArtifacts.runtimePromotionRecordPath,
+    liveFocus.linkedArtifacts.runtimeCallableStubPath,
+  ])) {
+    copyRelativeFile(relativePath, DIRECTIVE_ROOT, directiveRoot, "Missing source file for runner copy");
+  }
+}
+
 function primeCapabilityBoundaryOpen(directiveRoot: string, proofOpenedBy: string, boundaryOpenedBy: string) {
   openDirectiveRuntimeRecordProof({
     directiveRoot,
@@ -147,6 +159,7 @@ function scenarioDirectBaseline() {
       fs.readFileSync(path.join(directiveRoot, CASE_UNDER_TEST.promotionReadinessPath), "utf8"),
       seeded.livePromotionReadinessMarkdown,
     );
+    copyDownstreamPromotionChain(directiveRoot, seeded.liveFocus);
     assertResolvedStateMatchesLive({
       directiveRoot,
       liveFocus: seeded.liveFocus,
@@ -194,6 +207,7 @@ function scenarioFreshRunner() {
       "runner_completed",
     ]);
 
+    copyDownstreamPromotionChain(directiveRoot, seeded.liveFocus);
     assertResolvedStateMatchesLive({
       directiveRoot,
       liveFocus: seeded.liveFocus,
@@ -246,6 +260,7 @@ function scenarioInterruptedBeforeActionThenResumed() {
       fs.readFileSync(path.join(directiveRoot, CASE_UNDER_TEST.promotionReadinessPath), "utf8"),
       seeded.livePromotionReadinessMarkdown,
     );
+    copyDownstreamPromotionChain(directiveRoot, seeded.liveFocus);
     assertResolvedStateMatchesLive({
       directiveRoot,
       liveFocus: seeded.liveFocus,
@@ -299,6 +314,7 @@ function scenarioInterruptedAfterActionThenResumed() {
     }).events.filter((event) => event.eventType === "runtime_promotion_readiness_opened");
     assert.equal(mirrorEvents.length, 1, "Resume from after_action must not re-open promotion readiness");
 
+    copyDownstreamPromotionChain(directiveRoot, seeded.liveFocus);
     assertResolvedStateMatchesLive({
       directiveRoot,
       liveFocus: seeded.liveFocus,
@@ -338,6 +354,7 @@ function scenarioApprovalAndStaleHeadGuards() {
       approved: true,
       approvedBy: seeded.promotionOpenedBy,
     });
+    copyDownstreamPromotionChain(directiveRoot, seeded.liveFocus);
 
     const staleRunnerId = "runtime-promotion-runner-stale-head";
     assert.throws(

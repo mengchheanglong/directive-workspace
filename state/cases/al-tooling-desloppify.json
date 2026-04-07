@@ -25,7 +25,7 @@
     "runtimeProofPath": null,
     "runtimeCapabilityBoundaryPath": null,
     "runtimePromotionReadinessPath": null,
-    "resultRecordPath": "runtime/records/2026-03-21-desloppify-runtime-slice-01-proof.md"
+    "resultRecordPath": "runtime/legacy-records/2026-03-21-desloppify-runtime-slice-01-proof.md"
   },
   "projectionInputs": null
 }

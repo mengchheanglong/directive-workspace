@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from research_engine.models import ResearchMission, SearchPlan, SearchQuery, SearchTrack
 
 PLANNING_PRESET_ALIASES = {
@@ -14,10 +16,43 @@ PROVIDER_PREFERENCE_ALIASES = {
     "github-live": "github",
     "gitlab": "gitlab",
     "gitlab-live": "gitlab",
+    "tavily": "tavily",
+    "tavily-live": "tavily",
+    "exa": "exa",
+    "exa-live": "exa",
+    "firecrawl": "firecrawl",
+    "firecrawl-live": "firecrawl",
     "web": "web",
     "web-live": "web",
     "web-docs": "web",
 }
+
+MISSION_DIVERSIFICATION_STOP_TERMS = {
+    "the",
+    "and",
+    "for",
+    "with",
+    "that",
+    "this",
+    "from",
+    "into",
+    "through",
+    "without",
+    "about",
+    "find",
+    "need",
+    "system",
+    "systems",
+    "source",
+    "sources",
+    "research",
+    "workflow",
+    "workflows",
+    "open",
+    "opensource",
+}
+MISSION_DIVERSIFICATION_MAX_NEW_QUERIES = 2
+MISSION_DIVERSIFICATION_TERMS_PER_QUERY = 3
 
 TRACK_LIBRARY = {
     "official-docs": {
@@ -156,11 +191,11 @@ def _default_provider_preferences_for_tracks(tracks: list[SearchTrack]) -> dict[
     for track in tracks:
         hint = track.provider_hint.strip().lower()
         if "github" in hint:
-            defaults[track.track_id] = ["github", "gitlab", "web"]
+            defaults[track.track_id] = ["github", "gitlab", "exa", "tavily", "firecrawl", "web"]
         elif "web" in hint:
-            defaults[track.track_id] = ["web", "github", "gitlab"]
+            defaults[track.track_id] = ["exa", "tavily", "firecrawl", "web", "github", "gitlab"]
         else:
-            defaults[track.track_id] = ["github", "gitlab", "web"]
+            defaults[track.track_id] = ["github", "gitlab", "exa", "tavily", "firecrawl", "web"]
     return defaults
 
 
@@ -409,6 +444,97 @@ def _apply_query_budget(
             f"Query budget truncated plan to {len(selected_queries)}/{len(queries)} queries."
         )
     return selected_queries, notes
+
+
+def _query_text_key(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip().lower())
+
+
+def _keyword_terms(value: str) -> list[str]:
+    seen: set[str] = set()
+    terms: list[str] = []
+    for token in re.findall(r"[a-z0-9][a-z0-9-]+", value.lower()):
+        if token in seen:
+            continue
+        if len(token) < 4:
+            continue
+        if token in MISSION_DIVERSIFICATION_STOP_TERMS:
+            continue
+        terms.append(token)
+        seen.add(token)
+    return terms
+
+
+def _apply_mission_query_diversification(
+    queries: list[SearchQuery],
+    tracks: list[SearchTrack],
+    mission: ResearchMission,
+) -> tuple[list[SearchQuery], list[str], dict[str, str]]:
+    notes: list[str] = []
+    added_notes_by_query_id: dict[str, str] = {}
+    if mission.constraints.max_queries <= len(queries):
+        notes.append("Mission diversification skipped: query budget already saturated.")
+        return queries, notes, added_notes_by_query_id
+
+    mission_terms = _keyword_terms(mission.objective)
+    if not mission_terms:
+        notes.append("Mission diversification skipped: objective has no novel diversification terms.")
+        return queries, notes, added_notes_by_query_id
+
+    prioritized_tracks = sorted(
+        tracks,
+        key=lambda track: (track.priority, track.track_id),
+    )
+    diversified_queries = list(queries)
+    existing_ids = {query.query_id for query in diversified_queries}
+    existing_text_keys = {_query_text_key(query.text) for query in diversified_queries}
+
+    added = 0
+    for track in prioritized_tracks:
+        if added >= MISSION_DIVERSIFICATION_MAX_NEW_QUERIES:
+            break
+        base_query = next((query for query in queries if query.track_id == track.track_id), None)
+        if base_query is None:
+            continue
+
+        base_terms = set(_keyword_terms(base_query.text))
+        novel_terms = [term for term in mission_terms if term not in base_terms]
+        if len(novel_terms) < 2:
+            continue
+
+        term_slice = novel_terms[:MISSION_DIVERSIFICATION_TERMS_PER_QUERY]
+        diversified_text = re.sub(
+            r"\s+",
+            " ",
+            f"{base_query.text} {' '.join(term_slice)}",
+        ).strip()
+        diversified_text_key = _query_text_key(diversified_text)
+        if diversified_text_key in existing_text_keys:
+            continue
+
+        query_id = _unique_query_id(f"{base_query.query_id}-mission", existing_ids)
+        existing_ids.add(query_id)
+        existing_text_keys.add(diversified_text_key)
+        diversified_queries.append(
+            SearchQuery(
+                query_id=query_id,
+                track_id=base_query.track_id,
+                query_type=base_query.query_type,
+                text=diversified_text,
+                rationale=(
+                    f"{base_query.rationale} "
+                    "Mission-conditioned diversification adds bounded objective terms for stronger recall."
+                ),
+            )
+        )
+        added_notes_by_query_id[query_id] = (
+            f"Added mission-diversified query for {track.track_id}: {', '.join(term_slice)}."
+        )
+        added += 1
+
+    if added == 0:
+        notes.append("Mission diversification skipped: no bounded novel terms survived track-level checks.")
+    return diversified_queries, notes, added_notes_by_query_id
 
 
 def _balanced_discovery_plan() -> tuple[list[SearchTrack], list[SearchQuery], list[str]]:
@@ -777,15 +903,33 @@ def build_search_plan(mission: ResearchMission) -> SearchPlan:
         tracks=tracks,
         provider_preferences_by_track=mission.track_provider_preferences,
     )
+    queries, diversification_notes, diversification_added_notes = _apply_mission_query_diversification(
+        queries=queries,
+        tracks=tracks,
+        mission=mission,
+    )
     queries, budget_notes = _apply_query_budget(
         queries=queries,
         max_queries=mission.constraints.max_queries,
         required_track_ids=required_track_ids,
         required_query_types_by_track=required_query_types_by_track,
     )
+    final_query_ids = {query.query_id for query in queries}
+    added_note_count = 0
+    for query_id, note in diversification_added_notes.items():
+        if query_id in final_query_ids:
+            diversification_notes.append(note)
+            added_note_count += 1
+    dropped_diversification_count = len(diversification_added_notes) - added_note_count
+    if dropped_diversification_count > 0:
+        diversification_notes.append(
+            f"Mission diversification dropped {dropped_diversification_count} query(ies) due to query budget."
+        )
+
     notes.extend(override_notes)
     notes.extend(query_type_override_notes)
     notes.extend(provider_preference_notes)
+    notes.extend(diversification_notes)
     notes.extend(budget_notes)
     notes.extend(
         [

@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-engine-handoff.md",
+  "adaptation_decision_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-bounded-result-adoption-decision.json",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/02-adopted/2026-03-28-dw-pressure-engine-discovery-held-route-equivalence-hardening-2026-03-28-adopted-planned-next.md",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can stop Discovery-held routes from being misread as broken lane mismatches when the Engine correctly selected Discovery.",
+    "mechanism": "The adopted slice adds one bounded equivalence rule between Engine lane discovery and Discovery-held route destinations.",
+    "baseline_observation": "Before this DEEP slice, a real monitor route resolved as broken because the resolver compared selectedLane discovery to routeDestination monitor literally.",
+    "expected_effect": "Discovery-held routes will resolve more truthfully, and queue rows tied to them will stop surfacing false inconsistency warnings.",
+    "verification_method": "structural_inspection",
+    "verification_result": "not_yet_verified"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The slice is narrow, shared, and directly removes a false negative in canonical Discovery route integrity.",
+    "completion_status": "product_partial",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

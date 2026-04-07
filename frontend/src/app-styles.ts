@@ -65,6 +65,42 @@ export const appStyles = css`
   .hero p { margin:0; }
   .hero-meta { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 0; }
   .lane-head-strip-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); }
+  .decision-entry-list { display:grid; gap:14px; margin-top:14px; }
+  .decision-entry { border:1px solid #d9d0bf; border-radius:14px; padding:16px; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); overflow:hidden; }
+  .decision-entry.runtime_host_selection { border-color:#b8ccef; background:linear-gradient(180deg,#f7fbff 0%,#edf4ff 100%); }
+  .decision-entry.runtime_registry_acceptance { border-color:#a8d1ad; background:linear-gradient(180deg,#f5fff6 0%,#ecf8ee 100%); }
+  .decision-entry.architecture_materialization_due { border-color:#d6c1e8; background:linear-gradient(180deg,#fbf7ff 0%,#f3ecfb 100%); }
+  .decision-entry.discovery_routing_review { border-color:#e7c88d; background:linear-gradient(180deg,#fffaf0 0%,#fff2d9 100%); }
+  .workflow-hero { display:flex; justify-content:space-between; gap:18px; align-items:flex-start; border:1px solid #d7ccb6; border-radius:18px; padding:18px; margin:0 0 16px; background:linear-gradient(135deg,#fffdf9 0%,#f4ecdc 58%,#edf4ff 100%); }
+  .workflow-hero h2 { margin:0 0 6px; font-size:28px; }
+  .workflow-hero p { margin:0; color:#5c5548; }
+  .workflow-hero-stats { display:grid; gap:8px; grid-template-columns:repeat(2,minmax(84px,1fr)); min-width:220px; }
+  .workflow-hero-stats span { border:1px solid #e4dac8; border-radius:12px; background:rgba(255,255,255,0.75); padding:10px; }
+  .workflow-hero-stats strong { display:block; font-size:22px; line-height:1; }
+  .workflow-hero-stats small { display:block; margin-top:4px; color:#5c5548; }
+  .workflow-map { display:grid; gap:14px; }
+  .workflow-group { border:1px solid #d9d0bf; border-radius:16px; background:#fffdf7; padding:14px; }
+  .workflow-group-heading { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin:0 0 12px; }
+  .workflow-group-heading h2 { margin:0 0 4px; }
+  .workflow-group-heading p { margin:0; }
+  .workflow-row-list { display:grid; gap:8px; }
+  .workflow-row { border:1px solid #e4dbc9; border-radius:12px; background:#fffdfa; overflow:hidden; }
+  .workflow-row.discovery { border-color:#e7c88d; }
+  .workflow-row.architecture { border-color:#d6c1e8; background:#fdf9ff; }
+  .workflow-row.runtime { border-color:#b8ccef; background:#f7fbff; }
+  .workflow-row.host { border-color:#a8d1ad; background:#f6fff7; }
+  .workflow-row summary { display:flex; justify-content:space-between; gap:12px; align-items:center; padding:12px 14px; cursor:pointer; list-style:none; }
+  .workflow-row summary::-webkit-details-marker { display:none; }
+  .workflow-row summary::before { content:"+"; font-weight:700; color:#6a624f; }
+  .workflow-row[open] summary::before { content:"-"; }
+  .workflow-main { display:grid; gap:3px; min-width:0; }
+  .workflow-main strong, .workflow-main span { overflow-wrap:anywhere; }
+  .workflow-tags { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+  .workflow-row-detail { border-top:1px solid #e7dfd1; padding:12px 14px 14px; }
+  .workflow-detail-grid { display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); margin:0 0 10px; }
+  .workflow-detail-grid div { border:1px solid #eee5d4; border-radius:10px; background:#fff; padding:10px; min-width:0; }
+  .workflow-detail-grid h4 { margin:0 0 5px; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:#6a624f; }
+  .workflow-detail-grid p { margin:0; overflow-wrap:anywhere; }
   .seam-grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
   .seam-card { border:1px solid #e4dbc9; border-radius:12px; background:#fffdfa; padding:14px; min-width:0; }
   .seam-card h3 { margin:0 0 8px; font-size:15px; }
@@ -103,5 +139,8 @@ export const appStyles = css`
     .hero-meta { flex-direction:column; align-items:flex-start; }
     .runtime-lane-grid { grid-template-columns:1fr; }
     .lane-page-grid { grid-template-columns:1fr; }
+    .workflow-hero { flex-direction:column; }
+    .workflow-hero-stats { width:100%; grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .workflow-row summary { align-items:flex-start; }
   }
 `;

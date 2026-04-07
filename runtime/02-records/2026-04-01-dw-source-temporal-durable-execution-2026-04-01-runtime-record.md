@@ -3,7 +3,7 @@
 ## follow-up review decision
 - Candidate id: `dw-source-temporal-durable-execution-2026-04-01`
 - Candidate name: `Temporal Durable Execution Platform`
-- Source follow-up record: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Source follow-up record: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
 - Review decision: `approved_for_bounded_runtime_conversion_record`
 - Reviewed by: `directive-lead-runtime-review`
 - Review date: `2026-04-01`
@@ -51,8 +51,8 @@
 
 ## artifact linkage
 - Runtime v0 record: `runtime/02-records/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-routing-record.md`
 - Next Runtime proof artifact if later approved: `runtime/03-proof/2026-04-01-dw-source-temporal-durable-execution-2026-04-01-proof.md`
 
 ## boundary

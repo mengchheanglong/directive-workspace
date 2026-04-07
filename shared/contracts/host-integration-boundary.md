@@ -49,7 +49,7 @@ Host integration should follow this order:
 **Directive Workspace canonical asset first -> host adapter second**
 
 Preferred pattern:
-1. define or update the canonical Directive Workspace contract, schema, template, or shared lib
+1. define or update the canonical Directive Workspace contract, schema, template, or engine code
 2. mirror or consume it in the host only when needed for runtime/build reliability
 3. keep the host layer thin and replaceable
 

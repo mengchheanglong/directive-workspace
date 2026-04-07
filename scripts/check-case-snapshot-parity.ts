@@ -4,28 +4,17 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { appendDirectiveCaseMirrorEvents } from "../shared/lib/case-event-log.ts";
-import { materializeDirectiveMirroredCaseSnapshot } from "../shared/lib/case-snapshot.ts";
+import { appendDirectiveCaseMirrorEvents } from "../engine/cases/case-event-log.ts";
+import { materializeDirectiveMirroredCaseSnapshot } from "../engine/cases/case-snapshot.ts";
 import {
   writeDirectiveMirroredDiscoveryCaseRecord,
   type DirectiveMirroredDiscoveryCaseRecord,
-} from "../shared/lib/case-store.ts";
-import { readDirectiveDiscoveryRoutingArtifact } from "../shared/lib/discovery-route-opener.ts";
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+} from "../engine/cases/case-store.ts";
+import { readDirectiveDiscoveryRoutingArtifact } from "../discovery/lib/discovery-route-opener.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { readJson } from "./checker-test-helpers.ts";
 import { withTempDirectiveRoot } from "./temp-directive-root.ts";
-
-type QueueEntry = {
-  candidate_id: string;
-  candidate_name: string;
-  source_type: string;
-  source_reference: string;
-  status: string;
-  routing_target: string | null;
-  operating_mode?: string | null;
-  intake_record_path?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-};
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const GOLDEN_CANDIDATE_IDS = [
@@ -36,24 +25,20 @@ const GOLDEN_CANDIDATE_IDS = [
   "dw-source-scientify-research-workflow-plugin-2026-03-27",
 ] as const;
 
-function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
 function loadGoldenQueueEntries() {
-  const queueDocument = readJson<{ entries: QueueEntry[] }>(
+  const queueDocument = readJson<{ entries: DiscoveryIntakeQueueEntry[] }>(
     path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json"),
   );
   return GOLDEN_CANDIDATE_IDS.map((candidateId) => {
     const entry = queueDocument.entries.find((item) => item.candidate_id === candidateId) ?? null;
     assert.ok(entry, `Golden case missing from discovery queue: ${candidateId}`);
     assert.ok(entry?.routing_record_path, `Golden case missing routing record: ${candidateId}`);
-    return entry as QueueEntry;
+    return entry as DiscoveryIntakeQueueEntry;
   });
 }
 
 function buildMirroredRecord(input: {
-  queueEntry: QueueEntry;
+  queueEntry: DiscoveryIntakeQueueEntry;
   routing: ReturnType<typeof readDirectiveDiscoveryRoutingArtifact>;
   authoritative: NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
 }): DirectiveMirroredDiscoveryCaseRecord {

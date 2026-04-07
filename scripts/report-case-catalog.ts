@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resolveDirectiveWorkspaceState } from "../shared/lib/dw-state.ts";
+import type { DiscoveryIntakeQueueEntry } from "../discovery/lib/discovery-intake-queue-writer.ts";
+import { resolveDirectiveWorkspaceState } from "../engine/state/index.ts";
 
 /**
  * Unified case catalog report.
@@ -16,21 +17,6 @@ const DIRECTIVE_ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
 );
-
-type QueueEntry = {
-  candidate_id?: string;
-  candidate_name?: string;
-  source_type?: string;
-  status?: string;
-  routing_target?: string | null;
-  operating_mode?: string | null;
-  capability_gap_id?: string | null;
-  received_at?: string;
-  routed_at?: string | null;
-  completed_at?: string | null;
-  routing_record_path?: string | null;
-  result_record_path?: string | null;
-};
 
 type CaseCatalogEntry = {
   candidateId: string;
@@ -69,10 +55,10 @@ type CaseCatalogResult = {
   lifecycleDistribution: Record<string, number>;
 };
 
-function readQueueEntries(): QueueEntry[] {
+function readQueueEntries(): DiscoveryIntakeQueueEntry[] {
   const queuePath = path.join(DIRECTIVE_ROOT, "discovery", "intake-queue.json");
   const data = JSON.parse(fs.readFileSync(queuePath, "utf8")) as {
-    entries?: QueueEntry[];
+    entries?: DiscoveryIntakeQueueEntry[];
   };
   return data.entries ?? [];
 }
@@ -82,7 +68,7 @@ function hasCaseFile(candidateId: string): boolean {
   return fs.existsSync(casePath);
 }
 
-function deriveLifecyclePhase(entry: QueueEntry, currentStage: string | null): string {
+function deriveLifecyclePhase(entry: DiscoveryIntakeQueueEntry, currentStage: string | null): string {
   if (currentStage) {
     if (currentStage.includes("promotion_readiness")) return "promotion_readiness";
     if (currentStage.includes("capability_boundary")) return "capability_boundary";

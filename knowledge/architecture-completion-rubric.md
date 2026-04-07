@@ -138,7 +138,7 @@ Operational shorthand:
 - future work, if opened, should be a new Architecture slice rather than unresolved debt from the current adopted set
 
 Boundary note:
-- canonical `shared/lib/` migration closes the old “Mission Control-only helper” gap for structured fallback, lifecycle artifact assembly, and integration artifact generation
+- canonical `shared/lib/` migration closes the old â€œMission Control-only helperâ€ gap for structured fallback, lifecycle artifact assembly, and integration artifact generation
 - Mission Control now consumes those helpers as host-local mirrors instead of defining them as the product owner
 
 ## Exit Criteria For Current Architecture Cycle
@@ -156,7 +156,7 @@ Current-cycle Architecture is done when all of the following are true:
 
 ## Corpus Normalization Baseline
 
-The Architecture corpus normalization record (`architecture/02-experiments/2026-03-22-architecture-corpus-normalization.md`) provides the first classified inventory of all adopted Architecture work.
+The Architecture corpus normalization record (`architecture/01-experiments/2026-03-22-architecture-corpus-normalization.md`) provides the first classified inventory of all adopted Architecture work.
 
 Key findings (corrected baseline, revision 2):
 - 24 adopted records classified by usefulness level (14 structural, 3 direct/Runtime-routed, 7 meta, 4 with self-improvement evidence)
@@ -214,3 +214,4 @@ When summarizing Architecture progress:
 - say "product-owned Directive Workspace materialization" first
 - mention Mission Control only as host consumption, host enforcement, or host proof
 - do not describe host-side scripts as if they mean Directive Architecture itself is finished
+

@@ -6,6 +6,7 @@
     ".": "./index.ts",
     "./cli": "./cli/host-integration-kit-cli.ts",
     "./starter": "./starter/index.ts",
+    "./starter/front-door": "./starter/discovery-front-door-adapter.template.ts",
     "./starter/submission": "./starter/discovery-submission-adapter.template.ts",
     "./starter/memory-bridge": "./starter/discovery-host-storage-bridge.memory.template.ts",
     "./starter/filesystem-bridge": "./starter/discovery-host-storage-bridge.filesystem.template.ts",

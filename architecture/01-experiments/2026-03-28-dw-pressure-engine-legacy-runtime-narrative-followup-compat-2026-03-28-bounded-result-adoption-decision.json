@@ -1,0 +1,35 @@
+{
+  "decision_format": "directive-architecture-adoption-decision-1.0",
+  "source_id": "dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28",
+  "adoption_date": "2026-03-28",
+  "source_analysis_ref": "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-engine-handoff.md",
+  "usefulness_level": "meta",
+  "readiness_check": {
+    "source_analysis_complete": true,
+    "adaptation_decision_complete": true,
+    "adaptation_quality_acceptable": true,
+    "delta_evidence_present": true,
+    "no_unresolved_baggage": true
+  },
+  "artifact_type": "shared-lib",
+  "artifact_path": "architecture/01-experiments/2026-03-28-dw-pressure-engine-legacy-runtime-narrative-followup-compat-2026-03-28-bounded-result.md",
+  "primary_evidence_path": "shared/lib/dw-state.ts",
+  "adaptation_quality": "strong",
+  "improvement_quality": "strong",
+  "self_improvement": {
+    "category": "evaluation_quality",
+    "claim": "Directive Workspace can keep the canonical truth anchor and workbench detail useful by resolving the remaining narrative historical Runtime follow-ups directly instead of crashing or surfacing invalid state.",
+    "mechanism": "This DEEP bounded result adds a read-only narrative legacy Runtime follow-up compatibility path to the shared state resolver and workbench follow-up detail fallback.",
+    "baseline_observation": "Before this DEEP case, the remaining narrative `*-runtime-followup.md` artifacts still crashed the canonical report and surfaced as invalid workbench follow-up state.",
+    "expected_effect": "Future report, composition, and workbench work can inspect the remaining narrative historical Runtime follow-up family directly without weakening current Runtime v0 boundaries.",
+    "verification_method": "structural_inspection",
+    "verification_result": "partially_confirmed"
+  },
+  "decision": {
+    "verdict": "adopt",
+    "rationale": "The shared truth anchor should resolve the remaining narrative historical Runtime follow-ups as read-only artifacts instead of crashing or surfacing invalid state.",
+    "completion_status": "doc_only_or_planned",
+    "runtime_threshold_check": "yes - the mechanism is still valuable without a runtime surface, so Architecture should retain product-owned value"
+  }
+}
+

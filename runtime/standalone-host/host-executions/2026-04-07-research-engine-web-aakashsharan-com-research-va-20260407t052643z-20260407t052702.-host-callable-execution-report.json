@@ -1,0 +1,70 @@
+{
+  "reportVersion": "standalone_research_vault_host_callable_execution_report/v1",
+  "generatedAt": "2026-04-07T09:45:00.000Z",
+  "candidateId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+  "candidateName": "Research Vault: Open Source Agentic AI Research Assistant",
+  "hostName": "Directive Workspace standalone host",
+  "hostSurface": "Directive Workspace standalone host descriptor callable",
+  "callableSurface": "standalone_host.research_vault_descriptor_summary.v1",
+  "promotionRecordPath": "runtime/07-promotion-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-record.md",
+  "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-specification.json",
+  "hostSelectionResolutionPath": "runtime/05-promotion-readiness/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-host-selection-resolution.md",
+  "sampleInvocation": {
+    "action": "summarize_descriptor",
+    "status": "ok",
+    "descriptorCallableExecuted": true,
+    "summary": "Research Vault: Open Source Agentic AI Research Assistant is exposed through the standalone host as a read-only descriptor-summary callable backed by the candidate promotion record, promotion specification, and host-selection resolution."
+  },
+  "acceptance": {
+    "callableThroughHost": true,
+    "descriptorCallableOnly": true,
+    "sourceRuntimeExecutionClaimed": false,
+    "hostIntegrationClaimed": false,
+    "registryAcceptanceClaimed": false,
+    "promotionAutomation": false
+  },
+  "hostCallableAdapter": {
+    "contractVersion": "host_callable_adapter.v1",
+    "contractPath": "shared/contracts/host-callable-adapter.md",
+    "schemaPath": "shared/schemas/host-callable-adapter.v1.schema.json",
+    "adapterId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.:standalone_host:research_vault_descriptor_callable_adapter",
+    "candidateId": "research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.",
+    "candidateName": "Research Vault: Open Source Agentic AI Research Assistant",
+    "hostName": "Directive Workspace standalone host",
+    "hostSurface": "Directive Workspace standalone host descriptor callable",
+    "callableSurface": "standalone_host.research_vault_descriptor_summary.v1",
+    "capabilityKind": "descriptor_callable",
+    "evidencePaths": {
+      "promotionRecordPath": "runtime/07-promotion-records/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-record.md",
+      "promotionSpecificationPath": "runtime/06-promotion-specifications/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-promotion-specification.json",
+      "hostSelectionResolutionPath": "runtime/05-promotion-readiness/2026-04-07-research-engine-web-aakashsharan-com-research-va-20260407t052643z-20260407t052702.-host-selection-resolution.md"
+    },
+    "acceptance": {
+      "callableThroughHost": true,
+      "descriptorCallableOnly": true,
+      "runtimeCallableExecution": false,
+      "sourceRuntimeExecutionClaimed": false,
+      "hostIntegrationClaimed": false,
+      "registryAcceptanceClaimed": false,
+      "promotionAutomation": false,
+      "runtimeInternalsBypassed": false
+    },
+    "proof": {
+      "primaryChecker": "npm run check:standalone-research-vault-host-callable",
+      "supportingCheckers": [
+        "npm run check:standalone-research-vault-host-adapter",
+        "npm run check:standalone-research-vault-host-adapter-boundary"
+      ]
+    },
+    "stopLine": "Research Vault exposes a descriptor callable only; imported-source execution, registry acceptance, promotion automation, and generic host integration remain unopened."
+  },
+  "proof": {
+    "primaryChecker": "npm run check:standalone-research-vault-host-callable",
+    "supportingCheckers": [
+      "npm run check:standalone-research-vault-host-callable",
+      "npm run check:standalone-research-vault-host-adapter",
+      "npm run check:standalone-research-vault-host-adapter-boundary"
+    ]
+  },
+  "stopLine": "One fresh Runtime import now has a standalone-host callable descriptor summary; imported-source runtime execution, registry acceptance, promotion automation, and generic host integration remain intentionally unopened."
+}

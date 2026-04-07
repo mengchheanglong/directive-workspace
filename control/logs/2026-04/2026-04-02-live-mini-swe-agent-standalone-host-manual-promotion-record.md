@@ -18,7 +18,7 @@
 ## Product result made real
 
 - the case now has a real bounded manual promotion record:
-  - `runtime/promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md`
+  - `runtime/07-promotion-records/2026-04-02-dw-live-mini-swe-agent-engine-pressure-2026-03-24-promotion-record.md`
 - canonical state now resolves the case current head to that promotion record
 - registry acceptance, host integration, runtime execution, and automation all remain explicitly closed
 

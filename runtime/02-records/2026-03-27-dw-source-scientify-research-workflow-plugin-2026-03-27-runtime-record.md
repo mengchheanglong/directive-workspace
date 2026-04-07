@@ -4,7 +4,7 @@
 - Candidate id: `dw-source-scientify-research-workflow-plugin-2026-03-27`
 - Slice id: `scientify-literature-access-tool-bundle`
 - Candidate name: `Scientify Literature-Access Tool Bundle`
-- Source follow-up record: `runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
+- Source follow-up record: `runtime/00-follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
 - Review decision: `approved_for_bounded_runtime_conversion_record`
 - Reviewed by: `directive-lead-implementer`
 - Review date: `2026-03-27`
@@ -87,8 +87,8 @@
 
 ## artifact linkage
 - Runtime v0 record: `runtime/02-records/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-record.md`
-- Source Runtime follow-up record: `runtime/follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
-- Linked Discovery routing record: `discovery/routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
+- Source Runtime follow-up record: `runtime/00-follow-up/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-runtime-follow-up-record.md`
+- Linked Discovery routing record: `discovery/03-routing-log/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-routing-record.md`
 - Linked Engine run: `runtime/standalone-host/engine-runs/2026-03-27T00-00-00-000Z-dw-source-scientify-research-workflow-plugin-2026-03-27-1cc5281c.md`
 - Next Runtime proof artifact if later approved: `runtime/03-proof/2026-03-27-dw-source-scientify-research-workflow-plugin-2026-03-27-proof.md`
 

@@ -2,11 +2,11 @@
   "candidate_id": "standalone-runtime-example",
   "candidate_name": "Standalone Runtime Example",
   "registry_date": "2026-03-23",
-  "linked_promotion_record": "runtime/promotion-records/2026-03-23-standalone-runtime-example-promotion-record.md",
+  "linked_promotion_record": "runtime/07-promotion-records/2026-03-23-standalone-runtime-example-promotion-record.md",
   "host": "directive-workspace-standalone-host",
   "runtime_surface": "bounded local runtime artifact lifecycle",
   "runtime_status": "reference_live",
-  "proof_path": "runtime/records/2026-03-23-standalone-runtime-example-proof-checklist.md",
+  "proof_path": "runtime/legacy-records/2026-03-23-standalone-runtime-example-proof-checklist.md",
   "last_validated_by": "check:directive-standalone-runtime-host",
   "last_validation_date": "2026-03-23",
   "active_risks": [
