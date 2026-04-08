@@ -1,11 +1,11 @@
 # Host Integration Kit
 
-This kit exists for hosts other than Mission Control.
+This kit exists for hosts that want to clone or import Directive Workspace and wire it into their own runtime/API/UI surfaces.
 
 Directive Workspace is the standalone product.
 Hosts integrate it by consuming canonical Directive Workspace assets rather than redefining them locally.
 
-Path references below are relative to the Directive Workspace product root unless explicitly labeled as an external example. The current `.openclaw/workspace` location is only one incubation environment, not the canonical home of the product.
+Path references below are relative to the Directive Workspace product root unless explicitly labeled as an external example.
 
 Use this kit when integrating Directive Workspace into:
 - another workspace
@@ -78,16 +78,9 @@ A host must not redefine:
   - `discovery/lib/discovery-gap-priority.ts`
   - `discovery/lib/discovery-gap-worklist-generator.ts`
 
-### OpenClaw-compatible upstream signals
-
-- schemas:
-  - `shared/schemas/openclaw-runtime-verification-signal.schema.json`
-  - `shared/schemas/openclaw-maintenance-watchdog-signal.schema.json`
-
 ### Runtime canonical core
 
 - `runtime/core/runtime-core-contract.ts`
-- `runtime/core/v0.ts` (legacy compatibility alias)
 - `runtime/core/decision-policy.ts`
 - `runtime/core/workflow-contract.ts`
 - `runtime/core/proof-contract.ts`
@@ -101,7 +94,7 @@ A host must not redefine:
 
 ## Example payloads
 
-These examples are host-neutral seed payloads, not Mission Control-specific forms.
+These examples are host-neutral seed payloads, not legacy host-specific forms.
 
 - preferred Engine-backed Discovery front-door submission:
   - `hosts/integration-kit/examples/discovery-submission-front-door.json`
@@ -111,10 +104,6 @@ These examples are host-neutral seed payloads, not Mission Control-specific form
   - `hosts/integration-kit/examples/discovery-submission-fast-path.json`
 - split-case Discovery submission:
   - `hosts/integration-kit/examples/discovery-submission-split-case.json`
-- runtime verification signal:
-  - `hosts/integration-kit/examples/openclaw-runtime-verification-signal.json`
-- maintenance watchdog signal:
-  - `hosts/integration-kit/examples/openclaw-maintenance-watchdog-signal.json`
 - host integration acceptance report:
   - `hosts/integration-kit/examples/host-integration-acceptance-report.json`
 
@@ -136,8 +125,7 @@ These examples are host-neutral seed payloads, not Mission Control-specific form
 The preferred front-door starter shows the current product-truth integration path: submit a canonical Discovery request through Discovery first, let the Engine produce the route/review truth, and consume the resulting queue, routing, and Engine-run artifacts.
 The older submission adapter template remains available when a host truly must author `queue_only`, `fast_path`, or `split_case` records directly.
 The starter folder also includes a memory bridge template and a smoke template so a new host can validate its adapter shape before wiring real storage.
-It also includes a Discovery overview reader starter so hosts can render recent Discovery movement from the canonical queue document without importing Mission Control backend service code.
-It also includes a signal adapter starter so hosts can convert runtime verification or maintenance/watchdog events into canonical Discovery submissions instead of inventing host-local intake paths.
+It also includes a Discovery overview reader starter so hosts can render recent Discovery movement from the canonical queue document without copying host-local backend aggregation code.
 It also includes a host integration acceptance starter so hosts can prove they consume Directive Workspace correctly against one canonical standard.
 It also includes an acceptance report writer starter so hosts can emit the canonical acceptance artifact shape directly from code.
 It also includes an acceptance quickstart runner starter so hosts can write that artifact to a stable output path through one small entrypoint.
@@ -165,8 +153,6 @@ npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-ki
 npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-submission-example --shape front_door
 npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts submission-memory-dry-run --input-json-path <directive-workspace-root>\hosts\integration-kit\examples\discovery-submission-fast-path.json
 npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-submission-example --shape fast_path
-npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts print-signal-example --kind runtime_verification
-npx tsx <directive-workspace-root>\hosts\integration-kit\cli\host-integration-kit-cli.ts signal-adapter-dry-run --kind maintenance_watchdog --input-json-path <directive-workspace-root>\hosts\integration-kit\examples\openclaw-maintenance-watchdog-signal.json
 ```
 
 ## Host adapter patterns
@@ -184,10 +170,6 @@ Recommended adapter shapes:
    - map it into the canonical payload
    - submit it through the host API adapter
    - do not invent a separate host-only lifecycle
-
-3. **Signal adapter**
-   - convert host/runtime/watchdog events into canonical signal payloads
-   - submit them into Discovery rather than bypassing the front door
 
 ## Minimal integration checklist
 
@@ -212,12 +194,11 @@ This keeps `integrated correctly` tied to one product-owned standard instead of 
 Use the example acceptance report in `hosts/integration-kit/examples/` as the reference shape for a successful host integration run.
 Use the acceptance quickstart runner when you want the fastest path from starter import to emitted acceptance artifact.
 
-## Current reference host
+## Current reference hosts
 
-Mission Control remains the reference host today because it already exercises:
-- Discovery API submission
-- Discovery operator UI
-- runtime checks
-- bounded runtime hosting
+Use the repo-native hosts as the current reference surfaces:
 
-But it should be treated as the first host implementation, not the only valid one.
+- `hosts/standalone-host/`
+- `hosts/web-host/`
+
+External host-specific adapters should now live in the consuming project unless they are broadly useful enough to become product-owned integration-kit examples.

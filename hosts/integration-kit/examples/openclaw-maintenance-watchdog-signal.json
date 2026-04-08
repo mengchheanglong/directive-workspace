@@ -1,9 +1,0 @@
-{
-  "candidate_id": "dw-openclaw-maintenance-watchdog-signal",
-  "candidate_name": "OpenClaw Maintenance Watchdog Signal",
-  "source_type": "internal-signal",
-  "source_reference": "openclaw://maintenance-watchdog/degraded-state",
-  "mission_alignment": "Preserves Discovery front-door coverage for persistent OpenClaw maintenance/watchdog degradation.",
-  "capability_gap_id": null,
-  "notes": "Example host-neutral submission payload for a maintenance/watchdog degraded-state signal."
-}

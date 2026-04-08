@@ -14,6 +14,10 @@
 **/Desktop.ini
 **/.vscode/
 **/.idea/
+*.bak
+*.tmp
+*.old
+*.orig
 
 # Local Python caches and experiment virtualenvs
 **/__pycache__/
@@ -45,22 +49,53 @@
 /runtime/standalone-host/*.sqlite-*
 /runtime/standalone-host/*.db
 
-# Separate cloned repos kept only as local source/reference copies
-/sources/intake/agentics/
-/sources/intake/autoresearch/
-/sources/intake/gh-aw/
-/sources/intake/gpt-researcher/
-/sources/intake/MetaClaw/
-/sources/intake/mini-swe-agent/
-/sources/intake/OpenMOSS/
-/sources/intake/Paper2Code/
-/sources/intake/scientify/
-/sources/intake/ts-edge/
-/sources/deferred-or-rejected/AI-Scientist/
-/sources/deferred-or-rejected/autogen/
-/sources/deferred-or-rejected/AutoResearchClaw/
-/sources/deferred-or-rejected/codescientist/
-/sources/deferred-or-rejected/DeepCode/
-/sources/deferred-or-rejected/OpenHands/
-/sources/deferred-or-rejected/SWE-agent/
-/architecture/99-archive/deferred-stale/Paper2Code-20260319-171852/
+# System-only clone boundary.
+# These rules keep future project-specific records, mutable workspace state, and
+# local source/reference corpora out of clone-and-wire use. Existing tracked
+# history is unchanged; this only suppresses new untracked churn.
+
+# Local external source/reference copies
+/sources/
+
+# Generated control logs and operator reports
+/control/logs/
+/control/reports/
+
+# Mutable whole-workspace state snapshots
+/control/state/completion-status.json
+/control/state/coordination-ledger.json
+/control/state/operator-simplicity-migration-status.json
+/control/state/wrapup-source-disposition.json
+/discovery/intake-queue.json
+/state/case-events/
+/state/cases/
+
+# Discovery lane records
+/discovery/01-intake/
+/discovery/02-triage/
+/discovery/03-routing-log/
+/discovery/04-monitor/
+/discovery/05-deferred-or-rejected/
+
+# Architecture lane records
+/architecture/01-experiments/
+/architecture/02-adopted/
+/architecture/03-deferred-or-rejected/
+/architecture/04-materialization/
+
+# Runtime lane records and generated host proof
+/runtime/00-follow-up/
+/runtime/01-callable-integrations/
+/runtime/02-records/
+/runtime/03-proof/
+/runtime/04-capability-boundaries/
+/runtime/05-promotion-readiness/
+/runtime/06-promotion-specifications/
+/runtime/07-promotion-records/
+/runtime/08-registry/
+/runtime/callable-executions/
+/runtime/legacy-handoff/
+/runtime/legacy-records/
+/runtime/standalone-host/engine-runs/
+/runtime/standalone-host/host-consumption/
+/runtime/standalone-host/host-executions/

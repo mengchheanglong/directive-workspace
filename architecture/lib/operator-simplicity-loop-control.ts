@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { readJson } from "../../shared/lib/file-io.ts";
 import {
   getDefaultDirectiveWorkspaceRoot,
   normalizePath,
@@ -148,12 +149,7 @@ function isSliceState(value: unknown): value is OperatorSimplicitySliceState {
     && OPERATOR_SIMPLICITY_SLICE_STATES.includes(value as OperatorSimplicitySliceState);
 }
 
-function readJsonFile<T>(absolutePath: string): T {
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: file not found: ${absolutePath}`);
-  }
-  return JSON.parse(fs.readFileSync(absolutePath, "utf8")) as T;
-}
+
 
 function assertStatusShape(value: unknown): asserts value is OperatorSimplicityMigrationStatus {
   const record = asObject(value);
@@ -236,8 +232,8 @@ function readMigrationControlSurface(input: {
     path.join(input.directiveRoot, input.slicesRelativePath),
   );
 
-  const status = readJsonFile<OperatorSimplicityMigrationStatus>(statusAbsolutePath);
-  const registry = readJsonFile<OperatorSimplicityMigrationRegistry>(slicesAbsolutePath);
+  const status = readJson<OperatorSimplicityMigrationStatus>(statusAbsolutePath);
+  const registry = readJson<OperatorSimplicityMigrationRegistry>(slicesAbsolutePath);
 
   assertStatusShape(status);
   const registryRecord = asObject(registry);
@@ -367,7 +363,6 @@ export function buildDirectiveOperatorSimplicityLoopControlReport(input?: {
 
   const setupReadiness = {
     hasMigrationAnchor: fs.existsSync(path.join(directiveRoot, status.anchorPath)),
-    hasOperatorStart: fs.existsSync(path.join(directiveRoot, "operator-start.md")),
     hasControlReadme: fs.existsSync(path.join(directiveRoot, "control/README.md")),
     hasControlStateReadme: fs.existsSync(path.join(directiveRoot, "control/state/README.md")),
     hasStateReadme: fs.existsSync(path.join(directiveRoot, "state/README.md")),

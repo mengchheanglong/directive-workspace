@@ -11,7 +11,7 @@
   "last_validation_date": "2026-03-23",
   "active_risks": [
     "local reference lane only",
-    "not a broad Mission Control replacement"
+    "not a broad multi-host runtime surface"
   ],
   "rollback_path": "Delete the generated registry entry and revert the local Runtime lifecycle artifacts.",
   "notes": [

@@ -38,9 +38,9 @@ Relocation status:
 - relocation is complete enough for normal product work to proceed from the new root
 - `npm run report:directive-workspace-state` passes from the new root
 - `npm run check` passes from the new root
-- `C:\Users\User\.openclaw\workspace\directive-workspace` is no longer the canonical product home
+- the legacy sibling-root workspace path is no longer the canonical product home
 
 External integration status:
-- Mission Control and OpenClaw remain external integrations and adapters
-- they are not allowed to assume the old sibling-root layout under `.openclaw\workspace`
+- external hosts and orchestration systems remain integrations and adapters
+- they are not allowed to assume the old sibling-root workspace layout
 - future integration work must treat Directive Workspace as an external product root

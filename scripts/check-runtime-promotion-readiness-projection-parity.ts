@@ -81,7 +81,7 @@ function assertPromotionReadinessBaseContract(input: {
     `- Candidate id: \`${input.candidateId}\``,
     `- Runtime capability boundary path: \`${input.runtimeCapabilityBoundaryPath}\``,
     `- Source Runtime proof artifact: \`${input.runtimeProofPath}\``,
-    `- Source Runtime v0 record: \`${input.runtimeRecordPath}\``,
+    `- Source Legacy Runtime record: \`${input.runtimeRecordPath}\``,
     `- Source Runtime follow-up record: \`${input.followUpPath}\``,
     "- Promotion-readiness decision: `approved_for_non_executing_promotion_readiness`",
     `- Opened by: \`${input.approvedBy}\``,
@@ -94,7 +94,7 @@ function assertPromotionReadinessBaseContract(input: {
     `- Promotion-readiness artifact: \`${input.promotionReadinessPath}\``,
     `- Runtime capability boundary: \`${input.runtimeCapabilityBoundaryPath}\``,
     `- Runtime proof artifact: \`${input.runtimeProofPath}\``,
-    `- Runtime v0 record: \`${input.runtimeRecordPath}\``,
+    `- Legacy Runtime record: \`${input.runtimeRecordPath}\``,
     `- Source Runtime follow-up record: \`${input.followUpPath}\``,
   ];
 
@@ -281,3 +281,4 @@ function main() {
 }
 
 main();
+

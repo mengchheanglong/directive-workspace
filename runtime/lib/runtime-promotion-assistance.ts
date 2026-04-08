@@ -2,10 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizeRelativePath,
-  normalizePath,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+  normalizeDirectiveRelativePath,
+} from "../../shared/lib/directive-relative-path.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 import { resolveDirectiveWorkspaceState } from "../../engine/state/index.ts";
 import { aggregateRunEvidence } from "../../engine/execution/run-evidence-aggregation.ts";
 import { buildRuntimeCallableExecutionEvidenceReport } from "./runtime-callable-execution-evidence.ts";
@@ -177,7 +177,7 @@ function readRuntimePromotionParkDecisionPaths(directiveRoot: string) {
 
     parkDecisionPaths.set(
       candidateId,
-      normalizeRelativePath(path.relative(directiveRoot, filePath)),
+      normalizeDirectiveRelativePath(path.relative(directiveRoot, filePath)),
     );
   }
 
@@ -199,7 +199,7 @@ function determineRecommendation(input: {
     tools: string[];
   };
 }): DirectiveRuntimePromotionAssistanceRecommendation {
-  const hostScope = classifyHostScope(input.prerequisites.proposedHost);
+  const hostScope = classifyHostScope(input.prerequisites.effectiveProposedHost);
   const promotedAlready =
     input.currentStage === "runtime.promotion_record.opened"
     || input.prerequisites.promotionRecordState.existingPaths.length > 0;
@@ -258,7 +258,7 @@ function determineRecommendation(input: {
     currentHeadPath: input.currentHeadPath,
     sourcePromotionReadinessPath: input.prerequisites.sourcePromotionReadinessPath,
     promotionSpecificationPath: input.promotionSpecificationPath,
-    proposedHost: input.prerequisites.proposedHost,
+    proposedHost: input.prerequisites.effectiveProposedHost,
     hostScope,
     assistanceState,
     recommendedActionKind,
@@ -322,7 +322,9 @@ export function buildDirectiveRuntimePromotionAssistanceReport(input?: {
   directiveRoot?: string;
   snapshotAt?: string;
 }): DirectiveRuntimePromotionAssistanceReport {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(
+    input?.directiveRoot || getDefaultDirectiveWorkspaceRoot(),
+  );
   const promotionReadinessRoot = path.join(directiveRoot, "runtime", "05-promotion-readiness");
   const promotionReadinessFiles = fs.existsSync(promotionReadinessRoot)
     ? fs.readdirSync(promotionReadinessRoot, { withFileTypes: true })

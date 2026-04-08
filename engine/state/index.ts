@@ -1310,6 +1310,7 @@ function resolveDiscoveryFocus(input: {
     routingRecordPath: relativePath,
   });
   const effectiveRouteDestination = reviewResolution?.resolvedRouteDestination ?? routing.routeDestination;
+  const effectiveRequiredNextArtifact = routing.effectiveRequiredNextArtifact;
   const linkedArtifacts = zeroLinkedArtifacts();
   linkedArtifacts.discoveryIntakePath = routing.linkedIntakeRecord;
   linkedArtifacts.discoveryTriagePath = routing.linkedTriageRecord;
@@ -1335,35 +1336,35 @@ function resolveDiscoveryFocus(input: {
   recordExpectedArtifactIfMissing({
     directiveRoot: input.directiveRoot,
     state: { missingExpectedArtifacts, inconsistentLinks },
-    relativePath: routing.requiredNextArtifact,
+    relativePath: effectiveRequiredNextArtifact,
   });
-  const requiredNextArtifactIsConcrete = isDirectiveWorkspaceArtifactReference(routing.requiredNextArtifact);
+  const requiredNextArtifactIsConcrete = isDirectiveWorkspaceArtifactReference(effectiveRequiredNextArtifact);
   const requiredNextArtifactExists =
     requiredNextArtifactIsConcrete
-    && fileExistsInDirectiveWorkspace(input.directiveRoot, routing.requiredNextArtifact);
+    && fileExistsInDirectiveWorkspace(input.directiveRoot, effectiveRequiredNextArtifact);
   if (requiredNextArtifactIsConcrete && !routing.downstreamStubRelativePath && !requiredNextArtifactExists) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      `missing required downstream artifact for legal next step: ${routing.requiredNextArtifact}`,
+      `missing required downstream artifact for legal next step: ${effectiveRequiredNextArtifact}`,
     );
   }
-  if (queueEntry?.routing_target && queueEntry.routing_target !== routing.routeDestination) {
+  if (queueEntry?.routing_target && queueEntry.routing_target !== effectiveRouteDestination) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      `queue routing target "${queueEntry.routing_target}" does not match Discovery route "${routing.routeDestination}"`,
+      `queue routing target "${queueEntry.routing_target}" does not match Discovery route "${effectiveRouteDestination}"`,
     );
   }
   const documentsOperatorOverride =
     /operator override/i.test(routing.whyThisRoute)
-    && queueEntry?.routing_target === routing.routeDestination;
+    && queueEntry?.routing_target === effectiveRouteDestination;
   const engineSelectionMatchesDiscoveryHeldRoute =
     engineRun?.record.selectedLane?.laneId === "discovery"
-    && isDiscoveryHeldRouteDestination(routing.routeDestination);
+    && isDiscoveryHeldRouteDestination(effectiveRouteDestination);
 
   let downstream: DirectiveWorkspaceResolvedFocus | null = null;
   const discoveryHeldDownstreamPath =
     !routing.downstreamStubRelativePath
-      && routing.routeDestination === "monitor"
+      && effectiveRouteDestination === "monitor"
       && queueEntry?.result_record_path?.startsWith("discovery/04-monitor/")
       ? queueEntry.result_record_path
       : null;
@@ -1386,46 +1387,46 @@ function resolveDiscoveryFocus(input: {
   }
   const downstreamMatchesDiscoveryHeldRoute =
     downstream?.lane === "discovery"
-    && isDiscoveryHeldRouteDestination(routing.routeDestination);
-  if (downstream && downstream.lane !== routing.routeDestination && !downstreamMatchesDiscoveryHeldRoute) {
+    && isDiscoveryHeldRouteDestination(effectiveRouteDestination);
+  if (downstream && downstream.lane !== effectiveRouteDestination && !downstreamMatchesDiscoveryHeldRoute) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      `downstream artifact lane "${downstream.lane}" does not match Discovery route "${routing.routeDestination}"`,
+      `downstream artifact lane "${downstream.lane}" does not match Discovery route "${effectiveRouteDestination}"`,
     );
   }
   const routeSupersedesEngineSelection =
     Boolean(
       engineRun?.record.selectedLane?.laneId
-      && engineRun.record.selectedLane.laneId !== routing.routeDestination
-      && downstream?.lane === routing.routeDestination
-      && queueEntry?.routing_target === routing.routeDestination,
+      && engineRun.record.selectedLane.laneId !== effectiveRouteDestination
+      && downstream?.lane === effectiveRouteDestination
+      && queueEntry?.routing_target === effectiveRouteDestination,
     );
   if (
     engineRun?.record.selectedLane?.laneId
-    && engineRun.record.selectedLane.laneId !== routing.routeDestination
+    && engineRun.record.selectedLane.laneId !== effectiveRouteDestination
     && !engineSelectionMatchesDiscoveryHeldRoute
     && !documentsOperatorOverride
     && !routeSupersedesEngineSelection
   ) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      `Engine selected lane "${engineRun.record.selectedLane.laneId}" does not match Discovery route "${routing.routeDestination}"`,
+      `Engine selected lane "${engineRun.record.selectedLane.laneId}" does not match Discovery route "${effectiveRouteDestination}"`,
     );
   }
   if (
     requiredNextArtifactIsConcrete
     && routing.downstreamStubRelativePath
-    && routing.requiredNextArtifact !== routing.downstreamStubRelativePath
+    && effectiveRequiredNextArtifact !== routing.downstreamStubRelativePath
     && !isNoteArchitectureRouteProgressedPastHandoff({
       operatingMode: queueEntry?.operating_mode ?? null,
-      routeDestination: routing.routeDestination,
-      requiredNextArtifact: routing.requiredNextArtifact,
+      routeDestination: effectiveRouteDestination,
+      requiredNextArtifact: effectiveRequiredNextArtifact,
       downstreamArtifactPath: routing.downstreamStubRelativePath,
     })
   ) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      `required downstream artifact "${routing.requiredNextArtifact}" does not match resolved downstream stub "${routing.downstreamStubRelativePath}"`,
+      `required downstream artifact "${effectiveRequiredNextArtifact}" does not match resolved downstream stub "${routing.downstreamStubRelativePath}"`,
     );
   }
 
@@ -1478,13 +1479,13 @@ function resolveDiscoveryFocus(input: {
       routingDecision: routing.decisionState,
       usefulnessLevel: routing.usefulnessLevel,
       usefulnessRationale: routing.usefulnessRationale,
-      requiredNextArtifact: routing.requiredNextArtifact,
+      requiredNextArtifact: effectiveRequiredNextArtifact,
     },
     engine: {
       runId: engineRun?.record.runId ?? routing.engineRunId,
       selectedLane: routeSupersedesEngineSelection
-        ? routing.routeDestination
-        : engineRun?.record.selectedLane?.laneId ?? routing.routeDestination,
+        ? effectiveRouteDestination
+        : engineRun?.record.selectedLane?.laneId ?? effectiveRouteDestination,
       decisionState: routeSupersedesEngineSelection
         ? routing.decisionState
         : engineRun?.record.decision?.decisionState ?? routing.decisionState,
@@ -1492,7 +1493,7 @@ function resolveDiscoveryFocus(input: {
         ? null
         : engineRun?.record.proofPlan?.proofKind ?? null,
       nextAction: routeSupersedesEngineSelection
-        ? routing.requiredNextArtifact
+        ? effectiveRequiredNextArtifact
         : engineRun?.record.integrationProposal?.nextAction ?? null,
     },
   } satisfies Omit<DirectiveWorkspaceResolvedFocus, "integrityState" | "currentHead">);

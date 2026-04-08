@@ -127,12 +127,12 @@ function renderRuntimeV0ProofArtifact(input: {
 }) {
   const followUp = input.artifact.followUpArtifact;
 
-  return `# Runtime V0 Proof Artifact: ${input.artifact.candidateName} (${input.artifact.runtimeRecordDate})
+  return `# Legacy Runtime Proof Artifact: ${input.artifact.candidateName} (${input.artifact.runtimeRecordDate})
 
 ## runtime record identity
 - Candidate id: \`${input.artifact.candidateId}\`
 - Candidate name: \`${input.artifact.candidateName}\`
-- Runtime v0 record path: \`${input.artifact.runtimeRecordRelativePath}\`
+- Legacy Runtime record path: \`${input.artifact.runtimeRecordRelativePath}\`
 - Source follow-up record path: \`${input.artifact.linkedFollowUpRecord}\`
 - Proof opening decision: \`approved_for_bounded_proof_artifact\`
 - Opened by: \`${input.approvedBy}\`
@@ -140,7 +140,7 @@ function renderRuntimeV0ProofArtifact(input: {
 - Current status: \`proof_scope_opened\`
 
 ## source inputs required
-- Runtime v0 record: \`${input.artifact.runtimeRecordRelativePath}\`
+- Legacy Runtime record: \`${input.artifact.runtimeRecordRelativePath}\`
 - Source Runtime follow-up record: \`${input.artifact.linkedFollowUpRecord}\`
 ${followUp.linkedHandoffPath ? `- Linked Discovery routing record: \`${followUp.linkedHandoffPath}\`\n` : ""}- Runtime objective: ${input.artifact.runtimeObjective}
 - Proposed host: \`${input.artifact.proposedHost}\`
@@ -156,7 +156,7 @@ ${renderListOrPlaceholder(followUp.requiredProof)}
 
 ## validation method
 - Artifact inspection only.
-- Confirm the Runtime v0 record and source follow-up record describe the same bounded runtime objective and reversible boundary.
+- Confirm the Legacy Runtime record and source follow-up record describe the same bounded runtime objective and reversible boundary.
 - Confirm the required proof items and gates remain explicit and do not require hidden runtime context.
 - Reject proof readiness if host integration, execution, or orchestration would need to be inferred from outside the existing Runtime artifacts.
 
@@ -165,13 +165,13 @@ ${renderListOrPlaceholder(followUp.requiredProof)}
 - Required proof items are explicit and reviewable.
 - Required gates are explicit and bounded:
 ${renderListOrPlaceholder(input.artifact.requiredGates.map((value) => `\`${value}\``))}
-- Rollback remains explicit and returns cleanly to the Runtime v0 record and follow-up record.
+- Rollback remains explicit and returns cleanly to the Legacy Runtime record and follow-up record.
 - Excluded baggage remains outside the proof boundary:
 ${renderListOrPlaceholder(followUp.excludedBaggage)}
 
 ## proof opening boundary
 - Source record status: \`${input.artifact.currentStatus}\`
-- Next decision point from Runtime v0 record: ${input.artifact.nextDecisionPoint}
+- Next decision point from Legacy Runtime record: ${input.artifact.nextDecisionPoint}
 - This artifact opens bounded proof review only. It does not authorize execution, host integration, or promotion.
 
 ## rollback boundary
@@ -181,7 +181,7 @@ ${renderListOrPlaceholder(followUp.excludedBaggage)}
 
 ## artifact linkage
 - Runtime proof artifact: \`${input.artifact.runtimeProofRelativePath}\`
-- Runtime v0 record: \`${input.artifact.runtimeRecordRelativePath}\`
+- Legacy Runtime record: \`${input.artifact.runtimeRecordRelativePath}\`
 - Source Runtime follow-up record: \`${input.artifact.linkedFollowUpRecord}\`
 ${followUp.linkedHandoffPath ? `- Linked Discovery routing record: \`${followUp.linkedHandoffPath}\`\n` : ""}`;
 }
@@ -227,17 +227,17 @@ export function readDirectiveRuntimeRecordArtifact(input: {
   return {
     title: extractMarkdownTitle(content, "runtime record title"),
     candidateId,
-    candidateName: extractBulletValue(content, "Candidate name", 'invalid_input: missing "Candidate name" in Runtime v0 record'),
+    candidateName: extractBulletValue(content, "Candidate name", 'invalid_input: missing "Candidate name" in Legacy Runtime record'),
     runtimeRecordDate,
-    originPath: extractBulletValue(content, "Source follow-up record", 'invalid_input: missing "Source follow-up record" in Runtime v0 record'),
+    originPath: extractBulletValue(content, "Source follow-up record", 'invalid_input: missing "Source follow-up record" in Legacy Runtime record'),
     linkedFollowUpRecord,
-    runtimeObjective: extractBulletValue(content, "Runtime value to operationalize", 'invalid_input: missing "Runtime value to operationalize" in Runtime v0 record'),
-    proposedHost: extractBulletValue(content, "Proposed host", 'invalid_input: missing "Proposed host" in Runtime v0 record'),
-    proposedRuntimeSurface: extractBulletValue(content, "Proposed integration mode", 'invalid_input: missing "Proposed integration mode" in Runtime v0 record'),
-    requiredProofSummary: extractBulletValue(content, "Required proof summary", 'invalid_input: missing "Required proof summary" in Runtime v0 record'),
+    runtimeObjective: extractBulletValue(content, "Runtime value to operationalize", 'invalid_input: missing "Runtime value to operationalize" in Legacy Runtime record'),
+    proposedHost: extractBulletValue(content, "Proposed host", 'invalid_input: missing "Proposed host" in Legacy Runtime record'),
+    proposedRuntimeSurface: extractBulletValue(content, "Proposed integration mode", 'invalid_input: missing "Proposed integration mode" in Legacy Runtime record'),
+    requiredProofSummary: extractBulletValue(content, "Required proof summary", 'invalid_input: missing "Required proof summary" in Legacy Runtime record'),
     requiredGates: extractBulletList(content, "Required gates"),
     risks: followUpArtifact.risks,
-    rollback: extractBulletValue(content, "Rollback", 'invalid_input: missing "Rollback" in Runtime v0 record'),
+    rollback: extractBulletValue(content, "Rollback", 'invalid_input: missing "Rollback" in Legacy Runtime record'),
     currentStatus,
     nextDecisionPoint: "Approve one bounded Runtime proof artifact or leave the record pending.",
     runtimeRecordRelativePath,
@@ -271,11 +271,11 @@ export function openDirectiveRuntimeRecordProof(input: {
   requireDirectiveCurrentStageForOpening({
     directiveRoot,
     artifactPath: artifact.runtimeRecordRelativePath,
-    subject: "Runtime v0 record",
+    subject: "Legacy Runtime record",
     allowedCurrentStages: ["runtime.record."],
   });
   requireDirectiveEligibleStatus({
-    subject: "Runtime v0 record",
+    subject: "Legacy Runtime record",
     currentStatus: artifact.currentStatus,
     allowedStatuses: ["pending_proof_boundary"],
     action: "open proof",
@@ -310,7 +310,7 @@ export function openDirectiveRuntimeRecordProof(input: {
       directiveRoot,
       routingPath,
       extractRequiredBulletValue: (markdown, label) =>
-        extractBulletValue(markdown, label, `invalid_input: missing "${label}" in Runtime v0 record`),
+        extractBulletValue(markdown, label, `invalid_input: missing "${label}" in Legacy Runtime record`),
     });
     writeDirectiveMirroredDiscoveryCaseRecord({
       directiveRoot,
@@ -426,3 +426,4 @@ export function openDirectiveRuntimeRecordProof(input: {
     candidateName: artifact.candidateName,
   };
 }
+

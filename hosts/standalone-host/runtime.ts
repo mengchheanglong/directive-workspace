@@ -1,4 +1,5 @@
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
 import { submitDirectiveDiscoveryFrontDoor } from "../../discovery/lib/discovery-front-door.ts";
@@ -52,10 +53,6 @@ export type CreateStandaloneFilesystemHostOptions = {
   persistence?: ResolvedStandaloneHostPersistence;
   runtimeArtifactsRoot?: string;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function normalizeRelativeDirectivePath(
   directiveRoot: string,

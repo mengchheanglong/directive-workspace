@@ -7,12 +7,12 @@ It is intentionally small:
 - local CLI driven
 - optional SQLite ledger/index
 - bounded HTTP API only
-- not yet the broader host replacement for Mission Control
+- not yet a broad multi-host capability surface
 
 Purpose:
-- prove Directive Workspace can execute as a local standalone host without Mission Control
-- keep the first standalone runtime surface host-agnostic and reversible
-- keep the product shareable for GitHub/local use without pretending host parity is finished
+- prove Directive Workspace can execute as a local standalone host
+- keep the first standalone capability surface host-agnostic and reversible
+- keep the product shareable for GitHub/local use without pretending broad host parity is finished
 
 Current files:
 - `bootstrap.ts`
@@ -112,7 +112,7 @@ Engine-backed Discovery front door:
 
 Current bounded Runtime-side local workflow support:
 - write a Runtime follow-up artifact from JSON input
-- write a Runtime record artifact from JSON input
+- write a capability record artifact from JSON input
 - generate a Runtime proof checklist plus gate snapshot JSON from JSON input
 - write a Runtime transformation proof artifact from JSON input
 - write a Runtime transformation record artifact from JSON input
@@ -124,7 +124,7 @@ Current bounded Runtime-side local workflow support:
 - load the canonical Scientify promotion specification through a bounded standalone-host adapter view without opening host integration or execution
 - read a Runtime overview across local follow-up, record, proof, transformation proof, transformation record, promotion, and registry artifacts
 - require a real linked proof artifact before promotion and registry writes can advance
-- keep this lane bounded to local/shareable workflow artifacts, not full Runtime runtime parity
+- keep this lane bounded to local/shareable workflow artifacts, not full Runtime capability parity
 
-This is a reference host, not the full runtime replacement for Mission Control.
-Mission Control remains the first broad runtime host.
+This is a reference host, not the full multi-host capability surface.
+Broader host/runtime breadth remains intentionally out of scope for this reference host.

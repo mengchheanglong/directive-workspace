@@ -63,12 +63,12 @@ export type DirectiveRuntimeProofOpenProjectionSet =
 function renderDirectiveRuntimeProofOpenProjection(input: {
   projectionInput: DirectiveMirroredRuntimeProofOpenProjectionInput;
 }) {
-  return `# Runtime V0 Proof Artifact: ${input.projectionInput.candidateName} (${input.projectionInput.runtimeRecordDate})
+  return `# Legacy Runtime Proof Artifact: ${input.projectionInput.candidateName} (${input.projectionInput.runtimeRecordDate})
 
 ## runtime record identity
 - Candidate id: \`${input.projectionInput.candidateId}\`
 - Candidate name: \`${input.projectionInput.candidateName}\`
-- Runtime v0 record path: \`${input.projectionInput.runtimeRecordRelativePath}\`
+- Legacy Runtime record path: \`${input.projectionInput.runtimeRecordRelativePath}\`
 - Source follow-up record path: \`${input.projectionInput.linkedFollowUpRecord}\`
 - Proof opening decision: \`approved_for_bounded_proof_artifact\`
 - Opened by: \`${input.projectionInput.approvedBy}\`
@@ -76,7 +76,7 @@ function renderDirectiveRuntimeProofOpenProjection(input: {
 - Current status: \`proof_scope_opened\`
 
 ## source inputs required
-- Runtime v0 record: \`${input.projectionInput.runtimeRecordRelativePath}\`
+- Legacy Runtime record: \`${input.projectionInput.runtimeRecordRelativePath}\`
 - Source Runtime follow-up record: \`${input.projectionInput.linkedFollowUpRecord}\`
 ${input.projectionInput.linkedHandoffPath ? `- Linked Discovery routing record: \`${input.projectionInput.linkedHandoffPath}\`\n` : ""}- Runtime objective: ${input.projectionInput.runtimeObjective}
 - Proposed host: \`${input.projectionInput.proposedHost}\`
@@ -92,7 +92,7 @@ ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredProof
 
 ## validation method
 - Artifact inspection only.
-- Confirm the Runtime v0 record and source follow-up record describe the same bounded runtime objective and reversible boundary.
+- Confirm the Legacy Runtime record and source follow-up record describe the same bounded runtime objective and reversible boundary.
 - Confirm the required proof items and gates remain explicit and do not require hidden runtime context.
 - Reject proof readiness if host integration, execution, or orchestration would need to be inferred from outside the existing Runtime artifacts.
 
@@ -101,13 +101,13 @@ ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredProof
 - Required proof items are explicit and reviewable.
 - Required gates are explicit and bounded:
 ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates.map((value) => `\`${value}\``))}
-- Rollback remains explicit and returns cleanly to the Runtime v0 record and follow-up record.
+- Rollback remains explicit and returns cleanly to the Legacy Runtime record and follow-up record.
 - Excluded baggage remains outside the proof boundary:
 ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.excludedBaggage)}
 
 ## proof opening boundary
 - Source record status: \`${input.projectionInput.sourceRecordStatus}\`
-- Next decision point from Runtime v0 record: ${input.projectionInput.nextDecisionPoint}
+- Next decision point from Legacy Runtime record: ${input.projectionInput.nextDecisionPoint}
 - This artifact opens bounded proof review only. It does not authorize execution, host integration, or promotion.
 
 ## rollback boundary
@@ -117,7 +117,7 @@ ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.excludedBagga
 
 ## artifact linkage
 - Runtime proof artifact: \`${input.projectionInput.runtimeProofRelativePath}\`
-- Runtime v0 record: \`${input.projectionInput.runtimeRecordRelativePath}\`
+- Legacy Runtime record: \`${input.projectionInput.runtimeRecordRelativePath}\`
 - Source Runtime follow-up record: \`${input.projectionInput.linkedFollowUpRecord}\`
 ${input.projectionInput.linkedHandoffPath ? `- Linked Discovery routing record: \`${input.projectionInput.linkedHandoffPath}\`\n` : ""}`;
 }
@@ -203,3 +203,4 @@ export function writeDirectiveRuntimeProofOpenProjectionSet(input: {
 
   return projectionSet;
 }
+

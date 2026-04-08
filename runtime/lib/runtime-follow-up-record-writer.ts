@@ -1,30 +1,10 @@
 import path from "node:path";
-
-function requiredString(value: string, fieldName: string) {
-  const normalized = value.trim();
-  if (!normalized) {
-    throw new Error(`${fieldName} is required`);
-  }
-  return normalized;
-}
-
-function optionalString(value?: string | null) {
-  const normalized = String(value ?? "").trim();
-  return normalized.length > 0 ? normalized : null;
-}
-
-function normalizeList(values?: string[] | null) {
-  return (values ?? [])
-    .map((value) => String(value).trim())
-    .filter(Boolean);
-}
-
-function renderListOrPlaceholder(values: string[], placeholder = "n/a") {
-  if (values.length === 0) {
-    return `  - ${placeholder}`;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
+import {
+  normalizeRuntimeWriterList,
+  optionalRuntimeWriterString,
+  renderRuntimeWriterList,
+  requireRuntimeWriterString,
+} from "./runtime-writer-support.ts";
 
 export type RuntimeHostSelectionMode = "inferred" | "manual_required" | "manual";
 export type RuntimeHostConfidence = "high" | "medium" | "low";
@@ -81,40 +61,40 @@ export function resolveRuntimeFollowUpRecordPath(input: {
 export function renderRuntimeFollowUpRecord(
   request: RuntimeFollowUpRecordRequest,
 ) {
-  const candidateId = requiredString(request.candidate_id, "candidate_id");
-  const candidateName = requiredString(request.candidate_name, "candidate_name");
-  const followUpDate = requiredString(request.follow_up_date, "follow_up_date");
-  const currentDecisionState = requiredString(
+  const candidateId = requireRuntimeWriterString(request.candidate_id, "candidate_id");
+  const candidateName = requireRuntimeWriterString(request.candidate_name, "candidate_name");
+  const followUpDate = requireRuntimeWriterString(request.follow_up_date, "follow_up_date");
+  const currentDecisionState = requireRuntimeWriterString(
     request.current_decision_state,
     "current_decision_state",
   );
-  const originTrack = requiredString(request.origin_track, "origin_track");
-  const runtimeValueToOperationalize = requiredString(
+  const originTrack = requireRuntimeWriterString(request.origin_track, "origin_track");
+  const runtimeValueToOperationalize = requireRuntimeWriterString(
     request.runtime_value_to_operationalize,
     "runtime_value_to_operationalize",
   );
-  const proposedHost = requiredString(request.proposed_host, "proposed_host");
-  const proposedIntegrationMode = requiredString(
+  const proposedHost = requireRuntimeWriterString(request.proposed_host, "proposed_host");
+  const proposedIntegrationMode = requireRuntimeWriterString(
     request.proposed_integration_mode,
     "proposed_integration_mode",
   );
-  const rollback = requiredString(request.rollback, "rollback");
-  const noOpPath = requiredString(request.no_op_path, "no_op_path");
-  const reviewCadence = requiredString(request.review_cadence, "review_cadence");
-  const currentStatus = requiredString(request.current_status, "current_status");
+  const rollback = requireRuntimeWriterString(request.rollback, "rollback");
+  const noOpPath = requireRuntimeWriterString(request.no_op_path, "no_op_path");
+  const reviewCadence = requireRuntimeWriterString(request.review_cadence, "review_cadence");
+  const currentStatus = requireRuntimeWriterString(request.current_status, "current_status");
 
   const sourcePackAllowlistProfile =
-    optionalString(request.source_pack_allowlist_profile) ?? "n/a";
+    optionalRuntimeWriterString(request.source_pack_allowlist_profile) ?? "n/a";
   const promotionContractPath =
-    optionalString(request.promotion_contract_path) ?? "pending";
+    optionalRuntimeWriterString(request.promotion_contract_path) ?? "pending";
   const reentryContractPath =
-    optionalString(request.reentry_contract_path) ?? "n/a";
-  const linkedHandoffPath = optionalString(request.linked_handoff_path);
-  const linkedRuntimeRecordPath = optionalString(request.linked_runtime_record_path);
-  const linkedProofChecklistPath = optionalString(
+    optionalRuntimeWriterString(request.reentry_contract_path) ?? "n/a";
+  const linkedHandoffPath = optionalRuntimeWriterString(request.linked_handoff_path);
+  const linkedRuntimeRecordPath = optionalRuntimeWriterString(request.linked_runtime_record_path);
+  const linkedProofChecklistPath = optionalRuntimeWriterString(
     request.linked_proof_checklist_path,
   );
-  const linkedLiveProofPath = optionalString(request.linked_live_proof_path);
+  const linkedLiveProofPath = optionalRuntimeWriterString(request.linked_live_proof_path);
 
   return `# ${candidateName} Runtime Follow-up Record
 
@@ -128,23 +108,23 @@ export function renderRuntimeFollowUpRecord(
 - Proposed integration mode: ${proposedIntegrationMode}
 - Source-pack allowlist profile: ${sourcePackAllowlistProfile}
 - Allowed export surfaces:
-${renderListOrPlaceholder(normalizeList(request.allowed_export_surfaces))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.allowed_export_surfaces))}
 - Excluded baggage:
-${renderListOrPlaceholder(normalizeList(request.excluded_baggage))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.excluded_baggage))}
 - Promotion contract path: ${promotionContractPath}
 - Re-entry contract path (if deferred): ${reentryContractPath}
 - Re-entry preconditions (checklist):
-${renderListOrPlaceholder(normalizeList(request.reentry_preconditions))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.reentry_preconditions))}
 - Required proof:
-${renderListOrPlaceholder(normalizeList(request.required_proof))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.required_proof))}
 - Required gates:
-${renderListOrPlaceholder(normalizeList(request.required_gates).map((value) =>
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.required_gates).map((value) =>
     value.startsWith("`") ? value : `\`${value}\``
   ))}
 - Trial scope limit (if experimenting):
-${renderListOrPlaceholder(normalizeList(request.trial_scope_limit))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.trial_scope_limit))}
 - Risks:
-${renderListOrPlaceholder(normalizeList(request.risks))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.risks))}
 - Rollback: ${rollback}
 - No-op path: ${noOpPath}
 - Review cadence: ${reviewCadence}

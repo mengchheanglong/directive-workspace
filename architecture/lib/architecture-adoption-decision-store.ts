@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { readJson, writeJsonAtomic } from "../../shared/lib/file-io.ts";
 import {
   isDirectiveArchitectureAdoptionDecisionArtifact,
   type DirectiveArchitectureAdoptionDecisionArtifact,
@@ -23,18 +24,7 @@ function normalizeRelativePath(relativePath: string, fieldName: string) {
   return relativePath.trim().replace(/\\/g, "/");
 }
 
-function writeJsonAtomic(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  const tmpPath = `${filePath}.tmp`;
-  fs.writeFileSync(tmpPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-  fs.renameSync(tmpPath, filePath);
-}
 
-function readJson(filePath: string) {
-  return JSON.parse(
-    fs.readFileSync(filePath, "utf8").replace(/^\uFEFF/u, ""),
-  ) as unknown;
-}
 
 function resolveStoredDecisionPaths(input: {
   directiveRoot: string;

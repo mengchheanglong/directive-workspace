@@ -15,7 +15,7 @@ import type {
   DirectiveEnginePrimaryAdoptionTarget,
   DirectiveEngineWorkflowBoundaryShape,
 } from "../../engine/types.ts";
-import { requiredString } from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { requiredString } from "../../shared/lib/validation.ts";
 
 export type DiscoverySubmissionShape = "queue_only" | "fast_path" | "split_case";
 

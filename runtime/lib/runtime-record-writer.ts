@@ -1,25 +1,9 @@
 import path from "node:path";
-
-function requiredString(value: string, fieldName: string) {
-  const normalized = value.trim();
-  if (!normalized) {
-    throw new Error(`${fieldName} is required`);
-  }
-  return normalized;
-}
-
-function normalizeList(values?: string[] | null) {
-  return (values ?? [])
-    .map((value) => String(value).trim())
-    .filter(Boolean);
-}
-
-function renderListOrPlaceholder(values: string[], placeholder = "n/a") {
-  if (values.length === 0) {
-    return `  - ${placeholder}`;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
+import {
+  normalizeRuntimeWriterList,
+  renderRuntimeWriterList,
+  requireRuntimeWriterString,
+} from "./runtime-writer-support.ts";
 
 export type RuntimeRecordRequest = {
   candidate_id: string;
@@ -59,34 +43,34 @@ export function resolveRuntimeRecordPath(input: {
 }
 
 export function renderRuntimeRecord(request: RuntimeRecordRequest) {
-  const candidateId = requiredString(request.candidate_id, "candidate_id");
-  const candidateName = requiredString(request.candidate_name, "candidate_name");
-  const runtimeRecordDate = requiredString(
+  const candidateId = requireRuntimeWriterString(request.candidate_id, "candidate_id");
+  const candidateName = requireRuntimeWriterString(request.candidate_name, "candidate_name");
+  const runtimeRecordDate = requireRuntimeWriterString(
     request.runtime_record_date,
     "runtime_record_date",
   );
-  const originPath = requiredString(request.origin_path, "origin_path");
-  const linkedFollowUpRecord = requiredString(
+  const originPath = requireRuntimeWriterString(request.origin_path, "origin_path");
+  const linkedFollowUpRecord = requireRuntimeWriterString(
     request.linked_follow_up_record,
     "linked_follow_up_record",
   );
-  const runtimeObjective = requiredString(
+  const runtimeObjective = requireRuntimeWriterString(
     request.runtime_objective,
     "runtime_objective",
   );
-  const proposedHost = requiredString(request.proposed_host, "proposed_host");
-  const proposedRuntimeSurface = requiredString(
+  const proposedHost = requireRuntimeWriterString(request.proposed_host, "proposed_host");
+  const proposedRuntimeSurface = requireRuntimeWriterString(
     request.proposed_runtime_surface,
     "proposed_runtime_surface",
   );
-  const executionSlice = requiredString(
+  const executionSlice = requireRuntimeWriterString(
     request.execution_slice,
     "execution_slice",
   );
-  const requiredProof = requiredString(request.required_proof, "required_proof");
-  const rollback = requiredString(request.rollback, "rollback");
-  const currentStatus = requiredString(request.current_status, "current_status");
-  const nextDecisionPoint = requiredString(
+  const requiredProof = requireRuntimeWriterString(request.required_proof, "required_proof");
+  const rollback = requireRuntimeWriterString(request.rollback, "rollback");
+  const currentStatus = requireRuntimeWriterString(request.current_status, "current_status");
+  const nextDecisionPoint = requireRuntimeWriterString(
     request.next_decision_point,
     "next_decision_point",
   );
@@ -104,17 +88,17 @@ export function renderRuntimeRecord(request: RuntimeRecordRequest) {
 - Execution slice: ${executionSlice}
 - Required proof: \`${requiredProof}\`
 - Required gates:
-${renderListOrPlaceholder(normalizeList(request.required_gates).map((value) =>
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.required_gates).map((value) =>
     value.startsWith("`") ? value : `\`${value}\``
   ))}
 - Risks:
-${renderListOrPlaceholder(normalizeList(request.risks))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.risks))}
 - Rollback: ${rollback}
 - Current status: ${currentStatus}
 - Next decision point: ${nextDecisionPoint}
 ${
-    normalizeList(request.supporting_contracts).length > 0
-      ? `\nSupporting product contracts:\n${normalizeList(request.supporting_contracts)
+    normalizeRuntimeWriterList(request.supporting_contracts).length > 0
+      ? `\nSupporting product contracts:\n${normalizeRuntimeWriterList(request.supporting_contracts)
           .map((value) => `- \`${value}\``)
           .join("\n")}`
       : ""

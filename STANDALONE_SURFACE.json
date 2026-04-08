@@ -6,16 +6,15 @@
     "productOwnerReason": "Directive Workspace is the standalone product and canonical owner of doctrine, contracts, shared operating assets, and mission-driven capability evolution logic.",
     "packageName": "@directive-workspace/product",
     "releaseMode": "reference_api_host_lane_ready_for_shareable_local_use",
-    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with a canonical Engine kernel, lane-owned Discovery/Runtime/Architecture operating surfaces, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local use but not yet the broader host replacement for Mission Control.",
-    "runtimeHost": "mission-control",
-    "runtimeHostReason": "Mission Control remains the current runtime host while Directive Workspace owns the package-ready product surface."
+    "releaseModeReason": "Directive Workspace now exposes a stable root package surface with a canonical Engine kernel, lane-owned Discovery/Runtime/Architecture operating surfaces, a configurable standalone filesystem reference host, and a minimal product-owned standalone frontend under hosts/web-host over the same artifacts, ready for shareable GitHub/local clone-and-wire use.",
+    "runtimeHost": "repo-native-reference-hosts",
+    "runtimeHostReason": "The repo-native standalone host and web host are the current reference hosts while external project-specific adapters belong in the consuming project unless they become broadly reusable product surfaces."
   },
   "packageSurface": {
     "activeExportKeys": [
       ".",
       "./engine",
       "./runtime/core/runtime-core-contract",
-      "./runtime/core/v0",
       "./integration-kit",
       "./integration-kit/cli",
       "./integration-kit/starter",
@@ -99,11 +98,6 @@
     {
       "id": "runtime-core-contract-entry",
       "path": "runtime/core/runtime-core-contract.ts",
-      "kind": "runtime_core_entry"
-    },
-    {
-      "id": "runtime-core-v0-entry",
-      "path": "runtime/core/v0.ts",
       "kind": "runtime_core_entry"
     },
     {

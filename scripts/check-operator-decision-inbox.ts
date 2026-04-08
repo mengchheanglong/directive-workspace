@@ -25,6 +25,7 @@ function main() {
     report.summary.discoveryRoutingReviewCount
       + report.summary.architectureMaterializationDueCount
       + report.summary.runtimeHostSelectionCount
+      + report.summary.runtimePromotionSeamDecisionCount
       + report.summary.runtimeRegistryAcceptanceCount,
     report.summary.totalActionableEntries,
   );
@@ -36,14 +37,25 @@ function main() {
     );
   }
 
-  assert.ok(
-    report.entries.some((entry) =>
-      entry.decisionSurface === "runtime_host_selection"
-      && entry.eligibleNextAction === "clarify_repo_native_host_target"
-      && entry.resolverCommandOrArtifact.includes("host-selection-resolution.md")
-    ),
-    "inbox should expose pending Runtime host-selection review actions",
-  );
+  if (report.summary.runtimeHostSelectionCount > 0) {
+    assert.ok(
+      report.entries.some((entry) =>
+        entry.decisionSurface === "runtime_host_selection"
+        && entry.eligibleNextAction === "clarify_repo_native_host_target"
+        && entry.resolverCommandOrArtifact.includes("host-selection-resolution.md")
+      ),
+      "inbox should expose pending Runtime host-selection review actions when host-selection blockers exist",
+    );
+  }
+  if (report.summary.runtimePromotionSeamDecisionCount > 0) {
+    assert.ok(
+      report.entries.some((entry) =>
+        entry.decisionSurface === "runtime_promotion_seam_decision"
+        && entry.eligibleNextAction === "request_manual_promotion_seam_decision"
+      ),
+      "inbox should expose Runtime promotion-seam decisions after host selection is resolved",
+    );
+  }
 
   for (const entry of report.entries) {
     assert.equal(entry.readOnly, true);
@@ -59,6 +71,7 @@ function main() {
   const markdown = renderOperatorDecisionInboxMarkdown(report);
   assert.match(markdown, /^# Operator Decision Inbox/m);
   assert.match(markdown, /## Runtime Host Selection/);
+  assert.match(markdown, /## Runtime Promotion Seam Decision/);
   assert.match(markdown, /## Architecture Materialization/);
   assert.match(markdown, /## Discovery Routing Review/);
   assert.match(markdown, /This report is read-only/);
@@ -80,6 +93,7 @@ function main() {
           "summary_counts_match_entries",
           "runtime_host_selection_prioritized_first",
           "runtime_host_selection_action_visible",
+          "runtime_promotion_seam_decision_action_visible",
           "architecture_materialization_group_renders_even_when_clean",
           "entries_have_actionable_context",
           "markdown_report_renders_operator_groups",

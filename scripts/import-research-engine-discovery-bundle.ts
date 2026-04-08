@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { importResearchEngineDiscoveryBundle } from "../hosts/adapters/research-engine-discovery-import.ts";
+import { importResearchEngineDiscoveryBundle } from "../discovery/importers/research-engine-discovery-import.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 

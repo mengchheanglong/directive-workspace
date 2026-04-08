@@ -6,11 +6,9 @@ import {
   type DirectiveReadOnlyLifecycleCoordinationBucketId,
   type DirectiveReadOnlyLifecycleCoordinationReport,
 } from "./read-only-lifecycle-coordination.ts";
-import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-  readJson,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 
 // --- Ledger types ---
 
@@ -219,7 +217,7 @@ export function buildDirectiveBoundedPersistentCoordinationReport(input?: {
   snapshotAt?: string;
   dryRun?: boolean;
 }): DirectiveBoundedPersistentCoordinationReport {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
   const snapshotAt = input?.snapshotAt ?? new Date().toISOString();
   const ledgerPath = getLedgerPath(directiveRoot);
   const ledger = readLedger(ledgerPath);
@@ -282,6 +280,6 @@ export function buildDirectiveBoundedPersistentCoordinationReport(input?: {
 export function readDirectiveCoordinationLedger(input?: {
   directiveRoot?: string;
 }): DirectiveCoordinationLedger {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
   return readLedger(getLedgerPath(directiveRoot));
 }

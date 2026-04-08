@@ -1,5 +1,6 @@
-import fs from "node:fs";
 import path from "node:path";
+
+import { writeUtf8 } from "../../shared/lib/file-io.ts";
 
 import {
   buildDirectiveArchitectureCloseoutFile,
@@ -208,10 +209,7 @@ function renderNoteHandoffBoundedResultMarkdown(input: {
   ].join("\n");
 }
 
-function writeUtf8(filePath: string, content: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
-}
+
 
 export function materializeDirectiveNoteArchitectureCloseoutProjectionSet(input: {
   directiveRoot: string;

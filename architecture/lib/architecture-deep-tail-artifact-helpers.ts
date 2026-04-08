@@ -1,7 +1,24 @@
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
+import {
+  readJson,
+  writeJson,
+  writeUtf8,
+} from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import {
+  normalizeDirectiveRelativePath,
+  resolveDirectiveRelativePath,
+} from "../../shared/lib/directive-relative-path.ts";
+import {
+  requiredString,
+  optionalString,
+} from "../../shared/lib/validation.ts";
+import {
+  getDefaultDirectiveWorkspaceRoot,
+  resolveDirectiveWorkspaceRoot,
+} from "../../shared/lib/workspace-root.ts";
 import {
   ARCHITECTURE_DEEP_TAIL_STAGE,
   matchesArchitectureDeepTailStagePath,
@@ -11,56 +28,11 @@ import {
 import { recordArchitectureDeepTailLinkedArtifactPath } from "./architecture-deep-tail-linkage-index.ts";
 import { resolveDirectiveWorkspaceArtifactAbsolutePath } from "../../shared/lib/directive-workspace-artifact-storage.ts";
 
-export function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-export function getDefaultDirectiveWorkspaceRoot() {
-  return normalizePath(fileURLToPath(new URL("../..", import.meta.url)));
-}
-
-export function resolveDirectiveWorkspaceRoot(directiveRoot?: string) {
-  return normalizePath(directiveRoot || getDefaultDirectiveWorkspaceRoot());
-}
-
-export function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-export function requiredString(value: string | null | undefined, fieldName: string) {
-  if (typeof value !== "string" || value.trim().length === 0) {
-    throw new Error(`invalid_input: ${fieldName} is required`);
-  }
-  return value.trim();
-}
-
-export function optionalString(value: string | null | undefined) {
-  if (typeof value !== "string") {
-    return null;
-  }
-
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-export function normalizeRelativePath(inputPath: string, fieldName = "path") {
-  return requiredString(inputPath, fieldName).replace(/\\/g, "/");
-}
-
-export function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string, fieldName = "path") {
-  const normalizedInput = normalizeRelativePath(inputPath, fieldName);
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error("invalid_input: path must stay within directive-workspace");
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
-}
+export { readJson };
+export { normalizeAbsolutePath as normalizePath };
+export { requiredString, optionalString };
+export { getDefaultDirectiveWorkspaceRoot, resolveDirectiveWorkspaceRoot };
+export { normalizeDirectiveRelativePath as normalizeRelativePath, resolveDirectiveRelativePath };
 
 export function resolveArchitectureDeepTailRelativePath(input: {
   sourceRelativePath: string;
@@ -170,14 +142,10 @@ export function prepareDirectiveArchitectureDeepTailWrite(input: {
 }
 
 export function writeDirectiveArtifactMarkdown(absolutePath: string, markdown: string) {
-  fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
-  fs.writeFileSync(absolutePath, markdown, "utf8");
+  writeUtf8(absolutePath, markdown);
 }
 
-export function writeJsonPretty(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
+export { writeJson as writeJsonPretty };
 
 export function writeDirectiveArchitectureDeepTailArtifact(input: {
   directiveRoot: string;

@@ -35,10 +35,8 @@ import {
   writeDirectiveDiscoveryFrontDoorProjectionSet,
   type DirectiveMirroredDiscoveryFrontDoorProjectionInput,
 } from "./discovery-front-door-projections.ts";
-import {
-  readJson,
-  writeJsonPretty,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson, writeJson as writeJsonPretty, writeUtf8 } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 type DiscoveryFrontDoorDecision = {
   routingTarget: Exclude<DiscoveryRoutingTarget, null>;
@@ -92,10 +90,6 @@ export type DirectiveDiscoveryFrontDoorResult = {
   };
 };
 
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
 function normalizeRelativeDirectivePath(
   directiveRoot: string,
   filePath: string,
@@ -123,10 +117,7 @@ function normalizeReceivedAt(value: string | undefined) {
   return normalized;
 }
 
-function writeUtf8(filePath: string, content: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, content, "utf8");
-}
+
 
 function loadQueue(directiveRoot: string) {
   return readJson<DiscoveryIntakeQueueDocument>(

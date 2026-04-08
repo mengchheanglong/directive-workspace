@@ -1,11 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-  readJson,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 import { resolveDirectiveWorkspaceState } from "../../engine/state/index.ts";
 import { aggregateRunEvidence } from "../execution/run-evidence-aggregation.ts";
 import { buildDirectiveRuntimePromotionAssistanceReport } from "../../runtime/lib/runtime-promotion-assistance.ts";
@@ -333,7 +331,7 @@ export function buildDirectiveReadOnlyLifecycleCoordinationReport(input?: {
   directiveRoot?: string;
   snapshotAt?: string;
 }): DirectiveReadOnlyLifecycleCoordinationReport {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
   const queueEntries = readQueueEntries(directiveRoot);
   const assistance = buildDirectiveRuntimePromotionAssistanceReport({ directiveRoot });
   const evidence = aggregateRunEvidence({ directiveRoot });

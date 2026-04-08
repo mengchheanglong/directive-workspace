@@ -80,7 +80,7 @@ function renderDirectiveRuntimeFollowUpOpenProjection(input: {
     ? input.projectionInput.requiredProof.join("; ")
     : "n/a";
 
-  return `# Runtime V0 Record: ${input.projectionInput.candidateName} (${input.projectionInput.followUpDate})
+  return `# Legacy Runtime Record: ${input.projectionInput.candidateName} (${input.projectionInput.followUpDate})
 
 ## follow-up review decision
 - Candidate id: \`${input.projectionInput.candidateId}\`
@@ -125,7 +125,7 @@ ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.excludedBagga
 ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.risks)}
 
 ## artifact linkage
-- Runtime v0 record: \`${input.projectionInput.runtimeRecordRelativePath}\`
+- Legacy Runtime record: \`${input.projectionInput.runtimeRecordRelativePath}\`
 - Source Runtime follow-up record: \`${input.projectionInput.followUpRelativePath}\`
 ${input.projectionInput.linkedHandoffPath ? `- Linked Discovery routing record: \`${input.projectionInput.linkedHandoffPath}\`\n` : ""}- Next Runtime proof artifact if later approved: \`${input.projectionInput.runtimeProofRelativePath}\`
 
@@ -218,3 +218,4 @@ export function writeDirectiveRuntimeFollowUpOpenProjectionSet(input: {
 
   return projectionSet;
 }
+

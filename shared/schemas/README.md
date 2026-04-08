@@ -36,8 +36,6 @@ Current canonical artifacts:
 - `generation-boundary-note.schema.json`
 - `literature-monitoring-digest.schema.json`
 - `literature-monitoring-degraded-state.schema.json`
-- `openclaw-runtime-verification-signal.schema.json`
-- `openclaw-maintenance-watchdog-signal.schema.json`
 - `standalone-host-config.schema.json`
 
 Stage-contract notes:
@@ -50,7 +48,7 @@ Citation schema notes:
 - coverage state remains `complete|partial|missing`
 
 Boundary:
-- Mission Control runtime types still execute host behavior.
+- Host runtime types still execute host behavior.
 - These schemas are the Engine-owned shared contract truth for artifact shape checks.
 - Any runtime binding must be an explicit follow-up decision and remain fail-closed.
 

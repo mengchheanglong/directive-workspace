@@ -35,9 +35,6 @@ const ACTIVE_CONSUMER_FILES = [
   "README.md",
   "CLAUDE.md",
   "OWNERSHIP.md",
-  "operator-start.md",
-  "PUBLISH_READINESS.md",
-  "road-to-completion.md",
 ] as const;
 
 const STALE_PATH_PATTERNS = [

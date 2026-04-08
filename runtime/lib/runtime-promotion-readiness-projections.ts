@@ -80,7 +80,7 @@ function renderDirectiveRuntimePromotionReadinessProjection(input: {
 - Candidate name: \`${input.projectionInput.candidateName}\`
 - Runtime capability boundary path: \`${input.projectionInput.capabilityBoundaryRelativePath}\`
 - Source Runtime proof artifact: \`${input.projectionInput.linkedRuntimeProofPath}\`
-- Source Runtime v0 record: \`${input.projectionInput.linkedRuntimeRecordPath}\`
+- Source Legacy Runtime record: \`${input.projectionInput.linkedRuntimeRecordPath}\`
 - Source Runtime follow-up record: \`${input.projectionInput.linkedFollowUpPath}\`
 ${input.projectionInput.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.projectionInput.linkedRoutingPath}\`\n` : ""}- Promotion-readiness decision: \`approved_for_non_executing_promotion_readiness\`
 - Opened by: \`${input.projectionInput.approvedBy}\`
@@ -103,7 +103,7 @@ ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates
 - This artifact does not approve host-facing promotion, runtime execution, callable implementation, or host integration.
 
 ## validation boundary
-- Validate against the bounded runtime capability boundary, Runtime proof artifact, Runtime v0 record, source follow-up record, and linked Discovery routing record only.
+- Validate against the bounded runtime capability boundary, Runtime proof artifact, Legacy Runtime record, source follow-up record, and linked Discovery routing record only.
 - Do not infer runtime readiness, host readiness, or automatic promotion from this artifact.
 - A separate host-facing promotion record remains unopened and out of scope.
 
@@ -116,7 +116,7 @@ ${renderDirectiveProjectionListOrPlaceholder(input.projectionInput.requiredGates
 - Promotion-readiness artifact: \`${input.projectionInput.promotionReadinessRelativePath}\`
 - Runtime capability boundary: \`${input.projectionInput.capabilityBoundaryRelativePath}\`
 - Runtime proof artifact: \`${input.projectionInput.linkedRuntimeProofPath}\`
-- Runtime v0 record: \`${input.projectionInput.linkedRuntimeRecordPath}\`
+- Legacy Runtime record: \`${input.projectionInput.linkedRuntimeRecordPath}\`
 - Source Runtime follow-up record: \`${input.projectionInput.linkedFollowUpPath}\`
 ${input.projectionInput.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.projectionInput.linkedRoutingPath}\`\n` : ""}${input.projectionInput.linkedCallableStubPath ? `- Linked callable stub: \`${input.projectionInput.linkedCallableStubPath}\`\n` : ""}`;
 }
@@ -210,3 +210,4 @@ export function writeDirectiveRuntimePromotionReadinessProjectionSet(input: {
 
   return projectionSet;
 }
+

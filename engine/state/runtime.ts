@@ -180,8 +180,9 @@ function readGenericRuntimeProofArtifact(input: {
       candidateName,
       runtimeProofRelativePath,
       linkedRuntimeRecordPath: requiredString(
-        extractBulletValue(content, "Runtime v0 record path"),
-        "runtime v0 record path",
+        extractBulletValue(content, "Legacy Runtime record path")
+          || extractBulletValue(content, "Runtime v0 record path"),
+        "Legacy Runtime record path",
       ),
       linkedFollowUpPath: requiredString(
         extractBulletValue(content, "Source follow-up record path"),
@@ -262,7 +263,8 @@ function readGenericRuntimePromotionReadinessArtifact(input: {
       "runtime capability boundary",
     ),
     linkedRuntimeProofPath: extractBulletValue(content, "Runtime proof artifact"),
-    linkedRuntimeRecordPath: extractBulletValue(content, "Runtime v0 record"),
+    linkedRuntimeRecordPath: extractBulletValue(content, "Legacy Runtime record")
+      || extractBulletValue(content, "Runtime v0 record"),
     linkedCallableStubPath: extractBulletValue(content, "Linked callable stub"),
     linkedPromotionRecordPath:
       extractNestedBulletValue(content, "Host-facing promotion record")
@@ -372,8 +374,8 @@ function buildLegacyRuntimeFollowUpState(input: {
       ? "runtime.follow_up.legacy_deferred"
       : "runtime.follow_up.legacy_recorded",
     nextLegalStep: legacyDeferred
-      ? "No automatic Runtime step is open; this historical deferred Runtime follow-up remains parked unless a new bounded Runtime v0 re-entry is explicitly opened."
-      : "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      ? "No automatic Runtime step is open; this historical deferred Runtime follow-up remains parked unless a new bounded Legacy Runtime re-entry is explicitly opened."
+      : "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -414,7 +416,7 @@ function buildLegacyRuntimeHandoffState(input: {
   return {
     currentStage: "runtime.handoff.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical architecture-to-runtime handoff remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical architecture-to-runtime handoff remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -459,7 +461,7 @@ function buildLegacyRuntimeRegistryState(input: {
     nextLegalStep:
       registryAccepted
         ? "No automatic Runtime step is open; this Runtime registry entry is manually accepted through a bounded registry gate; promotion automation remains intentionally unopened."
-        : "No automatic Runtime step is open; this historical Runtime registry entry remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+        : "No automatic Runtime step is open; this historical Runtime registry entry remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -497,7 +499,7 @@ function buildLegacyRuntimePromotionRecordState(input: {
   return {
     currentStage: "runtime.promotion_record.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime promotion record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime promotion record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -534,7 +536,7 @@ function buildLegacyRuntimeRecordState(input: {
   return {
     currentStage: "runtime.record.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -584,7 +586,7 @@ function buildLegacyRuntimeSliceProofState(input: {
   return {
     currentStage: "runtime.slice_proof.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime slice proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime slice proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -629,7 +631,7 @@ function buildLegacyRuntimeSliceExecutionState(input: {
   return {
     currentStage: "runtime.slice_execution.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime slice execution remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime slice execution remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -692,7 +694,7 @@ function buildLegacyRuntimeProofChecklistState(input: {
   return {
     currentStage: "runtime.proof_checklist.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime proof checklist remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime proof checklist remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -754,7 +756,7 @@ function buildLegacyRuntimeLiveFetchProofState(input: {
   return {
     currentStage: "runtime.live_fetch_proof.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime live-fetch proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime live-fetch proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -820,7 +822,7 @@ function buildLegacyRuntimeLiveFetchGateSnapshotState(input: {
   return {
     currentStage: "runtime.live_fetch_gate_snapshot.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime live-fetch gate snapshot remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime live-fetch gate snapshot remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -894,7 +896,7 @@ function buildLegacyRuntimeLivePoolArtifactState(input: {
       ? "runtime.live_degraded_pool.legacy_recorded"
       : "runtime.live_qualified_pool.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime live pool artifact remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime live pool artifact remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -916,7 +918,7 @@ function buildLegacyRuntimeSamplePoolArtifactState(input: {
       ? "runtime.sample_degraded_pool.legacy_recorded"
       : "runtime.sample_qualified_pool.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime sample pool artifact remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime sample pool artifact remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts: [] as string[],
     inconsistentLinks: [] as string[],
     linked: zeroLinkedArtifacts(),
@@ -934,7 +936,7 @@ function buildLegacyRuntimeSystemBundleState() {
   return {
     currentStage: "runtime.system_bundle.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime system-bundle note remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime system-bundle note remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts: [] as string[],
     inconsistentLinks: [] as string[],
     linked: zeroLinkedArtifacts(),
@@ -952,7 +954,7 @@ function buildLegacyRuntimeValidationNoteState() {
   return {
     currentStage: "runtime.validation_note.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime validation note remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime validation note remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts: [] as string[],
     inconsistentLinks: [] as string[],
     linked: zeroLinkedArtifacts(),
@@ -990,10 +992,10 @@ function buildLegacyRuntimePreconditionDecisionNoteState(input: {
         : "runtime.host_adapter_decision.legacy_recorded";
   const nextLegalStep =
     input.legacyRuntimePreconditionDecisionNote.noteKind === "precondition_proof"
-      ? "No automatic Runtime step is open; this historical Runtime CLI precondition proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened."
+      ? "No automatic Runtime step is open; this historical Runtime CLI precondition proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened."
       : input.legacyRuntimePreconditionDecisionNote.noteKind === "precondition_correction"
-        ? "No automatic Runtime step is open; this historical Runtime precondition correction remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened."
-        : "No automatic Runtime step is open; this historical Runtime host-adapter decision remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.";
+        ? "No automatic Runtime step is open; this historical Runtime precondition correction remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened."
+        : "No automatic Runtime step is open; this historical Runtime host-adapter decision remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.";
 
   return {
     currentStage,
@@ -1036,7 +1038,7 @@ function buildLegacyRuntimeTransformationRecordState(input: {
   return {
     currentStage: "runtime.transformation_record.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime transformation record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime transformation record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -1079,7 +1081,7 @@ function buildLegacyRuntimeTransformationProofState(input: {
   return {
     currentStage: "runtime.transformation_proof.legacy_recorded",
     nextLegalStep:
-      "No automatic Runtime step is open; this historical Runtime transformation proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime transformation proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     missingExpectedArtifacts,
     inconsistentLinks,
     linked,
@@ -1504,13 +1506,13 @@ function buildRuntimeState(input: {
   if (input.runtimeProof?.kind === "follow_up_review" && !input.runtimeRecord) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      "Runtime proof artifact is missing its linked Runtime v0 record",
+      "Runtime proof artifact is missing its linked Legacy Runtime record",
     );
   }
   if (input.runtimeProof?.kind === "callable_integration" && !input.runtimeRecord) {
     recordInconsistentLink(
       { missingExpectedArtifacts, inconsistentLinks },
-      "Runtime proof artifact is missing its linked Runtime v0 record",
+      "Runtime proof artifact is missing its linked Legacy Runtime record",
     );
   }
   if (input.capabilityBoundary?.linkedRuntimeProofPath && !input.runtimeProof) {
@@ -1622,7 +1624,7 @@ function buildRuntimeState(input: {
         : "runtime.record.callable_boundary_defined";
     nextLegalStep =
       input.runtimeRecord.kind === "follow_up_review"
-        ? "Explicitly review the Runtime v0 record and approve one bounded Runtime proof artifact if justified."
+        ? "Explicitly review the Legacy Runtime record and approve one bounded Runtime proof artifact if justified."
         : hasHostConsumedCallable
           ? "Callable capability is executing and one bounded host adapter path is already proven. Next legal step is explicit evidence feedback or later registry acceptance if intentionally reopened."
         : hasExecutingCallable
@@ -1755,50 +1757,50 @@ export function buildRuntimeArtifactStage(input: {
         artifactNextLegalStep:
           /defer/i.test(input.legacyFollowUp?.currentDecisionState ?? "")
           || /deferred/i.test(input.legacyFollowUp?.currentStatus ?? "")
-            ? "No automatic Runtime step is open; this historical deferred Runtime follow-up remains parked unless a new bounded Runtime v0 re-entry is explicitly opened."
-            : "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+            ? "No automatic Runtime step is open; this historical deferred Runtime follow-up remains parked unless a new bounded Legacy Runtime re-entry is explicitly opened."
+            : "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_handoff_legacy":
       return {
         artifactStage: "runtime.handoff.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical architecture-to-runtime handoff remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical architecture-to-runtime handoff remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_record_legacy":
       return {
         artifactStage: "runtime.record.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_slice_proof_legacy":
       return {
         artifactStage: "runtime.slice_proof.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime slice proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime slice proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_slice_execution_legacy":
       return {
         artifactStage: "runtime.slice_execution.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime slice execution remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime slice execution remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_proof_checklist_legacy":
       return {
         artifactStage: "runtime.proof_checklist.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime proof checklist remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime proof checklist remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_live_fetch_proof_legacy":
       return {
         artifactStage: "runtime.live_fetch_proof.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime live-fetch proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime live-fetch proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_live_fetch_gate_snapshot_legacy":
       return {
         artifactStage: "runtime.live_fetch_gate_snapshot.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime live-fetch gate snapshot remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime live-fetch gate snapshot remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_live_pool_artifact_legacy":
       return {
@@ -1806,7 +1808,7 @@ export function buildRuntimeArtifactStage(input: {
           ? "runtime.live_degraded_pool.legacy_recorded"
           : "runtime.live_qualified_pool.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime live pool artifact remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime live pool artifact remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_sample_pool_artifact_legacy":
       return {
@@ -1814,19 +1816,19 @@ export function buildRuntimeArtifactStage(input: {
           ? "runtime.sample_degraded_pool.legacy_recorded"
           : "runtime.sample_qualified_pool.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime sample pool artifact remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime sample pool artifact remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_system_bundle_note_legacy":
       return {
         artifactStage: "runtime.system_bundle.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime system-bundle note remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime system-bundle note remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_validation_note_legacy":
       return {
         artifactStage: "runtime.validation_note.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime validation note remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime validation note remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_precondition_decision_note_legacy":
       return {
@@ -1836,22 +1838,22 @@ export function buildRuntimeArtifactStage(input: {
             ? "runtime.host_adapter_decision.legacy_recorded"
             : "runtime.precondition_proof.legacy_recorded",
         artifactNextLegalStep: input.legacyRuntimePreconditionDecisionNoteArtifact?.noteKind === "precondition_correction"
-          ? "No automatic Runtime step is open; this historical Runtime precondition correction remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened."
+          ? "No automatic Runtime step is open; this historical Runtime precondition correction remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened."
           : input.legacyRuntimePreconditionDecisionNoteArtifact?.noteKind === "host_adapter_decision"
-            ? "No automatic Runtime step is open; this historical Runtime host-adapter decision remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened."
-            : "No automatic Runtime step is open; this historical Runtime CLI precondition proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+            ? "No automatic Runtime step is open; this historical Runtime host-adapter decision remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened."
+            : "No automatic Runtime step is open; this historical Runtime CLI precondition proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_transformation_record_legacy":
       return {
         artifactStage: "runtime.transformation_record.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime transformation record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime transformation record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_transformation_proof_legacy":
       return {
         artifactStage: "runtime.transformation_proof.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime transformation proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime transformation proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_registry_legacy":
     case "runtime_registry_accepted":
@@ -1862,18 +1864,18 @@ export function buildRuntimeArtifactStage(input: {
         artifactNextLegalStep:
           input.artifactKind === "runtime_registry_accepted"
             ? "No automatic Runtime step is open; this Runtime registry entry is manually accepted through a bounded registry gate; promotion automation remains intentionally unopened."
-            : "No automatic Runtime step is open; this historical Runtime registry entry remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+            : "No automatic Runtime step is open; this historical Runtime registry entry remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_promotion_record_legacy":
       return {
         artifactStage: "runtime.promotion_record.legacy_recorded",
         artifactNextLegalStep:
-          "No automatic Runtime step is open; this historical Runtime promotion record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+          "No automatic Runtime step is open; this historical Runtime promotion record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
       };
     case "runtime_record_follow_up_review":
       return {
         artifactStage: "runtime.record.pending_proof_boundary",
-        artifactNextLegalStep: "Explicitly review the Runtime v0 record and approve one bounded Runtime proof artifact if justified.",
+        artifactNextLegalStep: "Explicitly review the Legacy Runtime record and approve one bounded Runtime proof artifact if justified.",
       };
     case "runtime_record_callable_integration":
       return {
@@ -2634,7 +2636,8 @@ export function resolveRuntimeFocusFromAnyPath(input: {
     ?? legacyRuntimePromotionRecord?.candidateName
     ?? (capabilityBoundary?.title
       ? capabilityBoundary.title
-        .replace(/^Runtime V0 Runtime Capability Boundary:\s*/u, "")
+        .replace(/^Legacy Runtime Runtime Capability Boundary:\s*/u, "")
+        .replace(/^Runtime v0 Runtime Capability Boundary:\s*/u, "")
         .replace(/\s+\(\d{4}-\d{2}-\d{2}\)\s*$/u, "")
         .trim()
       : null)
@@ -2776,3 +2779,4 @@ export function resolveRuntimeFocusFromAnyPath(input: {
         })),
   };
 }
+

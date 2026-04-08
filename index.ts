@@ -3,7 +3,6 @@ export * as engineCases from "./engine/cases/index";
 export * as engineCoordination from "./engine/coordination/index";
 export * as engineExecution from "./engine/execution/index";
 export * as integrationKit from "./hosts/integration-kit/index";
-export * as adapters from "./hosts/adapters/index";
 export * as standaloneHost from "./hosts/standalone-host/index";
 export * as frontend from "./hosts/web-host/index";
 export * as discovery from "./discovery/lib/index";

@@ -1,5 +1,6 @@
-import fs from "node:fs";
 import path from "node:path";
+import { readJsonLines, appendJsonLine } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 export type DirectiveCaseMirrorEventType =
   | "source_submitted"
@@ -30,31 +31,6 @@ export type DirectiveCaseMirrorEvent = {
   currentStage?: string | null;
   nextLegalStep?: string | null;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function ensureParentDir(filePath: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-}
-
-function readJsonLines<T>(filePath: string) {
-  if (!fs.existsSync(filePath)) {
-    return [] as T[];
-  }
-
-  return fs.readFileSync(filePath, "utf8")
-    .split(/\r?\n/u)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
-    .map((line) => JSON.parse(line) as T);
-}
-
-function appendJsonLine(filePath: string, value: unknown) {
-  ensureParentDir(filePath);
-  fs.appendFileSync(filePath, `${JSON.stringify(value)}\n`, "utf8");
-}
 
 function sanitizeCaseId(value: string) {
   return String(value)

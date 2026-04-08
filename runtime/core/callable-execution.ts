@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import {
   createCodeNormalizerCallableCapability,
@@ -106,10 +107,6 @@ export type DirectiveRuntimeCallableDirectExecutionInput = {
   executionAt?: string;
   persistArtifacts?: boolean;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function normalizeRelativeDirectivePath(directiveRoot: string, filePath: string) {
   return path.relative(directiveRoot, filePath).replace(/\\/g, "/");

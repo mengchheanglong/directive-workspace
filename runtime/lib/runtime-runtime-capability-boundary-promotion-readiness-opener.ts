@@ -175,7 +175,7 @@ function renderPromotionReadinessArtifact(input: {
 - Candidate name: \`${input.artifact.candidateName}\`
 - Runtime capability boundary path: \`${input.artifact.capabilityBoundaryRelativePath}\`
 - Source Runtime proof artifact: \`${input.artifact.linkedRuntimeProofPath}\`
-- Source Runtime v0 record: \`${input.artifact.linkedRuntimeRecordPath}\`
+- Source Legacy Runtime record: \`${input.artifact.linkedRuntimeRecordPath}\`
 - Source Runtime follow-up record: \`${input.artifact.linkedFollowUpPath}\`
 ${input.artifact.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.artifact.linkedRoutingPath}\`\n` : ""}- Promotion-readiness decision: \`approved_for_non_executing_promotion_readiness\`
 - Opened by: \`${input.approvedBy}\`
@@ -198,7 +198,7 @@ ${renderListOrPlaceholder(input.artifact.requiredGates.map((value) => `\`${value
 - This artifact does not approve host-facing promotion, runtime execution, callable implementation, or host integration.
 
 ## validation boundary
-- Validate against the bounded runtime capability boundary, Runtime proof artifact, Runtime v0 record, source follow-up record, and linked Discovery routing record only.
+- Validate against the bounded runtime capability boundary, Runtime proof artifact, Legacy Runtime record, source follow-up record, and linked Discovery routing record only.
 - Do not infer runtime readiness, host readiness, or automatic promotion from this artifact.
 - A separate host-facing promotion record remains unopened and out of scope.
 
@@ -211,7 +211,7 @@ ${renderListOrPlaceholder(input.artifact.requiredGates.map((value) => `\`${value
 - Promotion-readiness artifact: \`${input.artifact.promotionReadinessRelativePath}\`
 - Runtime capability boundary: \`${input.artifact.capabilityBoundaryRelativePath}\`
 - Runtime proof artifact: \`${input.artifact.linkedRuntimeProofPath}\`
-- Runtime v0 record: \`${input.artifact.linkedRuntimeRecordPath}\`
+- Legacy Runtime record: \`${input.artifact.linkedRuntimeRecordPath}\`
 - Source Runtime follow-up record: \`${input.artifact.linkedFollowUpPath}\`
 ${input.artifact.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.artifact.linkedRoutingPath}\`\n` : ""}${input.artifact.linkedCallableStubPath ? `- Linked callable stub: \`${input.artifact.linkedCallableStubPath}\`\n` : ""}`;
 }
@@ -482,3 +482,4 @@ export function openDirectiveRuntimePromotionReadiness(input: {
     candidateName: artifact.candidateName,
   };
 }
+

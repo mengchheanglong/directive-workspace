@@ -660,6 +660,7 @@ export type FrontendOperatorDecisionInboxEntry = {
     | "discovery_routing_review"
     | "architecture_materialization_due"
     | "runtime_host_selection"
+    | "runtime_promotion_seam_decision"
     | "runtime_registry_acceptance";
   candidateId: string | null;
   candidateName: string | null;
@@ -693,6 +694,7 @@ export type FrontendOperatorDecisionInboxReport = {
     discoveryRoutingReviewCount: number;
     architectureMaterializationDueCount: number;
     runtimeHostSelectionCount: number;
+    runtimePromotionSeamDecisionCount: number;
     runtimeRegistryAcceptanceCount: number;
   };
   entries: FrontendOperatorDecisionInboxEntry[];

@@ -14,8 +14,8 @@ Current frontend flows:
 - source submission
 - Discovery intake / triage / routing artifact creation
 - Discovery routing approval -> Architecture handoff or Runtime follow-up stub
-- Runtime follow-up review approval -> bounded non-executing Runtime record
-- Runtime record proof approval -> bounded non-executing Runtime proof artifact
+- Runtime follow-up review approval -> bounded non-executing capability record
+- capability-record proof approval -> bounded non-executing capability proof artifact
 - Runtime proof runtime-capability-boundary approval -> bounded non-executing runtime capability boundary
 - Runtime runtime-capability-boundary promotion-readiness approval -> bounded non-executing promotion-readiness artifact
 - Engine runs list
@@ -37,8 +37,8 @@ Current frontend flows:
 Current Discovery front-door boundary:
 - frontend submission writes a real Discovery intake record, triage record, routing record, queue update, and persisted Engine run from one source submission
 - downstream Architecture or Runtime stub opening remains a separate deliberate approval step after Discovery routing
-- Runtime follow-up review remains a separate deliberate approval step after the follow-up stub and stops at one bounded non-executing Runtime record
-- Runtime proof opening remains a separate deliberate approval step after the Runtime record and stops at one bounded non-executing Runtime proof artifact
+- Runtime follow-up review remains a separate deliberate approval step after the follow-up stub and stops at one bounded non-executing capability record
+- capability-proof opening remains a separate deliberate approval step after the capability record and stops at one bounded non-executing capability proof artifact
 - Runtime runtime-capability-boundary opening remains a separate deliberate approval step after the Runtime proof artifact and stops at one bounded non-executing runtime capability boundary
 - Runtime promotion-readiness opening remains a separate deliberate approval step after the runtime capability boundary and stops at one bounded non-executing promotion-readiness artifact
 

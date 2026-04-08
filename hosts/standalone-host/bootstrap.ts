@@ -1,5 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
+import { writeJson, writeUtf8 } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 type JsonValue = Record<string, unknown>;
 
@@ -48,23 +50,7 @@ export type BootstrapStandaloneHostWorkspaceResult = {
   createdPaths: string[];
 };
 
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
-function ensureDirectory(filePath: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-}
-
-function writeJson(filePath: string, value: unknown) {
-  ensureDirectory(filePath);
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function writeText(filePath: string, content: string) {
-  ensureDirectory(filePath);
-  fs.writeFileSync(filePath, content, "utf8");
-}
 
 function createInitialQueue(receivedAt: string): JsonValue {
   return {
@@ -96,7 +82,7 @@ function createRuntimeFollowUpExample(receivedAt: string): JsonValue {
     current_decision_state: "accepted_for_bounded_local_follow_up",
     origin_track: "architecture",
     runtime_value_to_operationalize:
-      "Create a bounded Runtime follow-up from a standalone local/shareable host without Mission Control.",
+      "Create a bounded Runtime follow-up from a standalone local/shareable host without another host layer.",
     proposed_host: "directive-workspace-standalone-host",
     proposed_integration_mode: "local_shareable_workflow",
     source_pack_allowlist_profile: "n/a",
@@ -106,7 +92,7 @@ function createRuntimeFollowUpExample(receivedAt: string): JsonValue {
     ],
     excluded_baggage: [
       "broad runtime promotion claims",
-      "Mission Control-specific host assumptions",
+      "legacy host-specific assumptions",
     ],
     promotion_contract_path: "shared/contracts/host-integration-boundary.md",
     reentry_preconditions: [
@@ -115,7 +101,7 @@ function createRuntimeFollowUpExample(receivedAt: string): JsonValue {
     ],
     required_proof: [
       "runtime/follow-up and runtime/records artifacts can be written locally",
-      "standalone host can report Runtime overview without Mission Control",
+      "standalone host can report Runtime overview from canonical local artifacts",
     ],
     required_gates: [
       "check:directive-standalone-runtime-host",
@@ -354,7 +340,7 @@ function createRuntimeRegistryExample(receivedAt: string): JsonValue {
     last_validation_date: receivedAt,
     active_risks: [
       "local reference lane only",
-      "not a broad Mission Control replacement",
+      "not a broad multi-host runtime surface",
     ],
     rollback_path:
       "Delete the generated registry entry and revert the local Runtime lifecycle artifacts.",
@@ -552,7 +538,7 @@ export function bootstrapStandaloneHostWorkspace(
         }
       : {}),
   });
-  writeText(
+  writeUtf8(
     readmePath,
     renderBootstrapReadme({
       hostName,

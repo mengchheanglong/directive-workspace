@@ -134,7 +134,7 @@ function backfillEntry(
     sourceReference: entry.source_reference,
     decisionState: mapDecisionState(entry),
     routeTarget: entry.routing_target,
-    operatingMode: entry.operating_mode,
+    operatingMode: entry.operating_mode ?? null,
     queueStatus: entry.status,
     createdAt: receivedAt,
     updatedAt: receivedAt,
@@ -160,7 +160,7 @@ function backfillEntry(
       occurredAt: receivedAt,
       queueStatus: "pending",
       routeTarget: entry.routing_target,
-      operatingMode: entry.operating_mode,
+      operatingMode: entry.operating_mode ?? null,
       linkedArtifactPath: linkedArtifacts.intakeRecordPath,
     },
   ];
@@ -177,7 +177,7 @@ function backfillEntry(
       occurredAt: `${entry.routed_at}T00:00:00.000Z`,
       queueStatus: entry.status,
       routeTarget: entry.routing_target,
-      operatingMode: entry.operating_mode,
+      operatingMode: entry.operating_mode ?? null,
       linkedArtifactPath: linkedArtifacts.routingRecordPath,
     });
   }
@@ -239,7 +239,7 @@ function ensureStateMaterializedEvent(
     occurredAt: new Date().toISOString(),
     queueStatus: entry.status,
     routeTarget: canonical.routeTarget ?? entry.routing_target,
-    operatingMode: entry.operating_mode,
+    operatingMode: entry.operating_mode ?? null,
     linkedArtifactPath: canonical.currentHeadPath,
     currentHeadPath: canonical.currentHeadPath,
     currentStage: canonical.currentStage,

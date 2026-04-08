@@ -1,10 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
-import {
-  readJson,
-  requiredString,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson } from "../../shared/lib/file-io.ts";
+import { requiredString } from "../../shared/lib/validation.ts";
 import type {
   DiscoveryIntakeQueueDocument,
   DiscoverySourceType,
@@ -233,10 +232,6 @@ function optionalIntegerRecord(
     }
   }
   return value;
-}
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
 }
 
 function resolveBundleManifestPath(bundlePath: string) {

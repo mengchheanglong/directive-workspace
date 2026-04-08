@@ -5,6 +5,8 @@ import http, {
 } from "node:http";
 import fs from "node:fs";
 import path from "node:path";
+import { writeJsonAtomic, appendJsonLine } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
 import type { RuntimeFollowUpRecordRequest } from "../../runtime/lib/runtime-follow-up-record-writer.ts";
@@ -99,25 +101,8 @@ function writeJson(
   res.end(`${JSON.stringify(payload, null, 2)}\n`);
 }
 
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
-function ensureParentDirectory(filePath: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-}
 
-function writeJsonAtomic(filePath: string, value: unknown) {
-  ensureParentDirectory(filePath);
-  const tmpPath = `${filePath}.tmp`;
-  fs.writeFileSync(tmpPath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-  fs.renameSync(tmpPath, filePath);
-}
-
-function appendJsonLine(filePath: string, value: unknown) {
-  ensureParentDirectory(filePath);
-  fs.appendFileSync(filePath, `${JSON.stringify(value)}\n`, "utf8");
-}
 
 function resolveStandaloneHostAuth(
   auth: ResolvedStandaloneHostAuth | undefined,

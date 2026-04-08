@@ -2,7 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 import type { DirectiveRuntimeCallableExecutionRecord } from "../../runtime/core/callable-execution.ts";
-import { readJson } from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 export type RuntimeCallableExecutionStatusCount = {
   status: DirectiveRuntimeCallableExecutionRecord["invocation"]["status"];
@@ -72,10 +73,6 @@ type CapabilityAccumulator = {
   tools: Set<string>;
   statuses: Map<DirectiveRuntimeCallableExecutionRecord["invocation"]["status"], number>;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function normalizeRelativeDirectivePath(directiveRoot: string, filePath: string) {
   return path.relative(directiveRoot, filePath).replace(/\\/g, "/");

@@ -2,12 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 
 import type { DiscoveryGapWorklist, DiscoveryGapWorklistItem } from "./discovery-gap-worklist-generator.ts";
-import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-  readJson,
-  resolveDirectiveRelativePath,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson } from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { resolveDirectiveRelativePath } from "../../shared/lib/directive-relative-path.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 
 export const DIRECTIVE_DISCOVERY_GAP_SELECTION_ELIGIBLE_STATUSES = [
   "ready",
@@ -135,7 +133,7 @@ export function readTopEligibleDiscoveryGapFromCanonicalWorklist(input?: {
   directiveRoot?: string;
   worklistPath?: string;
 }): DirectiveDiscoveryGapWorklistSelection {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
   const worklistRelativePath = resolveDirectiveRelativePath(
     directiveRoot,
     input?.worklistPath || DEFAULT_WORKLIST_RELATIVE_PATH,

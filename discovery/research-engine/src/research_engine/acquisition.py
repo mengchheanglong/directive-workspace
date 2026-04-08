@@ -134,6 +134,65 @@ class RequestTelemetry:
     notes: list[str] = field(default_factory=list)
 
 
+class RequestBudgetExhausted(Exception):
+    def __init__(self, provider_key: str, scope: str, used: int, limit: int) -> None:
+        self.provider_key = provider_key
+        self.scope = scope
+        self.used = used
+        self.limit = limit
+        super().__init__(
+            f"Request budget exhausted: {scope} for {provider_key} "
+            f"(used={used}, limit={limit})"
+        )
+
+
+@dataclass(slots=True)
+class RequestBudget:
+    max_requests: int
+    per_provider_max_requests: dict[str, int]
+    aggregate_used: int = 0
+    per_provider_used: dict[str, int] = field(default_factory=dict)
+    exhaustion_events: list[str] = field(default_factory=list)
+
+    def check(self, provider_key: str) -> None:
+        if self.aggregate_used >= self.max_requests:
+            raise RequestBudgetExhausted(
+                provider_key, "aggregate", self.aggregate_used, self.max_requests
+            )
+        provider_limit = self.per_provider_max_requests.get(provider_key)
+        if provider_limit is not None:
+            used = self.per_provider_used.get(provider_key, 0)
+            if used >= provider_limit:
+                raise RequestBudgetExhausted(
+                    provider_key, "per-provider", used, provider_limit
+                )
+
+    def record(self, provider_key: str) -> None:
+        self.aggregate_used += 1
+        self.per_provider_used[provider_key] = (
+            self.per_provider_used.get(provider_key, 0) + 1
+        )
+
+    def has_remaining(self, provider_key: str | None = None) -> bool:
+        if self.aggregate_used >= self.max_requests:
+            return False
+        if provider_key is not None:
+            provider_limit = self.per_provider_max_requests.get(provider_key)
+            if provider_limit is not None:
+                used = self.per_provider_used.get(provider_key, 0)
+                if used >= provider_limit:
+                    return False
+        return True
+
+    def record_exhaustion(self, event: str) -> None:
+        if event not in self.exhaustion_events:
+            self.exhaustion_events.append(event)
+
+    @property
+    def aggregate_remaining(self) -> int:
+        return max(0, self.max_requests - self.aggregate_used)
+
+
 @dataclass(slots=True)
 class LocalCorpusDocument:
     candidate_id: str
@@ -966,6 +1025,7 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         self._aggregate_provider_name = aggregate_provider_name
         self._fallback_to_catalog = fallback_to_catalog
         self._mode_note = mode_note
+        self._request_budget: RequestBudget | None = None
 
     def acquire(
         self,
@@ -976,6 +1036,10 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         del output_dir
         self._reset_request_telemetry()
         self._reset_fetch_backend_counters()
+        self._request_budget = RequestBudget(
+            max_requests=mission.constraints.max_requests,
+            per_provider_max_requests=dict(mission.constraints.per_provider_max_requests),
+        )
         hits: list[DiscoveryHit] = []
         seen_candidates: set[str] = set()
         notes: list[str] = [self._mode_note]
@@ -1004,9 +1068,14 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         for query in plan.queries:
             if len(hits) >= max_candidates:
                 break
+            if not self._request_budget.has_remaining():
+                notes.append("Discovery loop stopped early: aggregate request budget exhausted.")
+                break
             for provider_name in self._provider_sequence_for_track(plan, query.track_id):
                 if len(hits) >= max_candidates:
                     break
+                if not self._request_budget.has_remaining(provider_name):
+                    continue
                 if provider_name == "github":
                     github_query_attempts += 1
                     github_hits = self._github_hits_for_query(
@@ -1301,6 +1370,10 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         web_query_attempts = 0
 
         for track_id, query_text, candidate_id, gap_name in query_specs:
+            budget = self._request_budget
+            if budget is not None and not budget.has_remaining():
+                notes.append("Evidence-gap follow-up stopped early: request budget exhausted.")
+                break
             web_query_attempts += 1
             web_hits = self._web_hits_for_query(
                 query_text,
@@ -1619,6 +1692,18 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
                     reason_codes=aggregate_reason_codes,
                 ),
                 notes=extra_notes,
+                budget_max_requests=(
+                    self._request_budget.max_requests
+                    if self._request_budget is not None else None
+                ),
+                budget_used_requests=(
+                    self._request_budget.aggregate_used
+                    if self._request_budget is not None else None
+                ),
+                budget_exhaustion_events=(
+                    list(self._request_budget.exhaustion_events)
+                    if self._request_budget is not None else []
+                ),
             ),
             self._provider_health_entry(
                 provider_key="github-discovery",
@@ -1847,10 +1932,22 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         operation: str,
         request_fn,
     ) -> dict | str:
+        budget = self._request_budget
+        if budget is not None:
+            try:
+                budget.check(provider_key)
+            except RequestBudgetExhausted as exc:
+                budget.record_exhaustion(
+                    f"{operation}: budget exhausted ({exc.scope}, "
+                    f"used={exc.used}, limit={exc.limit})"
+                )
+                raise
         telemetry = self._telemetry_bucket(provider_key)
         max_attempts = len(LIVE_RETRY_DELAYS_SECONDS) + 1
         for attempt in range(1, max_attempts + 1):
             telemetry.request_attempts += 1
+            if budget is not None:
+                budget.record(provider_key)
             try:
                 response = request_fn()
                 telemetry.request_successes += 1
@@ -2492,20 +2589,30 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
 
     def _documents_from_hits(self, hits: list[DiscoveryHit], max_fetches: int) -> list[SourceDocument]:
         documents: list[SourceDocument] = []
+        budget = self._request_budget
         for hit in hits[:max_fetches]:
-            if hit.provider.startswith("github"):
-                document = self._build_github_document(hit)
-            elif hit.provider.startswith("gitlab"):
-                document = self._build_gitlab_document(hit)
-            else:
-                parsed = urlparse(hit.url)
-                host = parsed.netloc.lower()
-                if hit.hit_type == "repo" and "github.com" in host:
+            if budget is not None and not budget.has_remaining():
+                budget.record_exhaustion(
+                    f"Fetch loop stopped after {len(documents)} document(s): "
+                    f"aggregate budget exhausted ({budget.aggregate_used}/{budget.max_requests})."
+                )
+                break
+            try:
+                if hit.provider.startswith("github"):
                     document = self._build_github_document(hit)
-                elif hit.hit_type == "repo" and "gitlab.com" in host:
+                elif hit.provider.startswith("gitlab"):
                     document = self._build_gitlab_document(hit)
                 else:
-                    document = self._build_web_document(hit)
+                    parsed = urlparse(hit.url)
+                    host = parsed.netloc.lower()
+                    if hit.hit_type == "repo" and "github.com" in host:
+                        document = self._build_github_document(hit)
+                    elif hit.hit_type == "repo" and "gitlab.com" in host:
+                        document = self._build_gitlab_document(hit)
+                    else:
+                        document = self._build_web_document(hit)
+            except RequestBudgetExhausted:
+                break
             if document is None:
                 continue
             documents.append(document)
@@ -2530,14 +2637,25 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         updated_at = repo_data.get("pushed_at") or "unknown"
         topics = ", ".join(repo_data.get("topics", [])[:6]) if isinstance(repo_data.get("topics"), list) else ""
         homepage = repo_data.get("homepage") or ""
-        latest_release_published_at = self._fetch_github_latest_release_published_at(owner, repo)
-        homepage_last_updated = self._fetch_homepage_last_updated(homepage)
-        docs_pages = self._official_docs_followthrough(
-            repo_url=hit.url,
-            homepage=homepage,
-            readme_text=readme_text,
-            seed_urls=[],
-            max_pages=3,
+        budget = self._request_budget
+        enrich = budget is None or budget.aggregate_remaining > 6
+        latest_release_published_at = (
+            self._fetch_github_latest_release_published_at(owner, repo)
+            if enrich else ""
+        )
+        homepage_last_updated = (
+            self._fetch_homepage_last_updated(homepage)
+            if enrich else ""
+        )
+        docs_pages: list[tuple[str, str]] = (
+            self._official_docs_followthrough(
+                repo_url=hit.url,
+                homepage=homepage,
+                readme_text=readme_text,
+                seed_urls=[],
+                max_pages=3,
+            )
+            if enrich else []
         )
         docs_text = "\n".join(page_text for _, page_text in docs_pages)
         repo_signal_text = docs_text or readme_text
@@ -2664,16 +2782,24 @@ class LiveHybridAcquisitionProvider(AcquisitionProvider):
         language = project_data.get("language") or "unknown"
         topics = project_data.get("topics") if isinstance(project_data.get("topics"), list) else []
         topics_text = ", ".join(topics[:6]) if topics else "none listed"
-        latest_release_published_at = self._fetch_gitlab_latest_release_published_at(project_key)
+        budget = self._request_budget
+        enrich = budget is None or budget.aggregate_remaining > 6
+        latest_release_published_at = (
+            self._fetch_gitlab_latest_release_published_at(project_key)
+            if enrich else ""
+        )
         homepage = project_data.get("homepage") or ""
         repository_surface = project_data.get("web_url") or hit.url
         readme_url = project_data.get("readme_url") if isinstance(project_data.get("readme_url"), str) else ""
-        docs_pages = self._official_docs_followthrough(
-            repo_url=hit.url,
-            homepage=homepage or repository_surface,
-            readme_text=description,
-            seed_urls=[homepage, repository_surface, readme_url],
-            max_pages=3,
+        docs_pages: list[tuple[str, str]] = (
+            self._official_docs_followthrough(
+                repo_url=hit.url,
+                homepage=homepage or repository_surface,
+                readme_text=description,
+                seed_urls=[homepage, repository_surface, readme_url],
+                max_pages=3,
+            )
+            if enrich else []
         )
         docs_text = "\n".join(page_text for _, page_text in docs_pages)
         repo_signal_text = docs_text or description

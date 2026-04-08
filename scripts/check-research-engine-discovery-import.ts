@@ -17,7 +17,7 @@ import {
   importResearchEngineDiscoveryBundle,
   loadResearchEngineDiscoveryBundle,
   selectResearchEngineCandidatesForImport,
-} from "../hosts/adapters/research-engine-discovery-import.ts";
+} from "../discovery/importers/research-engine-discovery-import.ts";
 import { readJson, writeJson } from "./checker-test-helpers.ts";
 
 const DIRECTIVE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");

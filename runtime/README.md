@@ -25,7 +25,7 @@ It does not own:
 1. Receive a Runtime candidate through Discovery routing or Architecture handoff.
 2. Create one follow-up record in `00-follow-up/`.
 3. If the case is exploratory or lacks delivery pressure, park it there.
-4. Open `01-callable-integrations/` only when the case is becoming a real callable Runtime surface.
+4. Open `01-callable-integrations/` only when the case is becoming a real callable capability surface.
 5. Continue deeper only when real delivery work starts:
    - `02-records/` for execution records
    - `03-proof/` for proof artifacts
@@ -33,7 +33,7 @@ It does not own:
    - `05-promotion-readiness/` for promotion readiness
    - `06-promotion-specifications/` for generated promotion specs
    - `07-promotion-records/` for explicit manual promotion records
-6. Record accepted runtime state in `08-registry/` only after host acceptance.
+6. Record accepted capability state in `08-registry/` only after host acceptance.
 
 Use the smallest artifact set that preserves proof and rollback clarity.
 There is no separate Runtime `implementation-slices/` stage; implementation-specific work either stays inside the active bounded chain or remains host-local.
@@ -71,12 +71,12 @@ The unnumbered folders are side surfaces:
 - `capabilities/` - Directive-owned callable capability implementations
 - `meta/` - Runtime-owned inventories, accounting, and policy catalogs
 - `00-follow-up/` - post-routing follow-up records (park here by default)
-- `01-callable-integrations/` - callable-integration artifacts when a case becomes a real callable Runtime surface
+- `01-callable-integrations/` - callable-integration artifacts when a case becomes a real callable capability surface
 - `callable-executions/` - execution records and evidence from callable runs
 - `02-records/` through `08-registry/` - bounded Runtime chain stages after the opener surfaces
 - `standalone-host/` - standalone reference host support
 - `legacy-handoff/` - old Runtime handoff compatibility surface, not the active default path
-- `legacy-records/` - old Runtime record compatibility corpus, not the active default path
+- `legacy-records/` - old capability-record compatibility corpus, not the active default path
 
 ## Current head resolution
 

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "updatedAt": "2026-04-02",
-  "anchorPath": "road-to-completion.md",
+  "anchorPath": "control/state/completion-status.json",
   "currentTargetId": "phase_complete",
   "currentTargetDescription": "All completion slices have been completed. The roadmap phases 0-9 are done.",
   "selectionRule": "Select the lowest-priority-rank pending slice whose dependencies are completed and whose blockedByClosedSeam set does not intersect the currently closed seams. If multiple eligible slices share the same best priority rank, stop for decision instead of picking arbitrarily.",

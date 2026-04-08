@@ -4,7 +4,7 @@
   "follow_up_date": "2026-03-23",
   "current_decision_state": "accepted_for_bounded_local_follow_up",
   "origin_track": "architecture",
-  "runtime_value_to_operationalize": "Write and review a bounded Runtime follow-up through the standalone host without Mission Control.",
+  "runtime_value_to_operationalize": "Write and review a bounded Runtime follow-up through the standalone host without another host layer.",
   "proposed_host": "directive-workspace-standalone-host",
   "proposed_integration_mode": "local_shareable_workflow",
   "source_pack_allowlist_profile": "n/a",
@@ -14,7 +14,7 @@
   ],
   "excluded_baggage": [
     "broad runtime parity claims",
-    "Mission Control-only assumptions"
+    "legacy host-specific assumptions"
   ],
   "promotion_contract_path": "shared/contracts/host-integration-boundary.md",
   "reentry_preconditions": [

@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { readUtf8 } from "../../shared/lib/file-io.ts";
 import { isDirectiveWorkspaceArtifactReference } from "../../engine/artifact-link-validation.ts";
-import { optionalString } from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { optionalString } from "../../shared/lib/validation.ts";
 import {
   type DiscoveryIntakeQueueDocument,
   type DiscoveryIntakeQueueEntry,
@@ -9,6 +10,8 @@ import {
 } from "./discovery-intake-queue-writer.ts";
 import { transitionDiscoveryIntakeQueueEntry } from "./discovery-intake-queue-transition.ts";
 import { extractRuntimeOpenerRequiredBulletValue as extractBulletValue } from "../../runtime/lib/runtime-opener-shared.ts";
+import { readDiscoveryRoutingReviewResolution } from "./discovery-routing-review-resolution.ts";
+import { deriveEffectiveDiscoveryRouteBoundary } from "./discovery-routing-effective-boundary.ts";
 
 export type DiscoveryLifecycleSyncTarget = "routed" | "completed";
 
@@ -42,9 +45,7 @@ function mergeNotes(existing: string | null, appended: string | null) {
   return `${existing} | ${appended}`;
 }
 
-function readUtf8(filePath: string) {
-  return fs.readFileSync(filePath, "utf8");
-}
+
 
 function resolveArtifactPath(input: {
   directiveRoot: string;
@@ -100,25 +101,49 @@ function validateRoutedLifecycleSyncAgainstRoutingRecord(input: {
     "Route destination",
     'routing_record_path is missing "Route destination"',
   );
-  if (routeDestination !== input.routingTarget) {
+  const candidateId = extractBulletValue(
+    markdown,
+    "Candidate id",
+    'routing_record_path is missing "Candidate id"',
+  );
+  const routingDate = extractBulletValue(
+    markdown,
+    "Routing date",
+    'routing_record_path is missing "Routing date"',
+  );
+  const decisionState = extractBulletValue(
+    markdown,
+    "Decision state",
+    'routing_record_path is missing "Decision state"',
+  );
+  const reviewResolution = readDiscoveryRoutingReviewResolution({
+    directiveRoot: input.directiveRoot,
+    routingRecordPath: input.routingRecordPath,
+  });
+  const effectiveBoundary = deriveEffectiveDiscoveryRouteBoundary({
+    candidateId,
+    routingDate,
+    routeDestination: routeDestination as Parameters<typeof deriveEffectiveDiscoveryRouteBoundary>[0]["routeDestination"],
+    decisionState,
+    requiredNextArtifact: extractBulletValue(
+      markdown,
+      "Required next artifact",
+      'routing_record_path is missing "Required next artifact"',
+    ).replace(/\\/g, "/"),
+    reviewResolution,
+  });
+  if (effectiveBoundary.effectiveRouteDestination !== input.routingTarget) {
     throw new Error(
-      `routing_target does not match routing_record_path route destination: ${routeDestination}`,
+      `routing_target does not match routing_record_path effective route destination: ${effectiveBoundary.effectiveRouteDestination}`,
     );
   }
-
-  const requiredNextArtifact = extractBulletValue(
-    markdown,
-    "Required next artifact",
-    'routing_record_path is missing "Required next artifact"',
-  )
-    .replace(/\\/g, "/");
   if (
     input.resultRecordPath
-    && isDirectiveWorkspaceArtifactReference(requiredNextArtifact)
-    && requiredNextArtifact !== input.resultRecordPath
+    && isDirectiveWorkspaceArtifactReference(effectiveBoundary.effectiveRequiredNextArtifact)
+    && effectiveBoundary.effectiveRequiredNextArtifact !== input.resultRecordPath
   ) {
     throw new Error(
-      `result_record_path must match the routing record's required next artifact: ${requiredNextArtifact}`,
+      `result_record_path must match the routing record's effective required next artifact: ${effectiveBoundary.effectiveRequiredNextArtifact}`,
     );
   }
 }

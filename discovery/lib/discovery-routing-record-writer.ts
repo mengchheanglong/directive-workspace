@@ -6,7 +6,7 @@ import {
 import {
   optionalString,
   requiredString,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+} from "../../shared/lib/validation.ts";
 
 export type DiscoveryRoutingDecisionState =
   | "adopt"

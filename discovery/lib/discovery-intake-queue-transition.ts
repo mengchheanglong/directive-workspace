@@ -1,4 +1,4 @@
-import { optionalString } from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { optionalString } from "../../shared/lib/validation.ts";
 
 import {
   type DiscoveryIntakeQueueDocument,

@@ -1,7 +1,7 @@
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+  normalizeAbsolutePath,
+} from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 import {
   selectNextDirectiveCompletionSlice,
   type DirectiveCompletionSliceSelection,
@@ -157,7 +157,9 @@ export function buildDirectiveRuntimeLoopControlReport(input?: {
   directiveRoot?: string;
   snapshotAt?: string;
 }): DirectiveRuntimeLoopControlReport {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(
+    input?.directiveRoot || getDefaultDirectiveWorkspaceRoot(),
+  );
   const snapshotAt = input?.snapshotAt ?? new Date().toISOString();
 
   const completionSelection = selectNextDirectiveCompletionSlice({

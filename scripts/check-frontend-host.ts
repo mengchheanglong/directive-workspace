@@ -585,17 +585,22 @@ function assertCurrentArchitectureHandoffWarningsStayClean() {
     "Current repo-generated Architecture handoff stubs should parse cleanly without frontend handoff warnings.",
   );
 
-  const guardedPaths = [
-    "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-opening-legality-hardening-2026-03-28-engine-handoff.md",
-    "architecture/01-experiments/2026-03-28-dw-pressure-engine-stale-current-head-architecture-closure-legality-hardening-2026-03-28-engine-handoff.md",
-  ];
+  const currentArchitectureHandoffs = snapshot.handoffStubs.filter((entry) =>
+    entry.kind === "architecture_handoff" && entry.status === "pending_review"
+  );
+  assert.ok(
+    currentArchitectureHandoffs.length > 0,
+    "Expected at least one current Architecture handoff stub to appear in the frontend snapshot.",
+  );
 
-  for (const relativePath of guardedPaths) {
-    const stub = snapshot.handoffStubs.find((entry) => entry.relativePath === relativePath);
-    assert.ok(stub, `Expected the current Architecture handoff stub to appear in the frontend snapshot: ${relativePath}`);
-    assert.equal(stub?.kind, "architecture_handoff");
-    assert.equal(stub?.status, "pending_review");
-    assert.equal(stub?.warning, null);
+  for (const stub of currentArchitectureHandoffs) {
+    assert.equal(stub.kind, "architecture_handoff");
+    assert.equal(stub.status, "pending_review");
+    assert.equal(
+      stub.warning,
+      null,
+      `Expected current Architecture handoff stub to be warning-free in the frontend snapshot: ${stub.relativePath}`,
+    );
   }
 }
 
@@ -1163,22 +1168,22 @@ async function main() {
       { waitUntil: "networkidle0", timeout: 30000 },
     );
     await waitForBodyText(page, "Runtime follow-up stub");
-    await waitForBodyText(page, "Approve Runtime record");
-    await clickShadowButtonByText(page, "Approve Runtime record");
+    await waitForBodyText(page, "Approve capability record");
+    await clickShadowButtonByText(page, "Approve capability record");
     await waitForPathname(page, "/runtime-records/view");
-    await waitForBodyText(page, "Runtime v0 record");
-    await waitForBodyText(page, "Approve Runtime proof artifact");
+    await waitForBodyText(page, "Legacy capability record");
+    await waitForBodyText(page, "Approve capability proof artifact");
     assert.equal(
       fs.existsSync(path.join(directiveRoot, runtimeRecordRelativePath)),
       true,
     );
-    await clickShadowButtonByText(page, "Approve Runtime proof artifact");
+    await clickShadowButtonByText(page, "Approve capability proof artifact");
     await page.waitForFunction(
       () => window.location.pathname === "/runtime-proofs/view",
       { timeout: 30000 },
     );
-    await waitForBodyText(page, "Runtime proof artifact");
-    await waitForBodyText(page, "Runtime V0 Proof Artifact: Sample Runtime candidate (2026-03-24)");
+    await waitForBodyText(page, "capability proof artifact");
+    await waitForBodyText(page, "Legacy Runtime Proof Artifact: Sample Runtime candidate (2026-03-24)");
     await waitForBodyText(page, "Approve runtime capability boundary");
     assert.equal(
       fs.existsSync(path.join(directiveRoot, runtimeProofRelativePath)),
@@ -1190,7 +1195,7 @@ async function main() {
       { timeout: 30000 },
     );
     await waitForBodyText(page, "Runtime runtime capability boundary");
-    await waitForBodyText(page, "Runtime V0 Runtime Capability Boundary: Sample Runtime candidate (2026-03-24)");
+    await waitForBodyText(page, "Legacy Runtime Runtime Capability Boundary: Sample Runtime candidate (2026-03-24)");
     await waitForBodyText(page, "Approve promotion-readiness artifact");
     assert.equal(
       fs.existsSync(path.join(directiveRoot, runtimeCapabilityBoundaryRelativePath)),
@@ -1379,4 +1384,5 @@ async function main() {
 }
 
 void main();
+
 

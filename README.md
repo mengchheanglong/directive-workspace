@@ -17,7 +17,7 @@ Directive Workspace doctrine is governed first by:
 - [knowledge/README.md](./knowledge/README.md)
 
 The files under `knowledge/` are supporting reference and historical context, not peer authority with `CLAUDE.md`.
-If adjacent OpenClaw workspace doctrine helpers are used during incubation, treat them as external environment aids rather than as ownership of the Directive Workspace product root.
+If adjacent workspace doctrine helpers are used during incubation, treat them as external environment aids rather than as ownership of the Directive Workspace product root.
 If a local Directive Workspace document drifts from the governing sources above, the governing sources win and the local document should be corrected.
 
 ## Engine Model
@@ -55,8 +55,7 @@ Architecture is the lane closest to the current mission because the current miss
 
 - Directive Workspace is the **product**. It owns doctrine, contracts, decision model, Engine structure, and shared operating assets.
 - Directive Workspace is also a **standalone product**. It is designed to be integrated into different hosts, not reduced to one host's local feature set.
-- Mission Control is a **host**. It hosts broad runtime behavior but does not define Directive Workspace.
-- OpenClaw is the **orchestration layer**. Persistent, looping, memory-backed coordination.
+- External runtimes, dashboards, and orchestrators are **hosts or connected layers**. They may expose or consume Directive Workspace, but they do not define it.
 
 Canonical host/product boundary:
 - [host-integration-boundary.md](./shared/contracts/host-integration-boundary.md)
@@ -91,7 +90,6 @@ Stable root export lanes:
 - `@directive-workspace/product/runtime`
 - `@directive-workspace/product/engine/state`
 - `@directive-workspace/product/runtime/core/runtime-core-contract`
-- `@directive-workspace/product/runtime/core/v0` (legacy compatibility alias)
 
 Initial Engine surface:
 
@@ -118,7 +116,7 @@ The important boundary now is:
 
 - `engine/` = stable kernel plus cross-lane state/truth
 - `discovery/`, `runtime/`, `architecture/` = lane-owned operating code under `lib/` plus records, proofs, and adopted assets
-- `hosts/` = adapters and reference hosts that consume the Engine and lane surfaces
+- `hosts/` = reference hosts that consume the Engine and lane surfaces
 
 Hosts should keep the Engine API stable and consume the canonical lane surfaces, not rebuild the kernel or recreate lane lifecycle behavior host-locally.
 
@@ -150,13 +148,13 @@ Directive Workspace also includes a standalone filesystem reference host at:
 
 - [hosts/standalone-host/README.md](./hosts/standalone-host/README.md)
 
-That reference host exposes a bounded HTTP API, config-driven boot, runtime status/access logging, optional SQLite persistence, optional bearer auth, a Discovery front door that can persist full Engine run records and materialize Discovery intake/triage/routing outputs from the active mission and capability-gap corpus, and a bounded local Runtime workflow. This is a shareable local host surface for GitHub/package usage. It is not yet the broader host/runtime replacement for Mission Control.
+That reference host exposes a bounded HTTP API, config-driven boot, runtime status/access logging, optional SQLite persistence, optional bearer auth, a Discovery front door that can persist full Engine run records and materialize Discovery intake/triage/routing outputs from the active mission and capability-gap corpus, and a bounded local Runtime capability workflow. This is a shareable local host surface for GitHub/package usage. It is not yet a broad multi-host capability surface.
 
 Directive Workspace also ships a minimal product-owned standalone frontend at:
 
 `hosts/web-host/`
 
-This standalone frontend is a direct product surface over the same Engine-native artifacts. The canonical frontend app lives in `frontend/` (Vite + Lit), and `hosts/web-host/` is the thin product-owned API/static host that serves it. It keeps Discovery as the front door, materializes inspectable Discovery intake/triage/routing artifacts from one real source submission, shows persisted Engine runs and queue state, derives the current live case artifact from the canonical resolver instead of treating the first downstream stub as the practical pointer, keeps downstream Architecture or Runtime advancement explicit through approval boundaries instead of automatic progression, exposes the Runtime follow-up review/open boundary, the Runtime record proof-open boundary, the Runtime proof runtime-capability-boundary-open boundary, and the runtime-capability-boundary promotion-readiness-open boundary as bounded Runtime steps, reads the operator decision inbox dynamically from `GET /api/operator-decision-inbox` for Discovery routing review, Architecture materialization due items, and Runtime host/registry decisions, and includes a compact `/workflow-map` page over live snapshot + inbox data instead of static phase text.
+This standalone frontend is a direct product surface over the same Engine-native artifacts. The canonical frontend app lives in `frontend/` (Vite + Lit), and `hosts/web-host/` is the thin product-owned API/static host that serves it. It keeps Discovery as the front door, materializes inspectable Discovery intake/triage/routing artifacts from one real source submission, shows persisted Engine runs and queue state, derives the current live case artifact from the canonical resolver instead of treating the first downstream stub as the practical pointer, keeps downstream Architecture or Runtime advancement explicit through approval boundaries instead of automatic progression, exposes the Runtime follow-up review/open boundary, the capability-record proof-open boundary, the capability-proof capability-boundary-open boundary, and the capability-boundary promotion-readiness-open boundary as bounded Runtime steps, reads the operator decision inbox dynamically from `GET /api/operator-decision-inbox` for Discovery routing review, Architecture materialization due items, and Runtime host/registry decisions, and includes a compact `/workflow-map` page over live snapshot + inbox data instead of static phase text.
 For Architecture bounded starts, the same frontend now surfaces derived closeout assistance from the bounded-start artifact plus linked Engine-run truth so the operator can review mission fit, extracted value, stage-preservation expectations, and suggested closeout summary language without losing explicit closeout control.
 
 ## Validation
@@ -258,8 +256,7 @@ npm run import:research-engine-discovery-bundle -- --bundle ../research-engine/a
 - `knowledge/` - supporting reference material, mission framing, and historical planning context
 - `control/` - active run-control surfaces, policies, logs, and machine-readable control state
 - `state/` - case/event persistence
-- `hosts/` - host adapters, reference hosts, and integration state
-- `scratch/` - local non-authoritative scratch only
+- `hosts/` - reference hosts and integration-kit state
 
 ## Code vs Artifact Surfaces
 
@@ -275,7 +272,6 @@ This means lane operating work now lands primarily in each lane's own `lib/` fol
 
 ## Start Here
 
-- [operator-start.md](./operator-start.md)
 - [engine-direction.md](./knowledge/engine-direction.md)
 - [CLAUDE.md](./CLAUDE.md)
 - [current-priority.md](./control/runbook/current-priority.md)

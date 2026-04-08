@@ -39,7 +39,7 @@ Today it can:
 ## What "Expand Beyond Discovery" Means
 
 This does not mean cloud deployment work.
-It means broadening the standalone host so outside users can use more of Directive Workspace without depending on Mission Control.
+It means broadening the standalone host so outside users can use more of Directive Workspace without depending on a separate broad host shell.
 
 The next kinds of value to add are:
 - Runtime-side local workflow support
@@ -56,7 +56,7 @@ The next preferred direction is:
 Reason:
 - Discovery-only standalone usage is structurally correct but still shallow
 - Runtime is the next product lane that turns the standalone host from intake-only into useful runtime/workflow usage
-- Runtime-side local workflow support improves standalone usefulness without requiring Mission Control parity
+- Runtime-side local workflow support improves standalone usefulness without requiring broad host parity
 
 ## First Practical Slice
 
@@ -64,7 +64,7 @@ The first completed step toward outside-user standalone adoption is:
 - standalone bootstrap/init support so users can scaffold a usable local Directive root, config, and starter Discovery submission in one step
 
 The next implementation target after bootstrap was:
-- one bounded Runtime-side local workflow path that can run through the standalone host without Mission Control
+- one bounded Runtime-side local workflow path that can run through the standalone host without another host layer
 
 That target is now completed in bounded form:
 - standalone host CLI commands for Runtime follow-up, record, proof, transformation proof, transformation record, promotion, and registry writes plus Runtime overview
@@ -76,5 +76,5 @@ The next likely useful standalone-host work after this is:
 
 ## Non-goal
 
-This direction is not about claiming Mission Control replacement or broad host parity.
+This direction is not about claiming broad host replacement or broad host parity.
 It is about making Directive Workspace more usable as a standalone local/shareable product without confusing that with completion of the core engine.

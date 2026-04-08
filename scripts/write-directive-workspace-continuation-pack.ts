@@ -117,7 +117,7 @@ Current canonical examples:
 - Discovery -> Architecture route: \`${CANONICAL_EXAMPLES.discoveryArchitectureRoute}\`
 - Discovery -> Runtime route: \`${CANONICAL_EXAMPLES.discoveryRuntimeRoute}\`
 - Architecture keep/reopen truth: \`${CANONICAL_EXAMPLES.architectureKeepEvaluation}\`
-- Runtime v0 proof truth: \`${CANONICAL_EXAMPLES.runtimeProof}\`
+- Legacy Runtime proof truth: \`${CANONICAL_EXAMPLES.runtimeProof}\`
 - Runtime runtime capability boundary truth: \`${CANONICAL_EXAMPLES.runtimeRuntimeCapabilityBoundary}\`
 `;
 }
@@ -280,4 +280,5 @@ function main() {
 }
 
 main();
+
 

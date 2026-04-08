@@ -3,20 +3,14 @@
 Last updated: 2026-03-20
 
 Source extraction:
-- `C:\Users\User\.openclaw\workspace\agent-lab\orchestration\contracts\external-tool-run.contract.schema.json`
-- `C:\Users\User\.openclaw\workspace\agent-lab\orchestration\README.md`
-
-Current active bridge counterpart:
-- `C:\Users\User\.openclaw\contracts\external-tool-run.contract.schema.json`
-- `C:\Users\User\.openclaw\scripts\invoke-external-tool.ps1`
-- `C:\Users\User\.openclaw\scripts\external-tools\`
+- retained as a generic Runtime boundary from earlier external-run experiments
+- external host runner paths are no longer canonical Directive Workspace product paths
 
 Purpose:
 - define the minimum contract shape when Directive Runtime uses an external execution surface
-- preserve the useful boundary from historical `agent-lab` extraction without keeping `agent-lab` as runtime truth
+- preserve the useful boundary from historical external-run extraction without keeping any prior host runner as runtime truth
 
-This contract is a Runtime-side boundary, not a requirement that Runtime execute through `agent-lab`.
-The active OpenClaw bridge now uses root-owned adapters plus current Runtime source packs or Mission Control runtime dependencies where appropriate.
+This contract is a Runtime-side boundary, not a requirement that Runtime execute through any specific host or runner.
 
 ## Required Fields
 
@@ -95,7 +89,7 @@ What is retained:
 - raw artifact on disk / summarized host writeback split
 
 What is not retained by default:
-- `agent-lab` folder structure
+- historical host folder structures
 - direct PowerShell runner dependency
 - vendored orchestration dependencies
 - OpenViking-specific local stack management as a default Runtime runtime requirement

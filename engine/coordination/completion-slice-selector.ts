@@ -1,10 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-  resolveDirectiveRelativePath,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+
+import { readJson } from "../../shared/lib/file-io.ts";
+import { resolveDirectiveRelativePath } from "../../shared/lib/directive-relative-path.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 
 export const DIRECTIVE_COMPLETION_SLICE_KINDS = [
   "decision",
@@ -216,27 +216,22 @@ function assertCompletionSliceShape(
   assertStringArray(record.rollbackSurface, `items[${index}].rollbackSurface`);
 }
 
-function readJsonFile<T>(absolutePath: string): T {
-  if (!fs.existsSync(absolutePath)) {
-    throw new Error(`invalid_input: file not found: ${absolutePath}`);
-  }
-  return JSON.parse(fs.readFileSync(absolutePath, "utf8")) as T;
-}
+
 
 function readCompletionControlSurface(input: {
   directiveRoot: string;
   statusRelativePath: string;
   slicesRelativePath: string;
 }) {
-  const statusAbsolutePath = normalizePath(
+  const statusAbsolutePath = normalizeAbsolutePath(
     path.join(input.directiveRoot, input.statusRelativePath),
   );
-  const slicesAbsolutePath = normalizePath(
+  const slicesAbsolutePath = normalizeAbsolutePath(
     path.join(input.directiveRoot, input.slicesRelativePath),
   );
 
-  const status = readJsonFile<DirectiveCompletionStatus>(statusAbsolutePath);
-  const registry = readJsonFile<DirectiveCompletionSliceRegistry>(slicesAbsolutePath);
+  const status = readJson<DirectiveCompletionStatus>(statusAbsolutePath);
+  const registry = readJson<DirectiveCompletionSliceRegistry>(slicesAbsolutePath);
 
   assertCompletionStatusShape(status);
   const registryRecord = asObject(registry);
@@ -298,7 +293,9 @@ export function selectNextDirectiveCompletionSlice(input?: {
   statusPath?: string;
   slicesPath?: string;
 }): DirectiveCompletionSliceSelection {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(
+    input?.directiveRoot || getDefaultDirectiveWorkspaceRoot(),
+  );
   const statusRelativePath = resolveDirectiveRelativePath(
     directiveRoot,
     input?.statusPath || DEFAULT_STATUS_RELATIVE_PATH,

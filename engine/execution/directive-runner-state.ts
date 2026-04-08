@@ -3,8 +3,11 @@ import path from "node:path";
 
 import {
   readJson,
-  writeJsonPretty,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+  writeJson as writeJsonPretty,
+  readJsonLines,
+  appendJsonLine,
+} from "../../shared/lib/file-io.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 export type DirectiveRunnerActionKind =
   | "runtime_follow_up_open"
@@ -151,10 +154,6 @@ export type DirectiveRuntimeTwoStepSequenceEvent = {
   message: string;
 };
 
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
 function sanitizeId(value: string) {
   return String(value)
     .trim()
@@ -163,26 +162,6 @@ function sanitizeId(value: string) {
     .slice(0, 160);
 }
 
-function ensureParentDir(filePath: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-}
-
-function readJsonLines<T>(filePath: string) {
-  if (!fs.existsSync(filePath)) {
-    return [] as T[];
-  }
-
-  return fs.readFileSync(filePath, "utf8")
-    .split(/\r?\n/u)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
-    .map((line) => JSON.parse(line) as T);
-}
-
-function appendJsonLine(filePath: string, value: unknown) {
-  ensureParentDir(filePath);
-  fs.appendFileSync(filePath, `${JSON.stringify(value)}\n`, "utf8");
-}
 
 export function resolveDirectiveRunnerRecordPath(input: {
   directiveRoot: string;

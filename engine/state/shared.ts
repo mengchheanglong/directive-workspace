@@ -1,6 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  normalizeAbsolutePath,
+} from "../../shared/lib/path-normalization.ts";
+import {
+  normalizeDirectiveRelativePath as normalizeRelativePath,
+  resolveDirectiveRelativePath,
+} from "../../shared/lib/directive-relative-path.ts";
 
 import type {
   DirectiveWorkspaceArtifactKind,
@@ -74,13 +81,9 @@ type GenericDiscoveryMonitorArtifact = {
 
 type GenericRuntimePromotionReadinessArtifact = GenericRuntimePromotionReadinessArtifactBase;
 
-export function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
+export { normalizeAbsolutePath as normalizePath };
 
-export function normalizeRelativePath(filePath: string) {
-  return filePath.replace(/\\/g, "/");
-}
+export { normalizeRelativePath };
 
 export function getDefaultDirectiveWorkspaceRoot() {
   return normalizePath(fileURLToPath(new URL("../../shared", import.meta.url)));
@@ -112,20 +115,7 @@ export function stripInlineBackticks(value: string | null | undefined) {
   return typeof value === "string" ? value.replace(/`/g, "").trim() : null;
 }
 
-export function resolveDirectiveRelativePath(directiveRoot: string, inputPath: string, fieldName: string) {
-  const normalizedInput = requiredString(inputPath, fieldName).replace(/\\/g, "/");
-  const root = path.resolve(directiveRoot);
-  const absolutePath = path.isAbsolute(normalizedInput)
-    ? path.resolve(normalizedInput)
-    : path.resolve(root, normalizedInput);
-  const normalizedRootPrefix = `${root}${path.sep}`;
-
-  if (absolutePath !== root && !absolutePath.startsWith(normalizedRootPrefix)) {
-    throw new Error(`invalid_input: ${fieldName} must stay within directive-workspace`);
-  }
-
-  return path.relative(root, absolutePath).replace(/\\/g, "/");
-}
+export { resolveDirectiveRelativePath };
 
 export function readUtf8(filePath: string) {
   return fs.readFileSync(filePath, "utf8");
@@ -142,9 +132,12 @@ export function extractTitle(markdown: string) {
 
 export function deriveRuntimeCandidateNameFromTitle(title: string) {
   return title
-    .replace(/^Runtime V0 Record:\s*/u, "")
-    .replace(/^Runtime V0 Proof Artifact:\s*/u, "")
-    .replace(/^Runtime V0 Runtime Capability Boundary:\s*/u, "")
+    .replace(/^Legacy Runtime Record:\s*/u, "")
+    .replace(/^Runtime v0 Record:\s*/u, "")
+    .replace(/^Legacy Runtime Proof Artifact:\s*/u, "")
+    .replace(/^Runtime v0 Proof Artifact:\s*/u, "")
+    .replace(/^Legacy Runtime Runtime Capability Boundary:\s*/u, "")
+    .replace(/^Runtime v0 Runtime Capability Boundary:\s*/u, "")
     .replace(/\s+\(\d{4}-\d{2}-\d{2}\)\s*$/u, "")
     .trim();
 }
@@ -1146,8 +1139,9 @@ function readGenericRuntimeProofArtifact(input: {
       candidateName,
       runtimeProofRelativePath,
       linkedRuntimeRecordPath: requiredString(
-        extractBulletValue(content, "Runtime v0 record path"),
-        "runtime v0 record path",
+        extractBulletValue(content, "Legacy Runtime record path")
+          || extractBulletValue(content, "Runtime v0 record path"),
+        "Legacy Runtime record path",
       ),
       linkedFollowUpPath: requiredString(
         extractBulletValue(content, "Source follow-up record path"),
@@ -1228,7 +1222,8 @@ function readGenericRuntimePromotionReadinessArtifact(input: {
       "runtime capability boundary",
     ),
     linkedRuntimeProofPath: extractBulletValue(content, "Runtime proof artifact"),
-    linkedRuntimeRecordPath: extractBulletValue(content, "Runtime v0 record"),
+    linkedRuntimeRecordPath: extractBulletValue(content, "Legacy Runtime record")
+      || extractBulletValue(content, "Runtime v0 record"),
     linkedCallableStubPath: extractBulletValue(content, "Linked callable stub"),
     proposedHost: extractBulletValue(content, "Proposed host"),
     executionState: extractBulletValue(content, "Execution state"),
@@ -2143,3 +2138,4 @@ export function readGenericDiscoveryMonitorArtifact(input: {
     ),
   };
 }
+

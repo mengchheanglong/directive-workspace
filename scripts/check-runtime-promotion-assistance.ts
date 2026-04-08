@@ -42,43 +42,7 @@ function main() {
   assert.equal(report.callableExecutionEvidence.nonSuccessCount, 1);
   assert.equal(report.callableExecutionEvidence.matchedPromotionReadinessCaseCount, 2);
 
-  assert.deepEqual(report.topRecommendation, {
-    candidateId: "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
-    candidateName: "jackswl/deep-researcher",
-    currentStage: "runtime.promotion_readiness.opened",
-    currentHeadPath:
-      "runtime/05-promotion-readiness/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-readiness.md",
-    sourcePromotionReadinessPath:
-      "runtime/05-promotion-readiness/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-readiness.md",
-    promotionSpecificationPath:
-      "runtime/06-promotion-specifications/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-specification.json",
-    proposedHost: "pending_host_selection",
-    hostScope: "pending_host_selection",
-    assistanceState: "blocked_pending_host_selection",
-    recommendedActionKind: "clarify_repo_native_host_target",
-    recommendedActionSummary:
-      "This case cannot reach a manual promotion decision yet because host selection is still pending. Clarify one bounded repo-native host target first.",
-    approvalRequired: true,
-    readOnly: true,
-    mutatesWorkflowState: false,
-    bypassesApproval: false,
-    supportingArtifacts: {
-      compileContractArtifact: "shared/contracts/runtime-to-host.md",
-      promotionSpecificationArtifact:
-        "runtime/06-promotion-specifications/2026-04-07-research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.-promotion-specification.json",
-      existingPromotionRecordPaths: [],
-      parkDecisionArtifact: null,
-    },
-    missingPrerequisites: ["proposedHost"],
-    callableExecutionEvidence: {
-      matchedCapabilityId: null,
-      executionCount: 0,
-      successCount: 0,
-      nonSuccessCount: 0,
-      latestExecutionAt: null,
-      tools: [],
-    },
-  });
+  assert.equal(report.topRecommendation, null);
 
   const realMiniSweRoute = findRecommendation(
     "dw-real-mini-swe-agent-runtime-route-v0-2026-03-25",
@@ -186,24 +150,30 @@ function main() {
   const deepResearcher = findRecommendation(
     "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
   ).recommendation;
-  assert.equal(deepResearcher.assistanceState, "blocked_pending_host_selection");
-  assert.equal(deepResearcher.recommendedActionKind, "clarify_repo_native_host_target");
+  assert.equal(deepResearcher.assistanceState, "already_promoted_manual_cycle");
+  assert.equal(deepResearcher.recommendedActionKind, "none");
   assert.equal(deepResearcher.currentStage, "runtime.promotion_readiness.opened");
-  assert.equal(deepResearcher.proposedHost, "pending_host_selection");
-  assert.deepEqual(deepResearcher.missingPrerequisites, ["proposedHost"]);
-  assert.equal(deepResearcher.supportingArtifacts.existingPromotionRecordPaths.length, 0);
+  assert.equal(
+    deepResearcher.proposedHost,
+    "Directive Workspace standalone host (hosts/standalone-host/)",
+  );
+  assert.deepEqual(deepResearcher.missingPrerequisites, ["promotionRecordState.unopened"]);
+  assert.equal(deepResearcher.supportingArtifacts.existingPromotionRecordPaths.length, 1);
 
   const researchVaultBlocked = findRecommendation(
     "research-engine-web-aakashsharan-com-research-va-20260407t041754z-20260407t051957.",
   ).recommendation;
-  assert.equal(researchVaultBlocked.assistanceState, "blocked_pending_host_selection");
-  assert.equal(researchVaultBlocked.recommendedActionKind, "clarify_repo_native_host_target");
+  assert.equal(researchVaultBlocked.assistanceState, "already_promoted_manual_cycle");
+  assert.equal(researchVaultBlocked.recommendedActionKind, "none");
   assert.equal(researchVaultBlocked.currentStage, "runtime.promotion_readiness.opened");
-  assert.equal(researchVaultBlocked.proposedHost, "pending_host_selection");
-  assert.deepEqual(researchVaultBlocked.missingPrerequisites, ["proposedHost"]);
+  assert.equal(
+    researchVaultBlocked.proposedHost,
+    "Directive Workspace standalone host (hosts/standalone-host/)",
+  );
+  assert.deepEqual(researchVaultBlocked.missingPrerequisites, ["promotionRecordState.unopened"]);
   assert.equal(
     researchVaultBlocked.supportingArtifacts.existingPromotionRecordPaths.length,
-    0,
+    1,
   );
 
   const researchVaultPromoted = findRecommendation(
@@ -212,7 +182,10 @@ function main() {
   assert.equal(researchVaultPromoted.assistanceState, "already_promoted_manual_cycle");
   assert.equal(researchVaultPromoted.recommendedActionKind, "none");
   assert.equal(researchVaultPromoted.currentStage, "runtime.promotion_readiness.opened");
-  assert.equal(researchVaultPromoted.proposedHost, "pending_host_selection");
+  assert.equal(
+    researchVaultPromoted.proposedHost,
+    "Directive Workspace standalone host (hosts/standalone-host/)",
+  );
   assert.deepEqual(researchVaultPromoted.missingPrerequisites, ["promotionRecordState.unopened"]);
   assert.equal(
     researchVaultPromoted.supportingArtifacts.existingPromotionRecordPaths.length,
@@ -292,10 +265,10 @@ function main() {
   );
 
   assert.equal(report.summary.totalPromotionReadinessCases, 15);
-  assert.equal(report.summary.alreadyPromotedManualCycleCount, 12);
+  assert.equal(report.summary.alreadyPromotedManualCycleCount, 14);
   assert.equal(report.summary.readyForManualPromotionSeamDecisionCount, 0);
   assert.equal(report.summary.readyButExternalHostCandidateCount, 0);
-  assert.equal(report.summary.blockedPendingHostSelectionCount, 2);
+  assert.equal(report.summary.blockedPendingHostSelectionCount, 0);
   assert.equal(report.summary.blockedMissingCallableBoundaryCount, 0);
   assert.equal(report.summary.blockedOtherCount, 1);
 

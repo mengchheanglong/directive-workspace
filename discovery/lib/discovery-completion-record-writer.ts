@@ -3,7 +3,7 @@ import type { DiscoveryRoutingTarget } from "./discovery-intake-queue-writer.ts"
 import {
   optionalString,
   requiredString,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+} from "../../shared/lib/validation.ts";
 
 export type DiscoveryCompletionDecisionState =
   | "adopt"

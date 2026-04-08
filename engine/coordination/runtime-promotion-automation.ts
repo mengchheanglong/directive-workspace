@@ -1,6 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { readJson } from "../../shared/lib/file-io.ts";
+import { normalizeRelativePath } from "../../shared/lib/path-normalization.ts";
+
 import { resolveDirectiveWorkspaceState } from "../state/index.ts";
 import {
   RUNTIME_REGISTRY_ACCEPTANCE_GATE_VERSION,
@@ -57,10 +60,6 @@ export type DirectiveRuntimePromotionAutomationDryRunReport = {
   stopReason: string;
 };
 
-function normalizeRelativePath(filePath: string) {
-  return filePath.replace(/\\/g, "/");
-}
-
 function resolveDirectivePath(input: {
   directiveRoot: string;
   relativePath: string | null | undefined;
@@ -80,9 +79,7 @@ function resolveDirectivePath(input: {
   };
 }
 
-function readJsonFile<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
+
 
 function readHostCallableAdapter(input: {
   directiveRoot: string;
@@ -100,7 +97,7 @@ function readHostCallableAdapter(input: {
     };
   }
 
-  const report = readJsonFile<{
+  const report = readJson<{
     hostCallableAdapter?: RuntimeHostCallableAdapterDescriptor;
   }>(resolved.absolutePath);
 
@@ -127,7 +124,7 @@ function findCallableExecutionEvidenceForCandidate(input: {
     .sort()
     .find((relativePath) => {
       try {
-        const record = readJsonFile<{
+        const record = readJson<{
           capability?: { capabilityId?: unknown };
           invocation?: { ok?: unknown; status?: unknown };
         }>(path.join(input.directiveRoot, relativePath));

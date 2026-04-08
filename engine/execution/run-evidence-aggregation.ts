@@ -6,10 +6,8 @@ import {
   type DirectiveEngineRunArtifact,
   type StoredDirectiveEngineRunRecord,
 } from "./engine-run-artifacts.ts";
-import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 
 export type RunEvidenceDistribution = {
   label: string;
@@ -147,7 +145,7 @@ function readAllRunRecords(engineRunsRoot: string): DirectiveEngineRunArtifact[]
     .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".json"))
     .sort((a, b) => a.name.localeCompare(b.name))
     .reduce<DirectiveEngineRunArtifact[]>((acc, entry) => {
-      const recordPath = normalizePath(path.join(engineRunsRoot, entry.name));
+      const recordPath = normalizeAbsolutePath(path.join(engineRunsRoot, entry.name));
       const parsed = readJson(recordPath);
       if (isRecordLike(parsed)) {
         acc.push({
@@ -276,10 +274,10 @@ function readManualRuntimePromotionCycles(
 export function aggregateRunEvidence(options: {
   directiveRoot?: string;
 }): RunEvidenceAggregation {
-  const directiveRoot = normalizePath(
+  const directiveRoot = normalizeAbsolutePath(
     options.directiveRoot || getDefaultDirectiveWorkspaceRoot(),
   );
-  const engineRunsRoot = normalizePath(
+  const engineRunsRoot = normalizeAbsolutePath(
     path.join(directiveRoot, "runtime", "standalone-host", "engine-runs"),
   );
 

@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { readUtf8 } from "../../shared/lib/file-io.ts";
+
 import {
   normalizeDirectiveApprovalActor,
   normalizeDirectiveWorkspaceRoot,
@@ -9,14 +11,19 @@ import {
   resolveDirectiveWorkspaceRelativePath,
   writeDirectiveArtifactIfMissing,
 } from "../../engine/approval-boundary.ts";
+import { writeJson as writeJsonPretty } from "../../shared/lib/file-io.ts";
 import {
-  normalizeRelativePath,
-  writeJsonPretty,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+  normalizeDirectiveRelativePath,
+} from "../../shared/lib/directive-relative-path.ts";
 import {
   renderRuntimeFollowUpRecord,
   type RuntimeFollowUpRecordRequest,
 } from "../../runtime/lib/runtime-follow-up-record-writer.ts";
+import { readDiscoveryRoutingReviewResolution } from "./discovery-routing-review-resolution.ts";
+import {
+  deriveEffectiveDiscoveryRouteBoundary,
+  type DiscoveryRouteDestination,
+} from "./discovery-routing-effective-boundary.ts";
 import { type DiscoveryIntakeQueueDocument } from "./discovery-intake-queue-writer.ts";
 import { syncDiscoveryIntakeLifecycle } from "./discovery-intake-lifecycle-sync.ts";
 import {
@@ -28,8 +35,6 @@ import {
   describeDirectiveEngineGapPressure,
   type DirectiveEngineGapPressureDetail,
 } from "../../engine/execution/engine-run-artifacts.ts";
-
-type DiscoveryRouteDestination = "architecture" | "runtime" | "monitor" | "defer" | "reject" | "reference";
 
 type DirectiveEngineRunRecordLike = {
   runId: string;
@@ -103,6 +108,7 @@ export type DirectiveDiscoveryRoutingArtifact = {
   decisionState: string;
   adoptionTarget: string;
   routeDestination: DiscoveryRouteDestination;
+  effectiveRouteDestination: DiscoveryRouteDestination;
   whyThisRoute: string;
   whyNotAlternatives: string;
   handoffContractUsed: string | null;
@@ -115,6 +121,7 @@ export type DirectiveDiscoveryRoutingArtifact = {
   linkedTriageRecord: string | null;
   routingRelativePath: string;
   routingAbsolutePath: string;
+  effectiveRequiredNextArtifact: string;
   downstreamStubRelativePath: string | null;
   downstreamStubExists: boolean;
   approvalAllowed: boolean;
@@ -196,9 +203,7 @@ function candidateIdsMatch(input: {
   return Boolean(expectedNormalized) && expectedNormalized === observedNormalized;
 }
 
-function readUtf8(filePath: string) {
-  return fs.readFileSync(filePath, "utf8");
-}
+
 
 function readOptionalBullet(markdown: string, label: string) {
   return optionalString(extractOptionalBulletValue(markdown, label));
@@ -388,14 +393,14 @@ function findEngineRunForCandidate(input: {
         return {
           record: parsed,
           recordAbsolutePath: path.resolve(recordPath).replace(/\\/g, "/"),
-          recordRelativePath: normalizeRelativePath(
+          recordRelativePath: normalizeDirectiveRelativePath(
             path.relative(input.directiveRoot, recordPath),
           ),
           reportAbsolutePath: fs.existsSync(reportPath)
             ? path.resolve(reportPath).replace(/\\/g, "/")
             : null,
           reportRelativePath: fs.existsSync(reportPath)
-            ? normalizeRelativePath(path.relative(input.directiveRoot, reportPath))
+            ? normalizeDirectiveRelativePath(path.relative(input.directiveRoot, reportPath))
             : null,
         };
       } catch {
@@ -456,12 +461,12 @@ function readEngineRunByRecordPath(input: {
     return {
       record: parsed,
       recordAbsolutePath: path.resolve(recordAbsolutePath).replace(/\\/g, "/"),
-      recordRelativePath: normalizeRelativePath(recordRelativePath),
+      recordRelativePath: normalizeDirectiveRelativePath(recordRelativePath),
       reportAbsolutePath: resolvedReportRelativePath
         ? path.resolve(path.join(input.directiveRoot, resolvedReportRelativePath)).replace(/\\/g, "/")
         : null,
       reportRelativePath: resolvedReportRelativePath
-        ? normalizeRelativePath(resolvedReportRelativePath)
+        ? normalizeDirectiveRelativePath(resolvedReportRelativePath)
         : null,
     };
   } catch {
@@ -642,6 +647,18 @@ function readRoutingArtifact(input: {
   }
 
   const parsed = parseDiscoveryRoutingMarkdown(readUtf8(routingAbsolutePath));
+  const reviewResolution = readDiscoveryRoutingReviewResolution({
+    directiveRoot: input.directiveRoot,
+    routingRecordPath: input.routingRelativePath,
+  });
+  const effectiveBoundary = deriveEffectiveDiscoveryRouteBoundary({
+    candidateId: parsed.candidateId,
+    routingDate: parsed.routingDate,
+    routeDestination: parsed.routeDestination,
+    decisionState: parsed.decisionState,
+    requiredNextArtifact: parsed.requiredNextArtifact,
+    reviewResolution,
+  });
   const engineRun = parsed.linkedEngineRunRecord
     ? readEngineRunByRecordPath({
       directiveRoot: input.directiveRoot,
@@ -655,20 +672,20 @@ function readRoutingArtifact(input: {
     });
   const { queue } = readQueueDocument(input.directiveRoot);
   const queueEntry = queue.entries.find((entry) => entry.candidate_id === parsed.candidateId) ?? null;
-  const approvalAllowed =
-    parsed.decisionState === "adopt"
-    && (parsed.routeDestination === "architecture" || parsed.routeDestination === "runtime");
+  const approvalAllowed = effectiveBoundary.approvalAllowed;
   const downstreamStubRelativePath = approvalAllowed
     ? optionalString(queueEntry?.result_record_path)
-      ?? (fs.existsSync(path.join(input.directiveRoot, parsed.requiredNextArtifact))
-        ? parsed.requiredNextArtifact
+      ?? (fs.existsSync(path.join(input.directiveRoot, effectiveBoundary.effectiveRequiredNextArtifact))
+        ? effectiveBoundary.effectiveRequiredNextArtifact
         : null)
     : null;
 
   return {
     ...parsed,
+    effectiveRouteDestination: effectiveBoundary.effectiveRouteDestination,
     routingRelativePath: input.routingRelativePath,
     routingAbsolutePath,
+    effectiveRequiredNextArtifact: effectiveBoundary.effectiveRequiredNextArtifact,
     downstreamStubRelativePath,
     downstreamStubExists: Boolean(downstreamStubRelativePath),
     approvalAllowed,
@@ -753,7 +770,7 @@ function updateQueueForOpenedRoute(input: {
     request: {
       candidate_id: input.artifact.candidateId,
       target_phase: "routed",
-      routing_target: input.artifact.routeDestination,
+      routing_target: input.artifact.effectiveRouteDestination,
       intake_record_path: input.artifact.linkedIntakeRecord,
       routing_record_path: input.artifact.routingRelativePath,
       result_record_path: input.stubRelativePath,
@@ -804,7 +821,7 @@ export function openDirectiveDiscoveryRoute(input: {
 
   if (!artifact.approvalAllowed) {
     throw new Error(
-      `invalid_input: routing record cannot open downstream work for route destination "${artifact.routeDestination}" and decision "${artifact.decisionState}"`,
+      `invalid_input: routing record cannot open downstream work for effective route destination "${artifact.effectiveRouteDestination}" and decision "${artifact.decisionState}"`,
     );
   }
 
@@ -836,10 +853,10 @@ export function openDirectiveDiscoveryRoute(input: {
   }
 
   const approvedBy = normalizeDirectiveApprovalActor(input.approvedBy);
-  const stubRelativePath = normalizeRelativePath(artifact.requiredNextArtifact);
+  const stubRelativePath = normalizeDirectiveRelativePath(artifact.effectiveRequiredNextArtifact);
   const stubAbsolutePath = path.resolve(directiveRoot, stubRelativePath).replace(/\\/g, "/");
 
-  if (artifact.routeDestination === "architecture") {
+  if (artifact.effectiveRouteDestination === "architecture") {
     if (
       !stubRelativePath.startsWith("architecture/01-experiments/")
       || !stubRelativePath.endsWith("-engine-handoff.md")

@@ -715,6 +715,7 @@ class DirectiveFrontendApp extends LitElement {
 
   private renderOperatorDecisionInboxPage(inbox: FrontendOperatorDecisionInboxReport) {
     const runtimeHostSelection = inbox.entries.filter((entry) => entry.decisionSurface === "runtime_host_selection");
+    const runtimePromotionSeamDecision = inbox.entries.filter((entry) => entry.decisionSurface === "runtime_promotion_seam_decision");
     const runtimeRegistryAcceptance = inbox.entries.filter((entry) => entry.decisionSurface === "runtime_registry_acceptance");
     const architectureMaterialization = inbox.entries.filter((entry) => entry.decisionSurface === "architecture_materialization_due");
     const discoveryRoutingReview = inbox.entries.filter((entry) => entry.decisionSurface === "discovery_routing_review");
@@ -735,6 +736,7 @@ class DirectiveFrontendApp extends LitElement {
         <div class="queue-summary-grid">
           ${this.renderQueueStat("Actionable entries", inbox.summary.totalActionableEntries, "Current Discovery, Architecture, and Runtime decisions requiring explicit operator attention.")}
           ${this.renderQueueStat("Runtime host selections", inbox.summary.runtimeHostSelectionCount, "Runtime promotion paths blocked on explicit host selection.")}
+          ${this.renderQueueStat("Runtime seam decisions", inbox.summary.runtimePromotionSeamDecisionCount, "Runtime promotion paths ready for explicit manual promotion-seam review.")}
           ${this.renderQueueStat("Architecture materialization", inbox.summary.architectureMaterializationDueCount, "Architecture adoptions or implementation targets awaiting explicit lane-native materialization.")}
           ${this.renderQueueStat("Registry acceptance", inbox.summary.runtimeRegistryAcceptanceCount, "Proof-backed Runtime registry decisions requiring explicit acceptance.")}
           ${this.renderQueueStat("Discovery routing reviews", inbox.summary.discoveryRoutingReviewCount, "Conflicted or non-high-confidence Discovery routes requiring review.")}
@@ -746,6 +748,7 @@ class DirectiveFrontendApp extends LitElement {
         <p>Read-only: ${String(inbox.guardrails.readOnly)} | mutates workflow state: ${String(inbox.guardrails.mutatesWorkflowState)} | bypasses review: ${String(inbox.guardrails.bypassesReview)} | writes registry entries: ${String(inbox.guardrails.writesRegistryEntries)} | runs host adapters: ${String(inbox.guardrails.runsHostAdapters)}</p>
       </section>
       ${renderGroup("Runtime Host Selection", "Highest-priority review work because it unblocks Runtime promotion paths without claiming execution or registry acceptance.", runtimeHostSelection)}
+      ${renderGroup("Runtime Promotion Seam Decision", "Runtime cases with host selection resolved that still require an explicit manual promotion-seam decision.", runtimePromotionSeamDecision)}
       ${renderGroup("Architecture Materialization", "Explicit Architecture due items only: implementation-target creation or implementation-result recording. This group can be empty when Architecture is clean.", architectureMaterialization)}
       ${renderGroup("Runtime Registry Acceptance", "Proof-backed registry acceptance remains explicitly gated and disabled by default.", runtimeRegistryAcceptance)}
       ${renderGroup("Discovery Routing Review", "Discovery remains the front door; conflicted or medium-confidence routes need explicit review before downstream continuation.", discoveryRoutingReview)}
@@ -1026,6 +1029,7 @@ class DirectiveFrontendApp extends LitElement {
           <section class="queue-summary-grid">
             ${this.renderQueueStat("Actionable entries", inbox.summary.totalActionableEntries, "Total live decisions requiring explicit operator attention.")}
             ${this.renderQueueStat("Runtime host selection", inbox.summary.runtimeHostSelectionCount, "Runtime host-selection blockers surfaced for review.")}
+            ${this.renderQueueStat("Runtime seam decisions", inbox.summary.runtimePromotionSeamDecisionCount, "Runtime promotion-seam decisions surfaced for review.")}
             ${this.renderQueueStat("Architecture materialization", inbox.summary.architectureMaterializationDueCount, "Architecture due items surfaced from the materialization due-check.")}
             ${this.renderQueueStat("Registry acceptance", inbox.summary.runtimeRegistryAcceptanceCount, "Proof-backed Runtime registry decisions awaiting explicit acceptance.")}
             ${this.renderQueueStat("Discovery reviews", inbox.summary.discoveryRoutingReviewCount, "Discovery routing conflicts or non-high-confidence routes awaiting review.")}
@@ -1380,20 +1384,20 @@ class DirectiveFrontendApp extends LitElement {
             <tr><th>proposed integration mode</th><td>${detail.proposedIntegrationMode}</td></tr>
             <tr><th>review cadence</th><td>${detail.reviewCadence}</td></tr>
             <tr><th>linked Discovery routing record</th><td>${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</td></tr>
-            <tr><th>next Runtime record</th><td>${detail.runtimeRecordExists ? html`<a href=${`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`); }}>Open Runtime record</a>` : html`<span class="muted">${detail.runtimeRecordRelativePath}</span>`}</td></tr>
+            <tr><th>next capability record</th><td>${detail.runtimeRecordExists ? html`<a href=${`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`); }}>Open capability record</a>` : html`<span class="muted">${detail.runtimeRecordRelativePath}</span>`}</td></tr>
           </tbody></table></section>
           <section class=${detail.runtimeRecordExists ? "panel good" : detail.approvalAllowed ? "panel message" : "panel warning"}>
             <h3>Runtime review/open boundary</h3>
             <p>${detail.runtimeRecordExists
-              ? "This Runtime follow-up has already been explicitly reviewed and opened into one bounded non-executing Runtime record."
+              ? "This Runtime follow-up has already been explicitly reviewed and opened into one bounded non-executing capability record."
               : detail.approvalAllowed
-                ? "This review step stays explicit and human-controlled. Approving here opens exactly one bounded non-executing Runtime artifact and stops before proof execution, host integration, or runtime work."
-                : "This Runtime follow-up is not in a reviewable state for opening the next bounded Runtime artifact."}</p>
+                ? "This review step stays explicit and human-controlled. Approving here opens exactly one bounded non-executing capability record and stops before proof execution, host integration, or broader capability work."
+                : "This Runtime follow-up is not in a reviewable state for opening the next bounded capability artifact."}</p>
             <div class="actions">
               ${detail.runtimeRecordExists
-                ? html`<a href=${`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`); }}>Open Runtime record</a>`
+                ? html`<a href=${`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-records/view?path=${encodeURIComponent(detail.runtimeRecordRelativePath || "")}`); }}>Open capability record</a>`
                 : detail.approvalAllowed
-                  ? html`<button @click=${() => this.approveRuntimeFollowUp(detail.relativePath || "")}>Approve Runtime record</button>`
+                  ? html`<button @click=${() => this.approveRuntimeFollowUp(detail.relativePath || "")}>Approve capability record</button>`
                   : nothing}
             </div>
           </section>
@@ -1419,7 +1423,7 @@ class DirectiveFrontendApp extends LitElement {
           </tbody></table></section>
           <section class="panel message">
             <h3>Boundary note</h3>
-            <p>This is a historical deferred Runtime follow-up artifact. It is inspectable through the host surface, but it does not claim membership in the current non-executing Runtime v0 chain.</p>
+            <p>This is a historical deferred Runtime follow-up artifact. It is inspectable through the host surface, but it does not claim membership in the current non-executing Legacy Runtime chain.</p>
           </section>
           <section class="panel"><h3>Raw follow-up artifact</h3><pre>${detail.content}</pre></section>
         `;
@@ -1433,11 +1437,11 @@ class DirectiveFrontendApp extends LitElement {
             <tr><th>handoff type</th><td>${detail.handoffType ?? html`<span class="muted">n/a</span>`}</td></tr>
             <tr><th>runtime value</th><td>${detail.runtimeValueToOperationalize}</td></tr>
             <tr><th>proposed host</th><td>${detail.proposedHost}</td></tr>
-            <tr><th>proposed runtime surface</th><td>${detail.proposedRuntimeSurface}</td></tr>
+            <tr><th>proposed capability shape</th><td>${detail.proposedRuntimeSurface}</td></tr>
             <tr><th>originating Architecture record</th><td>${this.artifactLink(detail.originatingArchitectureRecordPath)}</td></tr>
             <tr><th>mixed-value partition ref</th><td>${this.artifactLink(detail.mixedValuePartitionRef)}</td></tr>
             <tr><th>Runtime follow-up</th><td>${this.artifactLink(detail.runtimeFollowUpPath)}</td></tr>
-            <tr><th>Runtime record</th><td>${this.artifactLink(detail.runtimeRecordPath)}</td></tr>
+            <tr><th>capability record</th><td>${this.artifactLink(detail.runtimeRecordPath)}</td></tr>
             <tr><th>proof artifact</th><td>${this.artifactLink(detail.runtimeProofPath)}</td></tr>
             <tr><th>promotion record</th><td>${this.artifactLink(detail.promotionRecordPath)}</td></tr>
             <tr><th>registry entry</th><td>${this.artifactLink(detail.registryEntryPath)}</td></tr>
@@ -1445,7 +1449,7 @@ class DirectiveFrontendApp extends LitElement {
           </tbody></table></section>
           <section class="panel message">
             <h3>Boundary note</h3>
-            <p>This is a historical Runtime handoff artifact. It is inspectable through the host surface, but it does not claim membership in the current non-executing Runtime v0 chain.</p>
+            <p>This is a historical Runtime handoff artifact. It is inspectable through the host surface, but it does not claim membership in the current non-executing Legacy Runtime chain.</p>
           </section>
           <section class="panel"><h3>Raw handoff artifact</h3><pre>${detail.content}</pre></section>
         `;
@@ -1481,71 +1485,71 @@ class DirectiveFrontendApp extends LitElement {
 
     if (this.page.kind === "runtime-record-detail") {
       const detail = this.page.data as FrontendRuntimeRecordDetail;
-      if (!detail.ok) return html`<section class="panel warning"><h2>Runtime record not found</h2><pre>${detail.error}</pre></section>`;
+      if (!detail.ok) return html`<section class="panel warning"><h2>Capability record not found</h2><pre>${detail.error}</pre></section>`;
       return html`
-        <section class="panel"><h2>Runtime v0 record</h2><div class="muted mono">${detail.relativePath}</div><table><tbody>
+        <section class="panel"><h2>Legacy capability record</h2><div class="muted mono">${detail.relativePath}</div><table><tbody>
           <tr><th>candidate id</th><td>${detail.candidateId}</td></tr>
           <tr><th>candidate name</th><td>${detail.candidateName}</td></tr>
           <tr><th>runtime objective</th><td>${detail.runtimeObjective}</td></tr>
           <tr><th>proposed host</th><td>${detail.proposedHost}</td></tr>
-          <tr><th>proposed runtime surface</th><td>${detail.proposedRuntimeSurface}</td></tr>
+          <tr><th>proposed capability shape</th><td>${detail.proposedRuntimeSurface}</td></tr>
           <tr><th>required proof summary</th><td>${detail.requiredProofSummary}</td></tr>
           <tr><th>current status</th><td>${detail.currentStatus}</td></tr>
           <tr><th>source Runtime follow-up</th><td>${this.artifactLink(detail.linkedFollowUpRecord)}</td></tr>
           <tr><th>linked Discovery routing record</th><td>${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</td></tr>
-          <tr><th>next Runtime proof artifact</th><td>${detail.proofExists ? html`<a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`); }}>Open Runtime proof artifact</a>` : html`<span class="muted">${detail.runtimeProofRelativePath}</span>`}</td></tr>
+          <tr><th>next capability proof artifact</th><td>${detail.proofExists ? html`<a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`); }}>Open capability proof artifact</a>` : html`<span class="muted">${detail.runtimeProofRelativePath}</span>`}</td></tr>
         </tbody></table></section>
         <section class=${detail.proofExists ? "panel good" : detail.approvalAllowed ? "panel message" : "panel warning"}>
-          <h3>Runtime proof opening boundary</h3>
+          <h3>Capability proof opening boundary</h3>
           <p>${detail.proofExists
-            ? "This Runtime v0 record has already been explicitly reviewed and opened into one Runtime proof artifact."
+            ? "This legacy capability record has already been explicitly reviewed and opened into one capability proof artifact."
             : detail.approvalAllowed
-              ? "This approval step stays explicit and bounded. Approving here opens exactly one Runtime proof artifact and stops before execution, host integration, callable implementation, or promotion work."
-              : "This Runtime v0 record is not in an approval state for opening the proof artifact."}</p>
+              ? "This approval step stays explicit and bounded. Approving here opens exactly one capability proof artifact and stops before execution, host integration, callable implementation, or promotion work."
+              : "This legacy capability record is not in an approval state for opening the proof artifact."}</p>
           <div class="actions">
             ${detail.proofExists
-              ? html`<a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`); }}>Open Runtime proof artifact</a>`
+              ? html`<a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.runtimeProofRelativePath || "")}`); }}>Open capability proof artifact</a>`
               : detail.approvalAllowed
-                ? html`<button @click=${() => this.approveRuntimeRecordProof(detail.relativePath || "")}>Approve Runtime proof artifact</button>`
+                ? html`<button @click=${() => this.approveRuntimeRecordProof(detail.relativePath || "")}>Approve capability proof artifact</button>`
                 : nothing}
           </div>
         </section>
-        <section class="panel"><h3>Raw Runtime record</h3><pre>${detail.content}</pre></section>
+        <section class="panel"><h3>Raw capability record</h3><pre>${detail.content}</pre></section>
       `;
     }
 
     if (this.page.kind === "runtime-proof-detail") {
       const detail = this.page.data as FrontendRuntimeProofDetail;
-      if (!detail.ok) return html`<section class="panel warning"><h2>Runtime proof artifact not found</h2><pre>${detail.error}</pre></section>`;
+      if (!detail.ok) return html`<section class="panel warning"><h2>Capability proof artifact not found</h2><pre>${detail.error}</pre></section>`;
       return html`
-        <section class="panel"><h2>Runtime proof artifact</h2><div class="muted mono">${detail.relativePath}</div><table><tbody>
+        <section class="panel"><h2>Capability proof artifact</h2><div class="muted mono">${detail.relativePath}</div><table><tbody>
           <tr><th>candidate id</th><td>${detail.candidateId}</td></tr>
           <tr><th>candidate name</th><td>${detail.candidateName}</td></tr>
           <tr><th>runtime objective</th><td>${detail.runtimeObjective}</td></tr>
           <tr><th>proposed host</th><td>${detail.proposedHost}</td></tr>
-          <tr><th>proposed runtime surface</th><td>${detail.proposedRuntimeSurface}</td></tr>
+          <tr><th>proposed capability shape</th><td>${detail.proposedRuntimeSurface}</td></tr>
           <tr><th>current status</th><td>${detail.currentStatus}</td></tr>
-          <tr><th>Runtime v0 record</th><td>${this.artifactLink(detail.linkedRuntimeRecordPath)}</td></tr>
+          <tr><th>Legacy capability record</th><td>${this.artifactLink(detail.linkedRuntimeRecordPath)}</td></tr>
           <tr><th>source Runtime follow-up</th><td>${this.artifactLink(detail.linkedFollowUpPath)}</td></tr>
           <tr><th>linked Discovery routing record</th><td>${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</td></tr>
-          <tr><th>bounded runtime capability boundary</th><td>${detail.runtimeCapabilityBoundaryExists ? html`<a href=${`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`); }}>Open bounded runtime capability boundary</a>` : html`<span class="muted">${detail.runtimeCapabilityBoundaryRelativePath}</span>`}</td></tr>
+          <tr><th>bounded capability boundary</th><td>${detail.runtimeCapabilityBoundaryExists ? html`<a href=${`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`); }}>Open bounded capability boundary</a>` : html`<span class="muted">${detail.runtimeCapabilityBoundaryRelativePath}</span>`}</td></tr>
         </tbody></table></section>
         <section class=${detail.runtimeCapabilityBoundaryExists ? "panel good" : detail.approvalAllowed ? "panel message" : "panel warning"}>
-          <h3>Bounded runtime capability boundary</h3>
+          <h3>Bounded capability boundary</h3>
           <p>${detail.runtimeCapabilityBoundaryExists
-            ? "This Runtime proof artifact has already been explicitly reviewed and opened into one bounded runtime capability boundary."
+            ? "This capability proof artifact has already been explicitly reviewed and opened into one bounded capability boundary."
             : detail.approvalAllowed
-              ? "This approval step stays explicit and bounded. Approving here opens exactly one bounded runtime capability boundary and stops before execution, host integration, callable implementation, or promotion work."
-              : "This Runtime proof artifact is not in an approval state for opening the bounded runtime capability boundary."}</p>
+              ? "This approval step stays explicit and bounded. Approving here opens exactly one bounded capability boundary and stops before execution, host integration, callable implementation, or promotion work."
+              : "This capability proof artifact is not in an approval state for opening the bounded capability boundary."}</p>
           <div class="actions">
             ${detail.runtimeCapabilityBoundaryExists
-              ? html`<a href=${`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`); }}>Open bounded runtime capability boundary</a>`
+              ? html`<a href=${`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.runtimeCapabilityBoundaryRelativePath || "")}`); }}>Open bounded capability boundary</a>`
               : detail.approvalAllowed
                 ? html`<button @click=${() => this.approveRuntimeProofRuntimeCapabilityBoundary(detail.relativePath || "")}>Approve runtime capability boundary</button>`
                 : nothing}
           </div>
         </section>
-        <section class="panel"><h3>Raw Runtime proof artifact</h3><pre>${detail.content}</pre></section>
+        <section class="panel"><h3>Raw capability proof artifact</h3><pre>${detail.content}</pre></section>
       `;
     }
 
@@ -1558,10 +1562,10 @@ class DirectiveFrontendApp extends LitElement {
           <tr><th>candidate name</th><td>${detail.candidateName}</td></tr>
           <tr><th>runtime objective</th><td>${detail.runtimeObjective}</td></tr>
           <tr><th>proposed host</th><td>${detail.proposedHost}</td></tr>
-          <tr><th>proposed runtime surface</th><td>${detail.proposedRuntimeSurface}</td></tr>
-          <tr><th>current Runtime proof status</th><td>${detail.currentProofStatus}</td></tr>
-          <tr><th>Runtime proof artifact</th><td><a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`); }}>${detail.linkedRuntimeProofPath}</a></td></tr>
-          <tr><th>Runtime v0 record</th><td>${this.artifactLink(detail.linkedRuntimeRecordPath)}</td></tr>
+          <tr><th>proposed capability shape</th><td>${detail.proposedRuntimeSurface}</td></tr>
+          <tr><th>current proof status</th><td>${detail.currentProofStatus}</td></tr>
+          <tr><th>Capability proof artifact</th><td><a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`); }}>${detail.linkedRuntimeProofPath}</a></td></tr>
+          <tr><th>Legacy capability record</th><td>${this.artifactLink(detail.linkedRuntimeRecordPath)}</td></tr>
           <tr><th>source Runtime follow-up</th><td>${this.artifactLink(detail.linkedFollowUpPath)}</td></tr>
           <tr><th>linked Discovery routing record</th><td>${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</td></tr>
           <tr><th>promotion-readiness artifact</th><td>${detail.promotionReadinessExists ? html`<a href=${`/runtime-promotion-readiness/view?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-promotion-readiness/view?path=${encodeURIComponent(detail.promotionReadinessRelativePath || "")}`); }}>Open promotion-readiness detail</a>` : html`<span class="muted">${detail.promotionReadinessRelativePath}</span>`}</td></tr>
@@ -1618,7 +1622,7 @@ class DirectiveFrontendApp extends LitElement {
             <section class="seam-card">
               <h3>Proposed host surface</h3>
               <p class="seam-value">${detail.proposedHost}</p>
-              <p class="muted" style="margin-top:8px;">Directive Workspace web host is the active product surface for this phase. Mission Control is not the frontend target here.</p>
+              <p class="muted" style="margin-top:8px;">Directive Workspace web host is the active product surface for this phase. This page reads the live product state directly rather than mirroring a separate host UI.</p>
             </section>
 
             <section class="seam-card">
@@ -1670,7 +1674,7 @@ class DirectiveFrontendApp extends LitElement {
           <div class="link-stack">
             <div><strong>Runtime capability boundary:</strong> <a href=${`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.linkedCapabilityBoundaryPath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-runtime-capability-boundaries/view?path=${encodeURIComponent(detail.linkedCapabilityBoundaryPath || "")}`); }}>${detail.linkedCapabilityBoundaryPath}</a></div>
             <div><strong>Runtime proof artifact:</strong> <a href=${`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`} @click=${(event: Event) => { event.preventDefault(); navTo(`/runtime-proofs/view?path=${encodeURIComponent(detail.linkedRuntimeProofPath || "")}`); }}>${detail.linkedRuntimeProofPath}</a></div>
-            <div><strong>Runtime v0 record:</strong> ${this.artifactLink(detail.linkedRuntimeRecordPath)}</div>
+            <div><strong>Legacy Runtime record:</strong> ${this.artifactLink(detail.linkedRuntimeRecordPath)}</div>
             <div><strong>Source Runtime follow-up:</strong> ${this.artifactLink(detail.linkedFollowUpPath)}</div>
             <div><strong>Linked Discovery routing record:</strong> ${detail.linkedRoutingPath ? this.artifactLink(detail.linkedRoutingPath) : html`<span class="muted">n/a</span>`}</div>
           </div>
@@ -2076,3 +2080,4 @@ class DirectiveFrontendApp extends LitElement {
 }
 
 customElements.define("directive-frontend-app", DirectiveFrontendApp);
+

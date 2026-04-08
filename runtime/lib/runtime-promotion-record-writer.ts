@@ -9,27 +9,11 @@ import {
 import {
   readRuntimeHostSelectionResolution,
 } from "./runtime-host-selection-resolution.ts";
-
-function requiredString(value: string, fieldName: string) {
-  const normalized = value.trim();
-  if (!normalized) {
-    throw new Error(`${fieldName} is required`);
-  }
-  return normalized;
-}
-
-function normalizeList(values?: string[] | null) {
-  return (values ?? [])
-    .map((value) => String(value).trim())
-    .filter(Boolean);
-}
-
-function renderListOrPlaceholder(values: string[], placeholder = "n/a") {
-  if (values.length === 0) {
-    return `  - ${placeholder}`;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
+import {
+  normalizeRuntimeWriterList,
+  renderRuntimeWriterList,
+  requireRuntimeWriterString,
+} from "./runtime-writer-support.ts";
 
 export type RuntimePromotionRecordRequest = {
   candidate_id: string;
@@ -303,102 +287,102 @@ export function resolveRuntimePromotionRecordPath(input: {
 export function renderRuntimePromotionRecord(
   request: RuntimePromotionRecordRequest,
 ) {
-  const candidateId = requiredString(request.candidate_id, "candidate_id");
-  const candidateName = requiredString(request.candidate_name, "candidate_name");
-  const promotionDate = requiredString(request.promotion_date, "promotion_date");
-  const linkedRuntimeRecord = requiredString(
+  const candidateId = requireRuntimeWriterString(request.candidate_id, "candidate_id");
+  const candidateName = requireRuntimeWriterString(request.candidate_name, "candidate_name");
+  const promotionDate = requireRuntimeWriterString(request.promotion_date, "promotion_date");
+  const linkedRuntimeRecord = requireRuntimeWriterString(
     request.linked_runtime_record,
     "linked_runtime_record",
   );
-  const targetHost = requiredString(request.target_host, "target_host");
-  const targetRuntimeSurface = requiredString(
+  const targetHost = requireRuntimeWriterString(request.target_host, "target_host");
+  const targetRuntimeSurface = requireRuntimeWriterString(
     request.target_runtime_surface,
     "target_runtime_surface",
   );
-  const integrationMode = requiredString(
+  const integrationMode = requireRuntimeWriterString(
     request.integration_mode,
     "integration_mode",
   );
-  const sourceIntentArtifact = requiredString(
+  const sourceIntentArtifact = requireRuntimeWriterString(
     request.source_intent_artifact,
     "source_intent_artifact",
   );
-  const compileContractArtifact = requiredString(
+  const compileContractArtifact = requireRuntimeWriterString(
     request.compile_contract_artifact,
     "compile_contract_artifact",
   );
-  const runtimePermissionsProfile = requiredString(
+  const runtimePermissionsProfile = requireRuntimeWriterString(
     request.runtime_permissions_profile,
     "runtime_permissions_profile",
   );
-  const safeOutputScope = requiredString(
+  const safeOutputScope = requireRuntimeWriterString(
     request.safe_output_scope,
     "safe_output_scope",
   );
-  const sanitizePolicy = requiredString(
+  const sanitizePolicy = requireRuntimeWriterString(
     request.sanitize_policy,
     "sanitize_policy",
   );
-  const proposedRuntimeStatus = requiredString(
+  const proposedRuntimeStatus = requireRuntimeWriterString(
     request.proposed_runtime_status,
     "proposed_runtime_status",
   );
-  const proofPath = requiredString(request.proof_path, "proof_path");
-  const qualityGateProfile = requiredString(
+  const proofPath = requireRuntimeWriterString(request.proof_path, "proof_path");
+  const qualityGateProfile = requireRuntimeWriterString(
     request.quality_gate_profile,
     "quality_gate_profile",
   );
-  const promotionProfileFamily = requiredString(
+  const promotionProfileFamily = requireRuntimeWriterString(
     request.promotion_profile_family,
     "promotion_profile_family",
   );
-  const proofShape = requiredString(request.proof_shape, "proof_shape");
-  const primaryHostChecker = requiredString(
+  const proofShape = requireRuntimeWriterString(request.proof_shape, "proof_shape");
+  const primaryHostChecker = requireRuntimeWriterString(
     request.primary_host_checker,
     "primary_host_checker",
   );
-  const fullTextCoverageThreshold = requiredString(
+  const fullTextCoverageThreshold = requireRuntimeWriterString(
     request.full_text_coverage_threshold,
     "full_text_coverage_threshold",
   );
-  const evidenceBindingThreshold = requiredString(
+  const evidenceBindingThreshold = requireRuntimeWriterString(
     request.evidence_binding_threshold,
     "evidence_binding_threshold",
   );
-  const citationErrorThreshold = requiredString(
+  const citationErrorThreshold = requireRuntimeWriterString(
     request.citation_error_threshold,
     "citation_error_threshold",
   );
-  const observedFullTextCoverage = requiredString(
+  const observedFullTextCoverage = requireRuntimeWriterString(
     request.observed_full_text_coverage,
     "observed_full_text_coverage",
   );
-  const observedEvidenceBinding = requiredString(
+  const observedEvidenceBinding = requireRuntimeWriterString(
     request.observed_evidence_binding,
     "observed_evidence_binding",
   );
-  const observedCitationErrorRate = requiredString(
+  const observedCitationErrorRate = requireRuntimeWriterString(
     request.observed_citation_error_rate,
     "observed_citation_error_rate",
   );
-  const qualityGateResult = requiredString(
+  const qualityGateResult = requireRuntimeWriterString(
     request.quality_gate_result,
     "quality_gate_result",
   );
-  const validationState = requiredString(
+  const validationState = requireRuntimeWriterString(
     request.validation_state,
     "validation_state",
   );
-  const validationResult = requiredString(
+  const validationResult = requireRuntimeWriterString(
     request.validation_result,
     "validation_result",
   );
-  const rollbackPlan = requiredString(
+  const rollbackPlan = requireRuntimeWriterString(
     request.rollback_plan,
     "rollback_plan",
   );
-  const owner = requiredString(request.owner, "owner");
-  const promotionDecision = requiredString(
+  const owner = requireRuntimeWriterString(request.owner, "owner");
+  const promotionDecision = requireRuntimeWriterString(
     request.promotion_decision,
     "promotion_decision",
   );
@@ -432,9 +416,9 @@ export function renderRuntimePromotionRecord(
 - Quality gate result: ${qualityGateResult}
 - Validation state: ${validationState}
 - Quality gate fail reasons:
-${renderListOrPlaceholder(normalizeList(request.quality_gate_fail_reasons))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.quality_gate_fail_reasons))}
 - Required gates:
-${renderListOrPlaceholder(normalizeList(request.required_gates).map((value) =>
+${renderRuntimeWriterList(normalizeRuntimeWriterList(request.required_gates).map((value) =>
     value.startsWith("`") ? value : `\`${value}\``
   ))}
 - Validation result: ${validationResult}

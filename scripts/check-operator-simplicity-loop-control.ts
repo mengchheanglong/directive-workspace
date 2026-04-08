@@ -40,14 +40,16 @@ function main() {
 
   assert.deepEqual(report.setupReadiness, {
     hasMigrationAnchor: true,
-    hasOperatorStart: true,
     hasControlReadme: true,
     hasControlStateReadme: true,
     hasStateReadme: true,
     hasRuntimeFollowUpReadme: true,
   });
 
-  assert.equal(report.migrationStatus.anchorPath, "operator-simplicity-migration.md");
+  assert.equal(
+    report.migrationStatus.anchorPath,
+    "control/state/operator-simplicity-migration-status.json",
+  );
   assert.equal(
     report.migrationStatus.currentTargetId,
     "operator_simplicity_migration_complete",

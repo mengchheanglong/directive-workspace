@@ -168,7 +168,9 @@ export function parseDirectiveRuntimePromotionReadinessFields(input: {
         extractBulletValue(content, "Source Runtime proof artifact")
         || extractBulletValue(content, "Runtime proof artifact"),
       runtimeRecordPath:
-        extractBulletValue(content, "Source Runtime v0 record")
+        extractBulletValue(content, "Source Legacy Runtime record")
+        || extractBulletValue(content, "Source Runtime v0 record")
+        || extractBulletValue(content, "Legacy Runtime record")
         || extractBulletValue(content, "Runtime v0 record"),
       followUpPath:
         extractBulletValue(content, "Source Runtime follow-up record")
@@ -263,3 +265,4 @@ export function readDirectiveRuntimePromotionSpecification(input: {
   }
   return JSON.parse(fs.readFileSync(absolutePath, "utf8")) as DirectiveRuntimePromotionSpecification;
 }
+

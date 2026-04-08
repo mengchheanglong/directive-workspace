@@ -1,6 +1,6 @@
 # Knowledge Surface
 
-Use `knowledge/` for Directive-owned reference and historical planning context that adds value beyond the active doctrine and current priority.
+Use `knowledge/` for Directive-owned supporting reference that adds value beyond the active doctrine and current priority.
 
 ## Active authority
 
@@ -18,9 +18,8 @@ Those files are the active doctrine and priority surface for Directive Workspace
 
 Use it for:
 - mission framing not already captured in `CLAUDE.md`
-- lane-specific reference material
-- historical plans, simplification records, and migration rationale
-- targeted supporting guidance such as architecture completion and technology policy
+- lane-specific supporting reference material
+- targeted guidance such as architecture completion and technology policy
 
 ## Active supporting documents
 
@@ -31,16 +30,4 @@ Use it for:
 - `engine-direction.md`
 - `technology-policy.md`
 
-## Historical/reference documents
-
-These documents remain for audit and historical context, but they are not active authority:
-
-- `doctrine.md`
-- `workflow.md`
-- `operating-model-v2.md`
-- `operating-model-simplification-plan.md`
-- `delivery-plan.md`
-- `execution-plan.md`
-- `project-plan.md`
-
-If a historical/reference document conflicts with `CLAUDE.md` or `current-priority.md`, the active surfaces win.
+If a supporting document conflicts with `CLAUDE.md` or `current-priority.md`, the active surfaces win.

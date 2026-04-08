@@ -27,42 +27,14 @@ function main() {
   assert.equal(submissionExample.command, "print-submission-example");
   assert.equal(submissionExample.shape, "front_door");
 
-  const runtimeSignalExample = runCli(["print-signal-example", "--kind", "runtime_verification"]);
-  assert.equal(runtimeSignalExample.command, "print-signal-example");
-  assert.equal(runtimeSignalExample.kind, "runtime_verification");
-
-  const maintenanceSignalExample = runCli(["print-signal-example", "--kind", "maintenance_watchdog"]);
-  assert.equal(maintenanceSignalExample.command, "print-signal-example");
-  assert.equal(maintenanceSignalExample.kind, "maintenance_watchdog");
-
-  const runtimeSignalDryRun = runCli([
-    "signal-adapter-dry-run",
-    "--kind",
-    "runtime_verification",
+  const submissionDryRun = runCli([
+    "submission-memory-dry-run",
     "--input-json-path",
-    path.join(EXAMPLES_ROOT, "openclaw-runtime-verification-signal.json"),
+    path.join(EXAMPLES_ROOT, "discovery-submission-front-door.json"),
+    "--unresolved-gap-id",
+    "gap-example-front-door",
   ]);
-  assert.equal(runtimeSignalDryRun.command, "signal-adapter-dry-run");
-  assert.equal(runtimeSignalDryRun.kind, "runtime_verification");
-  assert.equal(
-    (runtimeSignalDryRun.result as { signalDetected?: unknown }).signalDetected,
-    true,
-  );
-
-  const maintenanceSignalDryRun = runCli([
-    "signal-adapter-dry-run",
-    "--kind",
-    "maintenance_watchdog",
-    "--input-json-path",
-    path.join(EXAMPLES_ROOT, "openclaw-maintenance-watchdog-signal.json"),
-  ]);
-  assert.equal(maintenanceSignalDryRun.command, "signal-adapter-dry-run");
-  assert.equal(maintenanceSignalDryRun.kind, "maintenance_watchdog");
-  assert.equal(
-    ((maintenanceSignalDryRun.result as { request?: { candidate_name?: unknown } }).request)
-      ?.candidate_name,
-    "OpenClaw Maintenance Watchdog Signal",
-  );
+  assert.equal(submissionDryRun.command, "submission-memory-dry-run");
 
   process.stdout.write(
     `${JSON.stringify(
@@ -71,14 +43,7 @@ function main() {
         checkerId: "host_integration_kit_example_surfaces",
         checked: {
           submissionShape: submissionExample.shape,
-          signalKinds: [
-            runtimeSignalExample.kind,
-            maintenanceSignalExample.kind,
-          ],
-          runtimeSignalDetected: (runtimeSignalDryRun.result as { signalDetected?: unknown }).signalDetected,
-          maintenanceCandidateName: (
-            (maintenanceSignalDryRun.result as { request?: { candidate_name?: unknown } }).request
-          )?.candidate_name,
+          submissionDryRunCommand: submissionDryRun.command,
         },
       },
       null,

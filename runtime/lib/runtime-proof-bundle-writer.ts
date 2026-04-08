@@ -1,25 +1,9 @@
 import path from "node:path";
-
-function requiredString(value: string, fieldName: string) {
-  const normalized = value.trim();
-  if (!normalized) {
-    throw new Error(`${fieldName} is required`);
-  }
-  return normalized;
-}
-
-function normalizeList(values?: string[] | null) {
-  return (values ?? [])
-    .map((value) => String(value).trim())
-    .filter(Boolean);
-}
-
-function renderListOrPlaceholder(values: string[], placeholder = "n/a") {
-  if (values.length === 0) {
-    return `  - ${placeholder}`;
-  }
-  return values.map((value) => `  - ${value}`).join("\n");
-}
+import {
+  normalizeRuntimeWriterList,
+  renderRuntimeWriterList,
+  requireRuntimeWriterString,
+} from "./runtime-writer-support.ts";
 
 export type RuntimeProofBundleRequest = {
   candidate_id: string;
@@ -78,22 +62,22 @@ export function renderRuntimeProofChecklist(input: {
   request: RuntimeProofBundleRequest;
   gateSnapshotPath: string;
 }) {
-  const candidateId = requiredString(input.request.candidate_id, "candidate_id");
-  const candidateName = requiredString(input.request.candidate_name, "candidate_name");
-  const proofDate = requiredString(input.request.proof_date, "proof_date");
-  const linkedRuntimeRecord = requiredString(
+  const candidateId = requireRuntimeWriterString(input.request.candidate_id, "candidate_id");
+  const candidateName = requireRuntimeWriterString(input.request.candidate_name, "candidate_name");
+  const proofDate = requireRuntimeWriterString(input.request.proof_date, "proof_date");
+  const linkedRuntimeRecord = requireRuntimeWriterString(
     input.request.linked_runtime_record,
     "linked_runtime_record",
   );
-  const passFailSummary = requiredString(
+  const passFailSummary = requireRuntimeWriterString(
     input.request.pass_fail_summary,
     "pass_fail_summary",
   );
-  const rollbackVerification = requiredString(
+  const rollbackVerification = requireRuntimeWriterString(
     input.request.rollback_verification,
     "rollback_verification",
   );
-  const status = requiredString(input.request.status, "status");
+  const status = requireRuntimeWriterString(input.request.status, "status");
 
   return `# Proof Checklist Artifact: ${candidateName}
 
@@ -105,13 +89,13 @@ export function renderRuntimeProofChecklist(input: {
 - Generated at: ${proofDate}
 - Linked Runtime record: \`${linkedRuntimeRecord}\`
 - Required proof items:
-${renderListOrPlaceholder(normalizeList(input.request.required_proof_items))}
+${renderRuntimeWriterList(normalizeRuntimeWriterList(input.request.required_proof_items))}
 - Validation commands:
-${renderListOrPlaceholder(normalizeList(input.request.validation_commands).map((value) =>
+${renderRuntimeWriterList(normalizeRuntimeWriterList(input.request.validation_commands).map((value) =>
     value.startsWith("`") ? value : `\`${value}\``
   ))}
 - Source proof artifacts:
-${renderListOrPlaceholder(normalizeList(input.request.source_proof_artifacts).map((value) =>
+${renderRuntimeWriterList(normalizeRuntimeWriterList(input.request.source_proof_artifacts).map((value) =>
     value.startsWith("`") ? value : `\`${value}\``
   ))}
 - Gate snapshot: \`${input.gateSnapshotPath}\`

@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { readJson, writeJson, writeUtf8 } from "../../shared/lib/file-io.ts";
+
 import {
   normalizeDirectiveWorkspaceRoot,
   resolveDirectiveWorkspaceRelativePath,
@@ -200,19 +202,7 @@ const DEFAULT_POLICY: DirectiveAutonomousLaneLoopPolicy = {
   },
 };
 
-function readJsonFile<T>(filePath: string): T {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
 
-function writeJsonFile(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
-
-function writeTextFile(filePath: string, value: string) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, value, "utf8");
-}
 
 function loadDirectiveAutonomousLaneLoopPolicy(directiveRoot: string) {
   const policyPath = path.join(directiveRoot, "control", "state", "autonomous-lane-loop-policy.json");
@@ -223,7 +213,7 @@ function loadDirectiveAutonomousLaneLoopPolicy(directiveRoot: string) {
     };
   }
 
-  const loaded = readJsonFile<Partial<DirectiveAutonomousLaneLoopPolicy>>(policyPath);
+  const loaded = readJson<Partial<DirectiveAutonomousLaneLoopPolicy>>(policyPath);
   return {
     policyPath: policyPath.replace(/\\/g, "/"),
     policy: {
@@ -471,7 +461,7 @@ function readAutonomousArchitectureEngineRun(input: {
   }
 
   try {
-    return readJsonFile<Record<string, unknown>>(engineRunAbsolutePath);
+    return readJson<Record<string, unknown>>(engineRunAbsolutePath);
   } catch {
     return null;
   }
@@ -661,7 +651,7 @@ function writeAutonomousRuntimePromotionSpecification(input: {
   });
   const specificationAbsolutePath = path.join(input.directiveRoot, specificationRelativePath);
   const created = !fs.existsSync(specificationAbsolutePath);
-  writeJsonFile(specificationAbsolutePath, specification);
+  writeJson(specificationAbsolutePath, specification);
   return {
     created,
     specificationRelativePath: specificationRelativePath.replace(/\\/g, "/"),
@@ -745,7 +735,7 @@ function writeAutonomousRuntimePromotionRecord(input: {
     promotion_decision: "approved for one bounded autonomous pre-host promotion review",
   };
 
-  writeTextFile(promotionRecordAbsolutePath, renderRuntimePromotionRecord(request));
+  writeUtf8(promotionRecordAbsolutePath, renderRuntimePromotionRecord(request));
 
   return {
     ok: true as const,

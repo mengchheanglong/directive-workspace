@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import {
   appendDirectiveCaseMirrorEvents,
@@ -12,10 +13,7 @@ import type { DirectiveMirroredRuntimeFollowUpOpenProjectionInput } from "../../
 import type { DirectiveMirroredRuntimeProofOpenProjectionInput } from "../../runtime/lib/runtime-proof-open-projections.ts";
 import type { DirectiveMirroredRuntimeCapabilityBoundaryOpenProjectionInput } from "../../runtime/lib/runtime-capability-boundary-projections.ts";
 import type { DirectiveMirroredRuntimePromotionReadinessOpenProjectionInput } from "../../runtime/lib/runtime-promotion-readiness-projections.ts";
-import {
-  readJson,
-  writeJsonPretty,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { readJson, writeJson as writeJsonPretty } from "../../shared/lib/file-io.ts";
 
 export type DirectiveMirroredDiscoveryCaseRecord = {
   schemaVersion: 1;
@@ -116,10 +114,6 @@ export type MirrorDirectiveRuntimePromotionReadinessOpenInput = {
   linkedArtifacts: DirectiveMirroredDiscoveryCaseRecord["linkedArtifacts"];
   projectionInput: DirectiveMirroredRuntimePromotionReadinessOpenProjectionInput;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function sanitizeCaseId(value: string) {
   return String(value)

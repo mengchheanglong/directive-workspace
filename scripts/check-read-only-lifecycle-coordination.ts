@@ -42,33 +42,29 @@ function main() {
   });
   assert.equal(report.upstreamSignals.manualRuntimePromotionCycles.totalManualPromotionRecords >= 9, true);
   assert.equal(report.upstreamSignals.manualRuntimePromotionCycles.validatedLocallyCount >= 9, true);
-  assert.deepEqual(report.upstreamSignals.runtimePromotionAssistanceTopRecommendation, {
-    candidateId: "research-engine-repo-jackswl-deep-researcher-20260407t041754z-20260407t051723.",
-    assistanceState: "blocked_pending_host_selection",
-    recommendedActionKind: "clarify_repo_native_host_target",
-  });
+  assert.equal(report.upstreamSignals.runtimePromotionAssistanceTopRecommendation, null);
 
   assert.equal(report.summary.totalLiveCases, 47);
   assert.equal(report.summary.recommendTaskCount, 0);
   assert.equal(report.summary.parkedCount, 46);
   assert.equal(report.summary.stopCount, 1);
   assert.equal(report.summary.currentLaneCounts.runtime, 16);
-  assert.equal(report.summary.currentLaneCounts.architecture, 25);
-  assert.equal(report.summary.currentLaneCounts.discovery, 6);
+  assert.equal(report.summary.currentLaneCounts.architecture, 29);
+  assert.equal(report.summary.currentLaneCounts.discovery, 2);
   assert.equal(report.summary.bucketCounts.runtime_promotion_readiness_parked, 7);
   assert.equal(report.summary.bucketCounts.architecture_retention_confirmation_due, 0);
-  assert.equal(report.summary.bucketCounts.architecture_experimental_parked, 11);
+  assert.equal(report.summary.bucketCounts.architecture_experimental_parked, 15);
   assert.equal(report.summary.bucketCounts.architecture_keep_stop_carried_in_queue, 1);
-  assert.equal(report.summary.bucketCounts.other_live_case, 17);
+  assert.equal(report.summary.bucketCounts.other_live_case, 13);
   assert.equal(report.summary.bucketCounts.runtime_manual_promotion_stop, 9);
 
   assert.ok(report.topCoordinationPressure, "Expected one top coordination pressure");
-  assert.equal(report.topCoordinationPressure.bucketId, "other_live_case");
+  assert.equal(report.topCoordinationPressure.bucketId, "architecture_experimental_parked");
   assert.equal(report.topCoordinationPressure.coordinationOutcome, "parked");
-  assert.equal(report.topCoordinationPressure.caseCount, 17);
+  assert.equal(report.topCoordinationPressure.caseCount, 15);
   assert.ok(
-    report.topCoordinationPressure.recommendedFocus.includes("Keep unmatched live cases visible"),
-    "Expected the top pressure to reflect the unmatched live-case review cluster",
+    report.topCoordinationPressure.recommendedFocus.includes("Keep experimental Architecture cases grouped"),
+    "Expected the top pressure to reflect the parked Architecture experimental cluster",
   );
 
   const scientify = findCase(report, "dw-source-scientify-research-workflow-plugin-2026-03-27");
@@ -142,6 +138,13 @@ function main() {
   assert.equal(corePrinciples.currentStage, "architecture.implementation_target.opened");
   assert.equal(corePrinciples.bucketId, "other_live_case");
   assert.equal(corePrinciples.coordinationOutcome, "parked");
+
+  const paperqa2 = findCase(report, "research-engine-paperqa2-20260406t145339z-20260406t145353.");
+  assert.equal(paperqa2.currentStage, "architecture.bounded_result.stay_experimental");
+  assert.equal(paperqa2.currentLane, "architecture");
+  assert.equal(paperqa2.bucketId, "architecture_experimental_parked");
+  assert.equal(paperqa2.coordinationOutcome, "parked");
+  assert.equal(paperqa2.actionKind, "keep_experimental_case_visible");
 
   const monitor = findCase(report, "dw-mission-agentics-issue-triage-discovery-restart-2026-03-26");
   assert.equal(monitor.bucketId, "discovery_monitor_hold");

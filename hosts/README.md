@@ -15,12 +15,12 @@ A host does not own:
 - adoption-target vocabulary
 - Engine lane boundaries
 
-Current host:
-- `Mission Control`
+Current repo-native hosts:
+- `hosts/standalone-host/`
 - `Directive Workspace Frontend (frontend/ app + hosts/web-host/ host)`
 
 Host-neutral integration kit:
-- `C:\Users\User\.openclaw\workspace\directive-workspace\hosts\integration-kit\README.md`
+- `hosts/integration-kit/README.md`
 
-Host-owned adapter edge:
-- `hosts/adapters/`
+Discovery importers:
+- `discovery/importers/`

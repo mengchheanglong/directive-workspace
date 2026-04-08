@@ -32,9 +32,9 @@ Current reusable templates include:
 - IntegrationContractArtifact and ProofChecklistArtifact templates
 - shared decision and experiment templates
 
-OpenClaw note:
-- OpenClaw-native rescue templates live under `C:\Users\User\.openclaw\workspace\openclaw\templates\`
-- Directive Workspace may reference those templates when needed, but does not own them
+External-host note:
+- host-specific rescue, recovery, and orchestration templates should live with the owning host
+- Directive Workspace may reference external host templates when needed, but does not own them
 
 Current cross-track contracts include:
 - promotion-quality gate contract

@@ -2,6 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { normalizeAbsolutePath } from "../shared/lib/path-normalization.ts";
 
 import { closeDirectiveArchitectureBoundedStart } from "../architecture/lib/architecture-bounded-closeout.ts";
 import {
@@ -74,7 +75,7 @@ type ProofReport = {
   };
 };
 
-const SOURCE_ROOT = normalizePath(
+const SOURCE_ROOT = normalizeAbsolutePath(
   path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."),
 );
 
@@ -86,10 +87,6 @@ const REOPENED_BOUNDED_START =
   "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-bounded-start.md";
 const TEMP_REOPENED_CONTINUATION =
   "architecture/01-experiments/2026-03-24-dw-real-gpt-researcher-engine-handoff-2026-03-24-continuation-reopened-continuation-bounded-start.md";
-
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function stageRealArtifact(sourceRoot: string, tempRoot: string, relativePath: string) {
   const source = resolveDirectiveWorkspaceArtifactAbsolutePath({
@@ -153,7 +150,7 @@ function removeIfExists(root: string, relativePath: string) {
 }
 
 export function runDirectiveArchitectureCompositionCheck() {
-  const tempRoot = normalizePath(
+  const tempRoot = normalizeAbsolutePath(
     fs.mkdtempSync(path.join(os.tmpdir(), "directive-architecture-composition-")),
   );
 

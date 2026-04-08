@@ -68,6 +68,7 @@ export const appStyles = css`
   .decision-entry-list { display:grid; gap:14px; margin-top:14px; }
   .decision-entry { border:1px solid #d9d0bf; border-radius:14px; padding:16px; background:linear-gradient(180deg,#fffdf9 0%,#f8f2e6 100%); overflow:hidden; }
   .decision-entry.runtime_host_selection { border-color:#b8ccef; background:linear-gradient(180deg,#f7fbff 0%,#edf4ff 100%); }
+  .decision-entry.runtime_promotion_seam_decision { border-color:#c7b8ef; background:linear-gradient(180deg,#fbf8ff 0%,#f1edff 100%); }
   .decision-entry.runtime_registry_acceptance { border-color:#a8d1ad; background:linear-gradient(180deg,#f5fff6 0%,#ecf8ee 100%); }
   .decision-entry.architecture_materialization_due { border-color:#d6c1e8; background:linear-gradient(180deg,#fbf7ff 0%,#f3ecfb 100%); }
   .decision-entry.discovery_routing_review { border-color:#e7c88d; background:linear-gradient(180deg,#fffaf0 0%,#fff2d9 100%); }

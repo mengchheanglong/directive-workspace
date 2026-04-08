@@ -77,6 +77,8 @@ const ALLOWED_HOST_IMPORT_PREFIXES: string[] = [
   // Residual shared support still consumed by hosts
   "engine/execution/engine-run-artifacts.ts",
   "shared/lib/directive-workspace-artifact-storage.ts",
+  "shared/lib/file-io.ts",
+  "shared/lib/path-normalization.ts",
 ];
 
 type Violation = {

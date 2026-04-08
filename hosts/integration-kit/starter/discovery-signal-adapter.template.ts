@@ -16,7 +16,7 @@ export type RuntimeVerificationSignal = {
 
 export type MaintenanceWatchdogSignal = {
   candidate_id: string;
-  candidate_name: "OpenClaw Maintenance Watchdog Signal";
+  candidate_name: string;
   source_type: "internal-signal";
   source_reference: string;
   mission_alignment: string;

@@ -38,7 +38,7 @@ Start with these Engine-owned grouped surfaces first:
 - `engine/cases/`
 - `engine/coordination/`
 - `engine/execution/`
-- `hosts/adapters/`
+- `discovery/importers/`
 
 Open `shared/lib/` only when you need residual support code rather than a lane home.
 
@@ -48,6 +48,12 @@ Recent lane-owned moves out of this folder:
 - `architecture/lib/operator-simplicity-loop-control.ts`
 
 Current residual files that still belong here:
+- `validation.ts`
+  Small cross-lane string validation helpers used by Discovery, Engine, Runtime, and artifact readers.
+- `directive-relative-path.ts`
+  Canonical validated relative-path handling for directive-workspace artifact references shared by Engine state, Architecture helpers, and cross-lane readers.
+- `workspace-root.ts`
+  Shared directive-workspace root resolution so cross-lane readers do not reach into Architecture for generic path setup.
 - `directive-workspace-artifact-storage.ts`
   Canonical logical-to-physical artifact path/storage compatibility for multiple lanes and host read surfaces.
 - `structured-output-fallback.ts`

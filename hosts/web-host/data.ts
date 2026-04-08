@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath, normalizeRelativePath } from "../../shared/lib/path-normalization.ts";
 
 import { isDirectiveCurrentStageEligibleForOpening } from "../../engine/approval-boundary.ts";
 import {
@@ -778,14 +779,6 @@ export type DirectiveFrontendArchitecturePostConsumptionEvaluationDetail =
       relativePath: string;
     };
 
-function normalizePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
-
-function normalizeRelativePath(filePath: string) {
-  return filePath.replace(/\\/g, "/");
-}
-
 function buildDirectiveFrontendArtifactViewPath(input: {
   relativePath: string;
   artifactKind: string;
@@ -931,7 +924,7 @@ function buildFrontendQueueEntry(input: {
     try {
       const routing = readDirectiveDiscoveryRoutingArtifact({
         directiveRoot: input.directiveRoot,
-        relativePath: input.entry.routing_record_path,
+        routingPath: input.entry.routing_record_path,
       });
       if (!routing.reviewGuidance) {
         return null;
@@ -1188,11 +1181,11 @@ function normalizeDirectiveWorkspaceArtifactReference(input: {
     return null;
   }
 
-  const directiveRoot = normalizePath(input.directiveRoot);
+  const directiveRoot = normalizeAbsolutePath(input.directiveRoot);
   const normalizedValue = normalizeRelativePath(rawValue);
   const absolutePath = path.isAbsolute(normalizedValue)
-    ? normalizePath(normalizedValue)
-    : normalizePath(path.join(directiveRoot, normalizedValue));
+    ? normalizeAbsolutePath(normalizedValue)
+    : normalizeAbsolutePath(path.join(directiveRoot, normalizedValue));
   const rootPrefix = `${directiveRoot}/`;
   const workspaceRootSegment = `/${path.basename(directiveRoot)}/`;
 
@@ -1289,14 +1282,14 @@ export function readFrontendQueueOverview(input: {
       updatedAt?: string | null;
       entries?: StoredFrontendQueueEntry[];
     } | null;
-    const queuePath = normalizePath(
+    const queuePath = normalizeAbsolutePath(
       path.join(input.directiveRoot, "discovery", "intake-queue.json"),
     );
 
     if (!queue || !Array.isArray(queue.entries)) {
       return {
         ok: false,
-        rootPath: normalizePath(input.directiveRoot),
+        rootPath: normalizeAbsolutePath(input.directiveRoot),
         queuePath,
         updatedAt: null,
         totalEntries: 0,
@@ -1313,7 +1306,7 @@ export function readFrontendQueueOverview(input: {
 
     return {
       ok: true,
-      rootPath: normalizePath(input.directiveRoot),
+      rootPath: normalizeAbsolutePath(input.directiveRoot),
       queuePath,
       updatedAt: queue.updatedAt ?? null,
       totalEntries: queue.entries.length,
@@ -1389,7 +1382,20 @@ function readRuntimeFollowUpStubs(input: {
             title: detail.title,
             status: "historical_follow_up",
             startRelativePath: null,
-            warning: "Historical Runtime follow-up; inspectable only and not part of the current non-executing Runtime v0 chain.",
+            warning: "Historical Runtime follow-up; inspectable only and not part of the current non-executing Legacy Runtime chain.",
+          };
+        }
+
+        if (!detail.ok) {
+          return {
+            kind: "runtime_follow_up" as const,
+            lane: "runtime" as const,
+            relativePath,
+            candidateId: deriveLegacyRuntimeFollowUpCandidateId(entry.name),
+            title: entry.name,
+            status: "invalid_artifact_state",
+            startRelativePath: null,
+            warning: "error" in detail ? detail.error : "Runtime follow-up artifact could not be read.",
           };
         }
 
@@ -1401,9 +1407,7 @@ function readRuntimeFollowUpStubs(input: {
           title: entry.name,
           status: "invalid_artifact_state",
           startRelativePath: null,
-          warning: detail.ok
-            ? "Unsupported Runtime follow-up artifact shape."
-            : detail.error,
+          warning: "Unsupported Runtime follow-up artifact shape.",
         };
       } catch (error) {
         return {
@@ -1452,7 +1456,7 @@ function readLegacyRuntimeHandoffStubs(input: {
         title: detail.title,
         status: "historical_handoff",
         startRelativePath: null,
-        warning: "Historical Runtime handoff; inspectable only and not part of the current non-executing Runtime v0 chain.",
+        warning: "Historical Runtime handoff; inspectable only and not part of the current non-executing Legacy Runtime chain.",
       }];
     });
 }
@@ -1648,7 +1652,7 @@ export function readDirectiveFrontendArtifactText(input: {
   directiveRoot: string;
   relativePath: string;
 }) {
-  const directiveRoot = normalizePath(input.directiveRoot);
+  const directiveRoot = normalizeAbsolutePath(input.directiveRoot);
   const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
   if (!relativePath) {
     throw new Error("invalid_input: relativePath is required");
@@ -1662,7 +1666,7 @@ export function readDirectiveFrontendArtifactText(input: {
     relativePath,
     mode: "read",
   });
-  const rootPrefix = `${normalizePath(directiveRoot)}/`;
+  const rootPrefix = `${normalizeAbsolutePath(directiveRoot)}/`;
   if (absolutePath !== directiveRoot && !absolutePath.startsWith(rootPrefix)) {
     throw new Error("invalid_input: relativePath must stay within directive-workspace");
   }
@@ -2298,7 +2302,9 @@ export function readDirectiveFrontendRuntimePromotionReadinessDetail(input: {
         || extractBulletValue(artifact.content, "Runtime capability boundary"),
       linkedRuntimeProofPath: extractBulletValue(artifact.content, "Source Runtime proof artifact")
         || extractBulletValue(artifact.content, "Runtime proof artifact"),
-      linkedRuntimeRecordPath: extractBulletValue(artifact.content, "Source Runtime v0 record")
+      linkedRuntimeRecordPath: extractBulletValue(artifact.content, "Source Legacy Runtime record")
+        || extractBulletValue(artifact.content, "Source Runtime v0 record")
+        || extractBulletValue(artifact.content, "Legacy Runtime record")
         || extractBulletValue(artifact.content, "Runtime v0 record"),
       linkedFollowUpPath: extractBulletValue(artifact.content, "Source Runtime follow-up record"),
       linkedRoutingPath: extractBulletValue(artifact.content, "Linked Discovery routing record") || null,
@@ -2603,7 +2609,16 @@ function extractMarkdownTitleOrFilename(content: string, relativePath: string) {
     || path.basename(relativePath);
 }
 
-function readDirectiveFrontendArchitectureDeepTailDetail<TSuccess extends { ok: true; relativePath: string }>(input: {
+type DirectiveFrontendArchitectureDeepTailError = {
+  ok: false;
+  error: string;
+  relativePath: string;
+};
+
+function readDirectiveFrontendArchitectureDeepTailDetail<
+  TDetail extends { ok: true; relativePath: string } | DirectiveFrontendArchitectureDeepTailError,
+  TSuccess extends Extract<TDetail, { ok: true }> = Extract<TDetail, { ok: true }>,
+>(input: {
   directiveRoot: string;
   relativePath: string;
   stage: ArchitectureDeepTailStageId;
@@ -2616,14 +2631,14 @@ function readDirectiveFrontendArchitectureDeepTailDetail<TSuccess extends { ok: 
     relativePath: string;
     focus: NonNullable<ReturnType<typeof resolveDirectiveWorkspaceState>["focus"]>;
   }) => Omit<TSuccess, "ok" | "relativePath" | "absolutePath" | "artifactStage" | "artifactNextLegalStep" | "currentStage" | "nextLegalStep" | "currentHead">;
-}): TSuccess | { ok: false; error: string; relativePath: string } {
+}): TDetail {
   const relativePath = normalizeRelativePath(String(input.relativePath || "").trim());
   if (!relativePath) {
     return {
       ok: false,
       error: "missing_relative_path",
       relativePath,
-    };
+    } as unknown as TDetail;
   }
 
   const stage = ARCHITECTURE_DEEP_TAIL_STAGE[input.stage];
@@ -2632,7 +2647,7 @@ function readDirectiveFrontendArchitectureDeepTailDetail<TSuccess extends { ok: 
       ok: false,
       error: input.invalidPathError,
       relativePath,
-    };
+    } as unknown as TDetail;
   }
 
   try {
@@ -2661,13 +2676,13 @@ function readDirectiveFrontendArchitectureDeepTailDetail<TSuccess extends { ok: 
         relativePath,
         focus,
       }),
-    } as TSuccess;
+    } as unknown as TDetail;
   } catch (error) {
     return {
       ok: false,
       error: String((error as Error).message || error),
       relativePath,
-    };
+    } as TDetail;
   }
 }
 
@@ -3000,4 +3015,5 @@ export const readDirectiveWorkbenchArchitectureConsumptionRecordDetail =
   readDirectiveFrontendArchitectureConsumptionRecordDetail;
 export const readDirectiveWorkbenchArchitecturePostConsumptionEvaluationDetail =
   readDirectiveFrontendArchitecturePostConsumptionEvaluationDetail;
+
 

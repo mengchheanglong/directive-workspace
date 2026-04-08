@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getDefaultDirectiveWorkspaceRoot, normalizePath } from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 
 export type StoredDirectiveEngineRunRecord = {
   $schema?: string;
@@ -282,8 +283,8 @@ function readRunArtifact(
   const reportContent = reportExists ? fs.readFileSync(reportPath, "utf8") : null;
 
   return {
-    recordPath: normalizePath(recordPath),
-    reportPath: reportExists ? normalizePath(reportPath) : null,
+    recordPath: normalizeAbsolutePath(recordPath),
+    reportPath: reportExists ? normalizeAbsolutePath(reportPath) : null,
     reportExcerpt: summarizeReportMarkdown(reportContent, parsed.reportPlan.summary),
     reportContent: options.includeReportContent ? reportContent : undefined,
     gapPressure: describeDirectiveEngineGapPressure(parsed),
@@ -321,8 +322,8 @@ function zeroCounts() {
 export function readDirectiveEngineRunsOverview(
   options: ReadDirectiveEngineRunsOverviewOptions = {},
 ): DirectiveEngineRunsOverview {
-  const directiveRoot = normalizePath(options.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const engineRunsRoot = normalizePath(
+  const directiveRoot = normalizeAbsolutePath(options.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const engineRunsRoot = normalizeAbsolutePath(
     path.join(directiveRoot, "runtime", "standalone-host", "engine-runs"),
   );
   const maxRuns = Math.max(1, options.maxRuns ?? 6);
@@ -407,8 +408,8 @@ export function readDirectiveEngineRunsOverview(
 export function readDirectiveEngineRunDetail(
   options: ReadDirectiveEngineRunDetailOptions,
 ): DirectiveEngineRunDetail {
-  const directiveRoot = normalizePath(options.directiveRoot || getDefaultDirectiveWorkspaceRoot());
-  const engineRunsRoot = normalizePath(
+  const directiveRoot = normalizeAbsolutePath(options.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const engineRunsRoot = normalizeAbsolutePath(
     path.join(directiveRoot, "runtime", "standalone-host", "engine-runs"),
   );
   const runId = String(options.runId || "").trim();

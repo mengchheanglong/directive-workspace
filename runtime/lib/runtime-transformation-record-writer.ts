@@ -1,17 +1,8 @@
 import path from "node:path";
-
-function requiredString(value: string, fieldName: string) {
-  const normalized = value.trim();
-  if (!normalized) {
-    throw new Error(`${fieldName} is required`);
-  }
-  return normalized;
-}
-
-function optionalString(value?: string | null) {
-  const normalized = String(value ?? "").trim();
-  return normalized || null;
-}
+import {
+  optionalRuntimeWriterString,
+  requireRuntimeWriterString,
+} from "./runtime-writer-support.ts";
 
 export type RuntimeTransformationRecordRequest = {
   candidate_id: string;
@@ -65,55 +56,55 @@ export function resolveRuntimeTransformationRecordPath(input: {
 export function renderRuntimeTransformationRecord(
   request: RuntimeTransformationRecordRequest,
 ) {
-  const promotionRecord = optionalString(request.promotion_record);
+  const promotionRecord = optionalRuntimeWriterString(request.promotion_record);
 
-  return `# Transformation Record: ${requiredString(request.candidate_name, "candidate_name")}
+  return `# Transformation Record: ${requireRuntimeWriterString(request.candidate_name, "candidate_name")}
 
-- Candidate id: ${requiredString(request.candidate_id, "candidate_id")}
-- Candidate name: ${requiredString(request.candidate_name, "candidate_name")}
-- Record date: ${requiredString(request.record_date, "record_date")}
-- Transformation type: ${requiredString(request.transformation_type, "transformation_type")}
-- Discovery intake path: \`${requiredString(request.discovery_intake_path, "discovery_intake_path")}\`
+- Candidate id: ${requireRuntimeWriterString(request.candidate_id, "candidate_id")}
+- Candidate name: ${requireRuntimeWriterString(request.candidate_name, "candidate_name")}
+- Record date: ${requireRuntimeWriterString(request.record_date, "record_date")}
+- Transformation type: ${requireRuntimeWriterString(request.transformation_type, "transformation_type")}
+- Discovery intake path: \`${requireRuntimeWriterString(request.discovery_intake_path, "discovery_intake_path")}\`
 
 ## Before State
 
-- Component: ${requiredString(request.component, "component")}
-- Current implementation: ${requiredString(request.current_implementation, "current_implementation")}
+- Component: ${requireRuntimeWriterString(request.component, "component")}
+- Current implementation: ${requireRuntimeWriterString(request.current_implementation, "current_implementation")}
 - Measured baseline:
-  - metric: ${requiredString(request.baseline_metric, "baseline_metric")}
-  - value: ${requiredString(request.baseline_value, "baseline_value")}
-  - measurement method: ${requiredString(request.baseline_measurement_method, "baseline_measurement_method")}
+  - metric: ${requireRuntimeWriterString(request.baseline_metric, "baseline_metric")}
+  - value: ${requireRuntimeWriterString(request.baseline_value, "baseline_value")}
+  - measurement method: ${requireRuntimeWriterString(request.baseline_measurement_method, "baseline_measurement_method")}
 
 ## After State
 
-- Proposed change: ${requiredString(request.proposed_change, "proposed_change")}
-- Preservation claim: ${requiredString(request.preservation_claim, "preservation_claim")}
+- Proposed change: ${requireRuntimeWriterString(request.proposed_change, "proposed_change")}
+- Preservation claim: ${requireRuntimeWriterString(request.preservation_claim, "preservation_claim")}
 - Expected improvement:
-  - metric: ${requiredString(request.expected_improvement_metric, "expected_improvement_metric")}
-  - target value: ${requiredString(request.expected_target_value, "expected_target_value")}
-  - measurement method: ${requiredString(request.expected_measurement_method, "expected_measurement_method")}
+  - metric: ${requireRuntimeWriterString(request.expected_improvement_metric, "expected_improvement_metric")}
+  - target value: ${requireRuntimeWriterString(request.expected_target_value, "expected_target_value")}
+  - measurement method: ${requireRuntimeWriterString(request.expected_measurement_method, "expected_measurement_method")}
 
 ## Evaluator
 
-- Evaluator type: ${requiredString(request.evaluator_type, "evaluator_type")}
-- Evaluator command (if automated): ${optionalString(request.evaluator_command) ?? "n/a"}
-- Comparison mode: ${requiredString(request.comparison_mode, "comparison_mode")}
-- Baseline artifact path: \`${requiredString(request.baseline_artifact_path, "baseline_artifact_path")}\`
-- Result artifact path: \`${requiredString(request.result_artifact_path, "result_artifact_path")}\`
+- Evaluator type: ${requireRuntimeWriterString(request.evaluator_type, "evaluator_type")}
+- Evaluator command (if automated): ${optionalRuntimeWriterString(request.evaluator_command) ?? "n/a"}
+- Comparison mode: ${requireRuntimeWriterString(request.comparison_mode, "comparison_mode")}
+- Baseline artifact path: \`${requireRuntimeWriterString(request.baseline_artifact_path, "baseline_artifact_path")}\`
+- Result artifact path: \`${requireRuntimeWriterString(request.result_artifact_path, "result_artifact_path")}\`
 
 ## Proof
 
-- Correctness preserved: ${requiredString(request.correctness_preserved, "correctness_preserved")}
-- Metric improvement measured: ${requiredString(request.metric_improvement_measured, "metric_improvement_measured")}
-- Rollback path: ${requiredString(request.rollback_path, "rollback_path")}
-- Rollback tested: ${requiredString(request.rollback_tested, "rollback_tested")}
+- Correctness preserved: ${requireRuntimeWriterString(request.correctness_preserved, "correctness_preserved")}
+- Metric improvement measured: ${requireRuntimeWriterString(request.metric_improvement_measured, "metric_improvement_measured")}
+- Rollback path: ${requireRuntimeWriterString(request.rollback_path, "rollback_path")}
+- Rollback tested: ${requireRuntimeWriterString(request.rollback_tested, "rollback_tested")}
 
 ## Decision
 
-- Decision state: ${requiredString(request.decision_state, "decision_state")}
+- Decision state: ${requireRuntimeWriterString(request.decision_state, "decision_state")}
 - Adoption target: Runtime
 - Promotion record (if promoted): ${promotionRecord ? `\`${promotionRecord}\`` : "n/a"}
-- Mission alignment (which active-mission objective does this serve): ${requiredString(request.mission_alignment, "mission_alignment")}
-- Addresses known capability gap (gap_id or n/a): ${requiredString(request.capability_gap_id, "capability_gap_id")}
+- Mission alignment (which active-mission objective does this serve): ${requireRuntimeWriterString(request.mission_alignment, "mission_alignment")}
+- Addresses known capability gap (gap_id or n/a): ${requireRuntimeWriterString(request.capability_gap_id, "capability_gap_id")}
 `;
 }

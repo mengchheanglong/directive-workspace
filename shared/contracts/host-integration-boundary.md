@@ -7,11 +7,8 @@ It must remain:
 - host-integrable
 - product-owned
 
-Mission Control is the current active host.
-It is not the definition of Directive Workspace.
-
-OpenClaw is a connected orchestration layer.
-It is not the definition of Directive Workspace either.
+Repo-native hosts and external runtimes are integration surfaces.
+They are not the definition of Directive Workspace.
 
 ## Product Ownership
 
@@ -69,8 +66,9 @@ In particular, hosts must not become the canonical owner of:
 
 ## Current Host State
 
-- Mission Control is the first and only active runtime host today.
-- That does **not** make Mission Control the permanent or exclusive host model.
+- `hosts/standalone-host/` is the filesystem reference host.
+- `hosts/web-host/` is the product-owned frontend/API host.
+- `hosts/integration-kit/` is the starter surface for external hosts.
 - Future hosts should be able to integrate Directive Workspace through the same product-owned contracts and shared operating assets.
 
 ## Practical Rule For New Work
@@ -82,4 +80,4 @@ When adding a new host-facing capability:
 
 ## Final Boundary Sentence
 
-Directive Workspace is the standalone product and canonical operating system for mission-driven source adaptation; Mission Control, OpenClaw, and any future environment are integration hosts or connected layers that consume, enforce, or expose Directive Workspace rather than define it.
+Directive Workspace is the standalone product and canonical operating system for mission-driven source adaptation; hosts and connected layers consume, enforce, or expose Directive Workspace rather than define it.

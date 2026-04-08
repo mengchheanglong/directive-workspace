@@ -1,12 +1,5 @@
 import path from "node:path";
-
-function requiredString(value: string, fieldName: string) {
-  const normalized = value.trim();
-  if (!normalized) {
-    throw new Error(`${fieldName} is required`);
-  }
-  return normalized;
-}
+import { requireRuntimeWriterString } from "./runtime-writer-support.ts";
 
 function normalizeChecks(
   values?: Array<{
@@ -15,7 +8,7 @@ function normalizeChecks(
   }> | null,
 ) {
   return (values ?? []).map((value) => ({
-    check_name: requiredString(value.check_name, "regression_checks.check_name"),
+    check_name: requireRuntimeWriterString(value.check_name, "regression_checks.check_name"),
     result: value.result,
   }));
 }
@@ -73,42 +66,42 @@ export function renderRuntimeTransformationProof(
   request: RuntimeTransformationProofRequest,
 ) {
   return {
-    candidate_id: requiredString(request.candidate_id, "candidate_id"),
-    transformation_type: requiredString(
+    candidate_id: requireRuntimeWriterString(request.candidate_id, "candidate_id"),
+    transformation_type: requireRuntimeWriterString(
       request.transformation_type,
       "transformation_type",
     ),
-    preservation_claim: requiredString(
+    preservation_claim: requireRuntimeWriterString(
       request.preservation_claim,
       "preservation_claim",
     ),
     baseline_measurement: {
-      metric: requiredString(
+      metric: requireRuntimeWriterString(
         request.baseline_measurement.metric,
         "baseline_measurement.metric",
       ),
       value: request.baseline_measurement.value,
-      measurement_method: requiredString(
+      measurement_method: requireRuntimeWriterString(
         request.baseline_measurement.measurement_method,
         "baseline_measurement.measurement_method",
       ),
     },
     result_measurement: {
-      metric: requiredString(
+      metric: requireRuntimeWriterString(
         request.result_measurement.metric,
         "result_measurement.metric",
       ),
       value: request.result_measurement.value,
-      measurement_method: requiredString(
+      measurement_method: requireRuntimeWriterString(
         request.result_measurement.measurement_method,
         "result_measurement.measurement_method",
       ),
     },
-    comparison_summary: requiredString(
+    comparison_summary: requireRuntimeWriterString(
       request.comparison_summary,
       "comparison_summary",
     ),
-    rollback_verification: requiredString(
+    rollback_verification: requireRuntimeWriterString(
       request.rollback_verification,
       "rollback_verification",
     ),

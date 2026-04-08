@@ -5,13 +5,10 @@ import {
   ARCHITECTURE_DEEP_TAIL_STAGES,
   resolveArchitectureDeepTailStage,
 } from "../../architecture/lib/architecture-deep-tail-stage-map.ts";
+import { normalizeAbsolutePath } from "./path-normalization.ts";
 
 function normalizeRelativePath(relativePath: string) {
   return String(relativePath || "").trim().replace(/\\/g, "/");
-}
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
 }
 
 function resolveDirectiveRelativePathWithinRoot(directiveRoot: string, inputPath: string) {

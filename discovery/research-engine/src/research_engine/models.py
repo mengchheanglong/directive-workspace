@@ -38,6 +38,8 @@ class MissionConstraints:
     max_queries: int = 8
     max_candidates: int = 10
     max_fetches: int = 20
+    max_requests: int = 240
+    per_provider_max_requests: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -234,6 +236,9 @@ class ProviderHealth:
     reason_codes: list[str] = field(default_factory=list)
     status_summary: str = ""
     notes: list[str] = field(default_factory=list)
+    budget_max_requests: int | None = None
+    budget_used_requests: int | None = None
+    budget_exhaustion_events: list[str] = field(default_factory=list)
 
 
 @dataclass(slots=True)

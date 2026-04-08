@@ -13,7 +13,6 @@ Current files:
 Rules:
 
 - these files are canonical machine-readable control truth
-- `road-to-completion.md` remains the historical human-readable completion anchor
 - update them only when repo truth materially changes
 - do not treat them as seam-opening authority ahead of proof
 

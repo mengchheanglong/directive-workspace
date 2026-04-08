@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import {
   assertRuntimeHostCallableAdapterDescriptor,
@@ -45,10 +46,6 @@ export type RuntimeRegistryAcceptanceGateReport = {
   };
   violations: string[];
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function toDirectiveRelativePath(directiveRoot: string, filePath: string) {
   const normalized = normalizeAbsolutePath(

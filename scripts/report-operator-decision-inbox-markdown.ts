@@ -5,13 +5,11 @@ import {
   buildOperatorDecisionInboxReport,
   renderOperatorDecisionInboxMarkdown,
 } from "../engine/coordination/operator-decision-inbox.ts";
-import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-} from "../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+import { normalizeAbsolutePath } from "../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../shared/lib/workspace-root.ts";
 
 function main() {
-  const directiveRoot = normalizePath(getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(getDefaultDirectiveWorkspaceRoot());
   const report = buildOperatorDecisionInboxReport({
     directiveRoot,
   });

@@ -1689,7 +1689,7 @@ function main() {
   );
   assert.equal(
     legacyRuntimeFollowUpFocus.nextLegalStep,
-    "No automatic Runtime step is open; this historical deferred Runtime follow-up remains parked unless a new bounded Runtime v0 re-entry is explicitly opened.",
+    "No automatic Runtime step is open; this historical deferred Runtime follow-up remains parked unless a new bounded Legacy Runtime re-entry is explicitly opened.",
   );
 
   const legacyRuntimeActiveFollowUpFocus = expectFocus(LEGACY_RUNTIME_ACTIVE_FOLLOW_UP_PATH);
@@ -1728,7 +1728,7 @@ function main() {
   );
   assert.equal(
     legacyRuntimeActiveFollowUpFocus.nextLegalStep,
-    "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+    "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
   );
 
   for (const [relativePath, candidateId, candidateName, currentStatus] of [
@@ -1767,7 +1767,7 @@ function main() {
     );
     assert.equal(
       legacyNarrativeRuntimeFollowUpFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime follow-up remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     assert.equal(
       legacyNarrativeRuntimeFollowUpFocus.inconsistentLinks.length,
@@ -1816,7 +1816,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeHandoffFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical architecture-to-runtime handoff remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical architecture-to-runtime handoff remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
   }
 
@@ -1867,7 +1867,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeRecordFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
   }
 
@@ -1907,7 +1907,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeSliceProofFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime slice proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime slice proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     expectNoDrift(relativePath, legacyRuntimeSliceProofFocus);
   }
@@ -1954,7 +1954,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeSliceExecutionFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime slice execution remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime slice execution remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     expectNoDrift(relativePath, legacyRuntimeSliceExecutionFocus);
   }
@@ -1982,7 +1982,7 @@ function main() {
   );
   assert.equal(
     legacyRuntimeProofChecklistFocus.nextLegalStep,
-    "No automatic Runtime step is open; this historical Runtime proof checklist remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+    "No automatic Runtime step is open; this historical Runtime proof checklist remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
   );
   expectNoDrift(LEGACY_RUNTIME_SCIENTIFY_PROOF_CHECKLIST_PATH, legacyRuntimeProofChecklistFocus);
 
@@ -2009,7 +2009,7 @@ function main() {
   );
   assert.equal(
     legacyRuntimeLiveFetchProofFocus.nextLegalStep,
-    "No automatic Runtime step is open; this historical Runtime live-fetch proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+    "No automatic Runtime step is open; this historical Runtime live-fetch proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
   );
   expectNoDrift(LEGACY_RUNTIME_SCIENTIFY_LIVE_FETCH_PROOF_PATH, legacyRuntimeLiveFetchProofFocus);
 
@@ -2052,7 +2052,7 @@ function main() {
   );
   assert.equal(
     legacyRuntimeLiveFetchGateSnapshotFocus.nextLegalStep,
-    "No automatic Runtime step is open; this historical Runtime live-fetch gate snapshot remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+    "No automatic Runtime step is open; this historical Runtime live-fetch gate snapshot remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
   );
   expectNoDrift(
     LEGACY_RUNTIME_SCIENTIFY_LIVE_FETCH_GATE_SNAPSHOT_PATH,
@@ -2101,7 +2101,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeLivePoolFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime live pool artifact remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime live pool artifact remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     expectNoDrift(relativePath, legacyRuntimeLivePoolFocus);
   }
@@ -2148,7 +2148,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeSamplePoolFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime sample pool artifact remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime sample pool artifact remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     expectNoDrift(relativePath, legacyRuntimeSamplePoolFocus);
   }
@@ -2220,7 +2220,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeSystemBundleFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime system-bundle note remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime system-bundle note remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     expectNoDrift(relativePath, legacyRuntimeSystemBundleFocus);
   }
@@ -2277,7 +2277,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeValidationNoteFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime validation note remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime validation note remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
     expectNoDrift(relativePath, legacyRuntimeValidationNoteFocus);
   }
@@ -2331,10 +2331,10 @@ function main() {
     );
     const expectedNextStep =
       expectedStage === "runtime.precondition_proof.legacy_recorded"
-        ? "No automatic Runtime step is open; this historical Runtime CLI precondition proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened."
+        ? "No automatic Runtime step is open; this historical Runtime CLI precondition proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened."
         : expectedStage === "runtime.precondition_correction.legacy_recorded"
-          ? "No automatic Runtime step is open; this historical Runtime precondition correction remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened."
-          : "No automatic Runtime step is open; this historical Runtime host-adapter decision remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.";
+          ? "No automatic Runtime step is open; this historical Runtime precondition correction remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened."
+          : "No automatic Runtime step is open; this historical Runtime host-adapter decision remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.";
     assert.equal(legacyRuntimePreconditionDecisionNoteFocus.nextLegalStep, expectedNextStep);
     expectNoDrift(relativePath, legacyRuntimePreconditionDecisionNoteFocus);
   }
@@ -2380,7 +2380,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimeRegistryFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime registry entry remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime registry entry remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
   }
 
@@ -2425,7 +2425,7 @@ function main() {
     );
     assert.equal(
       legacyRuntimePromotionRecordFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime promotion record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime promotion record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
   }
 
@@ -2492,7 +2492,7 @@ function main() {
     );
     assert.equal(
       legacyTransformationRecordFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime transformation record remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime transformation record remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
   }
 
@@ -2547,7 +2547,7 @@ function main() {
     );
     assert.equal(
       legacyTransformationProofFocus.nextLegalStep,
-      "No automatic Runtime step is open; this historical Runtime transformation proof remains read-only unless a new bounded Runtime v0 re-entry is explicitly opened.",
+      "No automatic Runtime step is open; this historical Runtime transformation proof remains read-only unless a new bounded Legacy Runtime re-entry is explicitly opened.",
     );
   }
 
@@ -2804,7 +2804,7 @@ function main() {
   );
 
   const runtimeRecordPath = runtimeFollowUp.linkedArtifacts.runtimeRecordPath;
-  assert.ok(runtimeRecordPath, "Runtime follow-up should resolve a Runtime v0 record path");
+  assert.ok(runtimeRecordPath, "Runtime follow-up should resolve a Legacy Runtime record path");
 
   withStagedDirectiveRoot("negative-route-mismatch", (stagedRoot) => {
     for (const relativePath of uniqueRelativePaths([
@@ -3373,4 +3373,5 @@ function main() {
 }
 
 main();
+
 

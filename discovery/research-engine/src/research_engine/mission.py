@@ -33,6 +33,8 @@ def default_mission() -> ResearchMission:
             max_queries=8,
             max_candidates=10,
             max_fetches=20,
+            max_requests=240,
+            per_provider_max_requests={},
         ),
         trust_preferences=TrustPreferences(
             policy_preset="balanced-discovery",

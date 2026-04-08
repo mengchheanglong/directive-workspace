@@ -45,7 +45,7 @@ Current starter:
 7. expose it through your host API or worker entrypoint
 8. use the memory bridge and smoke template to validate your adapter shape before wiring real storage
    - use the filesystem bridge when your starter proof needs real artifact existence, not only in-memory writes
-9. add a host-side Discovery overview reader using the queue document instead of copying Mission Control service logic
+9. add a host-side Discovery overview reader using the queue document instead of copying host-local service logic
 10. adapt upstream runtime or watchdog events through the signal starter instead of inventing a host-only intake bypass
 11. prove the host against the product-owned acceptance harness before calling the integration complete
 12. emit the canonical acceptance report json through the acceptance writer starter instead of inventing a host-local artifact shape
@@ -83,9 +83,9 @@ Only the host bridge should vary.
 16. use the package-ready CLI example if you want to exercise acceptance or submission flows before copying starter files into your host repo
 
 The front-door starter exists to keep new hosts aligned with current product truth: Discovery stays first and the Engine owns route/review judgment.
-The memory bridge and smoke template exist to keep third-party hosts from starting with Mission Control assumptions.
-The filesystem bridge exists to prove starter flows that need real artifact existence without importing Mission Control runtime storage.
-The overview reader exists to keep hosts from copying Mission Control backend aggregation logic when all they need is a queue-backed Discovery summary.
+The memory bridge and smoke template exist to keep third-party hosts from starting with legacy host-specific assumptions.
+The filesystem bridge exists to prove starter flows that need real artifact existence without importing a host-local runtime storage layer.
+The overview reader exists to keep hosts from copying host-local backend aggregation logic when all they need is a queue-backed Discovery summary.
 The signal starter exists to keep hosts from bypassing Discovery when surfacing upstream runtime or watchdog events.
 The acceptance starter exists to keep `integration complete` tied to a canonical product-owned standard.
 The acceptance writer exists to keep successful host integrations emitting one canonical artifact shape.

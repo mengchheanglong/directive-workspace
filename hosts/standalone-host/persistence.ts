@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { DatabaseSync } from "node:sqlite";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import type { ResolvedStandaloneHostPersistence } from "./config.ts";
 
@@ -50,10 +51,6 @@ export type StandaloneHostPersistenceLedger = {
   }): void;
   close(): void;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function sha256(content: string) {
   return createHash("sha256").update(content).digest("hex");

@@ -63,7 +63,7 @@ export type DirectiveRuntimeCapabilityBoundaryProjectionSet =
 function renderDirectiveRuntimeCapabilityBoundaryProjection(input: {
   projectionInput: DirectiveMirroredRuntimeCapabilityBoundaryOpenProjectionInput;
 }) {
-  return `# Runtime V0 Runtime Capability Boundary: ${input.projectionInput.candidateName} (${input.projectionInput.boundaryDate})
+  return `# Legacy Runtime Runtime Capability Boundary: ${input.projectionInput.candidateName} (${input.projectionInput.boundaryDate})
 
 ## bounded runtime usefulness being converted
 - Convert the approved Runtime proof scope into one bounded runtime capability boundary for Directive Workspace runtime-usefulness conversion.
@@ -81,7 +81,7 @@ function renderDirectiveRuntimeCapabilityBoundaryProjection(input: {
 
 ## source inputs
 - Runtime proof artifact: \`${input.projectionInput.runtimeProofRelativePath}\`
-- Runtime v0 record: \`${input.projectionInput.runtimeRecordRelativePath}\`
+- Legacy Runtime record: \`${input.projectionInput.runtimeRecordRelativePath}\`
 - Source Runtime follow-up record: \`${input.projectionInput.linkedFollowUpRecord}\`
 ${input.projectionInput.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.projectionInput.linkedRoutingPath}\`\n` : ""}- Runtime objective: ${input.projectionInput.runtimeObjective}
 - Proposed host: \`${input.projectionInput.proposedHost}\`
@@ -200,3 +200,4 @@ export function writeDirectiveRuntimeCapabilityBoundaryProjectionSet(input: {
 
   return projectionSet;
 }
+

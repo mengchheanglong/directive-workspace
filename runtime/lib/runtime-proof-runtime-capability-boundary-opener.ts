@@ -127,7 +127,7 @@ function renderRuntimeCapabilityBoundaryArtifact(input: {
   const record = input.artifact.runtimeRecordArtifact;
   const followUp = record.followUpArtifact;
 
-  return `# Runtime V0 Runtime Capability Boundary: ${input.artifact.candidateName} (${input.artifact.proofDate})
+  return `# Legacy Runtime Runtime Capability Boundary: ${input.artifact.candidateName} (${input.artifact.proofDate})
 
 ## bounded runtime usefulness being converted
 - Convert the approved Runtime proof scope into one bounded runtime capability boundary for Directive Workspace runtime-usefulness conversion.
@@ -145,7 +145,7 @@ function renderRuntimeCapabilityBoundaryArtifact(input: {
 
 ## source inputs
 - Runtime proof artifact: \`${input.artifact.runtimeProofRelativePath}\`
-- Runtime v0 record: \`${input.artifact.linkedRuntimeRecordPath}\`
+- Legacy Runtime record: \`${input.artifact.linkedRuntimeRecordPath}\`
 - Source Runtime follow-up record: \`${input.artifact.linkedFollowUpPath}\`
 ${input.artifact.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.artifact.linkedRoutingPath}\`\n` : ""}- Runtime objective: ${input.artifact.runtimeObjective}
 - Proposed host: \`${input.artifact.proposedHost}\`
@@ -180,6 +180,14 @@ ${renderListOrPlaceholder(input.artifact.requiredGates.map((value) => `\`${value
 ${input.artifact.linkedRoutingPath ? `- Linked Discovery routing record: \`${input.artifact.linkedRoutingPath}\`\n` : ""}`;
 }
 
+function extractLegacyRuntimeRecordPathFromProof(content: string) {
+  try {
+    return extractBulletValue(content, "Legacy Runtime record path", 'invalid_input: missing "Legacy Runtime record path" in Runtime proof artifact');
+  } catch {
+    return extractBulletValue(content, "Runtime v0 record path", 'invalid_input: missing "Runtime v0 record path" in Runtime proof artifact');
+  }
+}
+
 export function readDirectiveRuntimeProofArtifact(input: {
   runtimeProofPath: string;
   directiveRoot?: string;
@@ -210,7 +218,7 @@ export function readDirectiveRuntimeProofArtifact(input: {
 
   const candidateId = extractBulletValue(content, "Candidate id");
   const proofDate = extractBulletValue(content, "Opened on");
-  const linkedRuntimeRecordPath = extractBulletValue(content, "Runtime v0 record path");
+  const linkedRuntimeRecordPath = extractLegacyRuntimeRecordPathFromProof(content);
   const runtimeRecordArtifact = readDirectiveRuntimeRecordArtifact({
     directiveRoot,
     runtimeRecordPath: linkedRuntimeRecordPath,
@@ -433,3 +441,4 @@ export function openDirectiveRuntimeProofRuntimeCapabilityBoundary(input: {
     candidateName: artifact.candidateName,
   };
 }
+

@@ -1,15 +1,9 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
+import { readJson, writeJson } from "../shared/lib/file-io.ts";
 
-export function readJson<T>(filePath: string) {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
-
-export function writeJson(filePath: string, value: unknown) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
-}
+export { readJson, writeJson };
 
 export function uniqueRelativePaths(items: Array<string | null | undefined>) {
   return [...new Set(items.filter((value): value is string => Boolean(value)))];

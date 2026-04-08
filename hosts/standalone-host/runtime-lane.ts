@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 import type { DiscoveryHostStorageBridge } from "../integration-kit/starter/discovery-submission-adapter.template.ts";
 import { resolveDirectiveWorkspaceState } from "../../engine/state/index.ts";
@@ -61,10 +62,6 @@ import {
 import {
   runDirectiveRuntimeV0LiveMiniSweAgentCallableIntegration,
 } from "../../runtime/01-callable-integrations/2026-03-24-dw-live-mini-swe-agent-engine-pressure-2026-03-24-callable-integration.ts";
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function resolveDirectivePathLike(
   storage: DiscoveryHostStorageBridge,

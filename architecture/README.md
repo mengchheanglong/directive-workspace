@@ -10,17 +10,17 @@ It owns:
 - bounded experiments to prove internal improvements
 - adopted operating-code patterns and deferred decisions
 - doctrine improvement over time
-- Architecture decision records and bounded experiment notes only; raw source snapshots live under `C:\Users\User\.openclaw\workspace\directive-workspace\sources\`
+- Architecture decision records and bounded experiment notes only; raw source snapshots live under `sources/`
 
 It does not own:
 - runtime/callable capability delivery (that is Runtime)
 - external host runtime code, database, or APIs
 - intake, triage, or routing (that is Discovery)
 - raw upstream repo storage (that is `directive-workspace/sources/`)
-- OpenClaw-native rescue role ownership (that belongs to OpenClaw)
+- external rescue-role ownership outside Directive Workspace
 
-OpenClaw note:
-- if an Architecture document needs to mention OpenClaw rescue/recovery, reference `C:\Users\User\.openclaw\workspace\openclaw\RESCUE_OPENCLAW.md` instead of redefining the role here
+External rescue note:
+- if an Architecture document needs to mention rescue or recovery behavior owned by another system, reference that external system's docs instead of redefining the role here
 
 Handoff rule:
 - When Architecture work discovers runtime-worthy value, hand it to Runtime via the Architecture-to-Runtime handoff contract.

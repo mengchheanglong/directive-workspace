@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
 
 type JsonValue = Record<string, unknown>;
 
@@ -95,10 +96,6 @@ export type StandaloneHostConfigOverrides = {
   authBearerToken?: string;
   persistenceSqlitePath?: string;
 };
-
-function normalizeAbsolutePath(filePath: string) {
-  return path.resolve(filePath).replace(/\\/g, "/");
-}
 
 function assertRecord(value: unknown, fieldName: string) {
   if (!value || typeof value !== "object" || Array.isArray(value)) {

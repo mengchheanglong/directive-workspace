@@ -1,11 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { normalizeAbsolutePath } from "../../shared/lib/path-normalization.ts";
+import { getDefaultDirectiveWorkspaceRoot } from "../../shared/lib/workspace-root.ts";
 import {
-  getDefaultDirectiveWorkspaceRoot,
-  normalizePath,
-  normalizeRelativePath,
-} from "../../architecture/lib/architecture-deep-tail-artifact-helpers.ts";
+  normalizeDirectiveRelativePath,
+} from "../../shared/lib/directive-relative-path.ts";
 import {
   readDirectiveArchitectureMaterializationDueCheck,
 } from "../../architecture/lib/architecture-materialization-due-check.ts";
@@ -38,6 +38,7 @@ export type OperatorDecisionInboxEntry = {
     | "discovery_routing_review"
     | "architecture_materialization_due"
     | "runtime_host_selection"
+    | "runtime_promotion_seam_decision"
     | "runtime_registry_acceptance";
   candidateId: string | null;
   candidateName: string | null;
@@ -71,6 +72,7 @@ export type OperatorDecisionInboxReport = {
     discoveryRoutingReviewCount: number;
     architectureMaterializationDueCount: number;
     runtimeHostSelectionCount: number;
+    runtimePromotionSeamDecisionCount: number;
     runtimeRegistryAcceptanceCount: number;
   };
   entries: OperatorDecisionInboxEntry[];
@@ -92,7 +94,7 @@ function listFiles(input: {
   return fs
     .readdirSync(absoluteDir, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith(input.suffix))
-    .map((entry) => normalizeRelativePath(path.join(input.relativeDir, entry.name)))
+    .map((entry) => normalizeDirectiveRelativePath(path.join(input.relativeDir, entry.name)))
     .sort();
 }
 
@@ -222,10 +224,14 @@ function buildRuntimeHostSelectionEntries(directiveRoot: string): OperatorDecisi
       const hostSelectionResolutionPath = resolveRuntimeHostSelectionResolutionPath({
         promotionReadinessPath: recommendation.sourcePromotionReadinessPath,
       });
+      const isHostSelectionDecision =
+        recommendation.recommendedActionKind === "clarify_repo_native_host_target";
       return {
-        entryId: `runtime:${recommendation.candidateId}:host_selection`,
+        entryId: `runtime:${recommendation.candidateId}:${isHostSelectionDecision ? "host_selection" : "promotion_seam_decision"}`,
         lane: "runtime" as const,
-        decisionSurface: "runtime_host_selection" as const,
+        decisionSurface: isHostSelectionDecision
+          ? "runtime_host_selection" as const
+          : "runtime_promotion_seam_decision" as const,
         candidateId: recommendation.candidateId,
         candidateName: recommendation.candidateName,
         currentStage: recommendation.currentStage,
@@ -320,6 +326,7 @@ function buildRuntimeRegistryAcceptanceEntries(directiveRoot: string): OperatorD
 function sortInboxEntries(left: OperatorDecisionInboxEntry, right: OperatorDecisionInboxEntry) {
   const surfacePriority = new Map<OperatorDecisionInboxEntry["decisionSurface"], number>([
     ["runtime_host_selection", 10],
+    ["runtime_promotion_seam_decision", 15],
     ["architecture_materialization_due", 20],
     ["runtime_registry_acceptance", 30],
     ["discovery_routing_review", 40],
@@ -382,6 +389,9 @@ export function renderOperatorDecisionInboxMarkdown(report: OperatorDecisionInbo
   const runtimeRegistryAcceptanceEntries = report.entries.filter((entry) =>
     entry.decisionSurface === "runtime_registry_acceptance"
   );
+  const runtimePromotionSeamDecisionEntries = report.entries.filter((entry) =>
+    entry.decisionSurface === "runtime_promotion_seam_decision"
+  );
   const architectureMaterializationEntries = report.entries.filter((entry) =>
     entry.decisionSurface === "architecture_materialization_due"
   );
@@ -408,6 +418,7 @@ export function renderOperatorDecisionInboxMarkdown(report: OperatorDecisionInbo
     "",
     `- Total actionable entries: ${report.summary.totalActionableEntries}`,
     `- Runtime host-selection decisions: ${report.summary.runtimeHostSelectionCount}`,
+    `- Runtime promotion-seam decisions: ${report.summary.runtimePromotionSeamDecisionCount}`,
     `- Architecture materialization decisions: ${report.summary.architectureMaterializationDueCount}`,
     `- Runtime registry-acceptance decisions: ${report.summary.runtimeRegistryAcceptanceCount}`,
     `- Discovery routing-review decisions: ${report.summary.discoveryRoutingReviewCount}`,
@@ -415,6 +426,10 @@ export function renderOperatorDecisionInboxMarkdown(report: OperatorDecisionInbo
     renderMarkdownGroup({
       title: "Runtime Host Selection",
       entries: runtimeHostSelectionEntries,
+    }),
+    renderMarkdownGroup({
+      title: "Runtime Promotion Seam Decision",
+      entries: runtimePromotionSeamDecisionEntries,
     }),
     renderMarkdownGroup({
       title: "Architecture Materialization",
@@ -439,7 +454,7 @@ export function buildOperatorDecisionInboxReport(input?: {
   directiveRoot?: string;
   snapshotAt?: string;
 }): OperatorDecisionInboxReport {
-  const directiveRoot = normalizePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
+  const directiveRoot = normalizeAbsolutePath(input?.directiveRoot || getDefaultDirectiveWorkspaceRoot());
   const entries = [
     ...buildDiscoveryRoutingReviewEntries(directiveRoot),
     ...buildArchitectureMaterializationEntries(directiveRoot),
@@ -469,6 +484,9 @@ export function buildOperatorDecisionInboxReport(input?: {
       ).length,
       runtimeHostSelectionCount: entries.filter((entry) =>
         entry.decisionSurface === "runtime_host_selection"
+      ).length,
+      runtimePromotionSeamDecisionCount: entries.filter((entry) =>
+        entry.decisionSurface === "runtime_promotion_seam_decision"
       ).length,
       runtimeRegistryAcceptanceCount: entries.filter((entry) =>
         entry.decisionSurface === "runtime_registry_acceptance"

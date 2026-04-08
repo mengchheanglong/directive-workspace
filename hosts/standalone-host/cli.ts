@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { readJson } from "../../shared/lib/file-io.ts";
 
 import type { DiscoverySubmissionRequest } from "../../discovery/lib/discovery-submission-router.ts";
 import type { RuntimeFollowUpRecordRequest } from "../../runtime/lib/runtime-follow-up-record-writer.ts";
@@ -140,9 +141,7 @@ function readRepeatedFlag(flags: FlagMap, name: string) {
   return flags[name] ?? [];
 }
 
-function readJsonFile<T>(filePath: string): T {
-  return JSON.parse(fs.readFileSync(filePath, "utf8")) as T;
-}
+
 
 function readOptionalRuntimeConfig(
   flags: FlagMap,
@@ -250,7 +249,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<DiscoverySubmissionRequest>(inputJsonPath);
+      const request = readJson<DiscoverySubmissionRequest>(inputJsonPath);
       const result = processWithEngine
         ? await host.submitDiscoveryEntryWithEngine(request, dryRun)
         : await host.submitDiscoveryEntry(request, dryRun);
@@ -286,7 +285,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimeFollowUpRecordRequest>(inputJsonPath);
+      const request = readJson<RuntimeFollowUpRecordRequest>(inputJsonPath);
       const result = await host.writeRuntimeFollowUp(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -301,7 +300,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimeRecordRequest>(inputJsonPath);
+      const request = readJson<RuntimeRecordRequest>(inputJsonPath);
       const result = await host.writeRuntimeRecord(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -316,7 +315,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimePromotionRecordRequest>(inputJsonPath);
+      const request = readJson<RuntimePromotionRecordRequest>(inputJsonPath);
       const result = await host.writeRuntimePromotionRecord(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -331,7 +330,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimeProofBundleRequest>(inputJsonPath);
+      const request = readJson<RuntimeProofBundleRequest>(inputJsonPath);
       const result = await host.writeRuntimeProofBundle(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -346,7 +345,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimeTransformationProofRequest>(inputJsonPath);
+      const request = readJson<RuntimeTransformationProofRequest>(inputJsonPath);
       const result = await host.writeRuntimeTransformationProof(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -361,7 +360,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimeTransformationRecordRequest>(inputJsonPath);
+      const request = readJson<RuntimeTransformationRecordRequest>(inputJsonPath);
       const result = await host.writeRuntimeTransformationRecord(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -376,7 +375,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const request = readJsonFile<RuntimeRegistryEntryRequest>(inputJsonPath);
+      const request = readJson<RuntimeRegistryEntryRequest>(inputJsonPath);
       const result = await host.writeRuntimeRegistryEntry(request);
       process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     } finally {
@@ -433,7 +432,7 @@ async function main() {
 
     const host = createRuntimeHostFromFlags(flags, runtimeConfig);
     try {
-      const input = readJsonFile<Record<string, unknown>>(
+      const input = readJson<Record<string, unknown>>(
         readRequiredFlag(flags, "input-json-path"),
       );
       const result = await host.invokeScientifyLiteratureAccessTool({

@@ -37,7 +37,7 @@ const healthyRuntimeVerificationSignal: RuntimeVerificationSignal = {
 
 const maintenanceWatchdogSignal: MaintenanceWatchdogSignal = {
   candidate_id: "dw-starter-maintenance-watchdog-signal",
-  candidate_name: "OpenClaw Maintenance Watchdog Signal",
+  candidate_name: "Host Maintenance Watchdog Signal",
   source_type: "internal-signal",
   source_reference: "host://maintenance/degraded",
   mission_alignment:

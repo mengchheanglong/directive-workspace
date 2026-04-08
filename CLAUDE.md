@@ -424,7 +424,6 @@ Residual support services that are not lane-specific:
 - case management (`case-store`, `case-event-log`, `case-planner`, `case-snapshot`)
 - lifecycle coordination (`read-only-lifecycle-coordination`, `bounded-persistent-coordination`)
 - evidence aggregation and reporting helpers
-- host-neutral adapters (`openclaw-*`)
 - artifact/storage compatibility helpers
 
 ### scripts/ â€” Enforcement and reporting

@@ -16,6 +16,8 @@ from research_engine.acquisition import (
     AcquisitionResult,
     EvidenceGapFollowUpResult,
     LiveHybridAcquisitionProvider,
+    RequestBudget,
+    RequestBudgetExhausted,
     get_acquisition_provider,
 )
 from research_engine.cli import _extract_local_stop_term_suggestion, _load_local_dotenv
@@ -4006,6 +4008,149 @@ class ResearchEngineRunTest(unittest.TestCase):
             trust_policy=build_source_type_trust_policy(mission),
         )
         self.assertEqual(evidence[0].source_updated_at, "2026-03-30T08:15:00+00:00")
+
+
+class RequestBudgetTest(unittest.TestCase):
+    def test_budget_allows_requests_within_limit(self) -> None:
+        budget = RequestBudget(max_requests=5, per_provider_max_requests={})
+        for _ in range(5):
+            budget.check("github-fetch")
+            budget.record("github-fetch")
+        self.assertEqual(budget.aggregate_used, 5)
+        self.assertEqual(budget.per_provider_used["github-fetch"], 5)
+        self.assertTrue(budget.aggregate_remaining == 0)
+
+    def test_budget_rejects_when_aggregate_exhausted(self) -> None:
+        budget = RequestBudget(max_requests=3, per_provider_max_requests={})
+        for _ in range(3):
+            budget.check("github-fetch")
+            budget.record("github-fetch")
+        with self.assertRaises(RequestBudgetExhausted) as ctx:
+            budget.check("github-fetch")
+        self.assertEqual(ctx.exception.scope, "aggregate")
+        self.assertEqual(ctx.exception.used, 3)
+        self.assertEqual(ctx.exception.limit, 3)
+
+    def test_budget_rejects_when_per_provider_exhausted(self) -> None:
+        budget = RequestBudget(
+            max_requests=100,
+            per_provider_max_requests={"github-fetch": 2},
+        )
+        for _ in range(2):
+            budget.check("github-fetch")
+            budget.record("github-fetch")
+        with self.assertRaises(RequestBudgetExhausted) as ctx:
+            budget.check("github-fetch")
+        self.assertEqual(ctx.exception.scope, "per-provider")
+        self.assertEqual(ctx.exception.used, 2)
+        self.assertEqual(ctx.exception.limit, 2)
+        budget.check("web-fetch")
+        budget.record("web-fetch")
+        self.assertEqual(budget.aggregate_used, 3)
+
+    def test_has_remaining_reflects_state(self) -> None:
+        budget = RequestBudget(
+            max_requests=5,
+            per_provider_max_requests={"github-fetch": 2},
+        )
+        self.assertTrue(budget.has_remaining())
+        self.assertTrue(budget.has_remaining("github-fetch"))
+        budget.record("github-fetch")
+        budget.record("github-fetch")
+        self.assertTrue(budget.has_remaining())
+        self.assertFalse(budget.has_remaining("github-fetch"))
+        self.assertTrue(budget.has_remaining("web-fetch"))
+
+    def test_budget_exhaustion_events_recorded(self) -> None:
+        budget = RequestBudget(max_requests=1, per_provider_max_requests={})
+        budget.record("github-fetch")
+        budget.record_exhaustion("test-event: budget exhausted")
+        self.assertEqual(len(budget.exhaustion_events), 1)
+        budget.record_exhaustion("test-event: budget exhausted")
+        self.assertEqual(len(budget.exhaustion_events), 1)
+
+    def test_mission_constraints_new_fields_defaults(self) -> None:
+        constraints = MissionConstraints()
+        self.assertEqual(constraints.max_requests, 240)
+        self.assertEqual(constraints.per_provider_max_requests, {})
+
+    def test_default_budget_preserves_bounded_live_headroom(self) -> None:
+        constraints = MissionConstraints()
+        self.assertGreaterEqual(
+            constraints.max_requests,
+            200,
+            "Default request budget should cover the bounded live envelope without clipping normal capability.",
+        )
+
+    def test_mission_constraints_custom_budget(self) -> None:
+        constraints = MissionConstraints(
+            max_requests=50,
+            per_provider_max_requests={"github-fetch": 10},
+        )
+        self.assertEqual(constraints.max_requests, 50)
+        self.assertEqual(constraints.per_provider_max_requests["github-fetch"], 10)
+
+    def test_live_provider_initializes_budget_from_mission(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        mission = ResearchMission(
+            objective="Test budget initialization.",
+            constraints=MissionConstraints(
+                max_requests=25,
+                per_provider_max_requests={"github-discovery": 5},
+            ),
+        )
+        plan = build_search_plan(mission)
+        plan.selected_acquisition_mode = "live-hybrid"
+        plan.queries = []
+        result = provider.acquire(plan, mission)
+        self.assertIsNotNone(provider._request_budget)
+        self.assertEqual(provider._request_budget.max_requests, 25)
+        self.assertEqual(
+            provider._request_budget.per_provider_max_requests,
+            {"github-discovery": 5},
+        )
+        self.assertEqual(provider._request_budget.aggregate_used, 0)
+
+    def test_fetch_loop_stops_gracefully_on_budget_exhaustion(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        provider._request_budget = RequestBudget(
+            max_requests=0,
+            per_provider_max_requests={},
+        )
+        hits = [
+            DiscoveryHit(
+                provider="github-live",
+                track_id="test-track",
+                query="test",
+                url="https://github.com/test/repo",
+                title="test/repo",
+                snippet="Test repo",
+                hit_type="repo",
+                candidate_id="test-repo",
+                matched_terms=["test"],
+            ),
+        ]
+        documents = provider._documents_from_hits(hits, max_fetches=10)
+        self.assertEqual(documents, [])
+        self.assertGreaterEqual(len(provider._request_budget.exhaustion_events), 1)
+
+    def test_budget_surfaces_in_provider_health(self) -> None:
+        provider = LiveHybridAcquisitionProvider()
+        mission = ResearchMission(
+            objective="Test budget health reporting.",
+            constraints=MissionConstraints(
+                max_requests=50,
+                per_provider_max_requests={},
+            ),
+        )
+        plan = build_search_plan(mission)
+        plan.selected_acquisition_mode = "live-hybrid"
+        plan.queries = []
+        result = provider.acquire(plan, mission)
+        aggregate_health = result.provider_health[0]
+        self.assertEqual(aggregate_health.budget_max_requests, 50)
+        self.assertIsNotNone(aggregate_health.budget_used_requests)
+        self.assertIsInstance(aggregate_health.budget_exhaustion_events, list)
 
 
 if __name__ == "__main__":
